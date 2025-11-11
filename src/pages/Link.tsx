@@ -15,18 +15,11 @@ export default function Link() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-md mx-auto bg-white min-h-screen">
-        {/* Header */}
-        <div className="bg-primary-600 text-white p-4">
-          <h1 className="text-xl font-semibold">Link & QR</h1>
-          <p className="text-primary-100 text-sm">
-            Connect with your triad members
-          </p>
-        </div>
+    <div className="bg-gray-50 min-h-screen">
+      <div className="max-w-4xl mx-auto bg-white min-h-screen shadow-sm">
 
         {/* Tabs */}
-        <div className="flex bg-white border-b">
+        <div className="flex bg-white border-b px-4 sm:px-6 lg:px-8">
           <button
             onClick={() => setActiveTab("generate")}
             className={`flex-1 py-3 px-4 text-center font-medium border-b-2 transition-colors ${
@@ -49,8 +42,9 @@ export default function Link() {
           </button>
         </div>
 
-        {/* Content */}
-        <div className="p-4">
+        {/* Content - responsive layout */}
+        <div className="p-4 sm:p-6 lg:p-8">
+          <div className="max-w-2xl mx-auto">
           {activeTab === "generate" ? (
             <div className="space-y-4">
               <div>
@@ -120,6 +114,7 @@ export default function Link() {
               </div>
             </div>
           )}
+          </div>
         </div>
       </div>
     </div>

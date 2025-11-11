@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import Header from './components/Header';
 import Drawer from './components/Drawer';
 import Today from './pages/Today';
 import Link from './pages/Link';
@@ -69,35 +70,40 @@ function AppContent() {
     );
   }
 
+  // Get page info for header
+  const getPageInfo = () => {
+    switch (location.pathname) {
+      case '/':
+        return { title: "Today's Plan", subtitle: "Your daily spiritual rhythm" };
+      case '/link':
+        return { title: 'Link & QR', subtitle: 'Connect with your triad members' };
+      case '/tradition':
+        return { title: 'Tradition', subtitle: 'Our shared creed and passage pyramid' };
+      case '/settings':
+        return { title: 'Role & Settings', subtitle: 'Manage your profile and app settings' };
+      case '/about':
+        return { title: 'About & Privacy', subtitle: 'Learn about the app and data handling' };
+      default:
+        return { title: 'Triad', subtitle: 'Christian Mentorship App' };
+    }
+  };
+
+  const { title, subtitle } = getPageInfo();
+
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Hamburger Menu Button - Hide on Tradition page (fullscreen) */}
-      {location.pathname !== '/tradition' && (
-        <button
-          onClick={() => setIsDrawerOpen(true)}
-          className="fixed top-4 left-4 z-30 bg-white shadow-lg rounded-lg p-2 text-gray-600 hover:text-gray-800"
-        >
-        <svg
-          className="w-6 h-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M4 6h16M4 12h16M4 18h16"
-          />
-        </svg>
-        </button>
-      )}
+      {/* Header with integrated navigation */}
+      <Header 
+        onMenuClick={() => setIsDrawerOpen(true)}
+        title={title}
+        subtitle={subtitle}
+      />
 
       {/* Drawer Navigation */}
       <Drawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
 
       {/* Main Content */}
-      <main>
+      <main className="min-h-screen">
         <Routes>
           <Route path="/" element={<Today />} />
           <Route path="/link" element={<Link />} />

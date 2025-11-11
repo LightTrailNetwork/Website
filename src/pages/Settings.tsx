@@ -36,15 +36,10 @@ export default function Settings() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-md mx-auto bg-white min-h-screen">
-        {/* Header */}
-        <div className="bg-primary-600 text-white p-4">
-          <h1 className="text-xl font-semibold">Role & Settings</h1>
-          <p className="text-primary-100 text-sm">Manage your profile and app settings</p>
-        </div>
-
-        <div className="p-4 space-y-6">
+    <div className="bg-gray-50 min-h-screen">
+      <div className="max-w-4xl mx-auto bg-white min-h-screen shadow-sm">
+        <div className="p-4 sm:p-6 lg:p-8 space-y-6 lg:space-y-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
           {/* Profile Section */}
           <div className="space-y-4">
             <h2 className="text-lg font-semibold text-gray-900">Profile</h2>
@@ -86,8 +81,52 @@ export default function Settings() {
               Save Profile
             </button>
           </div>
+          
+          {/* Backup & Danger Zone in right column */}
+          <div className="space-y-6">
+            {/* Backup Section */}
+            <div className="space-y-4">
+              <h2 className="text-lg font-semibold text-gray-900">Backup & Restore</h2>
+              
+              <div className="space-y-2">
+                <button
+                  onClick={handleExport}
+                  className="w-full btn btn-secondary"
+                >
+                  Export Backup
+                </button>
+                <button
+                  onClick={handleImport}
+                  className="w-full btn btn-secondary"
+                >
+                  Import Backup
+                </button>
+              </div>
+              
+              <p className="text-xs text-gray-500">
+                Export creates a JSON file with all your data. Import restores from a backup file.
+              </p>
+            </div>
 
-          {/* Contacts Section */}
+            {/* Danger Zone */}
+            <div className="space-y-4 border-t pt-6">
+              <h2 className="text-lg font-semibold text-red-600">Danger Zone</h2>
+              
+              <button
+                onClick={handleReset}
+                className="w-full bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-colors"
+              >
+                Reset App
+              </button>
+              
+              <p className="text-xs text-red-500">
+                This will permanently delete all your data, contacts, and activity history.
+              </p>
+            </div>
+          </div>
+          </div>
+
+          {/* Contacts Section - full width */}
           <div className="space-y-4">
             <h2 className="text-lg font-semibold text-gray-900">My Contacts</h2>
             
@@ -114,45 +153,6 @@ export default function Settings() {
             )}
           </div>
 
-          {/* Backup Section */}
-          <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-gray-900">Backup & Restore</h2>
-            
-            <div className="space-y-2">
-              <button
-                onClick={handleExport}
-                className="w-full btn btn-secondary"
-              >
-                Export Backup
-              </button>
-              <button
-                onClick={handleImport}
-                className="w-full btn btn-secondary"
-              >
-                Import Backup
-              </button>
-            </div>
-            
-            <p className="text-xs text-gray-500">
-              Export creates a JSON file with all your data. Import restores from a backup file.
-            </p>
-          </div>
-
-          {/* Danger Zone */}
-          <div className="space-y-4 border-t pt-6">
-            <h2 className="text-lg font-semibold text-red-600">Danger Zone</h2>
-            
-            <button
-              onClick={handleReset}
-              className="w-full bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-colors"
-            >
-              Reset App
-            </button>
-            
-            <p className="text-xs text-red-500">
-              This will permanently delete all your data, contacts, and activity history.
-            </p>
-          </div>
         </div>
       </div>
     </div>
