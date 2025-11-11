@@ -3,7 +3,7 @@ import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig({
-  base: "/Website/",
+  base: "/",
   plugins: [
     react(),
     VitePWA({
@@ -11,12 +11,12 @@ export default defineConfig({
       manifest: {
         name: "Mentorship App",
         short_name: "MentorApp",
-        start_url: "/Website/",
+        start_url: "/",
         display: "standalone",
         theme_color: "#ffffff",
         icons: [
-          { src: "/Website/pwa-192x192.png", sizes: "192x192", type: "image/png" },
-          { src: "/Website/pwa-512x512.png", sizes: "512x512", type: "image/png" },
+          { src: "/pwa-192x192.png", sizes: "192x192", type: "image/png" },
+          { src: "/pwa-512x512.png", sizes: "512x512", type: "image/png" },
         ],
       },
     }),
