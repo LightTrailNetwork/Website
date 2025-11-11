@@ -4,7 +4,13 @@
       "Bash(mkdir:*)",
       "Bash(mv:*)",
       "Bash(rmdir:*)",
-      "Bash(npm run dev:*)"
+      "Bash(npm run dev:*)",
+      "Bash(npm install:*)",
+      "Bash(npx tailwindcss init:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(curl:*)",
+      "Bash(timeout 10s npm run dev)",
+      "Bash(rm:*)"
     ],
     "deny": []
   }

@@ -1,0 +1,97 @@
+// Core Types and Enums
+export enum Role {
+  PRE_SCOUT = 'PRE_SCOUT',
+  SCOUT = 'SCOUT',
+  MENTEE = 'MENTEE',
+  MENTOR = 'MENTOR',
+  STEWARD = 'STEWARD'
+}
+
+export type Slot = 'M' | 'A' | 'N'; // Morning, Afternoon, Night
+export type Relation = 'myMentor' | 'myMentee' | 'mySteward' | 'myScout' | 'myPreScout';
+
+// User Profile
+export interface UserProfile {
+  id: string; // UUID v4
+  displayName?: string;
+  currentRole: Role;
+  createdAt: number;
+}
+
+// Contact Management
+export interface Contact {
+  id: string; // their ID
+  label?: string; // nickname
+  relation: Relation;
+  lastSeenAt?: number; // last QR sync timestamp
+}
+
+export type Contacts = Record<string, Contact>;
+
+// Activity Tracking
+export interface ActivityTick {
+  dateISO: string; // YYYY-MM-DD format
+  slot: Slot;
+  completedAt: number; // timestamp
+}
+
+// My Daily Activity (indexed by date)
+export interface DailyActivity {
+  M?: number; // timestamp of completion
+  A?: number;
+  N?: number;
+}
+
+export type MyActivity = Record<string, DailyActivity>; // dateISO -> DailyActivity
+
+// Snapshot from other users (received via QR)
+export interface ActivitySnapshot {
+  asOf: number; // when this snapshot was created
+  role?: Role;
+  today?: {
+    dateISO: string;
+    M?: number;
+    A?: number;
+    N?: number;
+  };
+  // Small recent history for context (last 7 days)
+  recent?: Array<{
+    dateISO: string;
+    M?: boolean; // simplified to just completed/not
+    A?: boolean;
+    N?: boolean;
+  }>;
+}
+
+export type Snapshots = Record<string, ActivitySnapshot>; // contactId -> ActivitySnapshot
+
+// QR Code Payloads
+export interface QRLinkCard {
+  v: 1; // version
+  kind: 'link';
+  from: string; // sender's ID
+  relation: Relation; // how they want to be related to scanner
+  ts: number; // timestamp
+}
+
+export interface QRActivitySnapshot {
+  v: 1; // version
+  kind: 'snapshot';
+  from: string; // sender's ID
+  role: Role;
+  today: {
+    d: string; // dateISO (abbreviated)
+    M?: boolean;
+    A?: boolean;
+    N?: boolean;
+  };
+  recent?: Array<{
+    d: string; // dateISO (abbreviated)
+    M?: boolean;
+    A?: boolean;
+    N?: boolean;
+  }>;
+  ts: number; // timestamp
+}
+
+export type QRPayload = QRLinkCard | QRActivitySnapshot;
