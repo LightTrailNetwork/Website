@@ -1,9 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Role } from '../data/types';
+import { useProfile } from '../hooks/useProfile';
+import { getContacts, exportAll, importAll, resetApp } from '../data/db';
 
 export default function Settings() {
-  const [currentRole, setCurrentRole] = useState<Role>(Role.MENTEE);
+  const { profile, loading, updateRole, updateDisplayName } = useProfile();
   const [displayName, setDisplayName] = useState('');
+  const [contacts, setContacts] = useState<any[]>([]);
 
   const roles = [
     { value: Role.PRE_SCOUT, label: 'Pre-Scout' },
@@ -13,27 +16,112 @@ export default function Settings() {
     { value: Role.STEWARD, label: 'Steward' }
   ];
 
-  const contacts = [
-    { relation: 'My Mentor', name: 'John Smith', lastSeen: '2 hours ago' },
-    { relation: 'My Steward', name: 'David Wilson', lastSeen: '1 day ago' }
-  ];
+  // Load profile data and contacts when component mounts
+  useEffect(() => {
+    if (profile) {
+      setDisplayName(profile.displayName || '');
+    }
+    
+    loadContacts();
+  }, [profile]);
 
-  const handleExport = () => {
-    // TODO: Implement export functionality
-    console.log('Export backup');
+  const loadContacts = async () => {
+    try {
+      const contactList = await getContacts();
+      setContacts(contactList);
+    } catch (error) {
+      console.error('Failed to load contacts:', error);
+    }
+  };
+
+  const handleSaveProfile = async () => {
+    if (!profile) return;
+    
+    try {
+      if (displayName !== profile.displayName) {
+        await updateDisplayName(displayName || null);
+      }
+      
+      alert('Profile saved successfully!');
+    } catch (error) {
+      console.error('Failed to save profile:', error);
+      alert('Failed to save profile. Please try again.');
+    }
+  };
+
+  const handleRoleChange = async (newRole: Role) => {
+    try {
+      await updateRole(newRole);
+      alert(`Role updated to ${roles.find(r => r.value === newRole)?.label}`);
+    } catch (error) {
+      console.error('Failed to update role:', error);
+      alert('Failed to update role. Please try again.');
+    }
+  };
+
+  const handleExport = async () => {
+    try {
+      const data = await exportAll();
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `mentorship-backup-${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Export failed:', error);
+      alert('Failed to export data. Please try again.');
+    }
   };
 
   const handleImport = () => {
-    // TODO: Implement import functionality
-    console.log('Import backup');
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    input.onchange = async (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (!file) return;
+      
+      try {
+        const text = await file.text();
+        const data = JSON.parse(text);
+        await importAll(data);
+        alert('Data imported successfully!');
+        window.location.reload();
+      } catch (error) {
+        console.error('Import failed:', error);
+        alert('Failed to import data. Please check the file format.');
+      }
+    };
+    input.click();
   };
 
-  const handleReset = () => {
+  const handleReset = async () => {
     if (confirm('Are you sure you want to reset the app? This will delete all your data.')) {
-      // TODO: Implement reset functionality
-      console.log('Reset app');
+      try {
+        await resetApp();
+        alert('App reset successfully!');
+        window.location.reload();
+      } catch (error) {
+        console.error('Reset failed:', error);
+        alert('Failed to reset app. Please try again.');
+      }
     }
   };
+
+  if (loading) {
+    return (
+      <div className="bg-gray-50 min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-4xl mb-4">⚙️</div>
+          <h1 className="text-xl font-semibold text-gray-800">Loading Settings...</h1>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-gray-50 min-h-screen">
@@ -62,8 +150,8 @@ export default function Settings() {
                 Current Role
               </label>
               <select
-                value={currentRole}
-                onChange={(e) => setCurrentRole(e.target.value as Role)}
+                value={profile?.currentRole || Role.MENTEE}
+                onChange={(e) => handleRoleChange(e.target.value as Role)}
                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
               >
                 {roles.map((role) => (
@@ -77,7 +165,10 @@ export default function Settings() {
               </p>
             </div>
 
-            <button className="w-full btn btn-primary">
+            <button 
+              onClick={handleSaveProfile}
+              className="w-full btn btn-primary"
+            >
               Save Profile
             </button>
           </div>
@@ -132,12 +223,12 @@ export default function Settings() {
             
             {contacts.length > 0 ? (
               <div className="space-y-2">
-                {contacts.map((contact, index) => (
-                  <div key={index} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                {contacts.map((contact) => (
+                  <div key={contact.id} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
                     <div>
-                      <div className="font-medium text-gray-900">{contact.relation}</div>
-                      <div className="text-sm text-gray-600">{contact.name}</div>
-                      <div className="text-xs text-gray-500">Last seen: {contact.lastSeen}</div>
+                      <div className="font-medium text-gray-900">{contact.relation || 'Contact'}</div>
+                      <div className="text-sm text-gray-600">{contact.name || contact.displayName}</div>
+                      <div className="text-xs text-gray-500">Added: {new Date(contact.addedAt).toLocaleDateString()}</div>
                     </div>
                     <button className="text-red-600 text-sm hover:text-red-700">
                       Remove

@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Role } from '../data/types';
+import { useProfile } from '../hooks/useProfile';
+import { getRoleContent, getRoleInfo } from '../utils/roleContent';
 
 export default function Today() {
-  const [currentRole, setCurrentRole] = useState<Role>(Role.MENTEE);
+  const { profile, loading } = useProfile();
   const [viewedRole, setViewedRole] = useState<Role>(Role.MENTEE);
 
   const today = new Date().toLocaleDateString('en-US', {
@@ -12,6 +14,13 @@ export default function Today() {
     day: 'numeric'
   });
 
+  // Set initial viewed role to user's current role
+  useEffect(() => {
+    if (profile && !loading) {
+      setViewedRole(profile.currentRole);
+    }
+  }, [profile, loading]);
+
   const roleTabs = [
     { role: Role.MENTEE, label: 'Mentee' },
     { role: Role.MENTOR, label: 'Mentor' },
@@ -19,6 +28,21 @@ export default function Today() {
     { role: Role.SCOUT, label: 'Scout' },
     { role: Role.PRE_SCOUT, label: 'Pre-Scout' }
   ];
+
+  // Get content for the currently viewed role
+  const roleContent = getRoleContent(viewedRole);
+  const roleInfo = getRoleInfo(viewedRole);
+
+  if (loading) {
+    return (
+      <div className="bg-gray-50 min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-4xl mb-4">✝️</div>
+          <h1 className="text-xl font-semibold text-gray-800">Loading...</h1>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-gray-50 min-h-screen">
@@ -41,7 +65,7 @@ export default function Today() {
               }`}
             >
               {label}
-              {role === currentRole && (
+              {role === profile?.currentRole && (
                 <span className="ml-1 text-xs bg-primary-100 text-primary-600 px-1 rounded">
                   Me
                 </span>
@@ -63,13 +87,14 @@ export default function Today() {
                 />
               </div>
               <div className="space-y-2 text-sm text-yellow-700">
-                <div>• Worship Song</div>
-                <div>• Offer Yourself to God</div>
-                <div>• Read (Bible Chapter)</div>
-                <div>• Silence (2 minutes)</div>
-                <div>• Hear and Journal</div>
-                <div>• Intercession (A.N.C.H.O.R.)</div>
-                <div>• Practical (Monday - for your wife)</div>
+                {roleContent.morning.activities.map((activity, index) => (
+                  <div key={index}>• {activity}</div>
+                ))}
+                {roleContent.morning.focus && (
+                  <div className="text-xs text-yellow-600 italic mt-2">
+                    Focus: {roleContent.morning.focus}
+                  </div>
+                )}
               </div>
             </div>
 
@@ -83,10 +108,12 @@ export default function Today() {
                 />
               </div>
               <div className="space-y-2 text-sm text-blue-700">
-                <div>• Memorization: John 3:16</div>
-                <div className="text-xs text-blue-600">
-                  "For God so loved the world that he gave his one and only Son..."
-                </div>
+                <div>• {roleContent.afternoon.title}: {roleContent.afternoon.content}</div>
+                {roleContent.afternoon.reference && (
+                  <div className="text-xs text-blue-600">
+                    {roleContent.afternoon.reference}
+                  </div>
+                )}
               </div>
             </div>
 
@@ -100,10 +127,12 @@ export default function Today() {
                 />
               </div>
               <div className="space-y-2 text-sm text-purple-700">
-                <div>• Study: Book of Romans Chapter 1</div>
-                <div className="text-xs text-purple-600">
-                  Focus on Paul's introduction and the gospel's power
-                </div>
+                <div>• {roleContent.night.title}: {roleContent.night.activity}</div>
+                {roleContent.night.details && (
+                  <div className="text-xs text-purple-600">
+                    {roleContent.night.details}
+                  </div>
+                )}
               </div>
             </div>
           </div>
