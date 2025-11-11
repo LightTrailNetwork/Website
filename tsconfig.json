@@ -1,0 +1,40 @@
+{
+  // Vite + React + TS, browser-first
+  "compilerOptions": {
+    // Build output is handled by Vite; don't emit .js/.d.ts
+    "noEmit": true,
+
+    // Environment
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler", // Vite recommends this over node/node16/nodenext
+    "jsx": "react-jsx",
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "types": ["vite/client"],
+
+    // Source maps for good DX
+    "sourceMap": true,
+
+    // Declarations off (not publishing a lib)
+    "declaration": false,
+    "declarationMap": false,
+
+    // Strictness / safety
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "moduleDetection": "force",
+    "skipLibCheck": true,
+    "noUncheckedSideEffectImports": true,
+
+    // Quality of life
+    "resolveJsonModule": true,
+
+    // Optional: keep if you want to constrain source location
+    "rootDir": "src"
+  },
+  "include": ["src", "vite.config.ts", "vitest.config.ts"],
+  "exclude": ["dist", "node_modules"]
+}
