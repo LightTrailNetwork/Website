@@ -10,7 +10,8 @@
       "Bash(npm uninstall:*)",
       "Bash(curl:*)",
       "Bash(timeout 10s npm run dev)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(cp:*)"
     ],
     "deny": []
   }

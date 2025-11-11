@@ -71,11 +71,12 @@ function AppContent() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Hamburger Menu Button - Only show on main pages */}
-      <button
-        onClick={() => setIsDrawerOpen(true)}
-        className="fixed top-4 left-4 z-30 bg-white shadow-lg rounded-lg p-2 text-gray-600 hover:text-gray-800"
-      >
+      {/* Hamburger Menu Button - Hide on Tradition page (fullscreen) */}
+      {location.pathname !== '/tradition' && (
+        <button
+          onClick={() => setIsDrawerOpen(true)}
+          className="fixed top-4 left-4 z-30 bg-white shadow-lg rounded-lg p-2 text-gray-600 hover:text-gray-800"
+        >
         <svg
           className="w-6 h-6"
           fill="none"
@@ -89,7 +90,8 @@ function AppContent() {
             d="M4 6h16M4 12h16M4 18h16"
           />
         </svg>
-      </button>
+        </button>
+      )}
 
       {/* Drawer Navigation */}
       <Drawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
