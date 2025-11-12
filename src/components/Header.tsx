@@ -1,4 +1,3 @@
-import { useLocation } from 'react-router-dom';
 
 interface HeaderProps {
   onMenuClick: () => void;
@@ -7,15 +6,8 @@ interface HeaderProps {
 }
 
 export default function Header({ onMenuClick, title, subtitle }: HeaderProps) {
-  const location = useLocation();
-  
-  // Hide header on Tradition page (fullscreen experience)
-  if (location.pathname === '/tradition') {
-    return null;
-  }
-
   return (
-    <header className="bg-primary-600 text-white shadow-lg">
+    <header className="bg-primary-600 text-white shadow-lg sticky top-0 z-50">
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
           {/* Left side - Menu button and title */}
