@@ -26,6 +26,7 @@ interface ClickableLetterProps {
   onLetterHover: (letter: string | null) => void;
   textColor: string;
   fontSize: number;
+  scrollToPassage: (passageKey: string) => void;
 }
 
 const ClickableLetter: React.FC<ClickableLetterProps> = ({
@@ -38,27 +39,18 @@ const ClickableLetter: React.FC<ClickableLetterProps> = ({
   onLetterHover,
   textColor,
   fontSize,
+  scrollToPassage,
 }) => {
   const isHovered = hoveredLetter === passageKey;
 
   const handleClick = () => {
     onLetterClick(passageKey);
-
-    // Auto-scroll to passage
-    const element = document.getElementById(`passage-${passageKey}`);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
+    scrollToPassage(passageKey);
   };
 
   const handleMouseEnter = () => {
     onLetterHover(passageKey);
-
-    // Auto-scroll to passage on hover (desktop)
-    const element = document.getElementById(`passage-${passageKey}`);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
+    scrollToPassage(passageKey);
   };
 
   return (
@@ -95,6 +87,7 @@ interface SubPyramidVertexProps {
   onLetterHover: (letter: string | null) => void;
   textColor: string;
   fontSize: number;
+  scrollToPassage: (passageKey: string) => void;
 }
 
 const SubPyramidVertex: React.FC<SubPyramidVertexProps> = ({
@@ -107,27 +100,18 @@ const SubPyramidVertex: React.FC<SubPyramidVertexProps> = ({
   onLetterHover,
   textColor,
   fontSize,
+  scrollToPassage,
 }) => {
   const isHovered = hoveredLetter === passageKey;
 
   const handleClick = () => {
     onLetterClick(passageKey);
-
-    // Auto-scroll to passage
-    const element = document.getElementById(`passage-${passageKey}`);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
+    scrollToPassage(passageKey);
   };
 
   const handleMouseEnter = () => {
     onLetterHover(passageKey);
-
-    // Auto-scroll to passage on hover (desktop)
-    const element = document.getElementById(`passage-${passageKey}`);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
+    scrollToPassage(passageKey);
   };
 
   return (
@@ -195,6 +179,42 @@ export default function PyramidSVG({
   textColor = "#0f172a",
   accent = "#2563eb",
 }: PyramidSVGProps) {
+  // Helper function to scroll within the passage list container only
+  const scrollToPassage = (passageKey: string) => {
+    const element = document.getElementById(`passage-${passageKey}`);
+    if (!element) return;
+
+    // Check if we're on mobile or desktop
+    const isMobile = window.innerWidth < 768;
+    const containerId = isMobile
+      ? "passage-list-mobile"
+      : "passage-list-desktop";
+    const container = document.getElementById(containerId);
+
+    if (container && !isMobile) {
+      // Desktop: scroll within the container
+      const containerRect = container.getBoundingClientRect();
+      const elementRect = element.getBoundingClientRect();
+
+      // Calculate scroll position to center element in container
+      const currentScrollTop = container.scrollTop;
+      const elementTop = elementRect.top - containerRect.top + currentScrollTop;
+      const containerHeight = container.clientHeight;
+      const elementHeight = element.clientHeight;
+
+      const targetScrollTop =
+        elementTop - containerHeight / 2 + elementHeight / 2;
+
+      // Smooth scroll within the container
+      container.scrollTo({
+        top: Math.max(0, targetScrollTop),
+        behavior: "smooth",
+      });
+    } else {
+      // Mobile: scroll the entire page to the passage
+      element.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  };
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
   const containerSize = isMobile ? 380 : 500;
   const svgSize = containerSize;
@@ -339,7 +359,8 @@ export default function PyramidSVG({
 
   // Font sizes based on container
   const baseFontSize = svgSize * 0.039;
-  const subFontSize = svgSize * 0.02;
+  const subFontSizeWord = svgSize * 0.02;
+  const subFontSize = svgSize * 0.02 * 1.2;
   const tinyFontSize = svgSize * 0.018;
 
   const tinyTextColor = "#94a3b8";
@@ -418,6 +439,7 @@ export default function PyramidSVG({
             onLetterHover={onLetterHover}
             textColor={textColor}
             fontSize={baseFontSize}
+            scrollToPassage={scrollToPassage}
           />
           <ClickableLetter
             p={{ x: B.x - baseFontSize * 2, y: B.y + baseFontSize * 1 }}
@@ -429,6 +451,7 @@ export default function PyramidSVG({
             onLetterHover={onLetterHover}
             textColor={textColor}
             fontSize={baseFontSize}
+            scrollToPassage={scrollToPassage}
           />
           <ClickableLetter
             p={{ x: C.x + baseFontSize * 2, y: C.y + baseFontSize * 1 }}
@@ -440,6 +463,7 @@ export default function PyramidSVG({
             onLetterHover={onLetterHover}
             textColor={textColor}
             fontSize={baseFontSize}
+            scrollToPassage={scrollToPassage}
           />
 
           {/* GOD, MAN, WAY labels */}
@@ -447,19 +471,19 @@ export default function PyramidSVG({
             center={topCenter}
             label="GOD"
             textColor={"#2563eb"}
-            fontSize={subFontSize}
+            fontSize={subFontSizeWord}
           />
           <SubPyramidLabel
             center={leftCenter}
             label="MAN"
             textColor={"#2563eb"}
-            fontSize={subFontSize}
+            fontSize={subFontSizeWord}
           />
           <SubPyramidLabel
             center={rightCenter}
             label="WAY"
             textColor={"#2563eb"}
-            fontSize={subFontSize}
+            fontSize={subFontSizeWord}
           />
 
           {/* GOD pyramid vertex letters - G, O, D (positioned outside triangle) */}
@@ -473,6 +497,7 @@ export default function PyramidSVG({
             onLetterHover={onLetterHover}
             textColor={textColor}
             fontSize={subFontSize}
+            scrollToPassage={scrollToPassage}
           />
           <SubPyramidVertex
             p={{ x: tB.x - subFontSize * 1, y: tB.y + subFontSize * 1 }}
@@ -484,6 +509,7 @@ export default function PyramidSVG({
             onLetterHover={onLetterHover}
             textColor={textColor}
             fontSize={subFontSize}
+            scrollToPassage={scrollToPassage}
           />
           <SubPyramidVertex
             p={{ x: tC.x + subFontSize * 1, y: tC.y + subFontSize * 1 }}
@@ -495,6 +521,7 @@ export default function PyramidSVG({
             onLetterHover={onLetterHover}
             textColor={textColor}
             fontSize={subFontSize}
+            scrollToPassage={scrollToPassage}
           />
 
           {/* MAN pyramid vertex letters - M, A, N (positioned outside triangle) */}
@@ -508,6 +535,7 @@ export default function PyramidSVG({
             onLetterHover={onLetterHover}
             textColor={textColor}
             fontSize={subFontSize}
+            scrollToPassage={scrollToPassage}
           />
           <SubPyramidVertex
             p={{ x: lB.x - subFontSize * 1, y: lB.y + subFontSize * 1 }}
@@ -519,6 +547,7 @@ export default function PyramidSVG({
             onLetterHover={onLetterHover}
             textColor={textColor}
             fontSize={subFontSize}
+            scrollToPassage={scrollToPassage}
           />
           <SubPyramidVertex
             p={{ x: lC.x + subFontSize * 1, y: lC.y + subFontSize * 1 }}
@@ -530,6 +559,7 @@ export default function PyramidSVG({
             onLetterHover={onLetterHover}
             textColor={textColor}
             fontSize={subFontSize}
+            scrollToPassage={scrollToPassage}
           />
 
           {/* WAY pyramid vertex letters - W, A, Y (positioned outside triangle) */}
@@ -543,6 +573,7 @@ export default function PyramidSVG({
             onLetterHover={onLetterHover}
             textColor={textColor}
             fontSize={subFontSize}
+            scrollToPassage={scrollToPassage}
           />
           <SubPyramidVertex
             p={{ x: rB.x - subFontSize * 1, y: rB.y + subFontSize * 1 }}
@@ -554,6 +585,7 @@ export default function PyramidSVG({
             onLetterHover={onLetterHover}
             textColor={textColor}
             fontSize={subFontSize}
+            scrollToPassage={scrollToPassage}
           />
           <SubPyramidVertex
             p={{ x: rC.x + subFontSize * 1, y: rC.y + subFontSize * 1 }}
@@ -565,6 +597,7 @@ export default function PyramidSVG({
             onLetterHover={onLetterHover}
             textColor={textColor}
             fontSize={subFontSize}
+            scrollToPassage={scrollToPassage}
           />
 
           {/* GOD - Tiny pyramids and letters */}
@@ -591,6 +624,7 @@ export default function PyramidSVG({
                 onLetterHover={onLetterHover}
                 textColor={tinyTextColor}
                 fontSize={tinyFontSize}
+                scrollToPassage={scrollToPassage}
               />
               <ClickableLetter
                 p={tiny.letterPositions[1]}
@@ -602,6 +636,7 @@ export default function PyramidSVG({
                 onLetterHover={onLetterHover}
                 textColor={tinyTextColor}
                 fontSize={tinyFontSize}
+                scrollToPassage={scrollToPassage}
               />
               <ClickableLetter
                 p={tiny.letterPositions[2]}
@@ -613,6 +648,7 @@ export default function PyramidSVG({
                 onLetterHover={onLetterHover}
                 textColor={tinyTextColor}
                 fontSize={tinyFontSize}
+                scrollToPassage={scrollToPassage}
               />
             </g>
           ))}
@@ -641,6 +677,7 @@ export default function PyramidSVG({
                 onLetterHover={onLetterHover}
                 textColor={tinyTextColor}
                 fontSize={tinyFontSize}
+                scrollToPassage={scrollToPassage}
               />
               <ClickableLetter
                 p={tiny.letterPositions[1]}
@@ -652,6 +689,7 @@ export default function PyramidSVG({
                 onLetterHover={onLetterHover}
                 textColor={tinyTextColor}
                 fontSize={tinyFontSize}
+                scrollToPassage={scrollToPassage}
               />
               <ClickableLetter
                 p={tiny.letterPositions[2]}
@@ -663,6 +701,7 @@ export default function PyramidSVG({
                 onLetterHover={onLetterHover}
                 textColor={tinyTextColor}
                 fontSize={tinyFontSize}
+                scrollToPassage={scrollToPassage}
               />
             </g>
           ))}
@@ -691,6 +730,7 @@ export default function PyramidSVG({
                 onLetterHover={onLetterHover}
                 textColor={tinyTextColor}
                 fontSize={tinyFontSize}
+                scrollToPassage={scrollToPassage}
               />
               <ClickableLetter
                 p={tiny.letterPositions[1]}
@@ -702,6 +742,7 @@ export default function PyramidSVG({
                 onLetterHover={onLetterHover}
                 textColor={tinyTextColor}
                 fontSize={tinyFontSize}
+                scrollToPassage={scrollToPassage}
               />
               <ClickableLetter
                 p={tiny.letterPositions[2]}
@@ -713,6 +754,7 @@ export default function PyramidSVG({
                 onLetterHover={onLetterHover}
                 textColor={tinyTextColor}
                 fontSize={tinyFontSize}
+                scrollToPassage={scrollToPassage}
               />
             </g>
           ))}
@@ -738,17 +780,11 @@ export default function PyramidSVG({
             }}
             onClick={() => {
               onLetterClick("AIM (Key)");
-              const element = document.getElementById(`passage-AIM (Key)`);
-              if (element) {
-                element.scrollIntoView({ behavior: "smooth", block: "center" });
-              }
+              scrollToPassage("AIM (Key)");
             }}
             onMouseEnter={() => {
               onLetterHover("AIM (Key)");
-              const element = document.getElementById(`passage-AIM (Key)`);
-              if (element) {
-                element.scrollIntoView({ behavior: "smooth", block: "center" });
-              }
+              scrollToPassage("AIM (Key)");
             }}
             onMouseLeave={() => onLetterHover(null)}
           >

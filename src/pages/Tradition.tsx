@@ -61,7 +61,7 @@ export default function Tradition() {
             <h2 className="text-xl font-semibold text-gray-900">
               Scripture Passages
             </h2>
-            <div className="max-h-[70vh] overflow-y-auto pr-2 space-y-4">
+            <div id="passage-list-desktop" className="max-h-[70vh] overflow-y-auto pr-2 space-y-4">
               <PassageList
                 selectedLetter={selectedLetter}
                 hoveredLetter={hoveredLetter}
@@ -77,7 +77,7 @@ export default function Tradition() {
           <h2 className="text-xl font-semibold text-gray-900 text-center">
             Scripture Passages
           </h2>
-          <div className="space-y-4">
+          <div id="passage-list-mobile" className="space-y-4">
             <PassageList
               selectedLetter={selectedLetter}
               hoveredLetter={hoveredLetter}
