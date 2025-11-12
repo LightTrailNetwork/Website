@@ -56,8 +56,8 @@ export default function Tradition() {
             </div>
           </div>
 
-          {/* Right Column - Passage List */}
-          <div className="space-y-4">
+          {/* Right Column - Passage List (Desktop only) */}
+          <div className="hidden lg:block space-y-4">
             <h2 className="text-xl font-semibold text-gray-900">
               Scripture Passages
             </h2>

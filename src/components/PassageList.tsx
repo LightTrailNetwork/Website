@@ -1,5 +1,5 @@
-import React from 'react';
-import passagesData from '../data/pyramidPassages.json';
+import React from "react";
+import passagesData from "../data/pyramidPassages.json";
 
 interface PassageListProps {
   selectedLetter: string;
@@ -12,25 +12,23 @@ export default function PassageList({
   selectedLetter,
   hoveredLetter,
   onLetterClick,
-  onLetterHover
+  onLetterHover,
 }: PassageListProps) {
   // Helper function to parse markdown-style formatting
   const parseFormattedText = (text: string): string => {
     if (!text) return text;
-    
+
     return text
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-      .replace(/\*(.*?)\*/g, '<em>$1</em>');
+      .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+      .replace(/\*(.*?)\*/g, "<em>$1</em>");
   };
 
   // Get all passages for easy lookup
   const allPassages = [
     ...passagesData.outerPassages.passages,
-    ...passagesData.innerPassages.sections.flatMap(section =>
-      section.subsections.flatMap(subsection =>
-        subsection.passages
-      )
-    )
+    ...passagesData.innerPassages.sections.flatMap((section) =>
+      section.subsections.flatMap((subsection) => subsection.passages)
+    ),
   ];
 
   return (
@@ -47,20 +45,20 @@ export default function PassageList({
               id={`passage-${passage.key}`}
               className={`p-4 rounded-lg border-l-4 transition-all cursor-pointer ${
                 selectedLetter === passage.key || hoveredLetter === passage.key
-                  ? 'bg-red-50 border-l-red-500 shadow-md transform scale-[1.02]'
-                  : 'bg-gray-50 border-l-gray-300 hover:bg-gray-100'
+                  ? "bg-red-50 border-l-red-500 shadow-md transform scale-[1.02]"
+                  : "bg-gray-50 border-l-gray-300 hover:bg-gray-100"
               }`}
               onClick={() => onLetterClick(passage.key)}
               onMouseEnter={() => onLetterHover(passage.key)}
               onMouseLeave={() => onLetterHover(null)}
             >
               <div className="font-bold text-gray-900 text-sm mb-2">
-                {passage.key}{passage.title ? `: ${passage.title}` : ''}
+                {passage.key}
               </div>
-              <div 
+              <div
                 className="text-sm text-gray-700 leading-relaxed"
-                dangerouslySetInnerHTML={{ 
-                  __html: parseFormattedText(passage.text || passage.description) 
+                dangerouslySetInnerHTML={{
+                  __html: parseFormattedText(passage.text),
                 }}
               />
               {passage.reference && (
@@ -95,21 +93,22 @@ export default function PassageList({
                         key={pIdx}
                         id={`passage-${passage.key}`}
                         className={`p-3 rounded-lg border-l-4 transition-all cursor-pointer ${
-                          selectedLetter === passage.key || hoveredLetter === passage.key
-                            ? 'bg-red-50 border-l-red-500 shadow-md transform scale-[1.02]'
-                            : 'bg-gray-50 border-l-gray-300 hover:bg-gray-100'
+                          selectedLetter === passage.key ||
+                          hoveredLetter === passage.key
+                            ? "bg-red-50 border-l-red-500 shadow-md transform scale-[1.02]"
+                            : "bg-gray-50 border-l-gray-300 hover:bg-gray-100"
                         }`}
                         onClick={() => onLetterClick(passage.key)}
                         onMouseEnter={() => onLetterHover(passage.key)}
                         onMouseLeave={() => onLetterHover(null)}
                       >
                         <div className="font-bold text-gray-900 text-sm mb-1">
-                          {passage.key}{passage.title ? `: ${passage.title}` : ''}
+                          {passage.key}
                         </div>
-                        <div 
+                        <div
                           className="text-sm text-gray-700 leading-relaxed"
-                          dangerouslySetInnerHTML={{ 
-                            __html: parseFormattedText(passage.text || passage.description) 
+                          dangerouslySetInnerHTML={{
+                            __html: parseFormattedText(passage.text),
                           }}
                         />
                         {passage.reference && (
