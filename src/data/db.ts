@@ -157,6 +157,32 @@ export async function markSlotComplete(
   await db.put("activity", updated, dateISO);
 }
 
+// Simplified functions for today's data
+export async function getTodayData(): Promise<{ morning: boolean; afternoon: boolean; night: boolean }> {
+  const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
+  const activity = await getDayActivity(today);
+  
+  return {
+    morning: !!activity?.M,
+    afternoon: !!activity?.A,
+    night: !!activity?.N,
+  };
+}
+
+export async function setTodayData(data: { morning: boolean; afternoon: boolean; night: boolean }): Promise<void> {
+  const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
+  const existing = await getDayActivity(today) || {};
+  
+  const updated = {
+    ...existing,
+    M: data.morning ? Date.now() : undefined,
+    A: data.afternoon ? Date.now() : undefined,
+    N: data.night ? Date.now() : undefined,
+  };
+  
+  await setDayActivity(today, updated);
+}
+
 // Snapshot Management
 export async function getSnapshots(): Promise<Snapshots> {
   const db = await initDB();

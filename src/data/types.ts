@@ -39,6 +39,12 @@ export interface DailyActivity {
 
 export type MyActivity = Record<string, DailyActivity>;
 
+export interface TodayData {
+  morning: boolean;
+  afternoon: boolean;
+  night: boolean;
+}
+
 export interface ActivitySnapshot {
   asOf: number;
   role?: Role;

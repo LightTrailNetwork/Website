@@ -184,14 +184,17 @@ export default function PyramidSVG({
     const element = document.getElementById(`passage-${passageKey}`);
     if (!element) return;
 
-    // Check if we're on mobile or desktop
-    const isMobile = window.innerWidth < 768;
-    const containerId = isMobile
-      ? "passage-list-mobile"
-      : "passage-list-desktop";
-    const container = document.getElementById(containerId);
+    // Better mobile detection - check both window size and if mobile container is visible
+    const viewportWidth = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+    const mobileContainer = document.getElementById("passage-list-mobile");
+    const desktopContainer = document.getElementById("passage-list-desktop");
+    
+    // Mobile if viewport < 768px OR mobile container is visible (for mobile simulation on desktop)
+    const isMobile = viewportWidth < 768 || (mobileContainer && getComputedStyle(mobileContainer).display !== 'none');
+    
+    const container = isMobile ? mobileContainer : desktopContainer;
 
-    if (container && !isMobile) {
+    if (container && !isMobile && desktopContainer) {
       // Desktop: scroll within the container
       const containerRect = container.getBoundingClientRect();
       const elementRect = element.getBoundingClientRect();
@@ -287,25 +290,46 @@ export default function PyramidSVG({
       const letter2 = letters[idx * 3 + 1] || "";
       const letter3 = letters[idx * 3 + 2] || "";
 
-      // Position letters inside the triangles
+      // Offset triangles toward their respective corners of the parent triangle
+      const offsetAmount = 3; // pixels
+      let offsetX = 0, offsetY = 0;
+      
+      if (idx === 0) { // Top triangle - move toward parent's top corner
+        offsetY = -offsetAmount;
+      } else if (idx === 1) { // Left triangle - move toward parent's bottom-left corner
+        offsetX = -offsetAmount;
+        offsetY = offsetAmount;
+      } else if (idx === 2) { // Right triangle - move toward parent's bottom-right corner
+        offsetX = offsetAmount;
+        offsetY = offsetAmount;
+      }
+
+      // Apply offset to all vertices
+      const offsetVertices = [
+        { x: p0.x + offsetX, y: p0.y + offsetY },
+        { x: p1.x + offsetX, y: p1.y + offsetY },
+        { x: p2.x + offsetX, y: p2.y + offsetY },
+      ];
+
+      // Position letters inside the offset triangles
       const center = {
-        x: (p0.x + p1.x + p2.x) / 3,
-        y: (p0.y + p1.y + p2.y) / 3,
+        x: (offsetVertices[0].x + offsetVertices[1].x + offsetVertices[2].x) / 3,
+        y: (offsetVertices[0].y + offsetVertices[1].y + offsetVertices[2].y) / 3,
       };
       const letterPositions = [
-        { x: center.x, y: p0.y + (center.y - p0.y) * 0.6 }, // Top letter, moved down from vertex
+        { x: center.x, y: offsetVertices[0].y + (center.y - offsetVertices[0].y) * 0.6 }, // Top letter, moved down from vertex
         {
-          x: p1.x + (center.x - p1.x) * 0.6,
-          y: p1.y + (center.y - p1.y) * 0.6,
+          x: offsetVertices[1].x + (center.x - offsetVertices[1].x) * 0.6,
+          y: offsetVertices[1].y + (center.y - offsetVertices[1].y) * 0.6,
         }, // Bottom left, moved up and right
         {
-          x: p2.x + (center.x - p2.x) * 0.6,
-          y: p2.y + (center.y - p2.y) * 0.6,
+          x: offsetVertices[2].x + (center.x - offsetVertices[2].x) * 0.6,
+          y: offsetVertices[2].y + (center.y - offsetVertices[2].y) * 0.6,
         }, // Bottom right, moved up and left
       ];
 
       return {
-        vertices: [p0, p1, p2],
+        vertices: offsetVertices,
         letters: [letter, letter2, letter3],
         letterPositions,
       };

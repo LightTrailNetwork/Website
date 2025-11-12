@@ -38,14 +38,14 @@ export default function PassageList({
         <h3 className="text-lg font-bold text-gray-900 border-b-2 border-gray-200 pb-2">
           {passagesData.outerPassages.title}
         </h3>
-        <div className="space-y-3">
+        <div className="space-y-3 px-1">
           {passagesData.outerPassages.passages.map((passage, i) => (
             <div
               key={i}
               id={`passage-${passage.key}`}
               className={`p-4 rounded-lg border-l-4 transition-all cursor-pointer ${
                 selectedLetter === passage.key || hoveredLetter === passage.key
-                  ? "bg-red-50 border-l-red-500 shadow-md transform scale-[1.02]"
+                  ? "bg-red-50 border-l-red-500 shadow-md transform scale-[1.01]"
                   : "bg-gray-50 border-l-gray-300 hover:bg-gray-100"
               }`}
               onClick={() => onLetterClick(passage.key)}
@@ -87,7 +87,7 @@ export default function PassageList({
                   <h5 className="text-sm font-semibold text-gray-700 italic">
                     {subsection.title}
                   </h5>
-                  <div className="space-y-2">
+                  <div className="space-y-2 px-1">
                     {subsection.passages.map((passage, pIdx) => (
                       <div
                         key={pIdx}
@@ -95,7 +95,7 @@ export default function PassageList({
                         className={`p-3 rounded-lg border-l-4 transition-all cursor-pointer ${
                           selectedLetter === passage.key ||
                           hoveredLetter === passage.key
-                            ? "bg-red-50 border-l-red-500 shadow-md transform scale-[1.02]"
+                            ? "bg-red-50 border-l-red-500 shadow-md transform scale-[1.01]"
                             : "bg-gray-50 border-l-gray-300 hover:bg-gray-100"
                         }`}
                         onClick={() => onLetterClick(passage.key)}
