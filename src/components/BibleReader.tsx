@@ -963,7 +963,7 @@ export default function BibleReader() {
 
     const toggleVerseRefs = async (verseNum: number, refs: any[]) => {
         const refsForVerse = refs.map(r => ({ ...r, verseNum }));
-        const keys = refsForVerse.map(r => `${r.book}-${r.chapter}-${r.verse}`);
+        const keys = refsForVerse.map(r => `${verseNum}-${r.book}-${r.chapter}-${r.verse}`);
         const anyExpanded = keys.some(k => expandedRefTexts[k]);
 
         if (anyExpanded) {
@@ -982,7 +982,7 @@ export default function BibleReader() {
 
             // Fetch
             await Promise.all(refsForVerse.map(async (ref) => {
-                const refKey = `${ref.book}-${ref.chapter}-${ref.verse}`;
+                const refKey = `${verseNum}-${ref.book}-${ref.chapter}-${ref.verse}`;
                 if (!newExpanded[refKey]) {
                     try {
                         const data = await getChapter(selectedTranslation, ref.book, ref.chapter);
@@ -1210,7 +1210,7 @@ export default function BibleReader() {
                                         </div>
                                         {crossRefs?.chapter.content.filter(v => v.references.length > 0).map(v => {
                                             const verseRefs = v.references.map(r => ({ ...r, verseNum: v.verse }));
-                                            const allKeys = verseRefs.map(r => `${r.book}-${r.chapter}-${r.verse}`);
+                                            const allKeys = verseRefs.map(r => `${v.verse}-${r.book}-${r.chapter}-${r.verse}`);
                                             const anyExpanded = allKeys.some(k => expandedRefTexts[k]);
 
                                             return (
@@ -1236,7 +1236,7 @@ export default function BibleReader() {
                                                     </div>
                                                     <div className="grid grid-cols-1 gap-2">
                                                         {v.references.map((ref, i) => {
-                                                            const refKey = `${ref.book}-${ref.chapter}-${ref.verse}`;
+                                                            const refKey = `${v.verse}-${ref.book}-${ref.chapter}-${ref.verse}`;
                                                             const isExpanded = !!expandedRefTexts[refKey];
                                                             const isLoading = !!loadingRefs[refKey];
 
@@ -1272,6 +1272,7 @@ export default function BibleReader() {
                                                                                 </span>
                                                                             )}
                                                                             <button
+                                                                                type="button"
                                                                                 className="p-1 hover:bg-secondary/20 rounded text-muted-foreground hover:text-foreground transition-colors"
                                                                                 title={isExpanded ? "Hide Text" : "Show Text"}
                                                                             >
