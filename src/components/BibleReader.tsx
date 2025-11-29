@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, ChevronDown, BookOpen, Loader2, AlertCircle, MessageSquare, Grid, Globe, X, Search, Filter, Eye } from 'lucide-react';
-import { getChapter, getBooks, getTranslations, getCommentaries, getCommentaryChapter, getProfiles, getProfile } from '../data/bibleApi';
-import type { BibleChapter, ChapterContent, BibleBook, BibleTranslation, Commentary, CommentaryChapter, Profile, ProfileContent, ChapterFootnote } from '../data/bibleApi';
+import { useParams, useNavigate, useLocation, useNavigationType, Link } from 'react-router-dom';
+import { ChevronLeft, ChevronRight, ChevronDown, BookOpen, Loader2, AlertCircle, MessageSquare, Grid, Globe, X, Search, Filter, Eye, Link as LinkIcon } from 'lucide-react';
+import { getChapter, getBooks, getTranslations, getCommentaries, getCommentaryChapter, getProfiles, getProfile, getDatasetChapter } from '../data/bibleApi';
+import type { BibleChapter, ChapterContent, BibleBook, BibleTranslation, Commentary, CommentaryChapter, Profile, ProfileContent, ChapterFootnote, DatasetBookChapter } from '../data/bibleApi';
 import Breadcrumbs from './Breadcrumbs';
+import QuickNav from './QuickNav';
 import { diffVerses, type DiffToken } from '../utils/diffUtils';
 
 // Helper to get text content from verse parts
@@ -17,6 +18,15 @@ const getText = (content: (string | { text: string; wordsOfJesus?: boolean } | {
 export default function BibleReader() {
     const { bookId, chapter } = useParams<{ bookId: string; chapter: string }>();
     const navigate = useNavigate();
+    const location = useLocation();
+    const navType = useNavigationType();
+
+    // Scroll to top on new navigation, but respect back button
+    useEffect(() => {
+        if (navType !== 'POP') {
+            window.scrollTo(0, 0);
+        }
+    }, [location.pathname, navType]);
 
     const [bsbChapter, setBsbChapter] = useState<BibleChapter | null>(null);
     const [msbChapter, setMsbChapter] = useState<BibleChapter | null>(null);
@@ -25,13 +35,17 @@ export default function BibleReader() {
     const [profileLoading, setProfileLoading] = useState(false);
     const [showMsb, setShowMsb] = useState(false);
 
+    // Cross Reference State
+    const [crossRefs, setCrossRefs] = useState<DatasetBookChapter | null>(null);
+
     // Commentary State
     const [showCommentary, setShowCommentary] = useState(false);
     const [commentaries, setCommentaries] = useState<Commentary[]>([]);
     const [selectedCommentaryId, setSelectedCommentaryId] = useState<string>('');
     const [commentaryChapter, setCommentaryChapter] = useState<CommentaryChapter | null>(null);
     const [commentaryLoading, setCommentaryLoading] = useState(false);
-    const [commentaryTab, setCommentaryTab] = useState<'chapter' | 'intro' | 'footnotes'>('chapter');
+    const [commentaryTab, setCommentaryTab] = useState<'chapter' | 'intro' | 'footnotes' | 'references'>('chapter');
+
 
     // Profile State
     const [profiles, setProfiles] = useState<Profile[]>([]);
@@ -183,6 +197,15 @@ export default function BibleReader() {
                     setMsbChapter(null); // No comparison if not reading BSB
                 }
 
+                // Fetch Cross References (open-cross-ref)
+                try {
+                    const crossRefData = await getDatasetChapter('open-cross-ref', bookId, parseInt(chapter));
+                    setCrossRefs(crossRefData);
+                } catch (e) {
+                    console.warn('Cross references not available', e);
+                    setCrossRefs(null);
+                }
+
             } catch (err) {
                 console.error('Error fetching chapter:', err);
                 setError('Failed to load chapter. Please try again.');
@@ -216,19 +239,41 @@ export default function BibleReader() {
 
 
     const handleNext = () => {
-        if (bsbChapter?.nextChapterApiLink) {
-            setVisibleVerses(null); // Reset filter
-            const nextChap = parseInt(chapter || '1') + 1;
-            navigate(`/bible/read/${bookId}/${nextChap}`);
+        if (!bsbChapter) return;
+
+        const currentChapterNum = parseInt(chapter || '1');
+
+        if (currentChapterNum < bsbChapter.book.numberOfChapters) {
+            // Next chapter in same book
+            setVisibleVerses(null);
+            navigate(`/bible/read/${bookId}/${currentChapterNum + 1}`);
+        } else if (books.length > 0) {
+            // Next book
+            const currentBookIndex = books.findIndex(b => b.id === bsbChapter.book.id);
+            if (currentBookIndex !== -1 && currentBookIndex < books.length - 1) {
+                const nextBook = books[currentBookIndex + 1];
+                setVisibleVerses(null);
+                navigate(`/bible/read/${nextBook.id}/1`);
+            }
         }
     };
 
     const handlePrev = () => {
-        if (bsbChapter?.previousChapterApiLink) {
-            setVisibleVerses(null); // Reset filter
-            const prevChap = parseInt(chapter || '1') - 1;
-            if (prevChap > 0) {
-                navigate(`/bible/read/${bookId}/${prevChap}`);
+        if (!bsbChapter) return;
+
+        const currentChapterNum = parseInt(chapter || '1');
+
+        if (currentChapterNum > 1) {
+            // Previous chapter in same book
+            setVisibleVerses(null);
+            navigate(`/bible/read/${bookId}/${currentChapterNum - 1}`);
+        } else if (books.length > 0) {
+            // Previous book
+            const currentBookIndex = books.findIndex(b => b.id === bsbChapter.book.id);
+            if (currentBookIndex > 0) {
+                const prevBook = books[currentBookIndex - 1];
+                setVisibleVerses(null);
+                navigate(`/bible/read/${prevBook.id}/${prevBook.numberOfChapters}`);
             }
         }
     };
@@ -377,9 +422,26 @@ export default function BibleReader() {
 
                 const msbVerse = msbContent?.find(v => v.type === 'verse' && v.number === item.number) as { type: 'verse', number: number, content: (string | { text: string, wordsOfJesus?: boolean })[] } | undefined;
 
+                const hasCrossRefs = crossRefs?.chapter.content.some(v => v.verse === item.number && v.references.length > 0);
+
                 return (
                     <span key={index} className="relative group">
-                        <sup className="text-xs font-bold text-muted-foreground mr-1 select-none">{item.number}</sup>
+                        <sup className="text-xs font-bold text-muted-foreground mr-1 select-none inline-flex items-center">
+                            {item.number}
+                            {hasCrossRefs && (
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setCommentaryTab('references');
+                                        setShowCommentary(true);
+                                    }}
+                                    className="ml-0.5 text-primary/60 hover:text-primary transition-colors"
+                                    title="View Cross References"
+                                >
+                                    <LinkIcon className="w-2.5 h-2.5" />
+                                </button>
+                            )}
+                        </sup>
                         {/* MSB Comparison Overlay (if enabled) */}
                         {showMsb && msbVerse ? (
                             (() => {
@@ -469,17 +531,30 @@ export default function BibleReader() {
                                             const elements: (string | React.ReactNode)[] = [];
                                             let lastIndex = 0;
 
+                                            // Simple name matching - this could be improved with more robust logic
+                                            // For now, we check if any profile name exists in the text
+                                            // We need to be careful not to match parts of words, so we use word boundaries
+
+                                            // Construct a regex from profile names
+                                            // Filter profiles to only those that are likely to be names (e.g. start with capital letter)
+                                            // and sort by length descending to match longest names first
                                             const profileNames = profiles
                                                 .filter(p => /^[A-Z]/.test(p.subject))
                                                 .sort((a, b) => b.subject.length - a.subject.length);
 
                                             if (profileNames.length > 0) {
+                                                // Create a regex that matches any of the profile names
+                                                // Use \b for word boundaries
                                                 const pattern = new RegExp(`\\b(${profileNames.map(p => p.subject).join('|')})\\b`, 'g');
+
                                                 let match;
                                                 while ((match = pattern.exec(text)) !== null) {
+                                                    // Push text before match
                                                     if (match.index > lastIndex) {
                                                         elements.push(text.substring(lastIndex, match.index));
                                                     }
+
+                                                    // Push the matched name as a link
                                                     const name = match[0];
                                                     const profile = profiles.find(p => p.subject === name);
                                                     if (profile) {
@@ -496,22 +571,26 @@ export default function BibleReader() {
                                                     } else {
                                                         elements.push(name);
                                                     }
+
                                                     lastIndex = match.index + name.length;
                                                 }
+
+                                                // Push remaining text
                                                 if (lastIndex < text.length) {
                                                     elements.push(text.substring(lastIndex));
                                                 }
+
                                                 if (elements.length > 0) {
                                                     return <span key={i}>{elements}</span>;
                                                 }
                                             }
+
                                             return <span key={i}>{c}</span>;
                                         }
-
+                                        // Handle object content
                                         if ('text' in c) {
                                             return <span key={i} className={c.wordsOfJesus ? "text-red-700 dark:text-red-400" : ""}>{c.text}</span>;
                                         }
-
                                         if ('lineBreak' in c) {
                                             return <br key={i} />;
                                         }
@@ -657,12 +736,20 @@ export default function BibleReader() {
         );
     }
 
+    const isFirstBook = books.length > 0 && bsbChapter.book.id === books[0].id;
+    const isLastBook = books.length > 0 && bsbChapter.book.id === books[books.length - 1].id;
+    const isFirstChapter = bsbChapter.chapter.number === 1;
+    const isLastChapter = bsbChapter.chapter.number === bsbChapter.book.numberOfChapters;
+
+    const canGoPrev = !!bsbChapter.previousChapterApiLink || (!isFirstBook);
+    const canGoNext = !!bsbChapter.nextChapterApiLink || (!isLastBook);
+
     return (
         <div className="flex flex-col gap-6 relative max-w-7xl mx-auto px-4">
             <Breadcrumbs
                 items={[
                     { label: 'Bible', to: '/bible' },
-                    { label: bsbChapter.book.name, to: '#' },
+                    { label: bsbChapter.book.name, to: `/bible/read/${bookId}` },
                     { label: `Chapter ${bsbChapter.chapter.number}` }
                 ]}
             />
@@ -674,7 +761,7 @@ export default function BibleReader() {
                         <div className="flex items-center gap-2 w-full sm:w-auto">
                             <button
                                 onClick={handlePrev}
-                                disabled={!bsbChapter.previousChapterApiLink}
+                                disabled={!canGoPrev}
                                 className="p-2 hover:bg-accent/10 rounded-full disabled:opacity-30 transition-colors shrink-0"
                             >
                                 <ChevronLeft className="w-6 h-6" />
@@ -691,7 +778,7 @@ export default function BibleReader() {
                             </button>
                             <button
                                 onClick={handleNext}
-                                disabled={!bsbChapter.nextChapterApiLink}
+                                disabled={!canGoNext}
                                 className="p-2 hover:bg-accent/10 rounded-full disabled:opacity-30 transition-colors shrink-0 sm:hidden"
                             >
                                 <ChevronRight className="w-6 h-6" />
@@ -720,7 +807,7 @@ export default function BibleReader() {
                             </button>
                             <button
                                 onClick={handleNext}
-                                disabled={!bsbChapter.nextChapterApiLink}
+                                disabled={!canGoNext}
                                 className="p-2 hover:bg-accent/10 rounded-full disabled:opacity-30 transition-colors"
                             >
                                 <ChevronRight className="w-6 h-6" />
@@ -799,6 +886,12 @@ export default function BibleReader() {
                                     >
                                         Footnotes
                                     </button>
+                                    <button
+                                        className={`flex-1 pb-2 text-sm font-medium transition-colors ${commentaryTab === 'references' ? 'border-b-2 border-primary text-primary' : 'text-muted-foreground hover:text-foreground'}`}
+                                        onClick={() => setCommentaryTab('references')}
+                                    >
+                                        Refs
+                                    </button>
                                 </div>
                             </div>
 
@@ -837,6 +930,40 @@ export default function BibleReader() {
                                             ))
                                         ) : (
                                             <p className="text-muted-foreground italic text-center py-8">No footnotes for this chapter.</p>
+                                        )}
+                                    </div>
+                                )}
+                                {commentaryTab === 'references' && (
+                                    <div className="space-y-6">
+                                        {crossRefs?.chapter.content.filter(v => v.references.length > 0).map(v => (
+                                            <div key={v.verse} className="border-b border-border/50 pb-4 last:border-0">
+                                                <div className="font-bold text-sm mb-2 flex items-center gap-2">
+                                                    <span className="bg-primary/10 text-primary px-2 py-0.5 rounded text-xs">Verse {v.verse}</span>
+                                                </div>
+                                                <div className="grid grid-cols-1 gap-2">
+                                                    {v.references.map((ref, i) => (
+                                                        <Link
+                                                            key={i}
+                                                            to={`/bible/read/${ref.book}/${ref.chapter}`}
+                                                            className="text-sm p-2 hover:bg-secondary/10 rounded flex items-center justify-between group transition-colors"
+                                                        >
+                                                            <span className="font-medium text-foreground/80 group-hover:text-primary">
+                                                                {ref.book} {ref.chapter}:{ref.verse}{ref.endVerse ? `-${ref.endVerse}` : ''}
+                                                            </span>
+                                                            {ref.score && (
+                                                                <span className="text-[10px] text-muted-foreground bg-secondary/20 px-1.5 py-0.5 rounded">
+                                                                    Relevance: {ref.score}
+                                                                </span>
+                                                            )}
+                                                        </Link>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        ))}
+                                        {(!crossRefs || crossRefs.chapter.content.every(v => v.references.length === 0)) && (
+                                            <div className="text-center py-10 text-muted-foreground">
+                                                <p>No cross-references found for this chapter.</p>
+                                            </div>
                                         )}
                                     </div>
                                 )}
@@ -884,80 +1011,16 @@ export default function BibleReader() {
             )}
 
             {/* Quick Nav Modal */}
-            {showQuickNav && (
-                <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in">
-                    <div className="bg-card border border-border rounded-xl shadow-2xl w-full max-w-4xl flex flex-col max-h-[85vh]">
-                        <div className="p-4 border-b border-border flex items-center justify-between shrink-0">
-                            <h3 className="font-bold text-lg">
-                                {navStep === 'books' ? 'Select Book' : `Select Chapter (${selectedNavBook?.name})`}
-                            </h3>
-                            <button onClick={() => { setShowQuickNav(false); setNavStep('books'); setSelectedNavBook(null); setBookSearchQuery(''); }} className="p-2 hover:bg-accent/10 rounded-full">
-                                <X className="w-6 h-6" />
-                            </button>
-                        </div>
-
-                        {navStep === 'books' && (
-                            <div className="p-4 border-b border-border space-y-3 shrink-0">
-                                <div className="relative">
-                                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                                    <input
-                                        type="text"
-                                        placeholder="Search books..."
-                                        className="w-full pl-9 pr-4 py-2 bg-secondary/10 border-transparent rounded-lg focus:ring-2 focus:ring-primary focus:bg-background transition-all"
-                                        value={bookSearchQuery}
-                                        onChange={(e) => setBookSearchQuery(e.target.value)}
-                                        autoFocus
-                                    />
-                                </div>
-                                <div className="flex gap-2 overflow-x-auto pb-1">
-                                    {(['ALL', 'OT', 'NT', 'ALPHA'] as const).map(filter => (
-                                        <button
-                                            key={filter}
-                                            onClick={() => setBookFilter(filter)}
-                                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${bookFilter === filter ? 'bg-primary text-primary-foreground' : 'hover:bg-accent/10'
-                                                }`}
-                                        >
-                                            {filter === 'ALPHA' ? 'A-Z' : filter === 'OT' ? 'Old Testament' : filter === 'NT' ? 'New Testament' : 'All Books'}
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
-                        <div className="overflow-y-auto p-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-                            {navStep === 'books' ? (
-                                filteredBooks.map(book => (
-                                    <button
-                                        key={book.id}
-                                        onClick={() => handleBookSelect(book)}
-                                        className="p-4 text-sm font-medium bg-secondary/10 hover:bg-secondary/20 rounded-xl transition-colors text-center truncate min-h-[60px] flex items-center justify-center"
-                                        title={book.name}
-                                    >
-                                        {book.name}
-                                    </button>
-                                ))
-                            ) : (
-                                Array.from({ length: selectedNavBook?.numberOfChapters || 0 }, (_, i) => i + 1).map(chap => (
-                                    <button
-                                        key={chap}
-                                        onClick={() => handleChapterSelect(chap)}
-                                        className="p-4 text-lg font-bold bg-primary/10 hover:bg-primary/20 rounded-xl transition-colors text-center min-h-[60px] flex items-center justify-center"
-                                    >
-                                        {chap}
-                                    </button>
-                                ))
-                            )}
-                        </div>
-                        {navStep === 'chapters' && (
-                            <div className="p-4 border-t border-border shrink-0">
-                                <button onClick={() => setNavStep('books')} className="text-sm text-primary hover:underline flex items-center">
-                                    <ChevronLeft className="w-4 h-4 mr-1" /> Back to Books
-                                </button>
-                            </div>
-                        )}
-                    </div>
-                </div>
-            )}
+            <QuickNav
+                isOpen={showQuickNav}
+                onClose={() => setShowQuickNav(false)}
+                books={books}
+                onNavigate={(bookId, chapter) => {
+                    setVisibleVerses(null);
+                    navigate(`/bible/read/${bookId}/${chapter}`);
+                }}
+                onNavigateToBookOverview={(bookId) => navigate(`/bible/read/${bookId}`)}
+            />
 
             {/* Translations Modal */}
             {showTranslations && (
@@ -1085,7 +1148,5 @@ export default function BibleReader() {
                 )}
             </div>
         </div>
-
-
     );
 }

@@ -208,3 +208,61 @@ export const getProfile = async (commentaryId: string, profileId: string): Promi
         throw error;
     }
 };
+
+// Dataset (Cross-Reference) Interfaces
+export interface Dataset {
+    id: string;
+    name: string;
+    website: string;
+    licenseUrl: string;
+    englishName: string;
+    language: string;
+    textDirection: 'ltr' | 'rtl';
+    listOfBooksApiLink: string;
+    availableFormats: ('json' | 'usfm')[];
+    numberOfBooks: number;
+    totalNumberOfChapters: number;
+    totalNumberOfVerses: number;
+    totalNumberOfReferences: number;
+    languageName?: string;
+    languageEnglishName?: string;
+}
+
+export interface DatasetReference {
+    book: string;
+    chapter: number;
+    verse: number;
+    endVerse?: number;
+    score?: number;
+}
+
+export interface DatasetVerse {
+    verse: number;
+    references: DatasetReference[];
+}
+
+export interface DatasetChapterData {
+    number: number;
+    content: DatasetVerse[];
+}
+
+export interface DatasetBookChapter {
+    dataset: Dataset;
+    book: BibleBook; // Reusing BibleBook as it seems compatible or close enough for basic info
+    thisChapterLink: string;
+    nextChapterApiLink: string | null;
+    previousChapterApiLink: string | null;
+    numberOfVerses: number;
+    chapter: DatasetChapterData;
+}
+
+export const getDatasetChapter = async (datasetId: string, bookId: string, chapter: number): Promise<DatasetBookChapter> => {
+    try {
+        const response = await fetch(`${BASE_URL}/d/${datasetId}/${bookId}/${chapter}.json`);
+        if (!response.ok) throw new Error('Failed to fetch dataset chapter');
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching dataset chapter:', error);
+        throw error;
+    }
+};
