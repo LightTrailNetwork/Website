@@ -1,0 +1,175 @@
+{
+    "meta": {
+        "version": "1.0",
+        "description": "Hierarchical mnemonics for Bible memorization"
+    },
+    "books": {
+        "ACT": {
+            "mnemonic": "SPIRIT BORN CHURCH BEARS WITNESS",
+            "chapters": {
+                "1": {
+                    "mnemonic": "SON ASCENDS; NEW DISCIPLE NAMED",
+                    "verses": {
+                        "1": {
+                            "mnemonic": "Summary of the Book of Luke"
+                        },
+                        "2": {
+                            "mnemonic": "Orders to Apostles"
+                        },
+                        "3": {
+                            "mnemonic": "New life proven"
+                        },
+                        "4": {
+                            "mnemonic": "Awaiting the Promise"
+                        },
+                        "5": {
+                            "mnemonic": "Spirit Baptism Promised"
+                        },
+                        "6": {
+                            "mnemonic": "Kingdom Question"
+                        },
+                        "7": {
+                            "mnemonic": "Times and Seasons"
+                        },
+                        "8": {
+                            "mnemonic": "Power to Witness"
+                        },
+                        "9": {
+                            "mnemonic": "Ascension"
+                        },
+                        "10": {
+                            "mnemonic": "Two Men in White"
+                        },
+                        "11": {
+                            "mnemonic": "Return Promised"
+                        },
+                        "12": {
+                            "mnemonic": "Sabbath Day's Journey"
+                        },
+                        "13": {
+                            "mnemonic": "Upper Room Prayer"
+                        },
+                        "14": {
+                            "mnemonic": "Women and Brothers"
+                        },
+                        "15": {
+                            "mnemonic": "Peter Stands Up"
+                        },
+                        "16": {
+                            "mnemonic": "Scripture Fulfilled"
+                        },
+                        "17": {
+                            "mnemonic": "Judas' Ministry"
+                        },
+                        "18": {
+                            "mnemonic": "Field of Blood"
+                        },
+                        "19": {
+                            "mnemonic": "Known to All"
+                        },
+                        "20": {
+                            "mnemonic": "Psalms Prophecy"
+                        },
+                        "21": {
+                            "mnemonic": "Qualifications"
+                        },
+                        "22": {
+                            "mnemonic": "Witness of Resurrection"
+                        },
+                        "23": {
+                            "mnemonic": "Barsabbas and Matthias"
+                        },
+                        "24": {
+                            "mnemonic": "Prayer for Choice"
+                        },
+                        "25": {
+                            "mnemonic": "Apostolic Ministry"
+                        },
+                        "26": {
+                            "mnemonic": "Matthias Chosen"
+                        }
+                    }
+                },
+                "2": {
+                    "mnemonic": "PENTECOST TONGUES FALL AS PETER PREACHES CHRIST AS LORD",
+                    "verses": {}
+                },
+                "3": {
+                    "mnemonic": "INVALID HEALED; PETER PREACHES",
+                    "verses": {}
+                },
+                "4": {
+                    "mnemonic": "RESURRECTION TALK SPARKS TRIAL; SHARING ALL",
+                    "verses": {}
+                },
+                "5": {
+                    "mnemonic": "INSTANT DEATH FOR LIARS; APOSTLES FLOGGED, REJOICE!",
+                    "verses": {}
+                }
+            }
+        },
+        "MAT": {
+            "mnemonic": "JESUS THE ANOINTED KING OF ISRAEL"
+        },
+        "MRK": {
+            "mnemonic": "RAPID SERVANT KING"
+        },
+        "LUK": {
+            "mnemonic": "ORDERLY LIFE OF JESUS CHRIST"
+        },
+        "JHN": {
+            "mnemonic": "BELOVED WITNESS OF JESUS"
+        },
+        "ROM": {
+            "mnemonic": "JUSTIFYING GOSPEL"
+        },
+        "1CO": {
+            "mnemonic": "LOVE BUILDS CHURCH"
+        },
+        "2CO": {
+            "mnemonic": "WEAKNESS POWER"
+        },
+        "GAL": {
+            "mnemonic": "SPIRIT"
+        },
+        "EPH": {
+            "mnemonic": "UNITED"
+        },
+        "PHP": {
+            "mnemonic": "GAIN"
+        },
+        "COL": {
+            "mnemonic": "LORD"
+        },
+        "1TH": {
+            "mnemonic": "UNTIL"
+        },
+        "2TH": {
+            "mnemonic": "DAY"
+        },
+        "1TI": {
+            "mnemonic": "CHARGE"
+        },
+        "2TI": {
+            "mnemonic": "LAST"
+        },
+        "TIT": {
+            "mnemonic": "NEW"
+        },
+        "PHM": {
+            "mnemonic": "RECEIVE ONESIMUS AS A BROTHER"
+        },
+        "HEB": {
+            "mnemonic": "BOOK OF HEBREWS"
+        },
+        "JAS": {
+            "mnemonic": "JAMES"
+        },
+        "1PE": {
+            "mnemonic": "PETER"
+        },
+        "2PE": {
+            "mnemonic": "TWO"
+        }
+    }
+}

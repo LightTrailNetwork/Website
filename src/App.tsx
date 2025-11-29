@@ -8,6 +8,7 @@ import Link from './pages/Link';
 import Settings from './pages/Settings';
 import Tradition from './pages/Tradition';
 import About from './pages/About';
+import Bible from './pages/Bible';
 import { initDB, getProfile, createProfile } from './data/db';
 import { Role } from './data/types';
 
@@ -87,6 +88,9 @@ function AppContent() {
       case '/about':
         return { title: 'About & Privacy', subtitle: 'Learn about the app and data handling' };
       default:
+        if (location.pathname.startsWith('/bible')) {
+          return { title: 'Bible & Memory', subtitle: 'Read, Study, and Memorize' };
+        }
         return { title: 'Triad', subtitle: 'Christian Mentorship App' };
     }
   };
@@ -111,6 +115,7 @@ function AppContent() {
           <Route path="/" element={<Today />} />
           <Route path="/link" element={<Link />} />
           <Route path="/tradition" element={<Tradition />} />
+          <Route path="/bible/*" element={<Bible />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/about" element={<About />} />
         </Routes>
