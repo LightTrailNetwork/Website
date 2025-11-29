@@ -78,7 +78,6 @@ export default function BibleReader() {
 
     // Universal Search & Filtering State
     const [universalSearchQuery, setUniversalSearchQuery] = useState('');
-    const [visibleVerses, setVisibleVerses] = useState<number[] | null>(null);
     const [viewMode, setViewMode] = useState<'full' | 'focus'>('full');
     const [resolvedBookId, setResolvedBookId] = useState<string | null>(null);
 
@@ -344,14 +343,12 @@ export default function BibleReader() {
 
         if (currentChapterNum < bsbChapter.book.numberOfChapters) {
             // Next chapter in same book
-            setVisibleVerses(null);
             navigate(`/bible/read/${bsbChapter.book.name.replace(/\s+/g, '')}/${currentChapterNum + 1}`);
         } else if (books.length > 0) {
             // Next book
             const currentBookIndex = books.findIndex(b => b.id === bsbChapter.book.id);
             if (currentBookIndex !== -1 && currentBookIndex < books.length - 1) {
                 const nextBook = books[currentBookIndex + 1]!;
-                setVisibleVerses(null);
                 navigate(`/bible/read/${nextBook.name.replace(/\s+/g, '')}/1`);
             }
         }
@@ -364,14 +361,12 @@ export default function BibleReader() {
 
         if (currentChapterNum > 1) {
             // Previous chapter in same book
-            setVisibleVerses(null);
             navigate(`/bible/read/${bsbChapter.book.name.replace(/\s+/g, '')}/${currentChapterNum - 1}`);
         } else if (books.length > 0) {
             // Previous book
             const currentBookIndex = books.findIndex(b => b.id === bsbChapter.book.id);
             if (currentBookIndex > 0) {
                 const prevBook = books[currentBookIndex - 1]!;
-                setVisibleVerses(null);
                 navigate(`/bible/read/${prevBook.name.replace(/\s+/g, '')}/${prevBook.numberOfChapters}`);
             }
         }
@@ -383,7 +378,6 @@ export default function BibleReader() {
     };
 
     const handleChapterSelect = (chapNum: number) => {
-        setVisibleVerses(null); // Reset filter
         navigate(`/bible/read/${selectedNavBook?.name.replace(/\s+/g, '')}/${chapNum}`);
         setShowQuickNav(false);
         setNavStep('books');
@@ -414,19 +408,25 @@ export default function BibleReader() {
             );
 
             if (book) {
-                // Determine visible verses
-                let versesToShow: number[] | null = null;
+                // Construct URL with verse range
+                let url = `/bible/read/${book.name.replace(/\s+/g, '')}/${chapterNum}`;
                 if (startVerse) {
-                    versesToShow = [];
-                    const end = endVerse || startVerse;
-                    for (let i = startVerse; i <= end; i++) {
-                        versesToShow.push(i);
+                    url += `/${startVerse}`;
+                    if (endVerse && endVerse !== startVerse) {
+                        url += `-${endVerse}`;
                     }
                 }
 
-                navigate(`/bible/read/${book.name.replace(/\s+/g, '')}/${chapterNum}`, { state: { visibleVerses: versesToShow } });
-                setVisibleVerses(versesToShow); // Set local state immediately
+                navigate(url);
                 setUniversalSearchQuery('');
+                // If searching for specific verses, default to focus mode?
+                // Maybe let the user decide, but for now we just navigate.
+                // The existing logic will highlight them.
+                if (startVerse) {
+                    setViewMode('focus');
+                } else {
+                    setViewMode('full');
+                }
             }
         }
     };
@@ -502,7 +502,7 @@ export default function BibleReader() {
 
                 {content.map((item, index) => {
                     if (item.type === 'heading') {
-                        if (visibleVerses || viewMode === 'focus') return null;
+                        if (viewMode === 'focus') return null;
                         return (
                             <h3 key={index} className="text-xl font-semibold mt-6 mb-3 text-primary">
                                 {item.content.join(' ')}
@@ -511,15 +511,12 @@ export default function BibleReader() {
                     }
 
                     if (item.type === 'line_break') {
-                        if (visibleVerses || viewMode === 'focus') return null;
+                        if (viewMode === 'focus') return null;
                         return <br key={index} />;
                     }
 
                     if (item.type === 'verse') {
                         // Filter logic
-                        if (visibleVerses && !visibleVerses.includes(item.number)) {
-                            return null;
-                        }
 
                         const msbVerse = msbContent?.find(v => v.type === 'verse' && v.number === item.number) as { type: 'verse', number: number, content: (string | { text: string, wordsOfJesus?: boolean })[] } | undefined;
 
@@ -777,16 +774,12 @@ export default function BibleReader() {
         // Commentary content structure is similar to Bible chapter
         return commentaryChapter.chapter.content.map((item, index) => {
             if (item.type === 'heading') {
-                if (visibleVerses) return null;
                 return <h4 key={index} className="font-bold mt-4 mb-2">{item.content.join(' ')}</h4>;
             }
             if (item.type === 'line_break') {
-                if (visibleVerses) return null;
                 return <br key={index} />;
             }
             if (item.type === 'verse') {
-                if (visibleVerses && !visibleVerses.includes(item.number)) return null;
-
                 return (
                     <p key={index} className="mb-2 text-sm">
                         <span className="font-bold text-primary mr-1">{item.number}</span>
@@ -996,20 +989,6 @@ export default function BibleReader() {
                         )}
                     </div>
 
-                    {/* Active Filter Indicator */}
-                    {visibleVerses && (
-                        <div className="mb-4 p-3 bg-primary/10 rounded-lg flex items-center justify-between animate-fade-in">
-                            <span className="text-sm font-medium">
-                                Showing verses {visibleVerses[0]} - {visibleVerses[visibleVerses.length - 1]}
-                            </span>
-                            <button
-                                onClick={() => setVisibleVerses(null)}
-                                className="text-xs flex items-center text-primary hover:underline"
-                            >
-                                <Eye className="w-3 h-3 mr-1" /> Show Full Chapter
-                            </button>
-                        </div>
-                    )}
                     {/* Chapter Content */}
                     <div className={`prose prose-lg dark:prose-invert max-w-none px-4 ${loading ? 'opacity-50' : ''}`}>
                         {renderContent(bsbChapter.chapter.content, msbChapter?.chapter.content)}
@@ -1290,7 +1269,6 @@ export default function BibleReader() {
                 onClose={() => setShowQuickNav(false)}
                 books={books}
                 onNavigate={(bookId, chapter) => {
-                    setVisibleVerses(null);
                     const bookName = books.find(b => b.id === bookId)?.name.replace(/\s+/g, '') || bookId;
                     navigate(`/bible/read/${bookName}/${chapter}`);
                 }}
