@@ -81,6 +81,7 @@ export default function Bible() {
             <Route path="/" element={<BibleHome />} />
             <Route path="/read/:bookId" element={<BibleBookSummary />} />
             <Route path="/read/:bookId/:chapter" element={<BibleReader />} />
+            <Route path="/read/:bookId/:chapter/:verseRange" element={<BibleReader />} />
             <Route path="/memory" element={<MemorizationHub />} />
             <Route path="/memory/hierarchical" element={<HierarchicalMemory />} />
             <Route path="/memory/grace" element={<GraceView />} />

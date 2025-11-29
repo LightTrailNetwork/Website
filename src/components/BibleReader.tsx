@@ -16,7 +16,7 @@ const getText = (content: (string | { text: string; wordsOfJesus?: boolean } | {
     }).join('').trim();
 
 export default function BibleReader() {
-    const { bookId, chapter } = useParams<{ bookId: string; chapter: string }>();
+    const { bookId, chapter, verseRange } = useParams<{ bookId: string; chapter: string; verseRange?: string }>();
     const navigate = useNavigate();
     const location = useLocation();
     const navType = useNavigationType();
@@ -79,6 +79,21 @@ export default function BibleReader() {
     // Universal Search & Filtering State
     const [universalSearchQuery, setUniversalSearchQuery] = useState('');
     const [visibleVerses, setVisibleVerses] = useState<number[] | null>(null);
+
+    // Parse highlighted range from URL param
+    const { highlightStart, highlightEnd } = useMemo(() => {
+        let start: number | null = null;
+        let end: number | null = null;
+
+        if (verseRange) {
+            const rangeMatch = verseRange.match(/^(\d+)(?:-(\d+))?$/);
+            if (rangeMatch) {
+                start = parseInt(rangeMatch[1]!);
+                end = rangeMatch[2] ? parseInt(rangeMatch[2]) : start;
+            }
+        }
+        return { highlightStart: start, highlightEnd: end };
+    }, [verseRange]);
 
     // Fetch Books, Translations, Commentaries, and Profiles on mount
     useEffect(() => {
@@ -414,28 +429,10 @@ export default function BibleReader() {
             setSelectedProfile(profileData.profile);
         } catch (e) {
             console.error("Failed to fetch profile", e);
-            setSelectedProfile(null);
         } finally {
             setProfileLoading(false);
         }
     };
-
-    // Scroll to verse if hash is present
-    useEffect(() => {
-        if (location.hash && !loading && bsbChapter) {
-            const match = location.hash.match(/#verse-(\d+)/);
-            if (match) {
-                const id = `verse-${match[1]}`;
-                const element = document.getElementById(id);
-                if (element) {
-                    // Small timeout to ensure rendering is complete
-                    setTimeout(() => {
-                        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }, 100);
-                }
-            }
-        }
-    }, [location.hash, loading, bsbChapter]);
 
     // Helper to check if we should insert a space between content parts
     const shouldInsertSpace = (prev: any, curr: any) => {
@@ -447,38 +444,8 @@ export default function BibleReader() {
     };
 
     const renderContent = (content: ChapterContent[], msbContent?: ChapterContent[]) => {
-        // Parse highlighted range from hash
-        const hashMatch = location.hash.match(/#verse-(\d+)(?:-(\d+))?/);
-        const highlightStart = hashMatch ? parseInt(hashMatch[1]!) : null;
-        const highlightEnd = hashMatch ? (hashMatch[2] ? parseInt(hashMatch[2]) : highlightStart) : null;
-
         return (
             <>
-                {/* Highlighted Verses Notice Banner */}
-                {highlightStart !== null && (
-                    <div className="sticky top-0 z-10 -mx-4 px-4 py-3 bg-yellow-100/90 dark:bg-yellow-900/40 backdrop-blur-sm border-b border-yellow-200 dark:border-yellow-800 flex items-center justify-between mb-4 animate-in slide-in-from-top shadow-sm">
-                        <div className="flex items-center gap-2 text-sm font-medium text-yellow-800 dark:text-yellow-200">
-                            <AlertCircle className="w-4 h-4" />
-                            <span>
-                                Highlighted: {highlightStart === highlightEnd ? `Verse ${highlightStart}` : `Verses ${highlightStart}-${highlightEnd}`}
-                            </span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <button
-                                onClick={() => navigate(-1)}
-                                className="text-xs font-medium px-2 py-1 hover:bg-yellow-200/50 dark:hover:bg-yellow-800/50 rounded transition-colors text-yellow-800 dark:text-yellow-200"
-                            >
-                                Back
-                            </button>
-                            <button
-                                onClick={() => navigate(location.pathname, { replace: true })}
-                                className="text-xs font-medium px-2 py-1 bg-yellow-200/50 dark:bg-yellow-800/50 hover:bg-yellow-200 dark:hover:bg-yellow-800 rounded transition-colors text-yellow-900 dark:text-yellow-100"
-                            >
-                                Clear
-                            </button>
-                        </div>
-                    </div>
-                )}
 
                 {content.map((item, index) => {
                     if (item.type === 'heading') {
@@ -892,62 +859,74 @@ export default function BibleReader() {
             <div className="flex gap-6 relative">
                 <div className={`flex-1 max-w-3xl mx-auto pb-20 animate-fade-in transition-all ${showCommentary ? 'lg:mr-[320px]' : ''}`}>
                     {/* Navigation Header */}
-                    <div className="sticky top-20 z-10 bg-background/80 backdrop-blur-md border-b border-border p-4 mb-6 flex flex-col sm:flex-row items-center justify-between rounded-b-xl shadow-sm gap-4">
-                        <div className="flex items-center gap-2 w-full sm:w-auto">
-                            <button
-                                onClick={handlePrev}
-                                disabled={!canGoPrev}
-                                className="p-2 hover:bg-accent/10 rounded-full disabled:opacity-30 transition-colors shrink-0"
-                            >
-                                <ChevronLeft className="w-6 h-6" />
-                            </button>
-                            <button
-                                onClick={() => setShowQuickNav(true)}
-                                className="flex items-center gap-2 px-3 py-1.5 hover:bg-accent/10 rounded-lg transition-colors text-left min-w-[140px]"
-                            >
-                                <Grid className="w-5 h-5 text-primary" />
-                                <div>
-                                    <h2 className="text-lg font-bold leading-none">{bsbChapter.book.name} {bsbChapter.chapter.number}</h2>
-                                    <p className="text-[10px] text-muted-foreground uppercase tracking-wider">{selectedTranslation}</p>
+                    <div className="sticky top-20 z-10 bg-background/80 backdrop-blur-md border-b border-border mb-6 rounded-b-xl shadow-sm flex flex-col">
+                        <div className="p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+                            <div className="flex items-center gap-2 w-full sm:w-auto">
+                                <button
+                                    onClick={handlePrev}
+                                    disabled={!canGoPrev}
+                                    className="p-2 hover:bg-accent/10 rounded-full disabled:opacity-30 transition-colors shrink-0"
+                                >
+                                    <ChevronLeft className="w-6 h-6" />
+                                </button>
+                                <button
+                                    onClick={() => setShowQuickNav(true)}
+                                    className="flex items-center gap-2 px-3 py-1.5 hover:bg-accent/10 rounded-lg transition-colors text-left min-w-[140px]"
+                                >
+                                    <Grid className="w-5 h-5 text-primary" />
+                                    <div>
+                                        <h2 className="text-lg font-bold leading-none">{bsbChapter.book.name} {bsbChapter.chapter.number}</h2>
+                                        <p className="text-[10px] text-muted-foreground uppercase tracking-wider">{selectedTranslation}</p>
+                                    </div>
+                                </button>
+                                <button
+                                    onClick={handleNext}
+                                    disabled={!canGoNext}
+                                    className="p-2 hover:bg-accent/10 rounded-full disabled:opacity-30 transition-colors shrink-0 sm:hidden"
+                                >
+                                    <ChevronRight className="w-6 h-6" />
+                                </button>
+                            </div>
+
+                            {/* Universal Search Bar */}
+                            <form onSubmit={handleUniversalSearch} className="relative w-full sm:max-w-xs">
+                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                                <input
+                                    type="text"
+                                    placeholder="Search (e.g. John 3:16)"
+                                    className="w-full pl-9 pr-4 py-2 bg-secondary/10 border-transparent rounded-full focus:ring-2 focus:ring-primary focus:bg-background transition-all text-sm"
+                                    value={universalSearchQuery}
+                                    onChange={(e) => setUniversalSearchQuery(e.target.value)}
+                                />
+                            </form>
+
+                            <div className="flex items-center gap-2 hidden sm:flex">
+                                <button
+                                    onClick={() => setShowTranslations(true)}
+                                    className="p-2 hover:bg-accent/10 rounded-full transition-colors"
+                                    title="Change Translation"
+                                >
+                                    <Globe className="w-5 h-5 text-muted-foreground" />
+                                </button>
+                                <button
+                                    onClick={handleNext}
+                                    disabled={!canGoNext}
+                                    className="p-2 hover:bg-accent/10 rounded-full disabled:opacity-30 transition-colors"
+                                >
+                                    <ChevronRight className="w-6 h-6" />
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Highlighted Verses Notice Banner */}
+                        {highlightStart !== null && (
+                            <div className="px-4 py-2 bg-yellow-100/90 dark:bg-yellow-900/40 border-t border-yellow-200 dark:border-yellow-800 flex items-center justify-between animate-in slide-in-from-top-2">
+                                <div className="flex items-center gap-2">
+                                    <span className="font-semibold text-sm">Highlighted Verses: {highlightStart}{highlightEnd && highlightEnd !== highlightStart ? `-${highlightEnd}` : ''}</span>
                                 </div>
-                            </button>
-                            <button
-                                onClick={handleNext}
-                                disabled={!canGoNext}
-                                className="p-2 hover:bg-accent/10 rounded-full disabled:opacity-30 transition-colors shrink-0 sm:hidden"
-                            >
-                                <ChevronRight className="w-6 h-6" />
-                            </button>
-                        </div>
-
-                        {/* Universal Search Bar */}
-                        <form onSubmit={handleUniversalSearch} className="relative w-full sm:max-w-xs">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                            <input
-                                type="text"
-                                placeholder="Search (e.g. John 3:16)"
-                                className="w-full pl-9 pr-4 py-2 bg-secondary/10 border-transparent rounded-full focus:ring-2 focus:ring-primary focus:bg-background transition-all text-sm"
-                                value={universalSearchQuery}
-                                onChange={(e) => setUniversalSearchQuery(e.target.value)}
-                            />
-                        </form>
-
-                        <div className="flex items-center gap-2 hidden sm:flex">
-                            <button
-                                onClick={() => setShowTranslations(true)}
-                                className="p-2 hover:bg-accent/10 rounded-full transition-colors"
-                                title="Change Translation"
-                            >
-                                <Globe className="w-5 h-5 text-muted-foreground" />
-                            </button>
-                            <button
-                                onClick={handleNext}
-                                disabled={!canGoNext}
-                                className="p-2 hover:bg-accent/10 rounded-full disabled:opacity-30 transition-colors"
-                            >
-                                <ChevronRight className="w-6 h-6" />
-                            </button>
-                        </div>
+                                <button onClick={() => navigate(`/bible/read/${bookId}/${chapter}`)} className="text-xs text-primary hover:underline">Clear</button>
+                            </div>
+                        )}
                     </div>
 
                     {/* Active Filter Indicator */}
@@ -1104,7 +1083,7 @@ export default function BibleReader() {
                                                                 <div key={i} className="flex flex-col bg-card hover:bg-secondary/10 rounded transition-colors border border-transparent hover:border-border/50">
                                                                     <div className="flex items-center justify-between p-2">
                                                                         <Link
-                                                                            to={`/bible/read/${ref.book}/${ref.chapter}#verse-${ref.verse}${ref.endVerse ? `-${ref.endVerse}` : ''}`}
+                                                                            to={`/bible/read/${ref.book}/${ref.chapter}/${ref.verse}${ref.endVerse ? `-${ref.endVerse}` : ''}`}
                                                                             className="text-sm font-medium text-foreground/80 hover:text-primary flex-1 truncate mr-2"
                                                                         >
                                                                             {ref.book} {ref.chapter}:{ref.verse}{ref.endVerse ? `-${ref.endVerse}` : ''}
@@ -1160,6 +1139,34 @@ export default function BibleReader() {
                                     </div>
                                 )}
                             </div>
+
+                            {/* Reference Popover */}
+                            {refPopover && (
+                                <div
+                                    className="fixed z-50 bg-popover text-popover-foreground px-3 py-2 rounded-lg shadow-lg border border-border animate-in fade-in zoom-in-95 duration-200 max-w-xs pointer-events-none"
+                                    style={{ top: refPopover.y - 10, left: refPopover.x, transform: 'translate(-50%, -100%)' }}
+                                >
+                                    <div className="text-xs font-bold mb-1 border-b border-border/50 pb-1">
+                                        {refPopover.refs.length} Cross Reference{refPopover.refs.length !== 1 ? 's' : ''}
+                                    </div>
+                                    <div className="space-y-1">
+                                        {refPopover.refs.slice(0, 3).map((ref, i) => (
+                                            <div key={i} className="text-xs flex justify-between gap-4">
+                                                <span className="font-medium">{ref.book} {ref.chapter}:{ref.verse}</span>
+                                                {ref.score && <span className="opacity-70">{ref.score}</span>}
+                                            </div>
+                                        ))}
+                                        {refPopover.refs.length > 3 && (
+                                            <div className="text-[10px] text-muted-foreground italic pt-1">
+                                                + {refPopover.refs.length - 3} more...
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div className="mt-2 text-[10px] text-primary/80 font-medium text-center bg-primary/5 rounded py-0.5">
+                                        Click to view all
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </>
                 )}
@@ -1339,34 +1346,6 @@ export default function BibleReader() {
                     </div>
                 )}
             </div>
-
-            {/* Reference Popover */}
-            {refPopover && (
-                <div
-                    className="fixed z-50 bg-popover text-popover-foreground px-3 py-2 rounded-lg shadow-lg border border-border animate-in fade-in zoom-in-95 duration-200 max-w-xs pointer-events-none"
-                    style={{ top: refPopover.y - 10, left: refPopover.x, transform: 'translate(-50%, -100%)' }}
-                >
-                    <div className="text-xs font-bold mb-1 border-b border-border/50 pb-1">
-                        {refPopover.refs.length} Cross Reference{refPopover.refs.length !== 1 ? 's' : ''}
-                    </div>
-                    <div className="space-y-1">
-                        {refPopover.refs.slice(0, 3).map((ref, i) => (
-                            <div key={i} className="text-xs flex justify-between gap-4">
-                                <span className="font-medium">{ref.book} {ref.chapter}:{ref.verse}</span>
-                                {ref.score && <span className="opacity-70">{ref.score}</span>}
-                            </div>
-                        ))}
-                        {refPopover.refs.length > 3 && (
-                            <div className="text-[10px] text-muted-foreground italic pt-1">
-                                + {refPopover.refs.length - 3} more...
-                            </div>
-                        )}
-                    </div>
-                    <div className="mt-2 text-[10px] text-primary/80 font-medium text-center bg-primary/5 rounded py-0.5">
-                        Click to view all
-                    </div>
-                </div>
-            )}
         </div>
     );
 }
