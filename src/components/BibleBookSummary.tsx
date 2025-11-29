@@ -152,7 +152,7 @@ export default function BibleBookSummary() {
                             {Array.from({ length: book.numberOfChapters }, (_, i) => i + 1).map(chap => (
                                 <Link
                                     key={chap}
-                                    to={`/bible/read/${book.id}/${chap}`}
+                                    to={`/bible/read/${book.name.replace(/\s+/g, '')}/${chap}`}
                                     className="aspect-square flex items-center justify-center rounded-lg bg-secondary/10 hover:bg-primary hover:text-primary-foreground transition-all font-medium text-sm"
                                 >
                                     {chap}
@@ -224,9 +224,13 @@ export default function BibleBookSummary() {
                 onClose={() => setShowQuickNav(false)}
                 books={allBooks}
                 onNavigate={(bookId, chapter) => {
-                    navigate(`/bible/read/${bookId}/${chapter}`);
+                    const bookName = allBooks.find(b => b.id === bookId)?.name.replace(/\s+/g, '') || bookId;
+                    navigate(`/bible/read/${bookName}/${chapter}`);
                 }}
-                onNavigateToBookOverview={(bookId) => navigate(`/bible/read/${bookId}`)}
+                onNavigateToBookOverview={(bookId) => {
+                    const bookName = allBooks.find(b => b.id === bookId)?.name.replace(/\s+/g, '') || bookId;
+                    navigate(`/bible/read/${bookName}`);
+                }}
             />
         </div>
     );

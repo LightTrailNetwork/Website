@@ -21,7 +21,7 @@ function BibleHome() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Reader Card */}
                 <Link
-                    to="/bible/read/GEN/1"
+                    to="/bible/read/Genesis/1"
                     className="group relative overflow-hidden bg-card border border-border rounded-xl p-6 shadow-sm hover:shadow-md transition-all hover:border-primary/50"
                 >
                     <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">

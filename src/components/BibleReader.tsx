@@ -80,6 +80,40 @@ export default function BibleReader() {
     const [universalSearchQuery, setUniversalSearchQuery] = useState('');
     const [visibleVerses, setVisibleVerses] = useState<number[] | null>(null);
     const [viewMode, setViewMode] = useState<'full' | 'focus'>('full');
+    const [resolvedBookId, setResolvedBookId] = useState<string | null>(null);
+
+    // Resolve bookId from URL to API ID
+    useEffect(() => {
+        if (!bookId) return;
+        if (books.length === 0) {
+            // If books aren't loaded yet, we can't resolve names efficiently.
+            // However, we might be able to assume it's an ID if it's 3 chars?
+            // Better to wait for books. But we need to handle the initial load.
+            // For now, let's just pass it through if books are empty, but this might cause a double fetch if it's a name.
+            // Actually, let's just wait for books.
+            return;
+        }
+
+        // Check if bookId is already a valid ID
+        const directMatch = books.find(b => b.id === bookId);
+        if (directMatch) {
+            setResolvedBookId(directMatch.id);
+            return;
+        }
+
+        // Try to find by name
+        const normalizedUrlId = bookId.toLowerCase().replace(/\s+/g, '');
+        const nameMatch = books.find(b =>
+            b.name.toLowerCase().replace(/\s+/g, '') === normalizedUrlId ||
+            b.commonName.toLowerCase().replace(/\s+/g, '') === normalizedUrlId
+        );
+
+        if (nameMatch) {
+            setResolvedBookId(nameMatch.id);
+        } else {
+            setResolvedBookId(bookId); // Fallback
+        }
+    }, [bookId, books]);
 
     // Parse highlighted range from URL param
     const { highlightStart, highlightEnd } = useMemo(() => {
@@ -193,7 +227,7 @@ export default function BibleReader() {
     // Fetch Chapter Content
     useEffect(() => {
         const fetchData = async () => {
-            if (!bookId || !chapter) return;
+            if (!resolvedBookId || !chapter) return;
 
             setLoading(true);
             setError(null);
@@ -201,13 +235,13 @@ export default function BibleReader() {
 
             try {
                 // Fetch Primary Translation
-                const primaryData = await getChapter(selectedTranslation, bookId, parseInt(chapter));
+                const primaryData = await getChapter(selectedTranslation, resolvedBookId, parseInt(chapter));
                 setBsbChapter(primaryData);
 
                 // Fetch MSB (comparison) - only if primary is BSB
                 if (selectedTranslation === 'BSB') {
                     try {
-                        const msbData = await getChapter('eng_msb', bookId, parseInt(chapter));
+                        const msbData = await getChapter('eng_msb', resolvedBookId, parseInt(chapter));
                         setMsbChapter(msbData);
                     } catch (e) {
                         console.warn('MSB not available for this chapter');
@@ -219,7 +253,7 @@ export default function BibleReader() {
 
                 // Fetch Cross References (open-cross-ref)
                 try {
-                    const crossRefData = await getDatasetChapter('open-cross-ref', bookId, parseInt(chapter));
+                    const crossRefData = await getDatasetChapter('open-cross-ref', resolvedBookId, parseInt(chapter));
                     setCrossRefs(crossRefData);
                 } catch (e) {
                     console.warn('Cross references not available', e);
@@ -235,8 +269,7 @@ export default function BibleReader() {
         };
 
         fetchData();
-        fetchData();
-    }, [bookId, chapter, selectedTranslation]);
+    }, [resolvedBookId, chapter, selectedTranslation]);
 
     // Scroll to highlighted verse
     useEffect(() => {
@@ -312,14 +345,14 @@ export default function BibleReader() {
         if (currentChapterNum < bsbChapter.book.numberOfChapters) {
             // Next chapter in same book
             setVisibleVerses(null);
-            navigate(`/bible/read/${bookId}/${currentChapterNum + 1}`);
+            navigate(`/bible/read/${bsbChapter.book.name.replace(/\s+/g, '')}/${currentChapterNum + 1}`);
         } else if (books.length > 0) {
             // Next book
             const currentBookIndex = books.findIndex(b => b.id === bsbChapter.book.id);
             if (currentBookIndex !== -1 && currentBookIndex < books.length - 1) {
                 const nextBook = books[currentBookIndex + 1]!;
                 setVisibleVerses(null);
-                navigate(`/bible/read/${nextBook.id}/1`);
+                navigate(`/bible/read/${nextBook.name.replace(/\s+/g, '')}/1`);
             }
         }
     };
@@ -332,14 +365,14 @@ export default function BibleReader() {
         if (currentChapterNum > 1) {
             // Previous chapter in same book
             setVisibleVerses(null);
-            navigate(`/bible/read/${bookId}/${currentChapterNum - 1}`);
+            navigate(`/bible/read/${bsbChapter.book.name.replace(/\s+/g, '')}/${currentChapterNum - 1}`);
         } else if (books.length > 0) {
             // Previous book
             const currentBookIndex = books.findIndex(b => b.id === bsbChapter.book.id);
             if (currentBookIndex > 0) {
                 const prevBook = books[currentBookIndex - 1]!;
                 setVisibleVerses(null);
-                navigate(`/bible/read/${prevBook.id}/${prevBook.numberOfChapters}`);
+                navigate(`/bible/read/${prevBook.name.replace(/\s+/g, '')}/${prevBook.numberOfChapters}`);
             }
         }
     };
@@ -351,7 +384,7 @@ export default function BibleReader() {
 
     const handleChapterSelect = (chapNum: number) => {
         setVisibleVerses(null); // Reset filter
-        navigate(`/bible/read/${selectedNavBook?.id}/${chapNum}`);
+        navigate(`/bible/read/${selectedNavBook?.name.replace(/\s+/g, '')}/${chapNum}`);
         setShowQuickNav(false);
         setNavStep('books');
         setSelectedNavBook(null);
@@ -391,7 +424,7 @@ export default function BibleReader() {
                     }
                 }
 
-                navigate(`/bible/read/${book.id}/${chapterNum}`, { state: { visibleVerses: versesToShow } });
+                navigate(`/bible/read/${book.name.replace(/\s+/g, '')}/${chapterNum}`, { state: { visibleVerses: versesToShow } });
                 setVisibleVerses(versesToShow); // Set local state immediately
                 setUniversalSearchQuery('');
             }
@@ -876,7 +909,7 @@ export default function BibleReader() {
             <Breadcrumbs
                 items={[
                     { label: 'Bible', to: '/bible' },
-                    { label: bsbChapter.book.name, to: `/bible/read/${bookId}` },
+                    { label: bsbChapter.book.name, to: `/bible/read/${bsbChapter.book.name.replace(/\s+/g, '')}` },
                     { label: `Chapter ${bsbChapter.chapter.number}` }
                 ]}
             />
@@ -957,7 +990,7 @@ export default function BibleReader() {
                                         {viewMode === 'full' ? <Eye className="w-3 h-3" /> : <BookOpen className="w-3 h-3" />}
                                         {viewMode === 'full' ? 'Focus View' : 'Show Full Chapter'}
                                     </button>
-                                    <button onClick={() => navigate(`/bible/read/${bookId}/${chapter}`)} className="text-xs text-primary hover:underline">Clear</button>
+                                    <button onClick={() => navigate(`/bible/read/${bsbChapter.book.name.replace(/\s+/g, '')}/${chapter}`)} className="text-xs text-primary hover:underline">Clear</button>
                                 </div>
                             </div>
                         )}
@@ -1116,12 +1149,20 @@ export default function BibleReader() {
                                                             return (
                                                                 <div key={i} className="flex flex-col bg-card hover:bg-secondary/10 rounded transition-colors border border-transparent hover:border-border/50">
                                                                     <div className="flex items-center justify-between p-2">
-                                                                        <Link
-                                                                            to={`/bible/read/${ref.book}/${ref.chapter}/${ref.verse}${ref.endVerse ? `-${ref.endVerse}` : ''}`}
-                                                                            className="text-sm font-medium text-foreground/80 hover:text-primary flex-1 truncate mr-2"
-                                                                        >
-                                                                            {ref.book} {ref.chapter}:{ref.verse}{ref.endVerse ? `-${ref.endVerse}` : ''}
-                                                                        </Link>
+                                                                        {(() => {
+                                                                            const refBook = books.find(b => b.id === ref.book);
+                                                                            const bookName = refBook ? refBook.name : ref.book;
+                                                                            const bookUrlName = refBook ? refBook.name.replace(/\s+/g, '') : ref.book;
+
+                                                                            return (
+                                                                                <Link
+                                                                                    to={`/bible/read/${bookUrlName}/${ref.chapter}/${ref.verse}${ref.endVerse ? `-${ref.endVerse}` : ''}`}
+                                                                                    className="text-sm font-medium text-foreground/80 hover:text-primary flex-1 truncate mr-2"
+                                                                                >
+                                                                                    {bookName} {ref.chapter}:{ref.verse}{ref.endVerse ? `-${ref.endVerse}` : ''}
+                                                                                </Link>
+                                                                            );
+                                                                        })()}
                                                                         <div className="flex items-center gap-2">
                                                                             {ref.score && (
                                                                                 <span className="text-[10px] text-muted-foreground bg-secondary/20 px-1.5 py-0.5 rounded hidden sm:inline-block">
@@ -1250,9 +1291,13 @@ export default function BibleReader() {
                 books={books}
                 onNavigate={(bookId, chapter) => {
                     setVisibleVerses(null);
-                    navigate(`/bible/read/${bookId}/${chapter}`);
+                    const bookName = books.find(b => b.id === bookId)?.name.replace(/\s+/g, '') || bookId;
+                    navigate(`/bible/read/${bookName}/${chapter}`);
                 }}
-                onNavigateToBookOverview={(bookId) => navigate(`/bible/read/${bookId}`)}
+                onNavigateToBookOverview={(bookId) => {
+                    const bookName = books.find(b => b.id === bookId)?.name.replace(/\s+/g, '') || bookId;
+                    navigate(`/bible/read/${bookName}`);
+                }}
             />
 
             {/* Translations Modal */}
