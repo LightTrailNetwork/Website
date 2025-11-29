@@ -59,6 +59,7 @@ export default function BibleReader() {
     const [activeFootnote, setActiveFootnote] = useState<{ id: number; x: number; y: number } | null>(null);
     const [hoverTimeout, setHoverTimeout] = useState<NodeJS.Timeout | null>(null);
     const [closeTimeout, setCloseTimeout] = useState<NodeJS.Timeout | null>(null);
+    const [refPopover, setRefPopover] = useState<{ verse: number; x: number; y: number; refs: any[] } | null>(null);
 
     // Quick Nav & Translation State
     const [showQuickNav, setShowQuickNav] = useState(false);
@@ -97,7 +98,7 @@ export default function BibleReader() {
                 // Set default commentary if available
                 if (commentariesData.length > 0) {
                     // Prefer Matthew Henry or similar popular ones if available, otherwise first
-                    const defaultComm = commentariesData.find(c => c.id === 'MHC') || commentariesData[0];
+                    const defaultComm = commentariesData.find(c => c.id === 'MHC') || commentariesData[0]!;
                     setSelectedCommentaryId(defaultComm.id);
                 }
 
@@ -281,7 +282,7 @@ export default function BibleReader() {
             // Next book
             const currentBookIndex = books.findIndex(b => b.id === bsbChapter.book.id);
             if (currentBookIndex !== -1 && currentBookIndex < books.length - 1) {
-                const nextBook = books[currentBookIndex + 1];
+                const nextBook = books[currentBookIndex + 1]!;
                 setVisibleVerses(null);
                 navigate(`/bible/read/${nextBook.id}/1`);
             }
@@ -301,7 +302,7 @@ export default function BibleReader() {
             // Previous book
             const currentBookIndex = books.findIndex(b => b.id === bsbChapter.book.id);
             if (currentBookIndex > 0) {
-                const prevBook = books[currentBookIndex - 1];
+                const prevBook = books[currentBookIndex - 1]!;
                 setVisibleVerses(null);
                 navigate(`/bible/read/${prevBook.id}/${prevBook.numberOfChapters}`);
             }
@@ -422,13 +423,16 @@ export default function BibleReader() {
     // Scroll to verse if hash is present
     useEffect(() => {
         if (location.hash && !loading && bsbChapter) {
-            const id = location.hash.substring(1);
-            const element = document.getElementById(id);
-            if (element) {
-                // Small timeout to ensure rendering is complete
-                setTimeout(() => {
-                    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }, 100);
+            const match = location.hash.match(/#verse-(\d+)/);
+            if (match) {
+                const id = `verse-${match[1]}`;
+                const element = document.getElementById(id);
+                if (element) {
+                    // Small timeout to ensure rendering is complete
+                    setTimeout(() => {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 100);
+                }
             }
         }
     }, [location.hash, loading, bsbChapter]);
@@ -443,260 +447,297 @@ export default function BibleReader() {
     };
 
     const renderContent = (content: ChapterContent[], msbContent?: ChapterContent[]) => {
-        return content.map((item, index) => {
-            if (item.type === 'heading') {
-                if (visibleVerses) return null;
-                return (
-                    <h3 key={index} className="text-xl font-semibold mt-6 mb-3 text-primary">
-                        {item.content.join(' ')}
-                    </h3>
-                );
-            }
+        // Parse highlighted range from hash
+        const hashMatch = location.hash.match(/#verse-(\d+)(?:-(\d+))?/);
+        const highlightStart = hashMatch ? parseInt(hashMatch[1]!) : null;
+        const highlightEnd = hashMatch ? (hashMatch[2] ? parseInt(hashMatch[2]) : highlightStart) : null;
 
-            if (item.type === 'line_break') {
-                if (visibleVerses) return null;
-                return <br key={index} />;
-            }
-
-            if (item.type === 'verse') {
-                // Filter logic
-                if (visibleVerses && !visibleVerses.includes(item.number)) {
-                    return null;
-                }
-
-                const msbVerse = msbContent?.find(v => v.type === 'verse' && v.number === item.number) as { type: 'verse', number: number, content: (string | { text: string, wordsOfJesus?: boolean })[] } | undefined;
-
-                const hasCrossRefs = crossRefs?.chapter.content.some(v => v.verse === item.number && v.references.length > 0);
-                const isHighlighted = location.hash === `#verse-${item.number}`;
-
-                return (
-                    <span
-                        key={index}
-                        id={`verse-${item.number}`}
-                        className={`relative group ${isHighlighted ? "bg-yellow-100 dark:bg-yellow-900/30 transition-colors duration-1000 rounded px-1 -mx-1" : ""}`}
-                    >
-                        <sup className="text-xs font-bold text-muted-foreground mr-1 select-none inline-flex items-center">
-                            {item.number}
-                            {hasCrossRefs && (
-                                <button
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        setCommentaryTab('references');
-                                        setShowCommentary(true);
-                                    }}
-                                    className="ml-0.5 text-primary/60 hover:text-primary transition-colors"
-                                    title="View Cross References"
-                                >
-                                    <LinkIcon className="w-2.5 h-2.5" />
-                                </button>
-                            )}
-                        </sup>
-                        {/* MSB Comparison Overlay (if enabled) */}
-                        {showMsb && msbVerse ? (
-                            (() => {
-                                const { bsbDiff, msbDiff } = diffVerses(item.content, msbVerse.content);
-                                const isIdentical = bsbDiff.every(t => t.status === 'common') && msbDiff.every(t => t.status === 'common');
-
-                                if (isIdentical) {
-                                    return (
-                                        <>
-                                            <span className="leading-relaxed">
-                                                {/* Render BSB normally if identical */}
-                                                {item.content.map((c, i) => {
-                                                    // Check if we need to insert a space before this item
-                                                    const prev = i > 0 ? item.content[i - 1] : null;
-                                                    const needsSpace = prev && shouldInsertSpace(prev, c);
-
-                                                    const contentElement = (() => {
-                                                        if (typeof c === 'string') return <span key={i}>{c}</span>;
-                                                        if ('text' in c) return <span key={i} className={c.wordsOfJesus ? "text-red-700 dark:text-red-400" : ""}>{c.text}</span>;
-                                                        if ('lineBreak' in c) return <br key={i} />;
-                                                        return null;
-                                                    })();
-
-                                                    return (
-                                                        <React.Fragment key={i}>
-                                                            {needsSpace && <span> </span>}
-                                                            {contentElement}
-                                                        </React.Fragment>
-                                                    );
-                                                })}
-                                            </span>
-                                            <div className="mt-1 mb-2 px-2 py-1 bg-secondary/5 rounded border border-dashed border-secondary/30 text-[10px] text-muted-foreground inline-flex items-center gap-1 select-none">
-                                                <span className="w-1.5 h-1.5 rounded-full bg-secondary/50" />
-                                                Matches MSB
-                                            </div>
-                                        </>
-                                    );
-                                }
-
-                                return (
-                                    <>
-                                        <span className="leading-relaxed">
-                                            {/* Render BSB with Diff Highlights */}
-                                            {bsbDiff.map((t: DiffToken, i: number) => {
-                                                if (t.isLineBreak) return <br key={i} />;
-                                                return (
-                                                    <span
-                                                        key={i}
-                                                        className={`${t.wordsOfJesus ? "text-red-700 dark:text-red-400" : ""} ${t.status === 'removed' ? 'font-bold bg-yellow-100/50 dark:bg-yellow-900/30 rounded-sm px-0.5' : ''}`}
-                                                    >
-                                                        {t.text}
-                                                    </span>
-                                                );
-                                            })}
-                                        </span>
-
-                                        <div className="mt-2 mb-4 p-3 bg-amber-50 dark:bg-amber-950/20 rounded-lg border-l-2 border-amber-500 text-sm text-muted-foreground">
-                                            <span className="font-bold text-xs uppercase tracking-wider block mb-1 text-amber-600 dark:text-amber-500 flex items-center gap-2">
-                                                <span>MSB Variation</span>
-                                            </span>
-                                            {msbDiff.map((t: DiffToken, i: number) => {
-                                                if (t.isLineBreak) return <br key={i} />;
-                                                return (
-                                                    <span
-                                                        key={i}
-                                                        className={`${t.wordsOfJesus ? "text-red-700 dark:text-red-400" : ""} ${t.status === 'added' ? 'font-bold bg-amber-200/50 dark:bg-amber-800/30 text-foreground rounded-sm px-0.5' : ''}`}
-                                                    >
-                                                        {t.text}
-                                                    </span>
-                                                );
-                                            })}
-                                        </div>
-                                    </>
-                                );
-                            })()
-                        ) : (
-                            <span className="leading-relaxed">
-                                {item.content.map((c, i) => {
-                                    // Check if we need to insert a space before this item
-                                    const prev = i > 0 ? item.content[i - 1] : null;
-                                    const needsSpace = prev && shouldInsertSpace(prev, c);
-
-                                    const contentElement = (() => {
-                                        if (typeof c === 'string') {
-                                            // Check for profile names in the text
-                                            let text = c;
-                                            const elements: (string | React.ReactNode)[] = [];
-                                            let lastIndex = 0;
-
-                                            // Simple name matching - this could be improved with more robust logic
-                                            // For now, we check if any profile name exists in the text
-                                            // We need to be careful not to match parts of words, so we use word boundaries
-
-                                            // Construct a regex from profile names
-                                            // Filter profiles to only those that are likely to be names (e.g. start with capital letter)
-                                            // and sort by length descending to match longest names first
-                                            const profileNames = profiles
-                                                .filter(p => /^[A-Z]/.test(p.subject))
-                                                .sort((a, b) => b.subject.length - a.subject.length);
-
-                                            if (profileNames.length > 0) {
-                                                // Create a regex that matches any of the profile names
-                                                // Use \b for word boundaries
-                                                const pattern = new RegExp(`\\b(${profileNames.map(p => p.subject).join('|')})\\b`, 'g');
-
-                                                let match;
-                                                while ((match = pattern.exec(text)) !== null) {
-                                                    // Push text before match
-                                                    if (match.index > lastIndex) {
-                                                        elements.push(text.substring(lastIndex, match.index));
-                                                    }
-
-                                                    // Push the matched name as a link
-                                                    const name = match[0];
-                                                    const profile = profiles.find(p => p.subject === name);
-                                                    if (profile) {
-                                                        elements.push(
-                                                            <button
-                                                                key={`${index}-${i}-${match.index}`}
-                                                                onClick={(e) => { e.stopPropagation(); openProfile(profile.id); }}
-                                                                className="text-primary hover:underline font-medium decoration-dotted underline-offset-4"
-                                                                title={`View Profile: ${name}`}
-                                                            >
-                                                                {name}
-                                                            </button>
-                                                        );
-                                                    } else {
-                                                        elements.push(name);
-                                                    }
-
-                                                    lastIndex = match.index + name.length;
-                                                }
-
-                                                // Push remaining text
-                                                if (lastIndex < text.length) {
-                                                    elements.push(text.substring(lastIndex));
-                                                }
-
-                                                if (elements.length > 0) {
-                                                    return <span key={i}>{elements}</span>;
-                                                }
-                                            }
-
-                                            return <span key={i}>{c}</span>;
-                                        }
-                                        // Handle object content
-                                        if ('text' in c) {
-                                            return <span key={i} className={c.wordsOfJesus ? "text-red-700 dark:text-red-400" : ""}>{c.text}</span>;
-                                        }
-                                        if ('lineBreak' in c) {
-                                            return <br key={i} />;
-                                        }
-
-                                        if ('noteId' in c) {
-                                            const noteMarker = showFootnotes ? (
-                                                <sup
-                                                    key={`note-${index}-${i}`}
-                                                    className="text-[10px] font-bold text-primary/70 cursor-pointer hover:text-primary hover:underline select-none ml-0.5"
-                                                    onClick={(e) => {
-                                                        if (window.matchMedia('(pointer: coarse)').matches) {
-                                                            handleFootnoteTouch(e, c.noteId);
-                                                        } else {
-                                                            e.stopPropagation();
-                                                            handleFootnoteClick(c.noteId);
-                                                        }
-                                                    }}
-                                                    onMouseEnter={(e) => handleFootnoteEnter(e, c.noteId)}
-                                                    onMouseLeave={handleFootnoteLeave}
-                                                >
-                                                    [{c.caller || '+'}]
-                                                </sup>
-                                            ) : null;
-
-                                            let space = null;
-                                            const next = item.content[i + 1];
-                                            if (next) {
-                                                const nextText = typeof next === 'string' ? next : (next as any).text;
-                                                if (nextText && /^[^.,!?;:)\]}”’]/.test(nextText)) {
-                                                    space = <span key={`space-${index}-${i}`}> </span>;
-                                                }
-                                            }
-
-                                            if (noteMarker || space) {
-                                                return <span key={i}>{noteMarker}{space}</span>;
-                                            }
-                                        }
-
-                                        return null;
-                                    })();
-
-                                    return (
-                                        <React.Fragment key={i}>
-                                            {needsSpace && <span> </span>}
-                                            {contentElement}
-                                        </React.Fragment>
-                                    );
-                                })}
+        return (
+            <>
+                {/* Highlighted Verses Notice Banner */}
+                {highlightStart !== null && (
+                    <div className="sticky top-0 z-10 -mx-4 px-4 py-3 bg-yellow-100/90 dark:bg-yellow-900/40 backdrop-blur-sm border-b border-yellow-200 dark:border-yellow-800 flex items-center justify-between mb-4 animate-in slide-in-from-top shadow-sm">
+                        <div className="flex items-center gap-2 text-sm font-medium text-yellow-800 dark:text-yellow-200">
+                            <AlertCircle className="w-4 h-4" />
+                            <span>
+                                Highlighted: {highlightStart === highlightEnd ? `Verse ${highlightStart}` : `Verses ${highlightStart}-${highlightEnd}`}
                             </span>
-                        )}
-                        {' '}
-                    </span >
-                );
-            }
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <button
+                                onClick={() => navigate(-1)}
+                                className="text-xs font-medium px-2 py-1 hover:bg-yellow-200/50 dark:hover:bg-yellow-800/50 rounded transition-colors text-yellow-800 dark:text-yellow-200"
+                            >
+                                Back
+                            </button>
+                            <button
+                                onClick={() => navigate(location.pathname, { replace: true })}
+                                className="text-xs font-medium px-2 py-1 bg-yellow-200/50 dark:bg-yellow-800/50 hover:bg-yellow-200 dark:hover:bg-yellow-800 rounded transition-colors text-yellow-900 dark:text-yellow-100"
+                            >
+                                Clear
+                            </button>
+                        </div>
+                    </div>
+                )}
 
-            return null;
-        });
+                {content.map((item, index) => {
+                    if (item.type === 'heading') {
+                        if (visibleVerses) return null;
+                        return (
+                            <h3 key={index} className="text-xl font-semibold mt-6 mb-3 text-primary">
+                                {item.content.join(' ')}
+                            </h3>
+                        );
+                    }
+
+                    if (item.type === 'line_break') {
+                        if (visibleVerses) return null;
+                        return <br key={index} />;
+                    }
+
+                    if (item.type === 'verse') {
+                        // Filter logic
+                        if (visibleVerses && !visibleVerses.includes(item.number)) {
+                            return null;
+                        }
+
+                        const msbVerse = msbContent?.find(v => v.type === 'verse' && v.number === item.number) as { type: 'verse', number: number, content: (string | { text: string, wordsOfJesus?: boolean })[] } | undefined;
+
+                        const hasCrossRefs = crossRefs?.chapter.content.some(v => v.verse === item.number && v.references.length > 0);
+
+                        const isHighlighted = highlightStart !== null && highlightEnd !== null &&
+                            item.number >= highlightStart && item.number <= highlightEnd;
+
+                        return (
+                            <span
+                                key={index}
+                                id={`verse-${item.number}`}
+                                className={`relative group ${isHighlighted ? "bg-yellow-100 dark:bg-yellow-900/30 transition-colors duration-1000 rounded px-1 -mx-1 box-decoration-clone" : ""}`}
+                            >
+                                <sup className="text-xs font-bold text-muted-foreground mr-1 select-none inline-flex items-center">
+                                    {item.number}
+                                    {hasCrossRefs && (
+                                        <button
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                setCommentaryTab('references');
+                                                setShowCommentary(true);
+                                            }}
+                                            className="ml-0.5 text-primary/60 hover:text-primary transition-colors"
+                                            title="View Cross References"
+                                        >
+                                            <LinkIcon className="w-2.5 h-2.5" />
+                                        </button>
+                                    )}
+                                </sup>
+                                {/* MSB Comparison Overlay (if enabled) */}
+                                {showMsb && msbVerse ? (
+                                    (() => {
+                                        const { bsbDiff, msbDiff } = diffVerses(item.content, msbVerse.content);
+                                        const isIdentical = bsbDiff.every(t => t.status === 'common') && msbDiff.every(t => t.status === 'common');
+
+                                        if (isIdentical) {
+                                            return (
+                                                <>
+                                                    <span className="leading-relaxed">
+                                                        {/* Render BSB normally if identical */}
+                                                        {item.content.map((c, i) => {
+                                                            // Check if we need to insert a space before this item
+                                                            const prev = i > 0 ? item.content[i - 1] : null;
+                                                            const needsSpace = prev && shouldInsertSpace(prev, c);
+
+                                                            const contentElement = (() => {
+                                                                if (typeof c === 'string') return <span key={i}>{c}</span>;
+                                                                if ('text' in c) return <span key={i} className={c.wordsOfJesus ? "text-red-700 dark:text-red-400" : ""}>{c.text}</span>;
+                                                                if ('lineBreak' in c) return <br key={i} />;
+                                                                return null;
+                                                            })();
+
+                                                            return (
+                                                                <React.Fragment key={i}>
+                                                                    {needsSpace && <span> </span>}
+                                                                    {contentElement}
+                                                                </React.Fragment>
+                                                            );
+                                                        })}
+                                                    </span>
+                                                    <div className="mt-1 mb-2 px-2 py-1 bg-secondary/5 rounded border border-dashed border-secondary/30 text-[10px] text-muted-foreground inline-flex items-center gap-1 select-none">
+                                                        <span className="w-1.5 h-1.5 rounded-full bg-secondary/50" />
+                                                        Matches MSB
+                                                    </div>
+                                                </>
+                                            );
+                                        }
+
+                                        return (
+                                            <>
+                                                <span className="leading-relaxed">
+                                                    {/* Render BSB with Diff Highlights */}
+                                                    {bsbDiff.map((t: DiffToken, i: number) => {
+                                                        if (t.isLineBreak) return <br key={i} />;
+                                                        return (
+                                                            <span
+                                                                key={i}
+                                                                className={`${t.wordsOfJesus ? "text-red-700 dark:text-red-400" : ""} ${t.status === 'removed' ? 'font-bold bg-yellow-100/50 dark:bg-yellow-900/30 rounded-sm px-0.5' : ''}`}
+                                                            >
+                                                                {t.text}
+                                                            </span>
+                                                        );
+                                                    })}
+                                                </span>
+
+                                                <div className="mt-2 mb-4 p-3 bg-amber-50 dark:bg-amber-950/20 rounded-lg border-l-2 border-amber-500 text-sm text-muted-foreground">
+                                                    <span className="font-bold text-xs uppercase tracking-wider block mb-1 text-amber-600 dark:text-amber-500 flex items-center gap-2">
+                                                        <span>MSB Variation</span>
+                                                    </span>
+                                                    {msbDiff.map((t: DiffToken, i: number) => {
+                                                        if (t.isLineBreak) return <br key={i} />;
+                                                        return (
+                                                            <span
+                                                                key={i}
+                                                                className={`${t.wordsOfJesus ? "text-red-700 dark:text-red-400" : ""} ${t.status === 'added' ? 'font-bold bg-amber-200/50 dark:bg-amber-800/30 text-foreground rounded-sm px-0.5' : ''}`}
+                                                            >
+                                                                {t.text}
+                                                            </span>
+                                                        );
+                                                    })}
+                                                </div>
+                                            </>
+                                        );
+                                    })()
+                                ) : (
+                                    <span className="leading-relaxed">
+                                        {item.content.map((c, i) => {
+                                            // Check if we need to insert a space before this item
+                                            const prev = i > 0 ? item.content[i - 1] : null;
+                                            const needsSpace = prev && shouldInsertSpace(prev, c);
+
+                                            const contentElement = (() => {
+                                                if (typeof c === 'string') {
+                                                    // Check for profile names in the text
+                                                    let text = c;
+                                                    const elements: (string | React.ReactNode)[] = [];
+                                                    let lastIndex = 0;
+
+                                                    // Simple name matching - this could be improved with more robust logic
+                                                    // For now, we check if any profile name exists in the text
+                                                    // We need to be careful not to match parts of words, so we use word boundaries
+
+                                                    // Construct a regex from profile names
+                                                    // Filter profiles to only those that are likely to be names (e.g. start with capital letter)
+                                                    // and sort by length descending to match longest names first
+                                                    const profileNames = profiles
+                                                        .filter(p => /^[A-Z]/.test(p.subject))
+                                                        .sort((a, b) => b.subject.length - a.subject.length);
+
+                                                    if (profileNames.length > 0) {
+                                                        // Create a regex that matches any of the profile names
+                                                        // Use \b for word boundaries
+                                                        const pattern = new RegExp(`\\b(${profileNames.map(p => p.subject).join('|')})\\b`, 'g');
+
+                                                        let match;
+                                                        while ((match = pattern.exec(text)) !== null) {
+                                                            // Push text before match
+                                                            if (match.index > lastIndex) {
+                                                                elements.push(text.substring(lastIndex, match.index));
+                                                            }
+
+                                                            // Push the matched name as a link
+                                                            const name = match[0];
+                                                            const profile = profiles.find(p => p.subject === name);
+                                                            if (profile) {
+                                                                elements.push(
+                                                                    <button
+                                                                        key={`${index}-${i}-${match.index}`}
+                                                                        onClick={(e) => { e.stopPropagation(); openProfile(profile.id); }}
+                                                                        className="text-primary hover:underline font-medium decoration-dotted underline-offset-4"
+                                                                        title={`View Profile: ${name}`}
+                                                                    >
+                                                                        {name}
+                                                                    </button>
+                                                                );
+                                                            } else {
+                                                                elements.push(name);
+                                                            }
+
+                                                            lastIndex = match.index + name.length;
+                                                        }
+
+                                                        // Push remaining text
+                                                        if (lastIndex < text.length) {
+                                                            elements.push(text.substring(lastIndex));
+                                                        }
+
+                                                        if (elements.length > 0) {
+                                                            return <span key={i}>{elements}</span>;
+                                                        }
+                                                    }
+
+                                                    return <span key={i}>{c}</span>;
+                                                }
+                                                // Handle object content
+                                                if ('text' in c) {
+                                                    return <span key={i} className={c.wordsOfJesus ? "text-red-700 dark:text-red-400" : ""}>{c.text}</span>;
+                                                }
+                                                if ('lineBreak' in c) {
+                                                    return <br key={i} />;
+                                                }
+
+                                                if ('noteId' in c) {
+                                                    const noteMarker = showFootnotes ? (
+                                                        <sup
+                                                            key={`note-${index}-${i}`}
+                                                            className="text-[10px] font-bold text-primary/70 cursor-pointer hover:text-primary hover:underline select-none ml-0.5"
+                                                            onClick={(e) => {
+                                                                if (window.matchMedia('(pointer: coarse)').matches) {
+                                                                    handleFootnoteTouch(e, c.noteId);
+                                                                } else {
+                                                                    e.stopPropagation();
+                                                                    handleFootnoteClick(c.noteId);
+                                                                }
+                                                            }}
+                                                            onMouseEnter={(e) => handleFootnoteEnter(e, c.noteId)}
+                                                            onMouseLeave={handleFootnoteLeave}
+                                                        >
+                                                            [{c.caller || '+'}]
+                                                        </sup>
+                                                    ) : null;
+
+                                                    let space = null;
+                                                    const next = item.content[i + 1];
+                                                    if (next) {
+                                                        const nextText = typeof next === 'string' ? next : (next as any).text;
+                                                        if (nextText && /^[^.,!?;:)\]}”’]/.test(nextText)) {
+                                                            space = <span key={`space-${index}-${i}`}> </span>;
+                                                        }
+                                                    }
+
+                                                    if (noteMarker || space) {
+                                                        return <span key={i}>{noteMarker}{space}</span>;
+                                                    }
+                                                }
+
+                                                return null;
+                                            })();
+
+                                            return (
+                                                <React.Fragment key={i}>
+                                                    {needsSpace && <span> </span>}
+                                                    {contentElement}
+                                                </React.Fragment>
+                                            );
+                                        })}
+                                    </span>
+                                )}
+                                {' '}
+                            </span >
+                        );
+                    }
+
+                    return null;
+                })}
+            </>
+        );
     };
 
     // Helper to render commentary content
@@ -785,13 +826,63 @@ export default function BibleReader() {
         );
     }
 
-    const isFirstBook = books.length > 0 && bsbChapter.book.id === books[0].id;
-    const isLastBook = books.length > 0 && bsbChapter.book.id === books[books.length - 1].id;
+    const isFirstBook = books.length > 0 && bsbChapter.book.id === books[0]?.id;
+    const isLastBook = books.length > 0 && bsbChapter.book.id === books[books.length - 1]?.id;
     const isFirstChapter = bsbChapter.chapter.number === 1;
     const isLastChapter = bsbChapter.chapter.number === bsbChapter.book.numberOfChapters;
 
     const canGoPrev = !!bsbChapter.previousChapterApiLink || (!isFirstBook);
     const canGoNext = !!bsbChapter.nextChapterApiLink || (!isLastBook);
+
+    const toggleAllRefs = async () => {
+        if (!crossRefs) return;
+
+        const allRefs = crossRefs.chapter.content.flatMap(v => v.references.map(r => ({ ...r, verseNum: v.verse })));
+        const allKeys = allRefs.map(r => `${r.book}-${r.chapter}-${r.verse}`);
+        const anyExpanded = allKeys.some(k => expandedRefTexts[k]);
+
+        if (anyExpanded) {
+            // Collapse all
+            setExpandedRefTexts({});
+        } else {
+            // Expand all
+            const newExpanded = { ...expandedRefTexts };
+            const refsToFetch = allRefs.filter(r => !expandedRefTexts[`${r.book}-${r.chapter}-${r.verse}`]);
+
+            // Set loading for all
+            const newLoading = { ...loadingRefs };
+            refsToFetch.forEach(r => {
+                newLoading[`${r.book}-${r.chapter}-${r.verse}`] = true;
+            });
+            setLoadingRefs(newLoading);
+
+            // Fetch in batches to avoid rate limiting
+            const BATCH_SIZE = 5;
+            for (let i = 0; i < refsToFetch.length; i += BATCH_SIZE) {
+                const batch = refsToFetch.slice(i, i + BATCH_SIZE);
+                await Promise.all(batch.map(async (ref) => {
+                    const refKey = `${ref.book}-${ref.chapter}-${ref.verse}`;
+                    try {
+                        const data = await getChapter(selectedTranslation, ref.book, ref.chapter);
+                        const verseContent = data.chapter.content.find(c => c.type === 'verse' && c.number === ref.verse);
+                        if (verseContent && 'content' in verseContent) {
+                            newExpanded[refKey] = getText(verseContent.content);
+                        } else {
+                            newExpanded[refKey] = 'Text not available.';
+                        }
+                    } catch (e) {
+                        newExpanded[refKey] = 'Failed to load.';
+                    }
+                }));
+                // Update state incrementally
+                setExpandedRefTexts({ ...newExpanded });
+            }
+            setLoadingRefs({});
+        }
+    };
+
+    // Popover State
+
 
     return (
         <div className="flex flex-col gap-6 relative max-w-7xl mx-auto px-4">
@@ -878,7 +969,6 @@ export default function BibleReader() {
                             </button>
                         </div>
                     )}
-
                     {/* Chapter Content */}
                     <div className={`prose prose-lg dark:prose-invert max-w-none px-4 ${loading ? 'opacity-50' : ''}`}>
                         {renderContent(bsbChapter.chapter.content, msbChapter?.chapter.content)}
@@ -984,6 +1074,21 @@ export default function BibleReader() {
                                 )}
                                 {commentaryTab === 'references' && (
                                     <div className="space-y-6">
+                                        <div className="flex items-center justify-between mb-2">
+                                            <span className="text-xs font-medium text-muted-foreground">
+                                                {crossRefs?.chapter.content.reduce((acc, v) => acc + v.references.length, 0)} References
+                                            </span>
+                                            <button
+                                                onClick={toggleAllRefs}
+                                                className="text-xs text-primary hover:underline flex items-center gap-1"
+                                            >
+                                                {Object.keys(expandedRefTexts).length > 0 ? (
+                                                    <>Collapse All <ChevronUp className="w-3 h-3" /></>
+                                                ) : (
+                                                    <>Expand All <ChevronDown className="w-3 h-3" /></>
+                                                )}
+                                            </button>
+                                        </div>
                                         {crossRefs?.chapter.content.filter(v => v.references.length > 0).map(v => (
                                             <div key={v.verse} className="border-b border-border/50 pb-4 last:border-0">
                                                 <div className="font-bold text-sm mb-2 flex items-center gap-2">
@@ -1233,6 +1338,34 @@ export default function BibleReader() {
                     </div>
                 )}
             </div>
+
+            {/* Reference Popover */}
+            {refPopover && (
+                <div
+                    className="fixed z-50 bg-popover text-popover-foreground px-3 py-2 rounded-lg shadow-lg border border-border animate-in fade-in zoom-in-95 duration-200 max-w-xs pointer-events-none"
+                    style={{ top: refPopover.y - 10, left: refPopover.x, transform: 'translate(-50%, -100%)' }}
+                >
+                    <div className="text-xs font-bold mb-1 border-b border-border/50 pb-1">
+                        {refPopover.refs.length} Cross Reference{refPopover.refs.length !== 1 ? 's' : ''}
+                    </div>
+                    <div className="space-y-1">
+                        {refPopover.refs.slice(0, 3).map((ref, i) => (
+                            <div key={i} className="text-xs flex justify-between gap-4">
+                                <span className="font-medium">{ref.book} {ref.chapter}:{ref.verse}</span>
+                                {ref.score && <span className="opacity-70">{ref.score}</span>}
+                            </div>
+                        ))}
+                        {refPopover.refs.length > 3 && (
+                            <div className="text-[10px] text-muted-foreground italic pt-1">
+                                + {refPopover.refs.length - 3} more...
+                            </div>
+                        )}
+                    </div>
+                    <div className="mt-2 text-[10px] text-primary/80 font-medium text-center bg-primary/5 rounded py-0.5">
+                        Click to view all
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
