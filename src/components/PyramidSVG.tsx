@@ -41,7 +41,7 @@ const ClickableLetter: React.FC<ClickableLetterProps> = ({
   fontSize,
   scrollToPassage,
 }) => {
-  const isHovered = hoveredLetter === passageKey;
+  const isHighlighted = hoveredLetter === passageKey || selectedLetter === passageKey;
 
   const handleClick = () => {
     onLetterClick(passageKey);
@@ -62,9 +62,9 @@ const ClickableLetter: React.FC<ClickableLetterProps> = ({
       style={{
         fontFamily:
           "ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial",
-        fontSize: isHovered ? fontSize * 1.3 : fontSize,
-        fontWeight: isHovered ? 900 : 700,
-        fill: isHovered ? "#dc2626" : textColor,
+        fontSize: isHighlighted ? fontSize * 1.3 : fontSize,
+        fontWeight: isHighlighted ? 900 : 700,
+        fill: isHighlighted ? "#dc2626" : textColor,
         cursor: "pointer",
         transition: "all 0.2s",
       }}
@@ -96,13 +96,13 @@ const SubPyramidVertex: React.FC<SubPyramidVertexProps> = ({
   passageKey,
   selectedLetter,
   hoveredLetter,
-  onLetterClick,
-  onLetterHover,
+  onLetterClick: onLetterClick,
+  onLetterHover: onLetterHover,
   textColor,
   fontSize,
   scrollToPassage,
 }) => {
-  const isHovered = hoveredLetter === passageKey;
+  const isHighlighted = hoveredLetter === passageKey || selectedLetter === passageKey;
 
   const handleClick = () => {
     onLetterClick(passageKey);
@@ -123,9 +123,9 @@ const SubPyramidVertex: React.FC<SubPyramidVertexProps> = ({
       style={{
         fontFamily:
           "ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial",
-        fontSize: isHovered ? fontSize * 1.4 : fontSize,
-        fontWeight: isHovered ? 900 : 700,
-        fill: isHovered ? "#dc2626" : textColor,
+        fontSize: isHighlighted ? fontSize * 1.4 : fontSize,
+        fontWeight: isHighlighted ? 900 : 700,
+        fill: isHighlighted ? "#dc2626" : textColor,
         cursor: "pointer",
         transition: "all 0.2s",
       }}
@@ -188,10 +188,10 @@ export default function PyramidSVG({
     const viewportWidth = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
     const mobileContainer = document.getElementById("passage-list-mobile");
     const desktopContainer = document.getElementById("passage-list-desktop");
-    
+
     // Mobile if viewport < 768px OR mobile container is visible (for mobile simulation on desktop)
     const isMobile = viewportWidth < 768 || (mobileContainer && getComputedStyle(mobileContainer).display !== 'none');
-    
+
     const container = isMobile ? mobileContainer : desktopContainer;
 
     if (container && !isMobile && desktopContainer) {
@@ -293,7 +293,7 @@ export default function PyramidSVG({
       // Offset triangles toward their respective corners of the parent triangle
       const offsetAmount = 3; // pixels
       let offsetX = 0, offsetY = 0;
-      
+
       if (idx === 0) { // Top triangle - move toward parent's top corner
         offsetY = -offsetAmount;
       } else if (idx === 1) { // Left triangle - move toward parent's bottom-left corner
@@ -798,9 +798,9 @@ export default function PyramidSVG({
                   : baseFontSize * 2,
               fontWeight: 900,
               fill: "#2563eb",
-              cursor: "pointer",
+              opacity: 0.1,
               userSelect: "none",
-              transition: "all 0.3s ease",
+              cursor: "pointer",
             }}
             onClick={() => {
               onLetterClick("AIM (Key)");
