@@ -99,6 +99,7 @@ export default function BibleReader() {
     const [universalSearchQuery, setUniversalSearchQuery] = useState('');
     const [viewMode, setViewMode] = useState<'full' | 'focus'>('full');
     const [resolvedBookId, setResolvedBookId] = useState<string | null>(null);
+    const [sidebarScrollTarget, setSidebarScrollTarget] = useState<number | null>(null);
 
     // Resolve bookId from URL to API ID
     useEffect(() => {
@@ -306,6 +307,32 @@ export default function BibleReader() {
             }
         }
     }, [loading, verseRange, bookId, chapter]);
+
+    // Scroll sidebar to target verse when opened via icon
+    useEffect(() => {
+        if (showCommentary && commentaryTab === 'references' && sidebarScrollTarget) {
+            setTimeout(() => {
+                const element = document.getElementById(`sidebar-ref-verse-${sidebarScrollTarget}`);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    // Optional: Add a temporary highlight to the sidebar section
+                }
+                setSidebarScrollTarget(null); // Reset after scrolling
+            }, 300); // Small delay to allow sidebar to render
+        }
+    }, [showCommentary, commentaryTab, sidebarScrollTarget]);
+
+    const scrollToVerseInView = (verseNum: number) => {
+        const element = document.getElementById(`verse-${verseNum}`);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            // Add temporary highlight
+            element.classList.add('bg-yellow-100', 'dark:bg-yellow-900/50', 'transition-colors', 'duration-1000');
+            setTimeout(() => {
+                element.classList.remove('bg-yellow-100', 'dark:bg-yellow-900/50');
+            }, 2000);
+        }
+    };
 
     const handleToggleRefText = async (refKey: string, book: string, chapter: number, verse: number) => {
         if (expandedRefTexts[refKey]) {
@@ -564,6 +591,7 @@ export default function BibleReader() {
         // So for desktop click:
         setCommentaryTab('references');
         setShowCommentary(true);
+        setSidebarScrollTarget(verseNum); // Scroll sidebar to this verse
         // Also close popover
         setRefPopover(null);
     };
@@ -1186,9 +1214,15 @@ export default function BibleReader() {
                                             const anyExpanded = allKeys.some(k => expandedRefTexts[k]);
 
                                             return (
-                                                <div key={v.verse} className="border-b border-border/50 pb-4 last:border-0">
+                                                <div key={v.verse} id={`sidebar-ref-verse-${v.verse}`} className="border-b border-border/50 pb-4 last:border-0">
                                                     <div className="font-bold text-sm mb-2 flex items-center justify-between">
-                                                        <span className="bg-primary/10 text-primary px-2 py-0.5 rounded text-xs">Verse {v.verse}</span>
+                                                        <button
+                                                            onClick={() => scrollToVerseInView(v.verse)}
+                                                            className="flex items-center gap-2 hover:bg-secondary/10 px-2 py-1 rounded transition-colors group/header"
+                                                        >
+                                                            <span className="bg-primary/10 text-primary px-2 py-0.5 rounded text-xs group-hover/header:bg-primary/20 transition-colors">Verse {v.verse}</span>
+                                                            <span className="text-xs text-muted-foreground font-normal">{v.references.length} References</span>
+                                                        </button>
                                                         <button
                                                             onClick={() => toggleVerseRefs(v.verse, v.references)}
                                                             className="text-[10px] text-primary hover:underline flex items-center gap-1"
@@ -1207,7 +1241,11 @@ export default function BibleReader() {
                                                             const isLoading = !!loadingRefs[refKey];
 
                                                             return (
-                                                                <div key={i} className="flex flex-col bg-card hover:bg-secondary/10 rounded transition-colors border border-transparent hover:border-border/50">
+                                                                <div
+                                                                    key={i}
+                                                                    className="flex flex-col bg-card hover:bg-secondary/10 rounded transition-colors border border-transparent hover:border-border/50 cursor-pointer"
+                                                                    onClick={() => handleToggleRefText(refKey, ref.book, ref.chapter, ref.verse)}
+                                                                >
                                                                     <div className="flex items-center justify-between p-2">
                                                                         {(() => {
                                                                             const refBook = books.find(b => b.id === ref.book);
@@ -1218,6 +1256,7 @@ export default function BibleReader() {
                                                                                 <Link
                                                                                     to={`/bible/read/${bookUrlName}/${ref.chapter}/${ref.verse}${ref.endVerse ? `-${ref.endVerse}` : ''}`}
                                                                                     className="text-sm font-medium text-foreground/80 hover:text-primary flex-1 truncate mr-2"
+                                                                                    onClick={(e) => e.stopPropagation()} // Stop propagation to prevent toggle
                                                                                 >
                                                                                     {bookName} {ref.chapter}:{ref.verse}{ref.endVerse ? `-${ref.endVerse}` : ''}
                                                                                 </Link>
@@ -1225,15 +1264,14 @@ export default function BibleReader() {
                                                                         })()}
                                                                         <div className="flex items-center gap-2">
                                                                             {ref.score && (
-                                                                                <span className="text-[10px] text-muted-foreground bg-secondary/20 px-1.5 py-0.5 rounded hidden sm:inline-block">
+                                                                                <span
+                                                                                    className="text-[10px] text-muted-foreground bg-secondary/20 px-1.5 py-0.5 rounded hidden sm:inline-block cursor-help"
+                                                                                    title="Relevance Score"
+                                                                                >
                                                                                     {ref.score}
                                                                                 </span>
                                                                             )}
                                                                             <button
-                                                                                onClick={(e) => {
-                                                                                    e.preventDefault();
-                                                                                    handleToggleRefText(refKey, ref.book, ref.chapter, ref.verse);
-                                                                                }}
                                                                                 className="p-1 hover:bg-secondary/20 rounded text-muted-foreground hover:text-foreground transition-colors"
                                                                                 title={isExpanded ? "Hide Text" : "Show Text"}
                                                                             >
@@ -1244,7 +1282,7 @@ export default function BibleReader() {
 
                                                                     {/* Expanded Text Preview */}
                                                                     {isExpanded && (
-                                                                        <div className="px-3 pb-3 pt-0 animate-in slide-in-from-top-1 duration-200">
+                                                                        <div className="px-3 pb-3 pt-0 animate-in slide-in-from-top-1 duration-200 cursor-text" onClick={e => e.stopPropagation()}>
                                                                             <div className="text-xs text-muted-foreground bg-secondary/5 p-2 rounded border border-border/50">
                                                                                 {isLoading ? (
                                                                                     <div className="flex items-center gap-2">
