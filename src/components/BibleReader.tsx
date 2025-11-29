@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate, useLocation, useNavigationType, Link } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, ChevronDown, BookOpen, Loader2, AlertCircle, MessageSquare, Grid, Globe, X, Search, Filter, Eye, Link as LinkIcon } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ChevronDown, ChevronUp, BookOpen, Loader2, AlertCircle, MessageSquare, Grid, Globe, X, Search, Filter, Eye, Link as LinkIcon } from 'lucide-react';
 import { getChapter, getBooks, getTranslations, getCommentaries, getCommentaryChapter, getProfiles, getProfile, getDatasetChapter } from '../data/bibleApi';
 import type { BibleChapter, ChapterContent, BibleBook, BibleTranslation, Commentary, CommentaryChapter, Profile, ProfileContent, ChapterFootnote, DatasetBookChapter } from '../data/bibleApi';
 import Breadcrumbs from './Breadcrumbs';
@@ -37,6 +37,8 @@ export default function BibleReader() {
 
     // Cross Reference State
     const [crossRefs, setCrossRefs] = useState<DatasetBookChapter | null>(null);
+    const [expandedRefTexts, setExpandedRefTexts] = useState<Record<string, string>>({});
+    const [loadingRefs, setLoadingRefs] = useState<Record<string, boolean>>({});
 
     // Commentary State
     const [showCommentary, setShowCommentary] = useState(false);
@@ -178,6 +180,7 @@ export default function BibleReader() {
 
             setLoading(true);
             setError(null);
+            setExpandedRefTexts({}); // Reset expanded refs on navigation
 
             try {
                 // Fetch Primary Translation
@@ -216,6 +219,33 @@ export default function BibleReader() {
 
         fetchData();
     }, [bookId, chapter, selectedTranslation]);
+
+    const handleToggleRefText = async (refKey: string, book: string, chapter: number, verse: number) => {
+        if (expandedRefTexts[refKey]) {
+            const newExpanded = { ...expandedRefTexts };
+            delete newExpanded[refKey];
+            setExpandedRefTexts(newExpanded);
+            return;
+        }
+
+        setLoadingRefs(prev => ({ ...prev, [refKey]: true }));
+        try {
+            const data = await getChapter(selectedTranslation, book, chapter);
+            const verseContent = data.chapter.content.find(c => c.type === 'verse' && c.number === verse);
+
+            if (verseContent && 'content' in verseContent) {
+                const text = getText(verseContent.content);
+                setExpandedRefTexts(prev => ({ ...prev, [refKey]: text }));
+            } else {
+                setExpandedRefTexts(prev => ({ ...prev, [refKey]: 'Verse text not available.' }));
+            }
+        } catch (e) {
+            console.error("Failed to fetch reference text", e);
+            setExpandedRefTexts(prev => ({ ...prev, [refKey]: 'Failed to load text.' }));
+        } finally {
+            setLoadingRefs(prev => ({ ...prev, [refKey]: false }));
+        }
+    };
 
     // Fetch Commentary Content
     useEffect(() => {
@@ -389,6 +419,20 @@ export default function BibleReader() {
         }
     };
 
+    // Scroll to verse if hash is present
+    useEffect(() => {
+        if (location.hash && !loading && bsbChapter) {
+            const id = location.hash.substring(1);
+            const element = document.getElementById(id);
+            if (element) {
+                // Small timeout to ensure rendering is complete
+                setTimeout(() => {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 100);
+            }
+        }
+    }, [location.hash, loading, bsbChapter]);
+
     // Helper to check if we should insert a space between content parts
     const shouldInsertSpace = (prev: any, curr: any) => {
         const prevText = typeof prev === 'string' ? prev : prev.text;
@@ -423,9 +467,14 @@ export default function BibleReader() {
                 const msbVerse = msbContent?.find(v => v.type === 'verse' && v.number === item.number) as { type: 'verse', number: number, content: (string | { text: string, wordsOfJesus?: boolean })[] } | undefined;
 
                 const hasCrossRefs = crossRefs?.chapter.content.some(v => v.verse === item.number && v.references.length > 0);
+                const isHighlighted = location.hash === `#verse-${item.number}`;
 
                 return (
-                    <span key={index} className="relative group">
+                    <span
+                        key={index}
+                        id={`verse-${item.number}`}
+                        className={`relative group ${isHighlighted ? "bg-yellow-100 dark:bg-yellow-900/30 transition-colors duration-1000 rounded px-1 -mx-1" : ""}`}
+                    >
                         <sup className="text-xs font-bold text-muted-foreground mr-1 select-none inline-flex items-center">
                             {item.number}
                             {hasCrossRefs && (
@@ -941,22 +990,59 @@ export default function BibleReader() {
                                                     <span className="bg-primary/10 text-primary px-2 py-0.5 rounded text-xs">Verse {v.verse}</span>
                                                 </div>
                                                 <div className="grid grid-cols-1 gap-2">
-                                                    {v.references.map((ref, i) => (
-                                                        <Link
-                                                            key={i}
-                                                            to={`/bible/read/${ref.book}/${ref.chapter}`}
-                                                            className="text-sm p-2 hover:bg-secondary/10 rounded flex items-center justify-between group transition-colors"
-                                                        >
-                                                            <span className="font-medium text-foreground/80 group-hover:text-primary">
-                                                                {ref.book} {ref.chapter}:{ref.verse}{ref.endVerse ? `-${ref.endVerse}` : ''}
-                                                            </span>
-                                                            {ref.score && (
-                                                                <span className="text-[10px] text-muted-foreground bg-secondary/20 px-1.5 py-0.5 rounded">
-                                                                    Relevance: {ref.score}
-                                                                </span>
-                                                            )}
-                                                        </Link>
-                                                    ))}
+                                                    {v.references.map((ref, i) => {
+                                                        const refKey = `${ref.book}-${ref.chapter}-${ref.verse}`;
+                                                        const isExpanded = !!expandedRefTexts[refKey];
+                                                        const isLoading = !!loadingRefs[refKey];
+
+                                                        return (
+                                                            <div key={i} className="flex flex-col bg-card hover:bg-secondary/10 rounded transition-colors border border-transparent hover:border-border/50">
+                                                                <div className="flex items-center justify-between p-2">
+                                                                    <Link
+                                                                        to={`/bible/read/${ref.book}/${ref.chapter}#verse-${ref.verse}`}
+                                                                        className="text-sm font-medium text-foreground/80 hover:text-primary flex-1 truncate mr-2"
+                                                                    >
+                                                                        {ref.book} {ref.chapter}:{ref.verse}{ref.endVerse ? `-${ref.endVerse}` : ''}
+                                                                    </Link>
+                                                                    <div className="flex items-center gap-2">
+                                                                        {ref.score && (
+                                                                            <span className="text-[10px] text-muted-foreground bg-secondary/20 px-1.5 py-0.5 rounded hidden sm:inline-block">
+                                                                                {ref.score}
+                                                                            </span>
+                                                                        )}
+                                                                        <button
+                                                                            onClick={(e) => {
+                                                                                e.preventDefault();
+                                                                                handleToggleRefText(refKey, ref.book, ref.chapter, ref.verse);
+                                                                            }}
+                                                                            className="p-1 hover:bg-secondary/20 rounded text-muted-foreground hover:text-foreground transition-colors"
+                                                                            title={isExpanded ? "Hide Text" : "Show Text"}
+                                                                        >
+                                                                            {isExpanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+
+                                                                {/* Expanded Text Preview */}
+                                                                {isExpanded && (
+                                                                    <div className="px-3 pb-3 pt-0 animate-in slide-in-from-top-1 duration-200">
+                                                                        <div className="text-xs text-muted-foreground bg-secondary/5 p-2 rounded border border-border/50">
+                                                                            {isLoading ? (
+                                                                                <div className="flex items-center gap-2">
+                                                                                    <Loader2 className="w-3 h-3 animate-spin" />
+                                                                                    <span>Loading...</span>
+                                                                                </div>
+                                                                            ) : (
+                                                                                <p className="leading-relaxed italic">
+                                                                                    "{expandedRefTexts[refKey]}"
+                                                                                </p>
+                                                                            )}
+                                                                        </div>
+                                                                    </div>
+                                                                )}
+                                                            </div>
+                                                        );
+                                                    })}
                                                 </div>
                                             </div>
                                         ))}
