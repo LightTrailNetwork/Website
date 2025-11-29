@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { BookOpen, Info } from "lucide-react";
 import PyramidSVG from "../components/PyramidSVG";
 import PassageList from "../components/PassageList";
 import passagesData from "../data/pyramidPassages.json";
@@ -16,53 +17,27 @@ export default function Tradition() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto bg-white shadow-sm">
-      <div className="p-4 sm:p-6 lg:p-8 space-y-6 lg:space-y-8">
-        {/* Introduction Section */}
-        <div className="text-center space-y-4">
-          <div className="max-w-4xl mx-auto">
-            <p className="text-base lg:text-lg text-gray-700 leading-relaxed">
-              {passagesData.headline}
-            </p>
-          </div>
+    <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
+      {/* Introduction Section */}
+      <div className="text-center space-y-4">
+        <div className="max-w-3xl mx-auto">
+          <p className="text-lg text-muted-foreground leading-relaxed font-light">
+            {passagesData.headline}
+          </p>
         </div>
+      </div>
 
-        {/* Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-          {/* Left Column - Pyramid */}
-          <div className="flex flex-col items-center space-y-6">
-            <div className="w-full">
-              <h2 className="text-xl font-semibold text-gray-900 text-center mb-4">
-                The Passage Pyramid
-              </h2>
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 lg:p-8">
-                <PyramidSVG
-                  selectedLetter={selectedLetter}
-                  hoveredLetter={hoveredLetter}
-                  onLetterClick={handleLetterClick}
-                  onLetterHover={handleLetterHover}
-                />
-              </div>
-            </div>
-
-            {/* Instructions */}
-            <div className="w-full max-w-md text-center">
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <p className="text-sm text-blue-800">
-                  <strong>Interactive:</strong> Click any letter on the pyramid
-                  to highlight the corresponding passage in the list →
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Right Column - Passage List (Desktop only) */}
-          <div className="hidden lg:block space-y-4">
-            <h2 className="text-xl font-semibold text-gray-900">
-              Scripture Passages
+      {/* Main Content Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+        {/* Left Column - Pyramid */}
+        <div className="flex flex-col items-center space-y-6">
+          <div className="w-full bg-card border border-border rounded-xl p-6 lg:p-8 shadow-sm">
+            <h2 className="text-xl font-semibold text-foreground text-center mb-6 flex items-center justify-center gap-2">
+              <BookOpen className="w-5 h-5 text-primary" />
+              The Passage Pyramid
             </h2>
-            <div id="passage-list-desktop" className="max-h-[70vh] overflow-y-auto pr-2 space-y-4">
-              <PassageList
+            <div className="bg-gradient-to-br from-primary/5 to-secondary/5 rounded-xl p-4">
+              <PyramidSVG
                 selectedLetter={selectedLetter}
                 hoveredLetter={hoveredLetter}
                 onLetterClick={handleLetterClick}
@@ -70,14 +45,25 @@ export default function Tradition() {
               />
             </div>
           </div>
+
+          {/* Instructions */}
+          <div className="w-full max-w-md text-center">
+            <div className="bg-primary/10 border border-primary/20 rounded-lg p-4 flex items-center gap-3 text-left">
+              <Info className="w-5 h-5 text-primary flex-shrink-0" />
+              <p className="text-sm text-foreground/80">
+                <strong>Interactive:</strong> Click any letter on the pyramid
+                to highlight the corresponding passage in the list.
+              </p>
+            </div>
+          </div>
         </div>
 
-        {/* Mobile: Passage List Below Pyramid */}
-        <div className="lg:hidden space-y-4">
-          <h2 className="text-xl font-semibold text-gray-900 text-center">
+        {/* Right Column - Passage List (Desktop only) */}
+        <div className="hidden lg:block space-y-4">
+          <h2 className="text-xl font-semibold text-foreground flex items-center gap-2">
             Scripture Passages
           </h2>
-          <div id="passage-list-mobile" className="space-y-4">
+          <div id="passage-list-desktop" className="max-h-[70vh] overflow-y-auto pr-2 space-y-4 scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent">
             <PassageList
               selectedLetter={selectedLetter}
               hoveredLetter={hoveredLetter}
@@ -86,25 +72,40 @@ export default function Tradition() {
             />
           </div>
         </div>
+      </div>
 
-        {/* Footer Info */}
-        <div className="border-t pt-6 mt-8">
-          <div className="text-center space-y-2">
-            <p className="text-sm text-gray-600">
-              This pyramid contains 40 foundational Bible passages organized
-              around three core themes:
-            </p>
-            <div className="flex flex-wrap justify-center gap-4 text-sm">
-              <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full font-medium">
-                Abide - Personal Relationship with God
-              </span>
-              <span className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full font-medium">
-                Imitate - Following Christ's Example
-              </span>
-              <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full font-medium">
-                Mobilize - Serving Others
-              </span>
-            </div>
+      {/* Mobile: Passage List Below Pyramid */}
+      <div className="lg:hidden space-y-4">
+        <h2 className="text-xl font-semibold text-foreground text-center">
+          Scripture Passages
+        </h2>
+        <div id="passage-list-mobile" className="space-y-4">
+          <PassageList
+            selectedLetter={selectedLetter}
+            hoveredLetter={hoveredLetter}
+            onLetterClick={handleLetterClick}
+            onLetterHover={handleLetterHover}
+          />
+        </div>
+      </div>
+
+      {/* Footer Info */}
+      <div className="border-t border-border pt-8 mt-8">
+        <div className="text-center space-y-4">
+          <p className="text-sm text-muted-foreground">
+            This pyramid contains 40 foundational Bible passages organized
+            around three core themes:
+          </p>
+          <div className="flex flex-wrap justify-center gap-3 text-sm">
+            <span className="px-3 py-1 bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 rounded-full font-medium">
+              Abide - Personal Relationship with God
+            </span>
+            <span className="px-3 py-1 bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300 rounded-full font-medium">
+              Imitate - Following Christ's Example
+            </span>
+            <span className="px-3 py-1 bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 rounded-full font-medium">
+              Mobilize - Serving Others
+            </span>
           </div>
         </div>
       </div>

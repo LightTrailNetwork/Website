@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { Loader2 } from 'lucide-react';
 import Header from './components/Header';
 import Drawer from './components/Drawer';
 import Today from './pages/Today';
@@ -22,16 +23,16 @@ function AppContent() {
         console.log('Starting app initialization...');
         await initDB();
         console.log('Database initialized');
-        
+
         const profile = await getProfile();
         console.log('Profile loaded:', profile);
-        
+
         if (!profile) {
           console.log('Creating new profile...');
           await createProfile(undefined, Role.MENTEE);
           console.log('Profile created');
         }
-        
+
         setIsInitialized(true);
         console.log('App initialization complete');
       } catch (error) {
@@ -60,11 +61,13 @@ function AppContent() {
 
   if (!isInitialized) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="text-4xl mb-4">✝️</div>
-          <h1 className="text-xl font-semibold text-gray-800">Mentorship App</h1>
-          <p className="text-gray-600">Initializing...</p>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center space-y-4 animate-fade-in">
+          <div className="flex justify-center">
+            <Loader2 className="h-10 w-10 animate-spin text-primary" />
+          </div>
+          <h1 className="text-xl font-semibold text-foreground">Mentorship App</h1>
+          <p className="text-muted-foreground">Initializing...</p>
         </div>
       </div>
     );
@@ -91,9 +94,9 @@ function AppContent() {
   const { title, subtitle } = getPageInfo();
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background text-foreground font-sans selection:bg-primary/20">
       {/* Header with integrated navigation */}
-      <Header 
+      <Header
         onMenuClick={() => setIsDrawerOpen(true)}
         title={title}
         subtitle={subtitle}
@@ -103,7 +106,7 @@ function AppContent() {
       <Drawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
 
       {/* Main Content */}
-      <main className="min-h-screen">
+      <main className="min-h-screen pt-20 pb-10 px-4 max-w-7xl mx-auto animate-slide-up">
         <Routes>
           <Route path="/" element={<Today />} />
           <Route path="/link" element={<Link />} />

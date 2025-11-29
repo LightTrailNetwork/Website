@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { User, Save, Download, Upload, Trash2, AlertTriangle, Users, Loader2 } from 'lucide-react';
 import { Role } from '../data/types';
 import { useProfile } from '../hooks/useProfile';
 import { getContacts, exportAll, importAll, resetApp } from '../data/db';
@@ -21,7 +22,7 @@ export default function Settings() {
     if (profile) {
       setDisplayName(profile.displayName || '');
     }
-    
+
     loadContacts();
   }, [profile]);
 
@@ -36,12 +37,12 @@ export default function Settings() {
 
   const handleSaveProfile = async () => {
     if (!profile) return;
-    
+
     try {
       if (displayName !== profile.displayName) {
         await updateDisplayName(displayName || null);
       }
-      
+
       alert('Profile saved successfully!');
     } catch (error) {
       console.error('Failed to save profile:', error);
@@ -84,7 +85,7 @@ export default function Settings() {
     input.onchange = async (e) => {
       const file = (e.target as HTMLInputElement).files?.[0];
       if (!file) return;
-      
+
       try {
         const text = await file.text();
         const data = JSON.parse(text);
@@ -114,45 +115,47 @@ export default function Settings() {
 
   if (loading) {
     return (
-      <div className="bg-gray-50 min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="text-4xl mb-4">⚙️</div>
-          <h1 className="text-xl font-semibold text-gray-800">Loading Settings...</h1>
+      <div className="bg-background min-h-screen flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <Loader2 className="h-10 w-10 animate-spin text-primary mx-auto" />
+          <h1 className="text-xl font-semibold text-foreground">Loading Settings...</h1>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="bg-gray-50 min-h-screen">
-      <div className="max-w-4xl mx-auto bg-white min-h-screen shadow-sm">
-        <div className="p-4 sm:p-6 lg:p-8 space-y-6 lg:space-y-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-          {/* Profile Section */}
-          <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-gray-900">Profile</h2>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+    <div className="max-w-4xl mx-auto space-y-8 animate-fade-in">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+        {/* Profile Section */}
+        <div className="space-y-6">
+          <div className="flex items-center gap-2 text-lg font-semibold text-foreground">
+            <User className="w-5 h-5 text-primary" />
+            <h2>Profile</h2>
+          </div>
+
+          <div className="bg-card border border-border rounded-xl p-6 space-y-6 shadow-sm">
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-foreground">
                 Display Name
               </label>
               <input
                 type="text"
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                className="w-full p-3 bg-background border border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-input transition-colors"
                 placeholder="Enter your name (optional)"
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-foreground">
                 Current Role
               </label>
               <select
                 value={profile?.currentRole || Role.MENTEE}
                 onChange={(e) => handleRoleChange(e.target.value as Role)}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                className="w-full p-3 bg-background border border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-input transition-colors"
               >
                 {roles.map((role) => (
                   <option key={role.value} value={role.value}>
@@ -160,90 +163,108 @@ export default function Settings() {
                   </option>
                 ))}
               </select>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-muted-foreground">
                 This determines which daily plan you see by default
               </p>
             </div>
 
-            <button 
+            <button
               onClick={handleSaveProfile}
-              className="w-full btn btn-primary"
+              className="w-full btn btn-primary flex items-center justify-center gap-2"
             >
+              <Save className="w-4 h-4" />
               Save Profile
             </button>
           </div>
-          
-          {/* Backup & Danger Zone in right column */}
+        </div>
+
+        {/* Backup & Danger Zone in right column */}
+        <div className="space-y-6">
+          {/* Backup Section */}
           <div className="space-y-6">
-            {/* Backup Section */}
-            <div className="space-y-4">
-              <h2 className="text-lg font-semibold text-gray-900">Backup & Restore</h2>
-              
-              <div className="space-y-2">
+            <div className="flex items-center gap-2 text-lg font-semibold text-foreground">
+              <Download className="w-5 h-5 text-primary" />
+              <h2>Backup & Restore</h2>
+            </div>
+
+            <div className="bg-card border border-border rounded-xl p-6 space-y-4 shadow-sm">
+              <div className="space-y-3">
                 <button
                   onClick={handleExport}
-                  className="w-full btn btn-secondary"
+                  className="w-full btn btn-secondary flex items-center justify-center gap-2"
                 >
+                  <Download className="w-4 h-4" />
                   Export Backup
                 </button>
                 <button
                   onClick={handleImport}
-                  className="w-full btn btn-secondary"
+                  className="w-full btn btn-secondary flex items-center justify-center gap-2"
                 >
+                  <Upload className="w-4 h-4" />
                   Import Backup
                 </button>
               </div>
-              
-              <p className="text-xs text-gray-500">
+
+              <p className="text-xs text-muted-foreground text-center">
                 Export creates a JSON file with all your data. Import restores from a backup file.
               </p>
             </div>
+          </div>
 
-            {/* Danger Zone */}
-            <div className="space-y-4 border-t pt-6">
-              <h2 className="text-lg font-semibold text-red-600">Danger Zone</h2>
-              
+          {/* Danger Zone */}
+          <div className="space-y-6">
+            <div className="flex items-center gap-2 text-lg font-semibold text-destructive">
+              <AlertTriangle className="w-5 h-5" />
+              <h2>Danger Zone</h2>
+            </div>
+
+            <div className="bg-destructive/5 border border-destructive/20 rounded-xl p-6 space-y-4">
               <button
                 onClick={handleReset}
-                className="w-full bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-colors"
+                className="w-full bg-destructive text-destructive-foreground py-2 px-4 rounded-lg hover:bg-destructive/90 transition-colors flex items-center justify-center gap-2"
               >
+                <Trash2 className="w-4 h-4" />
                 Reset App
               </button>
-              
-              <p className="text-xs text-red-500">
+
+              <p className="text-xs text-destructive/80 text-center">
                 This will permanently delete all your data, contacts, and activity history.
               </p>
             </div>
           </div>
-          </div>
+        </div>
+      </div>
 
-          {/* Contacts Section - full width */}
-          <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-gray-900">My Contacts</h2>
-            
-            {contacts.length > 0 ? (
-              <div className="space-y-2">
-                {contacts.map((contact) => (
-                  <div key={contact.id} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                    <div>
-                      <div className="font-medium text-gray-900">{contact.relation || 'Contact'}</div>
-                      <div className="text-sm text-gray-600">{contact.name || contact.displayName}</div>
-                      <div className="text-xs text-gray-500">Added: {new Date(contact.addedAt).toLocaleDateString()}</div>
-                    </div>
-                    <button className="text-red-600 text-sm hover:text-red-700">
-                      Remove
-                    </button>
+      {/* Contacts Section - full width */}
+      <div className="space-y-6">
+        <div className="flex items-center gap-2 text-lg font-semibold text-foreground">
+          <Users className="w-5 h-5 text-primary" />
+          <h2>My Contacts</h2>
+        </div>
+
+        <div className="bg-card border border-border rounded-xl shadow-sm overflow-hidden">
+          {contacts.length > 0 ? (
+            <div className="divide-y divide-border">
+              {contacts.map((contact) => (
+                <div key={contact.id} className="flex justify-between items-center p-4 hover:bg-accent/50 transition-colors">
+                  <div>
+                    <div className="font-medium text-foreground">{contact.relation || 'Contact'}</div>
+                    <div className="text-sm text-muted-foreground">{contact.name || contact.displayName}</div>
+                    <div className="text-xs text-muted-foreground/60">Added: {new Date(contact.addedAt).toLocaleDateString()}</div>
                   </div>
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-8 text-gray-500">
-                <p className="text-sm">No contacts yet</p>
-                <p className="text-xs">Use the Link & QR page to connect with others</p>
-              </div>
-            )}
-          </div>
-
+                  <button className="text-destructive text-sm hover:text-destructive/80 transition-colors p-2 hover:bg-destructive/10 rounded-lg">
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12 text-muted-foreground">
+              <Users className="w-12 h-12 mx-auto mb-3 text-muted-foreground/20" />
+              <p className="text-sm font-medium">No contacts yet</p>
+              <p className="text-xs mt-1">Use the Link & QR page to connect with others</p>
+            </div>
+          )}
         </div>
       </div>
     </div>

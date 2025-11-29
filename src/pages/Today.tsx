@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Sun, Sunset, Moon, Share2, Loader2, CheckCircle2, Circle } from 'lucide-react';
 import { Role } from '../data/types';
 import { useProfile } from '../hooks/useProfile';
 import { getRoleContent, getRoleInfo } from '../utils/roleContent';
@@ -35,113 +36,142 @@ export default function Today() {
 
   if (loading) {
     return (
-      <div className="bg-gray-50 min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="text-4xl mb-4">✝️</div>
-          <h1 className="text-xl font-semibold text-gray-800">Loading...</h1>
+      <div className="bg-background min-h-screen flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <Loader2 className="h-10 w-10 animate-spin text-primary mx-auto" />
+          <h1 className="text-xl font-semibold text-foreground">Loading...</h1>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="bg-gray-50 min-h-screen">
-      <div className="max-w-4xl mx-auto bg-white min-h-screen shadow-sm">
-        {/* Date display - responsive */}
-        <div className="bg-white border-b border-gray-200 px-4 sm:px-6 lg:px-8 py-4">
-          <p className="text-sm sm:text-base text-gray-600">{today}</p>
+    <div className="space-y-6 animate-fade-in">
+      {/* Date display */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold text-foreground">Today's Plan</h2>
+          <p className="text-muted-foreground">{today}</p>
         </div>
+        <button className="btn btn-primary flex items-center gap-2">
+          <Share2 className="w-4 h-4" />
+          <span className="hidden sm:inline">Share</span>
+        </button>
+      </div>
 
-        {/* Role Tabs */}
-        <div className="flex overflow-x-auto bg-white border-b px-4 sm:px-6 lg:px-8">
-          {roleTabs.map(({ role, label }) => (
-            <button
-              key={role}
-              onClick={() => setViewedRole(role)}
-              className={`px-3 sm:px-4 py-3 text-sm font-medium whitespace-nowrap border-b-2 transition-colors ${
-                viewedRole === role
-                  ? 'border-primary-600 text-primary-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700'
-              }`}
-            >
-              {label}
-              {role === profile?.currentRole && (
-                <span className="ml-1 text-xs bg-primary-100 text-primary-600 px-1 rounded">
-                  Me
-                </span>
-              )}
+      {/* Role Tabs */}
+      <div className="bg-card border border-border rounded-xl p-1 overflow-x-auto">
+        <div className="flex space-x-1 min-w-max">
+          {roleTabs.map(({ role, label }) => {
+            const isActive = viewedRole === role;
+            const isMe = role === profile?.currentRole;
+            return (
+              <button
+                key={role}
+                onClick={() => setViewedRole(role)}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2 ${isActive
+                    ? 'bg-primary text-primary-foreground shadow-sm'
+                    : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
+                  }`}
+              >
+                {label}
+                {isMe && (
+                  <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${isActive ? 'bg-primary-foreground/20' : 'bg-primary/10 text-primary'
+                    }`}>
+                    Me
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* MAN Schedule */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Morning */}
+        <div className="group bg-card border border-border rounded-xl p-6 hover:shadow-lg transition-all duration-300 hover:border-primary/20">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-orange-100 text-orange-600 rounded-lg group-hover:bg-orange-600 group-hover:text-white transition-colors">
+                <Sun className="w-5 h-5" />
+              </div>
+              <h3 className="text-lg font-semibold text-foreground">Morning</h3>
+            </div>
+            <button className="text-muted-foreground hover:text-primary transition-colors">
+              <Circle className="w-5 h-5" />
             </button>
-          ))}
-        </div>
-
-        {/* MAN Schedule - responsive grid on desktop */}
-        <div className="p-4 sm:p-6 lg:p-8">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
-            {/* Morning */}
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 lg:p-6">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="text-lg font-semibold text-yellow-800">Morning</h3>
-                <input
-                  type="checkbox"
-                  className="h-5 w-5 text-yellow-600 rounded border-yellow-300"
-                />
-              </div>
-              <div className="space-y-2 text-sm text-yellow-700">
-                {roleContent.morning.activities.map((activity, index) => (
-                  <div key={index}>• {activity}</div>
-                ))}
-                {roleContent.morning.focus && (
-                  <div className="text-xs text-yellow-600 italic mt-2">
-                    Focus: {roleContent.morning.focus}
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Afternoon */}
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 lg:p-6">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="text-lg font-semibold text-blue-800">Afternoon</h3>
-                <input
-                  type="checkbox"
-                  className="h-5 w-5 text-blue-600 rounded border-blue-300"
-                />
-              </div>
-              <div className="space-y-2 text-sm text-blue-700">
-                <div>• {roleContent.afternoon.title}: {roleContent.afternoon.content}</div>
-                {roleContent.afternoon.reference && (
-                  <div className="text-xs text-blue-600">
-                    {roleContent.afternoon.reference}
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Night */}
-            <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 lg:p-6">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="text-lg font-semibold text-purple-800">Night</h3>
-                <input
-                  type="checkbox"
-                  className="h-5 w-5 text-purple-600 rounded border-purple-300"
-                />
-              </div>
-              <div className="space-y-2 text-sm text-purple-700">
-                <div>• {roleContent.night.title}: {roleContent.night.activity}</div>
-                {roleContent.night.details && (
-                  <div className="text-xs text-purple-600">
-                    {roleContent.night.details}
-                  </div>
-                )}
-              </div>
-            </div>
           </div>
+          <div className="space-y-3">
+            {roleContent.morning.activities.map((activity, index) => (
+              <div key={index} className="flex items-start gap-2 text-sm text-muted-foreground">
+                <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-orange-400 flex-shrink-0" />
+                <span>{activity}</span>
+              </div>
+            ))}
+            {roleContent.morning.focus && (
+              <div className="mt-4 p-3 bg-muted/50 rounded-lg text-xs text-muted-foreground italic border border-border">
+                Focus: {roleContent.morning.focus}
+              </div>
+            )}
+          </div>
+        </div>
 
-          {/* Share Activity Button */}
-          <div className="mt-6 sm:mt-8">
-            <button className="w-full btn btn-primary lg:max-w-md lg:mx-auto lg:block">
-              Share Activity
+        {/* Afternoon */}
+        <div className="group bg-card border border-border rounded-xl p-6 hover:shadow-lg transition-all duration-300 hover:border-primary/20">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-blue-100 text-blue-600 rounded-lg group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                <Sunset className="w-5 h-5" />
+              </div>
+              <h3 className="text-lg font-semibold text-foreground">Afternoon</h3>
+            </div>
+            <button className="text-muted-foreground hover:text-primary transition-colors">
+              <Circle className="w-5 h-5" />
             </button>
+          </div>
+          <div className="space-y-3">
+            <div className="flex items-start gap-2 text-sm text-muted-foreground">
+              <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-blue-400 flex-shrink-0" />
+              <span>
+                <span className="font-medium text-foreground">{roleContent.afternoon.title}:</span>{' '}
+                {roleContent.afternoon.content}
+              </span>
+            </div>
+            {roleContent.afternoon.reference && (
+              <div className="mt-4 p-3 bg-muted/50 rounded-lg text-xs text-primary font-medium border border-border">
+                {roleContent.afternoon.reference}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Night */}
+        <div className="group bg-card border border-border rounded-xl p-6 hover:shadow-lg transition-all duration-300 hover:border-primary/20">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-indigo-100 text-indigo-600 rounded-lg group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                <Moon className="w-5 h-5" />
+              </div>
+              <h3 className="text-lg font-semibold text-foreground">Night</h3>
+            </div>
+            <button className="text-muted-foreground hover:text-primary transition-colors">
+              <Circle className="w-5 h-5" />
+            </button>
+          </div>
+          <div className="space-y-3">
+            <div className="flex items-start gap-2 text-sm text-muted-foreground">
+              <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-indigo-400 flex-shrink-0" />
+              <span>
+                <span className="font-medium text-foreground">{roleContent.night.title}:</span>{' '}
+                {roleContent.night.activity}
+              </span>
+            </div>
+            {roleContent.night.details && (
+              <div className="mt-4 p-3 bg-muted/50 rounded-lg text-xs text-muted-foreground border border-border">
+                {roleContent.night.details}
+              </div>
+            )}
           </div>
         </div>
       </div>
