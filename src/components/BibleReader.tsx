@@ -1253,13 +1253,15 @@ export default function BibleReader() {
                                                                             const bookUrlName = refBook ? refBook.name.replace(/\s+/g, '') : ref.book;
 
                                                                             return (
-                                                                                <Link
-                                                                                    to={`/bible/read/${bookUrlName}/${ref.chapter}/${ref.verse}${ref.endVerse ? `-${ref.endVerse}` : ''}`}
-                                                                                    className="text-sm font-medium text-foreground/80 hover:text-primary flex-1 truncate mr-2"
-                                                                                    onClick={(e) => e.stopPropagation()} // Stop propagation to prevent toggle
-                                                                                >
-                                                                                    {bookName} {ref.chapter}:{ref.verse}{ref.endVerse ? `-${ref.endVerse}` : ''}
-                                                                                </Link>
+                                                                                <div className="flex-1 min-w-0 mr-2 flex items-center">
+                                                                                    <Link
+                                                                                        to={`/bible/read/${bookUrlName}/${ref.chapter}/${ref.verse}${ref.endVerse ? `-${ref.endVerse}` : ''}`}
+                                                                                        className="text-sm font-medium text-foreground/80 hover:text-primary truncate"
+                                                                                        onClick={(e) => e.stopPropagation()} // Stop propagation to prevent toggle
+                                                                                    >
+                                                                                        {bookName} {ref.chapter}:{ref.verse}{ref.endVerse ? `-${ref.endVerse}` : ''}
+                                                                                    </Link>
+                                                                                </div>
                                                                             );
                                                                         })()}
                                                                         <div className="flex items-center gap-2">
