@@ -834,34 +834,29 @@ export default function BibleReader() {
     const canGoPrev = !!bsbChapter.previousChapterApiLink || (!isFirstBook);
     const canGoNext = !!bsbChapter.nextChapterApiLink || (!isLastBook);
 
-    const toggleAllRefs = async () => {
-        if (!crossRefs) return;
-
-        const allRefs = crossRefs.chapter.content.flatMap(v => v.references.map(r => ({ ...r, verseNum: v.verse })));
-        const allKeys = allRefs.map(r => `${r.book}-${r.chapter}-${r.verse}`);
-        const anyExpanded = allKeys.some(k => expandedRefTexts[k]);
+    const toggleVerseRefs = async (verseNum: number, refs: any[]) => {
+        const refsForVerse = refs.map(r => ({ ...r, verseNum }));
+        const keys = refsForVerse.map(r => `${r.book}-${r.chapter}-${r.verse}`);
+        const anyExpanded = keys.some(k => expandedRefTexts[k]);
 
         if (anyExpanded) {
-            // Collapse all
-            setExpandedRefTexts({});
-        } else {
-            // Expand all
+            // Collapse all for this verse
             const newExpanded = { ...expandedRefTexts };
-            const refsToFetch = allRefs.filter(r => !expandedRefTexts[`${r.book}-${r.chapter}-${r.verse}`]);
-
-            // Set loading for all
+            keys.forEach(k => delete newExpanded[k]);
+            setExpandedRefTexts(newExpanded);
+        } else {
+            // Expand all for this verse
+            const newExpanded = { ...expandedRefTexts };
             const newLoading = { ...loadingRefs };
-            refsToFetch.forEach(r => {
-                newLoading[`${r.book}-${r.chapter}-${r.verse}`] = true;
-            });
+
+            // Mark loading
+            keys.forEach(k => newLoading[k] = true);
             setLoadingRefs(newLoading);
 
-            // Fetch in batches to avoid rate limiting
-            const BATCH_SIZE = 5;
-            for (let i = 0; i < refsToFetch.length; i += BATCH_SIZE) {
-                const batch = refsToFetch.slice(i, i + BATCH_SIZE);
-                await Promise.all(batch.map(async (ref) => {
-                    const refKey = `${ref.book}-${ref.chapter}-${ref.verse}`;
+            // Fetch
+            await Promise.all(refsForVerse.map(async (ref) => {
+                const refKey = `${ref.book}-${ref.chapter}-${ref.verse}`;
+                if (!newExpanded[refKey]) {
                     try {
                         const data = await getChapter(selectedTranslation, ref.book, ref.chapter);
                         const verseContent = data.chapter.content.find(c => c.type === 'verse' && c.number === ref.verse);
@@ -873,10 +868,10 @@ export default function BibleReader() {
                     } catch (e) {
                         newExpanded[refKey] = 'Failed to load.';
                     }
-                }));
-                // Update state incrementally
-                setExpandedRefTexts({ ...newExpanded });
-            }
+                }
+            }));
+
+            setExpandedRefTexts(newExpanded);
             setLoadingRefs({});
         }
     };
@@ -1078,79 +1073,85 @@ export default function BibleReader() {
                                             <span className="text-xs font-medium text-muted-foreground">
                                                 {crossRefs?.chapter.content.reduce((acc, v) => acc + v.references.length, 0)} References
                                             </span>
-                                            <button
-                                                onClick={toggleAllRefs}
-                                                className="text-xs text-primary hover:underline flex items-center gap-1"
-                                            >
-                                                {Object.keys(expandedRefTexts).length > 0 ? (
-                                                    <>Collapse All <ChevronUp className="w-3 h-3" /></>
-                                                ) : (
-                                                    <>Expand All <ChevronDown className="w-3 h-3" /></>
-                                                )}
-                                            </button>
                                         </div>
-                                        {crossRefs?.chapter.content.filter(v => v.references.length > 0).map(v => (
-                                            <div key={v.verse} className="border-b border-border/50 pb-4 last:border-0">
-                                                <div className="font-bold text-sm mb-2 flex items-center gap-2">
-                                                    <span className="bg-primary/10 text-primary px-2 py-0.5 rounded text-xs">Verse {v.verse}</span>
-                                                </div>
-                                                <div className="grid grid-cols-1 gap-2">
-                                                    {v.references.map((ref, i) => {
-                                                        const refKey = `${ref.book}-${ref.chapter}-${ref.verse}`;
-                                                        const isExpanded = !!expandedRefTexts[refKey];
-                                                        const isLoading = !!loadingRefs[refKey];
+                                        {crossRefs?.chapter.content.filter(v => v.references.length > 0).map(v => {
+                                            const verseRefs = v.references.map(r => ({ ...r, verseNum: v.verse }));
+                                            const allKeys = verseRefs.map(r => `${r.book}-${r.chapter}-${r.verse}`);
+                                            const anyExpanded = allKeys.some(k => expandedRefTexts[k]);
 
-                                                        return (
-                                                            <div key={i} className="flex flex-col bg-card hover:bg-secondary/10 rounded transition-colors border border-transparent hover:border-border/50">
-                                                                <div className="flex items-center justify-between p-2">
-                                                                    <Link
-                                                                        to={`/bible/read/${ref.book}/${ref.chapter}#verse-${ref.verse}`}
-                                                                        className="text-sm font-medium text-foreground/80 hover:text-primary flex-1 truncate mr-2"
-                                                                    >
-                                                                        {ref.book} {ref.chapter}:{ref.verse}{ref.endVerse ? `-${ref.endVerse}` : ''}
-                                                                    </Link>
-                                                                    <div className="flex items-center gap-2">
-                                                                        {ref.score && (
-                                                                            <span className="text-[10px] text-muted-foreground bg-secondary/20 px-1.5 py-0.5 rounded hidden sm:inline-block">
-                                                                                {ref.score}
-                                                                            </span>
-                                                                        )}
-                                                                        <button
-                                                                            onClick={(e) => {
-                                                                                e.preventDefault();
-                                                                                handleToggleRefText(refKey, ref.book, ref.chapter, ref.verse);
-                                                                            }}
-                                                                            className="p-1 hover:bg-secondary/20 rounded text-muted-foreground hover:text-foreground transition-colors"
-                                                                            title={isExpanded ? "Hide Text" : "Show Text"}
+                                            return (
+                                                <div key={v.verse} className="border-b border-border/50 pb-4 last:border-0">
+                                                    <div className="font-bold text-sm mb-2 flex items-center justify-between">
+                                                        <span className="bg-primary/10 text-primary px-2 py-0.5 rounded text-xs">Verse {v.verse}</span>
+                                                        <button
+                                                            onClick={() => toggleVerseRefs(v.verse, v.references)}
+                                                            className="text-[10px] text-primary hover:underline flex items-center gap-1"
+                                                        >
+                                                            {anyExpanded ? (
+                                                                <>Collapse All <ChevronUp className="w-3 h-3" /></>
+                                                            ) : (
+                                                                <>Expand All <ChevronDown className="w-3 h-3" /></>
+                                                            )}
+                                                        </button>
+                                                    </div>
+                                                    <div className="grid grid-cols-1 gap-2">
+                                                        {v.references.map((ref, i) => {
+                                                            const refKey = `${ref.book}-${ref.chapter}-${ref.verse}`;
+                                                            const isExpanded = !!expandedRefTexts[refKey];
+                                                            const isLoading = !!loadingRefs[refKey];
+
+                                                            return (
+                                                                <div key={i} className="flex flex-col bg-card hover:bg-secondary/10 rounded transition-colors border border-transparent hover:border-border/50">
+                                                                    <div className="flex items-center justify-between p-2">
+                                                                        <Link
+                                                                            to={`/bible/read/${ref.book}/${ref.chapter}#verse-${ref.verse}${ref.endVerse ? `-${ref.endVerse}` : ''}`}
+                                                                            className="text-sm font-medium text-foreground/80 hover:text-primary flex-1 truncate mr-2"
                                                                         >
-                                                                            {isExpanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-
-                                                                {/* Expanded Text Preview */}
-                                                                {isExpanded && (
-                                                                    <div className="px-3 pb-3 pt-0 animate-in slide-in-from-top-1 duration-200">
-                                                                        <div className="text-xs text-muted-foreground bg-secondary/5 p-2 rounded border border-border/50">
-                                                                            {isLoading ? (
-                                                                                <div className="flex items-center gap-2">
-                                                                                    <Loader2 className="w-3 h-3 animate-spin" />
-                                                                                    <span>Loading...</span>
-                                                                                </div>
-                                                                            ) : (
-                                                                                <p className="leading-relaxed italic">
-                                                                                    "{expandedRefTexts[refKey]}"
-                                                                                </p>
+                                                                            {ref.book} {ref.chapter}:{ref.verse}{ref.endVerse ? `-${ref.endVerse}` : ''}
+                                                                        </Link>
+                                                                        <div className="flex items-center gap-2">
+                                                                            {ref.score && (
+                                                                                <span className="text-[10px] text-muted-foreground bg-secondary/20 px-1.5 py-0.5 rounded hidden sm:inline-block">
+                                                                                    {ref.score}
+                                                                                </span>
                                                                             )}
+                                                                            <button
+                                                                                onClick={(e) => {
+                                                                                    e.preventDefault();
+                                                                                    handleToggleRefText(refKey, ref.book, ref.chapter, ref.verse);
+                                                                                }}
+                                                                                className="p-1 hover:bg-secondary/20 rounded text-muted-foreground hover:text-foreground transition-colors"
+                                                                                title={isExpanded ? "Hide Text" : "Show Text"}
+                                                                            >
+                                                                                {isExpanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+                                                                            </button>
                                                                         </div>
                                                                     </div>
-                                                                )}
-                                                            </div>
-                                                        );
-                                                    })}
+
+                                                                    {/* Expanded Text Preview */}
+                                                                    {isExpanded && (
+                                                                        <div className="px-3 pb-3 pt-0 animate-in slide-in-from-top-1 duration-200">
+                                                                            <div className="text-xs text-muted-foreground bg-secondary/5 p-2 rounded border border-border/50">
+                                                                                {isLoading ? (
+                                                                                    <div className="flex items-center gap-2">
+                                                                                        <Loader2 className="w-3 h-3 animate-spin" />
+                                                                                        <span>Loading...</span>
+                                                                                    </div>
+                                                                                ) : (
+                                                                                    <p className="leading-relaxed italic">
+                                                                                        "{expandedRefTexts[refKey]}"
+                                                                                    </p>
+                                                                                )}
+                                                                            </div>
+                                                                        </div>
+                                                                    )}
+                                                                </div>
+                                                            );
+                                                        })}
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        ))}
+                                            );
+                                        })}
                                         {(!crossRefs || crossRefs.chapter.content.every(v => v.references.length === 0)) && (
                                             <div className="text-center py-10 text-muted-foreground">
                                                 <p>No cross-references found for this chapter.</p>
