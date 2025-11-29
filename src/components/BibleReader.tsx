@@ -318,11 +318,11 @@ export default function BibleReader() {
     // Fetch Commentary Content
     useEffect(() => {
         const fetchCommentary = async () => {
-            if (!bookId || !chapter || !showCommentary || !selectedCommentaryId) return;
+            if (!resolvedBookId || !chapter || !showCommentary || !selectedCommentaryId) return;
 
             setCommentaryLoading(true);
             try {
-                const data = await getCommentaryChapter(selectedCommentaryId, bookId, parseInt(chapter));
+                const data = await getCommentaryChapter(selectedCommentaryId, resolvedBookId, parseInt(chapter));
                 setCommentaryChapter(data);
             } catch (e) {
                 console.error("Failed to fetch commentary", e);
@@ -333,7 +333,7 @@ export default function BibleReader() {
         };
 
         fetchCommentary();
-    }, [bookId, chapter, showCommentary, selectedCommentaryId]);
+    }, [resolvedBookId, chapter, showCommentary, selectedCommentaryId]);
 
 
     const handleNext = () => {
