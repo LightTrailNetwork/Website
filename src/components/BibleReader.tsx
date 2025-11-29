@@ -79,6 +79,7 @@ export default function BibleReader() {
     // Universal Search & Filtering State
     const [universalSearchQuery, setUniversalSearchQuery] = useState('');
     const [visibleVerses, setVisibleVerses] = useState<number[] | null>(null);
+    const [viewMode, setViewMode] = useState<'full' | 'focus'>('full');
 
     // Parse highlighted range from URL param
     const { highlightStart, highlightEnd } = useMemo(() => {
@@ -234,7 +235,26 @@ export default function BibleReader() {
         };
 
         fetchData();
+        fetchData();
     }, [bookId, chapter, selectedTranslation]);
+
+    // Scroll to highlighted verse
+    useEffect(() => {
+        if (!loading && verseRange) {
+            const rangeMatch = verseRange.match(/^(\d+)/);
+            if (rangeMatch) {
+                const verseNum = rangeMatch[1];
+                // Small delay to ensure rendering is complete
+                setTimeout(() => {
+                    const element = document.getElementById(`verse-${verseNum}`);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        // Optional: Add a temporary highlight class if needed, though we have persistent highlighting now
+                    }
+                }, 500);
+            }
+        }
+    }, [loading, verseRange, bookId, chapter]);
 
     const handleToggleRefText = async (refKey: string, book: string, chapter: number, verse: number) => {
         if (expandedRefTexts[refKey]) {
@@ -449,7 +469,7 @@ export default function BibleReader() {
 
                 {content.map((item, index) => {
                     if (item.type === 'heading') {
-                        if (visibleVerses) return null;
+                        if (visibleVerses || viewMode === 'focus') return null;
                         return (
                             <h3 key={index} className="text-xl font-semibold mt-6 mb-3 text-primary">
                                 {item.content.join(' ')}
@@ -458,7 +478,7 @@ export default function BibleReader() {
                     }
 
                     if (item.type === 'line_break') {
-                        if (visibleVerses) return null;
+                        if (visibleVerses || viewMode === 'focus') return null;
                         return <br key={index} />;
                     }
 
@@ -474,6 +494,11 @@ export default function BibleReader() {
 
                         const isHighlighted = highlightStart !== null && highlightEnd !== null &&
                             item.number >= highlightStart && item.number <= highlightEnd;
+
+                        // Focus Mode Filter
+                        if (viewMode === 'focus' && highlightStart !== null && !isHighlighted) {
+                            return null;
+                        }
 
                         return (
                             <span
@@ -924,7 +949,16 @@ export default function BibleReader() {
                                 <div className="flex items-center gap-2">
                                     <span className="font-semibold text-sm">Highlighted Verses: {highlightStart}{highlightEnd && highlightEnd !== highlightStart ? `-${highlightEnd}` : ''}</span>
                                 </div>
-                                <button onClick={() => navigate(`/bible/read/${bookId}/${chapter}`)} className="text-xs text-primary hover:underline">Clear</button>
+                                <div className="flex items-center gap-2">
+                                    <button
+                                        onClick={() => setViewMode(viewMode === 'full' ? 'focus' : 'full')}
+                                        className="text-xs font-medium px-2 py-1 rounded bg-yellow-200/50 dark:bg-yellow-800/50 hover:bg-yellow-200 dark:hover:bg-yellow-800 transition-colors flex items-center gap-1"
+                                    >
+                                        {viewMode === 'full' ? <Eye className="w-3 h-3" /> : <BookOpen className="w-3 h-3" />}
+                                        {viewMode === 'full' ? 'Focus View' : 'Show Full Chapter'}
+                                    </button>
+                                    <button onClick={() => navigate(`/bible/read/${bookId}/${chapter}`)} className="text-xs text-primary hover:underline">Clear</button>
+                                </div>
                             </div>
                         )}
                     </div>
