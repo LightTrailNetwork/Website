@@ -15,6 +15,25 @@ const getText = (content: (string | { text: string; wordsOfJesus?: boolean } | {
         return '';
     }).join('').trim();
 
+// Helper to sort references by score (desc) then book order (asc)
+const getSortedReferences = (refs: any[], books: BibleBook[]) => {
+    return [...refs].sort((a, b) => {
+        // 1. Score Descending
+        if ((a.score || 0) !== (b.score || 0)) {
+            return (b.score || 0) - (a.score || 0);
+        }
+        // 2. Book Order Ascending
+        const bookA = books.find(book => book.id === a.book);
+        const bookB = books.find(book => book.id === b.book);
+        if (bookA && bookB) {
+            if (bookA.order !== bookB.order) return bookA.order - bookB.order;
+        }
+        // 3. Chapter/Verse Ascending
+        if (a.chapter !== b.chapter) return a.chapter - b.chapter;
+        return a.verse - b.verse;
+    });
+};
+
 export default function BibleReader() {
     const { bookId, chapter, verseRange } = useParams<{ bookId: string; chapter: string; verseRange?: string }>();
     const navigate = useNavigate();
@@ -487,6 +506,68 @@ export default function BibleReader() {
         }
     };
 
+    // Reference Popover Handlers
+    const handleRefMouseEnter = (e: React.MouseEvent, verseNum: number, refs: any[]) => {
+        if (window.matchMedia('(pointer: coarse)').matches) return; // Skip on touch
+
+        if (closeTimeout) {
+            clearTimeout(closeTimeout);
+            setCloseTimeout(null);
+        }
+
+        const rect = (e.target as HTMLElement).getBoundingClientRect();
+        // Sort references before showing
+        const sortedRefs = getSortedReferences(refs, books);
+
+        const timeout = setTimeout(() => {
+            setRefPopover({
+                verse: verseNum,
+                x: rect.left + rect.width / 2,
+                y: rect.bottom + 5, // Position below the icon
+                refs: sortedRefs
+            });
+        }, 300);
+        setHoverTimeout(timeout);
+    };
+
+    const handleRefMouseLeave = () => {
+        if (hoverTimeout) clearTimeout(hoverTimeout);
+
+        const timeout = setTimeout(() => {
+            setRefPopover(null);
+        }, 300);
+        setCloseTimeout(timeout);
+    };
+
+    const handleRefClick = (e: React.MouseEvent, verseNum: number, refs: any[]) => {
+        e.stopPropagation();
+
+        // Mobile: Toggle popover on tap
+        if (window.matchMedia('(pointer: coarse)').matches) {
+            if (refPopover?.verse === verseNum) {
+                setRefPopover(null);
+            } else {
+                const rect = (e.target as HTMLElement).getBoundingClientRect();
+                const sortedRefs = getSortedReferences(refs, books);
+                setRefPopover({
+                    verse: verseNum,
+                    x: rect.left + rect.width / 2,
+                    y: rect.top,
+                    refs: sortedRefs
+                });
+            }
+            return;
+        }
+
+        // Desktop: Click opens sidebar (Double click logic can be handled if needed, but single click is standard for "Open")
+        // Implementation Plan asked for: Hover -> Popover, Click/DoubleTap -> Sidebar
+        // So for desktop click:
+        setCommentaryTab('references');
+        setShowCommentary(true);
+        // Also close popover
+        setRefPopover(null);
+    };
+
     // Helper to check if we should insert a space between content parts
     const shouldInsertSpace = (prev: any, curr: any) => {
         const prevText = typeof prev === 'string' ? prev : prev.text;
@@ -520,7 +601,9 @@ export default function BibleReader() {
 
                         const msbVerse = msbContent?.find(v => v.type === 'verse' && v.number === item.number) as { type: 'verse', number: number, content: (string | { text: string, wordsOfJesus?: boolean })[] } | undefined;
 
-                        const hasCrossRefs = crossRefs?.chapter.content.some(v => v.verse === item.number && v.references.length > 0);
+                        // Get references for this verse
+                        const verseRefs = crossRefs?.chapter.content.find(v => v.verse === item.number)?.references || [];
+                        const hasCrossRefs = verseRefs.length > 0;
 
                         const isHighlighted = highlightStart !== null && highlightEnd !== null &&
                             item.number >= highlightStart && item.number <= highlightEnd;
@@ -540,11 +623,9 @@ export default function BibleReader() {
                                     {item.number}
                                     {hasCrossRefs && (
                                         <button
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                setCommentaryTab('references');
-                                                setShowCommentary(true);
-                                            }}
+                                            onClick={(e) => handleRefClick(e, item.number, verseRefs)}
+                                            onMouseEnter={(e) => handleRefMouseEnter(e, item.number, verseRefs)}
+                                            onMouseLeave={handleRefMouseLeave}
                                             className="ml-0.5 text-primary/60 hover:text-primary transition-colors"
                                             title="View Cross References"
                                         >
@@ -1194,33 +1275,7 @@ export default function BibleReader() {
                                 )}
                             </div>
 
-                            {/* Reference Popover */}
-                            {refPopover && (
-                                <div
-                                    className="fixed z-50 bg-popover text-popover-foreground px-3 py-2 rounded-lg shadow-lg border border-border animate-in fade-in zoom-in-95 duration-200 max-w-xs pointer-events-none"
-                                    style={{ top: refPopover.y - 10, left: refPopover.x, transform: 'translate(-50%, -100%)' }}
-                                >
-                                    <div className="text-xs font-bold mb-1 border-b border-border/50 pb-1">
-                                        {refPopover.refs.length} Cross Reference{refPopover.refs.length !== 1 ? 's' : ''}
-                                    </div>
-                                    <div className="space-y-1">
-                                        {refPopover.refs.slice(0, 3).map((ref, i) => (
-                                            <div key={i} className="text-xs flex justify-between gap-4">
-                                                <span className="font-medium">{ref.book} {ref.chapter}:{ref.verse}</span>
-                                                {ref.score && <span className="opacity-70">{ref.score}</span>}
-                                            </div>
-                                        ))}
-                                        {refPopover.refs.length > 3 && (
-                                            <div className="text-[10px] text-muted-foreground italic pt-1">
-                                                + {refPopover.refs.length - 3} more...
-                                            </div>
-                                        )}
-                                    </div>
-                                    <div className="mt-2 text-[10px] text-primary/80 font-medium text-center bg-primary/5 rounded py-0.5">
-                                        Click to view all
-                                    </div>
-                                </div>
-                            )}
+
                         </div>
                     </>
                 )}
@@ -1403,6 +1458,63 @@ export default function BibleReader() {
                     </div>
                 )}
             </div>
+
+            {/* Reference Popover */}
+            {refPopover && (
+                <div
+                    className="fixed z-50 bg-popover text-popover-foreground px-3 py-2 rounded-lg shadow-lg border border-border animate-in fade-in zoom-in-95 duration-200 max-w-xs pointer-events-auto"
+                    style={{ top: refPopover.y, left: refPopover.x, transform: 'translateX(-50%)' }}
+                    onMouseEnter={() => {
+                        if (closeTimeout) {
+                            clearTimeout(closeTimeout);
+                            setCloseTimeout(null);
+                        }
+                    }}
+                    onMouseLeave={handleRefMouseLeave}
+                >
+                    <div className="text-xs font-bold mb-1 border-b border-border/50 pb-1 flex justify-between items-center">
+                        <span>{refPopover.refs.length} Cross Reference{refPopover.refs.length !== 1 ? 's' : ''}</span>
+                    </div>
+                    <div className="space-y-1">
+                        {refPopover.refs.slice(0, 3).map((ref, i) => {
+                            const refBook = books.find(b => b.id === ref.book);
+                            const bookName = refBook ? refBook.name : ref.book;
+                            const bookUrlName = refBook ? refBook.name.replace(/\s+/g, '') : ref.book;
+
+                            return (
+                                <Link
+                                    key={i}
+                                    to={`/bible/read/${bookUrlName}/${ref.chapter}/${ref.verse}${ref.endVerse ? `-${ref.endVerse}` : ''}`}
+                                    className="text-xs flex justify-between gap-4 hover:bg-secondary/20 p-1 rounded transition-colors"
+                                    onClick={(e) => {
+                                        e.stopPropagation(); // Prevent bubbling
+                                        setRefPopover(null); // Close popover on navigation
+                                    }}
+                                >
+                                    <span className="font-medium text-primary hover:underline">{bookName} {ref.chapter}:{ref.verse}</span>
+                                    {ref.score && <span className="opacity-70 text-[10px]">{ref.score}</span>}
+                                </Link>
+                            );
+                        })}
+                        {refPopover.refs.length > 3 && (
+                            <div className="text-[10px] text-muted-foreground italic pt-1 px-1">
+                                + {refPopover.refs.length - 3} more...
+                            </div>
+                        )}
+                    </div>
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            setCommentaryTab('references');
+                            setShowCommentary(true);
+                            setRefPopover(null);
+                        }}
+                        className="w-full mt-2 text-[10px] text-primary/80 font-medium text-center bg-primary/5 hover:bg-primary/10 rounded py-0.5 transition-colors"
+                    >
+                        View all in Sidebar
+                    </button>
+                </div>
+            )}
         </div>
     );
 }
