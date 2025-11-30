@@ -93,27 +93,18 @@ export default function BibleReader() {
     // Universal Search & Filtering State
     const [universalSearchQuery, setUniversalSearchQuery] = useState('');
     const [viewMode, setViewMode] = useState<'full' | 'focus'>('full');
-    const [resolvedBookId, setResolvedBookId] = useState<string | null>(null);
+
     const [sidebarScrollTarget, setSidebarScrollTarget] = useState<number | null>(null);
 
     // Resolve bookId from URL to API ID
-    useEffect(() => {
-        if (!bookId) return;
-        if (books.length === 0) {
-            // If books aren't loaded yet, we can't resolve names efficiently.
-            // However, we might be able to assume it's an ID if it's 3 chars?
-            // Better to wait for books. But we need to handle the initial load.
-            // For now, let's just pass it through if books are empty, but this might cause a double fetch if it's a name.
-            // Actually, let's just wait for books.
-            return;
-        }
+
+    const resolvedBookId = useMemo(() => {
+        if (!bookId) return null;
+        if (books.length === 0) return null;
 
         // Check if bookId is already a valid ID
         const directMatch = books.find(b => b.id === bookId);
-        if (directMatch) {
-            setResolvedBookId(directMatch.id);
-            return;
-        }
+        if (directMatch) return directMatch.id;
 
         // Try to find by name
         const normalizedUrlId = bookId.toLowerCase().replace(/\s+/g, '');
@@ -122,11 +113,9 @@ export default function BibleReader() {
             b.commonName.toLowerCase().replace(/\s+/g, '') === normalizedUrlId
         );
 
-        if (nameMatch) {
-            setResolvedBookId(nameMatch.id);
-        } else {
-            setResolvedBookId(bookId); // Fallback
-        }
+        if (nameMatch) return nameMatch.id;
+
+        return bookId; // Fallback
     }, [bookId, books]);
 
     // Parse highlighted range from URL param
