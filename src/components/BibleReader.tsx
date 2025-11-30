@@ -1076,19 +1076,20 @@ export default function BibleReader() {
 
     return (
         <div className="flex flex-col sm:gap-0 relative max-w-7xl mx-auto px-0 sm:px-4">
-            <div className="hidden sm:block px-4 sm:px-0">
-                <Breadcrumbs
-                    items={[
-                        { label: 'Bible', to: '/bible' },
-                        { label: bsbChapter.book.name, to: `/bible/read/${bsbChapter.book.name.replace(/\s+/g, '')}` },
-                        { label: `Chapter ${bsbChapter.chapter.number}` }
-                    ]}
-                    className="mb-1"
-                />
-            </div>
+
 
             <div className="flex gap-6 relative">
                 <div className={`flex-1 w-full lg:max-w-3xl mx-auto pb-20 animate-fade-in transition-all ${showCommentary ? 'lg:mr-[320px]' : ''}`}>
+                    <div className="hidden sm:block px-4 sm:px-0">
+                        <Breadcrumbs
+                            items={[
+                                { label: 'Bible', to: '/bible' },
+                                { label: bsbChapter.book.name, to: `/bible/read/${bsbChapter.book.name.replace(/\s+/g, '')}` },
+                                { label: `Chapter ${bsbChapter.chapter.number}` }
+                            ]}
+                            className="mb-1"
+                        />
+                    </div>
                     {/* Navigation Header */}
                     <div id="bible-nav-header" className="sticky top-16 z-10 bg-background/80 backdrop-blur-md border-b border-border mb-0 sm:mb-6 shadow-sm flex flex-col transition-all duration-300 -mx-4 sm:mx-0 sm:rounded-b-xl">
                         <div className="p-1 sm:p-4 flex items-center justify-between gap-2 sm:gap-4 h-10 sm:h-auto">
