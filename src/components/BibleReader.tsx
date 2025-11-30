@@ -95,6 +95,7 @@ export default function BibleReader() {
     const [viewMode, setViewMode] = useState<'full' | 'focus'>('full');
 
     const [sidebarScrollTarget, setSidebarScrollTarget] = useState<number | null>(null);
+    const [isSearchExpanded, setIsSearchExpanded] = useState(false);
 
     // Resolve bookId from URL to API ID
 
@@ -1013,37 +1014,70 @@ export default function BibleReader() {
             <div className="flex gap-6 relative">
                 <div className={`flex-1 max-w-3xl mx-auto pb-20 animate-fade-in transition-all ${showCommentary ? 'lg:mr-[320px]' : ''}`}>
                     {/* Navigation Header */}
-                    <div className="sticky top-20 z-10 bg-background/80 backdrop-blur-md border-b border-border mb-6 rounded-b-xl shadow-sm flex flex-col">
-                        <div className="p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-                            <div className="flex items-center gap-2 w-full sm:w-auto">
+                    <div className="sticky top-16 z-10 bg-background/80 backdrop-blur-md border-b border-border mb-6 rounded-b-xl shadow-sm flex flex-col transition-all duration-300">
+                        <div className="p-2 sm:p-4 flex items-center justify-between gap-2 sm:gap-4 h-14 sm:h-auto">
+
+                            {/* Mobile Search Expanded View */}
+                            {isSearchExpanded && (
+                                <div className="flex w-full items-center gap-2 sm:hidden animate-in fade-in slide-in-from-right-5 duration-200">
+                                    <form onSubmit={(e) => { handleUniversalSearch(e); setIsSearchExpanded(false); }} className="relative flex-1">
+                                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                                        <input
+                                            type="text"
+                                            placeholder="Search (e.g. John 3:16)"
+                                            className="w-full pl-9 pr-4 py-2 bg-secondary/10 border-transparent rounded-full focus:ring-2 focus:ring-primary focus:bg-background transition-all text-sm"
+                                            value={universalSearchQuery}
+                                            onChange={(e) => setUniversalSearchQuery(e.target.value)}
+                                            autoFocus
+                                        />
+                                    </form>
+                                    <button
+                                        onClick={() => setIsSearchExpanded(false)}
+                                        className="p-2 hover:bg-accent/10 rounded-full transition-colors"
+                                    >
+                                        <X className="w-5 h-5 text-muted-foreground" />
+                                    </button>
+                                </div>
+                            )}
+
+                            {/* Standard Navigation View (Hidden when mobile search is expanded) */}
+                            <div className={`flex items-center gap-1 sm:gap-2 w-full sm:w-auto ${isSearchExpanded ? 'hidden sm:flex' : 'flex'}`}>
                                 <button
                                     onClick={handlePrev}
                                     disabled={!canGoPrev}
-                                    className="p-2 hover:bg-accent/10 rounded-full disabled:opacity-30 transition-colors shrink-0"
+                                    className="p-1.5 sm:p-2 hover:bg-accent/10 rounded-full disabled:opacity-30 transition-colors shrink-0"
                                 >
-                                    <ChevronLeft className="w-6 h-6" />
+                                    <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
                                 </button>
                                 <button
                                     onClick={() => setShowQuickNav(true)}
-                                    className="flex items-center gap-2 px-3 py-1.5 hover:bg-accent/10 rounded-lg transition-colors text-left min-w-[140px]"
+                                    className="flex-1 sm:flex-none flex items-center justify-center sm:justify-start gap-2 px-2 py-1.5 hover:bg-accent/10 rounded-lg transition-colors text-center sm:text-left min-w-[120px] sm:min-w-[140px]"
                                 >
-                                    <Grid className="w-5 h-5 text-primary" />
+                                    <div className="hidden sm:block"><Grid className="w-5 h-5 text-primary" /></div>
                                     <div>
-                                        <h2 className="text-lg font-bold leading-none">{bsbChapter.book.name} {bsbChapter.chapter.number}</h2>
+                                        <h2 className="text-base sm:text-lg font-bold leading-none truncate">{bsbChapter.book.name} {bsbChapter.chapter.number}</h2>
                                         <p className="text-[10px] text-muted-foreground uppercase tracking-wider">{selectedTranslation}</p>
                                     </div>
                                 </button>
                                 <button
                                     onClick={handleNext}
                                     disabled={!canGoNext}
-                                    className="p-2 hover:bg-accent/10 rounded-full disabled:opacity-30 transition-colors shrink-0 sm:hidden"
+                                    className="p-1.5 sm:p-2 hover:bg-accent/10 rounded-full disabled:opacity-30 transition-colors shrink-0 sm:hidden"
                                 >
-                                    <ChevronRight className="w-6 h-6" />
+                                    <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
+                                </button>
+
+                                {/* Mobile Search Trigger */}
+                                <button
+                                    onClick={() => setIsSearchExpanded(true)}
+                                    className="p-1.5 hover:bg-accent/10 rounded-full transition-colors shrink-0 sm:hidden ml-1"
+                                >
+                                    <Search className="w-5 h-5 text-muted-foreground" />
                                 </button>
                             </div>
 
-                            {/* Universal Search Bar */}
-                            <form onSubmit={handleUniversalSearch} className="relative w-full sm:max-w-xs">
+                            {/* Desktop Universal Search Bar */}
+                            <form onSubmit={handleUniversalSearch} className="relative w-full sm:max-w-xs hidden sm:block">
                                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                                 <input
                                     type="text"
