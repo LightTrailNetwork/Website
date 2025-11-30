@@ -134,6 +134,13 @@ export default function BibleReader() {
         return { highlightStart: start, highlightEnd: end };
     }, [verseRange]);
 
+    // Reset view mode when highlights are cleared
+    useEffect(() => {
+        if (highlightStart === null) {
+            setViewMode('full');
+        }
+    }, [highlightStart]);
+
     // Fetch Books, Translations, Commentaries, and Profiles on mount
     useEffect(() => {
         const initData = async () => {
@@ -391,6 +398,26 @@ export default function BibleReader() {
             }
         }
     };
+
+    // Scroll sidebar to target verse
+    useEffect(() => {
+        if (showCommentary && commentaryTab === 'references' && sidebarScrollTarget !== null) {
+            // Small delay to allow sidebar to render/animate in
+            const timeout = setTimeout(() => {
+                const element = document.getElementById(`sidebar-ref-verse-${sidebarScrollTarget}`);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    // Add temporary highlight
+                    element.classList.add('bg-primary/5', 'transition-colors', 'duration-1000');
+                    setTimeout(() => {
+                        element.classList.remove('bg-primary/5');
+                    }, 2000);
+                }
+                setSidebarScrollTarget(null); // Reset after scrolling
+            }, 300); // Match animation duration
+            return () => clearTimeout(timeout);
+        }
+    }, [showCommentary, commentaryTab, sidebarScrollTarget]);
 
     const handlePrev = () => {
         if (!bsbChapter) return;
@@ -1576,6 +1603,7 @@ export default function BibleReader() {
                             e.stopPropagation();
                             setCommentaryTab('references');
                             setShowCommentary(true);
+                            setSidebarScrollTarget(refPopover.verse);
                             setRefPopover(null);
                         }}
                         className="w-full mt-2 text-[10px] text-primary/80 font-medium text-center bg-primary/5 hover:bg-primary/10 rounded py-0.5 transition-colors"
