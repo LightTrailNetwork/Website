@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate, useLocation, useNavigationType, Link } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, ChevronDown, ChevronUp, BookOpen, Loader2, AlertCircle, MessageSquare, Grid, Globe, X, Search, Filter, Eye, Link as LinkIcon } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ChevronDown, ChevronUp, BookOpen, Loader2, AlertCircle, MessageSquare, Grid, Globe, X, Search, Filter, Eye, Link as LinkIcon, Columns } from 'lucide-react';
 import { getChapter, getBooks, getTranslations, getCommentaries, getCommentaryChapter, getProfiles, getProfile, getDatasetChapter } from '../data/bibleApi';
 import type { BibleChapter, ChapterContent, BibleBook, BibleTranslation, Commentary, CommentaryChapter, Profile, ProfileContent, ChapterFootnote, DatasetBookChapter } from '../data/bibleApi';
 import Breadcrumbs from './Breadcrumbs';
@@ -35,23 +35,10 @@ export default function BibleReader() {
     const location = useLocation();
     const navType = useNavigationType();
 
-    // Scroll to Bible Nav Header on new navigation
+    // Scroll to top on new navigation
     useEffect(() => {
         if (navType !== 'POP') {
-            const header = document.getElementById('bible-nav-header');
-            if (header) {
-                // Scroll to header minus offset for sticky behavior
-                const offset = 80; // Approx height of site header + some buffer
-                const elementPosition = header.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - offset;
-
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: 'instant' // Instant scroll for navigation feels snappier
-                });
-            } else {
-                window.scrollTo(0, 0);
-            }
+            window.scrollTo(0, 0);
         }
     }, [location.pathname, navType, chapter, bookId]);
 
@@ -87,6 +74,17 @@ export default function BibleReader() {
     const [hoverTimeout, setHoverTimeout] = useState<NodeJS.Timeout | null>(null);
     const [closeTimeout, setCloseTimeout] = useState<NodeJS.Timeout | null>(null);
     const [refPopover, setRefPopover] = useState<{ verse: number; x: number; y: number; refs: any[] } | null>(null);
+
+    // Auto-close popovers on scroll
+    useEffect(() => {
+        const handleScroll = () => {
+            if (activeFootnote) setActiveFootnote(null);
+            if (refPopover) setRefPopover(null);
+        };
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [activeFootnote, refPopover]);
 
     // Quick Nav & Translation State
     const [showQuickNav, setShowQuickNav] = useState(false);
@@ -579,9 +577,20 @@ export default function BibleReader() {
         const sortedRefs = getSortedReferences(refs, books);
 
         const timeout = setTimeout(() => {
+            const popoverWidth = 320; // Approximate width
+            const screenWidth = window.innerWidth;
+            let left = rect.left + rect.width / 2;
+
+            // Clamp to screen edges
+            if (left + popoverWidth / 2 > screenWidth - 10) {
+                left = screenWidth - popoverWidth / 2 - 10;
+            } else if (left - popoverWidth / 2 < 10) {
+                left = popoverWidth / 2 + 10;
+            }
+
             setRefPopover({
                 verse: verseNum,
-                x: rect.left + rect.width / 2,
+                x: left,
                 y: rect.bottom + 5, // Position below the icon
                 refs: sortedRefs
             });
@@ -608,9 +617,21 @@ export default function BibleReader() {
             } else {
                 const rect = (e.target as HTMLElement).getBoundingClientRect();
                 const sortedRefs = getSortedReferences(refs, books);
+
+                const popoverWidth = 320; // Approximate width
+                const screenWidth = window.innerWidth;
+                let left = rect.left + rect.width / 2;
+
+                // Clamp to screen edges
+                if (left + popoverWidth / 2 > screenWidth - 10) {
+                    left = screenWidth - popoverWidth / 2 - 10;
+                } else if (left - popoverWidth / 2 < 10) {
+                    left = popoverWidth / 2 + 10;
+                }
+
                 setRefPopover({
                     verse: verseNum,
-                    x: rect.left + rect.width / 2,
+                    x: left,
                     y: rect.top,
                     refs: sortedRefs
                 });
@@ -1042,8 +1063,8 @@ export default function BibleReader() {
 
 
     return (
-        <div className="flex flex-col gap-6 relative max-w-7xl mx-auto px-0 sm:px-4">
-            <div className="px-4 sm:px-0">
+        <div className="flex flex-col sm:gap-6 relative max-w-7xl mx-auto px-0 sm:px-4">
+            <div className="hidden sm:block px-4 sm:px-0">
                 <Breadcrumbs
                     items={[
                         { label: 'Bible', to: '/bible' },
@@ -1056,8 +1077,8 @@ export default function BibleReader() {
             <div className="flex gap-6 relative">
                 <div className={`flex-1 w-full lg:max-w-3xl mx-auto pb-20 animate-fade-in transition-all ${showCommentary ? 'lg:mr-[320px]' : ''}`}>
                     {/* Navigation Header */}
-                    <div id="bible-nav-header" className="sticky top-16 z-10 bg-background/80 backdrop-blur-md border-b border-border mb-6 shadow-sm flex flex-col transition-all duration-300 -mx-4 sm:mx-0 sm:rounded-b-xl">
-                        <div className="p-2 sm:p-4 flex items-center justify-between gap-2 sm:gap-4 h-12 sm:h-auto">
+                    <div id="bible-nav-header" className="sticky top-16 z-10 bg-background/80 backdrop-blur-md border-b border-border mb-0 sm:mb-6 shadow-sm flex flex-col transition-all duration-300 -mx-4 sm:mx-0 sm:rounded-b-xl">
+                        <div className="p-1 sm:p-4 flex items-center justify-between gap-2 sm:gap-4 h-10 sm:h-auto">
 
                             {/* Mobile Search Expanded View */}
                             {isSearchExpanded && (
@@ -1110,18 +1131,11 @@ export default function BibleReader() {
                                     >
                                         <Search className="w-5 h-5 text-muted-foreground" />
                                     </button>
-                                    <button
-                                        onClick={handleNext}
-                                        disabled={!canGoNext}
-                                        className="p-1.5 sm:p-2 hover:bg-accent/10 rounded-full disabled:opacity-30 transition-colors shrink-0"
-                                    >
-                                        <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
-                                    </button>
                                 </div>
                                 <button
                                     onClick={handleNext}
                                     disabled={!canGoNext}
-                                    className="hidden sm:block p-2 hover:bg-accent/10 rounded-full disabled:opacity-30 transition-colors"
+                                    className="p-2 hover:bg-accent/10 rounded-full disabled:opacity-30 transition-colors"
                                 >
                                     <ChevronRight className="w-6 h-6" />
                                 </button>
@@ -1189,7 +1203,7 @@ export default function BibleReader() {
                         {/* Mobile Overlay */}
                         <div className="lg:hidden fixed inset-0 bg-background/80 backdrop-blur-sm z-40" onClick={() => setShowCommentary(false)} />
 
-                        <div className="fixed z-50 bg-card border border-border shadow-2xl flex flex-col lg:right-4 lg:top-24 lg:bottom-4 lg:w-[400px] lg:rounded-xl inset-4 rounded-xl lg:inset-auto animate-in slide-in-from-right duration-300">
+                        <div className="fixed z-[60] bg-card border border-border shadow-2xl flex flex-col lg:right-4 lg:top-24 lg:bottom-4 lg:w-[400px] lg:rounded-xl inset-4 rounded-xl lg:inset-auto animate-in slide-in-from-right duration-300">
                             <div className="flex items-center justify-between mb-4 shrink-0 p-4 pb-0">
                                 <h3 className="font-bold text-lg flex items-center">
                                     <MessageSquare className="w-4 h-4 mr-2 text-primary" /> Commentary
@@ -1296,7 +1310,10 @@ export default function BibleReader() {
                                                 <div key={v.verse} id={`sidebar-ref-verse-${v.verse}`} className="border-b border-border/50 pb-4 last:border-0">
                                                     <div className="font-bold text-sm mb-2 flex items-center justify-between">
                                                         <button
-                                                            onClick={() => scrollToVerseInView(v.verse)}
+                                                            onClick={() => {
+                                                                scrollToVerseInView(v.verse);
+                                                                setShowCommentary(false); // Close modal on mobile
+                                                            }}
                                                             className="flex items-center gap-2 hover:bg-secondary/10 px-2 py-1 rounded transition-colors group/header"
                                                         >
                                                             <span className="bg-primary/10 text-primary px-2 py-0.5 rounded text-xs group-hover/header:bg-primary/20 transition-colors">Verse {v.verse}</span>
@@ -1336,7 +1353,10 @@ export default function BibleReader() {
                                                                                     <Link
                                                                                         to={`/bible/read/${bookUrlName}/${ref.chapter}/${ref.verse}${ref.endVerse ? `-${ref.endVerse}` : ''}`}
                                                                                         className="text-sm font-medium text-foreground/80 hover:text-primary truncate"
-                                                                                        onClick={(e) => e.stopPropagation()} // Stop propagation to prevent toggle
+                                                                                        onClick={(e) => {
+                                                                                            e.stopPropagation(); // Stop propagation to prevent toggle
+                                                                                            setShowCommentary(false); // Close modal on mobile
+                                                                                        }}
                                                                                     >
                                                                                         {bookName} {ref.chapter}:{ref.verse}{ref.endVerse ? `-${ref.endVerse}` : ''}
                                                                                     </Link>
@@ -1372,8 +1392,8 @@ export default function BibleReader() {
                                                                                         <span>Loading...</span>
                                                                                     </div>
                                                                                 ) : (
-                                                                                    <p className="leading-relaxed italic">
-                                                                                        "{expandedRefTexts[refKey]}"
+                                                                                    <p className="leading-relaxed text-foreground/90 text-sm">
+                                                                                        {expandedRefTexts[refKey]}
                                                                                     </p>
                                                                                 )}
                                                                             </div>
@@ -1399,6 +1419,34 @@ export default function BibleReader() {
                         </div>
                     </>
                 )}
+
+                {/* Mobile Navigation Footer */}
+                <div className="fixed bottom-0 left-0 right-0 h-12 bg-background/80 backdrop-blur-md border-t border-border flex items-center justify-between px-4 z-50 sm:hidden">
+                    <div className="flex items-center gap-4">
+                        <button onClick={() => navigate(-1)} className="p-2 hover:bg-accent/10 rounded-full transition-colors">
+                            <ChevronLeft className="w-6 h-6" />
+                        </button>
+                        <button onClick={() => navigate(1)} className="p-2 hover:bg-accent/10 rounded-full transition-colors">
+                            <ChevronRight className="w-6 h-6" />
+                        </button>
+                    </div>
+                    <div className="flex items-center gap-4">
+                        <button
+                            onClick={() => setShowMsb(!showMsb)}
+                            className={`p-2 rounded-full transition-colors ${showMsb ? 'bg-primary/10 text-primary' : 'hover:bg-accent/10 text-muted-foreground'}`}
+                            title="Compare MSB"
+                        >
+                            <Columns className="w-5 h-5" />
+                        </button>
+                        <button
+                            onClick={() => setShowCommentary(!showCommentary)}
+                            className={`p-2 rounded-full transition-colors ${showCommentary ? 'bg-primary/10 text-primary' : 'hover:bg-accent/10 text-muted-foreground'}`}
+                            title="Commentary"
+                        >
+                            <MessageSquare className="w-5 h-5" />
+                        </button>
+                    </div>
+                </div>
             </div>
 
             {/* Profile Modal */}
@@ -1512,7 +1560,7 @@ export default function BibleReader() {
             )}
 
             {/* Footer Controls */}
-            <div className="fixed bottom-6 right-6 flex gap-2 z-40">
+            <div className="fixed bottom-6 right-6 gap-2 z-40 hidden sm:flex">
                 {msbChapter && selectedTranslation !== 'eng_msb' && (
                     <button
                         onClick={() => setShowMsb(!showMsb)}
@@ -1538,7 +1586,7 @@ export default function BibleReader() {
                 {/* Footnote Popover */}
                 {activeFootnote && (
                     <div
-                        className="fixed z-50 bg-popover text-popover-foreground p-4 rounded-lg shadow-xl border border-border max-w-xs animate-in fade-in zoom-in-95 duration-200"
+                        className="fixed z-[60] bg-popover text-popover-foreground p-4 rounded-lg shadow-xl border border-border max-w-xs animate-in fade-in zoom-in-95 duration-200"
                         style={{
                             left: activeFootnote.x,
                             top: activeFootnote.y + 20, // Position slightly below
@@ -1582,7 +1630,7 @@ export default function BibleReader() {
             {/* Reference Popover */}
             {refPopover && (
                 <div
-                    className="fixed z-50 bg-popover text-popover-foreground px-3 py-2 rounded-lg shadow-lg border border-border animate-in fade-in zoom-in-95 duration-200 max-w-xs pointer-events-auto"
+                    className="fixed z-[60] bg-popover text-popover-foreground px-3 py-2 rounded-lg shadow-lg border border-border animate-in fade-in zoom-in-95 duration-200 max-w-xs pointer-events-auto"
                     style={{ top: refPopover.y, left: refPopover.x, transform: 'translateX(-50%)' }}
                     onMouseEnter={() => {
                         if (closeTimeout) {

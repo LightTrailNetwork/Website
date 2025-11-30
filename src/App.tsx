@@ -110,7 +110,7 @@ function AppContent() {
       <Drawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
 
       {/* Main Content */}
-      <main className="min-h-screen pt-20 pb-10 px-4 max-w-7xl mx-auto animate-slide-up">
+      <main className={`min-h-screen ${location.pathname.startsWith('/bible/read') ? 'pt-0 sm:pt-20' : 'pt-20'} pb-10 px-4 max-w-7xl mx-auto animate-slide-up`}>
         <Routes>
           <Route path="/" element={<Today />} />
           <Route path="/link" element={<Link />} />
