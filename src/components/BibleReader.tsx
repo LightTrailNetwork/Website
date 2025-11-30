@@ -35,12 +35,25 @@ export default function BibleReader() {
     const location = useLocation();
     const navType = useNavigationType();
 
-    // Scroll to top on new navigation, but respect back button
+    // Scroll to Bible Nav Header on new navigation
     useEffect(() => {
         if (navType !== 'POP') {
-            window.scrollTo(0, 0);
+            const header = document.getElementById('bible-nav-header');
+            if (header) {
+                // Scroll to header minus offset for sticky behavior
+                const offset = 80; // Approx height of site header + some buffer
+                const elementPosition = header.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'instant' // Instant scroll for navigation feels snappier
+                });
+            } else {
+                window.scrollTo(0, 0);
+            }
         }
-    }, [location.pathname, navType]);
+    }, [location.pathname, navType, chapter, bookId]);
 
     const [bsbChapter, setBsbChapter] = useState<BibleChapter | null>(null);
     const [msbChapter, setMsbChapter] = useState<BibleChapter | null>(null);
@@ -1029,20 +1042,22 @@ export default function BibleReader() {
 
 
     return (
-        <div className="flex flex-col gap-6 relative max-w-7xl mx-auto px-4">
-            <Breadcrumbs
-                items={[
-                    { label: 'Bible', to: '/bible' },
-                    { label: bsbChapter.book.name, to: `/bible/read/${bsbChapter.book.name.replace(/\s+/g, '')}` },
-                    { label: `Chapter ${bsbChapter.chapter.number}` }
-                ]}
-            />
+        <div className="flex flex-col gap-6 relative max-w-7xl mx-auto px-0 sm:px-4">
+            <div className="px-4 sm:px-0">
+                <Breadcrumbs
+                    items={[
+                        { label: 'Bible', to: '/bible' },
+                        { label: bsbChapter.book.name, to: `/bible/read/${bsbChapter.book.name.replace(/\s+/g, '')}` },
+                        { label: `Chapter ${bsbChapter.chapter.number}` }
+                    ]}
+                />
+            </div>
 
             <div className="flex gap-6 relative">
-                <div className={`flex-1 max-w-3xl mx-auto pb-20 animate-fade-in transition-all ${showCommentary ? 'lg:mr-[320px]' : ''}`}>
+                <div className={`flex-1 w-full lg:max-w-3xl mx-auto pb-20 animate-fade-in transition-all ${showCommentary ? 'lg:mr-[320px]' : ''}`}>
                     {/* Navigation Header */}
-                    <div className="sticky top-16 z-10 bg-background/80 backdrop-blur-md border-b border-border mb-6 rounded-b-xl shadow-sm flex flex-col transition-all duration-300">
-                        <div className="p-2 sm:p-4 flex items-center justify-between gap-2 sm:gap-4 h-14 sm:h-auto">
+                    <div id="bible-nav-header" className="sticky top-16 z-10 bg-background/80 backdrop-blur-md border-b border-border mb-6 shadow-sm flex flex-col transition-all duration-300 -mx-4 sm:mx-0 sm:rounded-b-xl">
+                        <div className="p-2 sm:p-4 flex items-center justify-between gap-2 sm:gap-4 h-12 sm:h-auto">
 
                             {/* Mobile Search Expanded View */}
                             {isSearchExpanded && (
@@ -1068,7 +1083,7 @@ export default function BibleReader() {
                             )}
 
                             {/* Standard Navigation View (Hidden when mobile search is expanded) */}
-                            <div className={`flex items-center gap-1 sm:gap-2 w-full sm:w-auto ${isSearchExpanded ? 'hidden sm:flex' : 'flex'}`}>
+                            <div className={`flex items-center justify-between w-full sm:w-auto sm:justify-start sm:gap-2 ${isSearchExpanded ? 'hidden sm:flex' : 'flex'}`}>
                                 <button
                                     onClick={handlePrev}
                                     disabled={!canGoPrev}
@@ -1076,6 +1091,7 @@ export default function BibleReader() {
                                 >
                                     <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
                                 </button>
+
                                 <button
                                     onClick={() => setShowQuickNav(true)}
                                     className="flex-1 sm:flex-none flex items-center justify-center sm:justify-start gap-2 px-2 py-1.5 hover:bg-accent/10 rounded-lg transition-colors text-center sm:text-left min-w-[120px] sm:min-w-[140px]"
@@ -1086,20 +1102,28 @@ export default function BibleReader() {
                                         <p className="text-[10px] text-muted-foreground uppercase tracking-wider">{selectedTranslation}</p>
                                     </div>
                                 </button>
+
+                                <div className="flex items-center gap-1 sm:hidden">
+                                    <button
+                                        onClick={() => setIsSearchExpanded(true)}
+                                        className="p-1.5 hover:bg-accent/10 rounded-full transition-colors shrink-0"
+                                    >
+                                        <Search className="w-5 h-5 text-muted-foreground" />
+                                    </button>
+                                    <button
+                                        onClick={handleNext}
+                                        disabled={!canGoNext}
+                                        className="p-1.5 sm:p-2 hover:bg-accent/10 rounded-full disabled:opacity-30 transition-colors shrink-0"
+                                    >
+                                        <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
+                                    </button>
+                                </div>
                                 <button
                                     onClick={handleNext}
                                     disabled={!canGoNext}
-                                    className="p-1.5 sm:p-2 hover:bg-accent/10 rounded-full disabled:opacity-30 transition-colors shrink-0 sm:hidden"
+                                    className="hidden sm:block p-2 hover:bg-accent/10 rounded-full disabled:opacity-30 transition-colors"
                                 >
-                                    <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
-                                </button>
-
-                                {/* Mobile Search Trigger */}
-                                <button
-                                    onClick={() => setIsSearchExpanded(true)}
-                                    className="p-1.5 hover:bg-accent/10 rounded-full transition-colors shrink-0 sm:hidden ml-1"
-                                >
-                                    <Search className="w-5 h-5 text-muted-foreground" />
+                                    <ChevronRight className="w-6 h-6" />
                                 </button>
                             </div>
 
@@ -1154,7 +1178,7 @@ export default function BibleReader() {
                     </div>
 
                     {/* Chapter Content */}
-                    <div className={`prose prose-lg dark:prose-invert max-w-none px-4 ${loading ? 'opacity-50' : ''}`}>
+                    <div className={`prose prose-lg dark:prose-invert max-w-none px-2 sm:px-4 ${loading ? 'opacity-50' : ''}`}>
                         {renderContent(bsbChapter.chapter.content, msbChapter?.chapter.content)}
                     </div>
                 </div>
@@ -1322,7 +1346,7 @@ export default function BibleReader() {
                                                                         <div className="flex items-center gap-2">
                                                                             {ref.score && (
                                                                                 <span
-                                                                                    className="text-[10px] text-muted-foreground bg-secondary/20 px-1.5 py-0.5 rounded hidden sm:inline-block cursor-help"
+                                                                                    className="text-[10px] text-muted-foreground bg-secondary/20 px-1.5 py-0.5 rounded inline-block cursor-help"
                                                                                     title="Relevance Score"
                                                                                 >
                                                                                     {ref.score}

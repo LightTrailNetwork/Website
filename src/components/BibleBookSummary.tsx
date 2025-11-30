@@ -44,7 +44,17 @@ export default function BibleBookSummary() {
                 // Fetch books to find the current one
                 const books = await getBooks('BSB');
                 setAllBooks(books);
-                const currentBook = books.find(b => b.id === bookId);
+                // Try direct ID match first
+                let currentBook = books.find(b => b.id === bookId);
+
+                // If not found, try name match
+                if (!currentBook) {
+                    const normalizedId = bookId.toLowerCase().replace(/\s+/g, '');
+                    currentBook = books.find(b =>
+                        b.name.toLowerCase().replace(/\s+/g, '') === normalizedId ||
+                        b.commonName.toLowerCase().replace(/\s+/g, '') === normalizedId
+                    );
+                }
 
                 if (!currentBook) {
                     setError('Book not found');
