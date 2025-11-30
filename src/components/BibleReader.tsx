@@ -82,8 +82,15 @@ export default function BibleReader() {
             if (refPopover) setRefPopover(null);
         };
 
-        window.addEventListener('scroll', handleScroll, { passive: true });
-        return () => window.removeEventListener('scroll', handleScroll);
+        // Add a small delay before attaching the listener to prevent immediate triggering on touch
+        const timeout = setTimeout(() => {
+            window.addEventListener('scroll', handleScroll, { passive: true });
+        }, 100);
+
+        return () => {
+            clearTimeout(timeout);
+            window.removeEventListener('scroll', handleScroll);
+        };
     }, [activeFootnote, refPopover]);
 
     // Quick Nav & Translation State
@@ -507,11 +514,7 @@ export default function BibleReader() {
         }
     };
 
-    const handleFootnoteClick = (noteId: number) => {
-        setShowCommentary(true);
-        setCommentaryTab('footnotes');
-        // Optional: Scroll to note logic could go here
-    };
+
 
     const handleFootnoteEnter = (e: React.MouseEvent, noteId: number) => {
         if (window.matchMedia('(pointer: coarse)').matches) return; // Skip on touch devices
@@ -537,14 +540,29 @@ export default function BibleReader() {
         setCloseTimeout(timeout);
     };
 
-    const handleFootnoteTouch = (e: React.MouseEvent, noteId: number) => {
+    const handleFootnoteClick = (e: React.MouseEvent, noteId: number) => {
         e.stopPropagation();
-        // On mobile/touch, toggle popover
-        if (activeFootnote?.id === noteId) {
-            setActiveFootnote(null);
+
+        // Check if mobile (sm breakpoint is 640px)
+        const isMobile = window.innerWidth < 640;
+
+        if (isMobile) {
+            // Mobile: Toggle popover
+            if (activeFootnote?.id === noteId) {
+                setActiveFootnote(null);
+            } else {
+                const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+                setActiveFootnote({ id: noteId, x: rect.left + rect.width / 2, y: rect.bottom });
+            }
         } else {
-            const rect = (e.target as HTMLElement).getBoundingClientRect();
-            setActiveFootnote({ id: noteId, x: rect.left + rect.width / 2, y: rect.top });
+            // Desktop: Jump to footnote
+            const element = document.getElementById(`footnote-${noteId}`);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                // Highlight effect
+                element.classList.add('bg-primary/20');
+                setTimeout(() => element.classList.remove('bg-primary/20'), 2000);
+            }
         }
     };
 
@@ -865,14 +883,7 @@ export default function BibleReader() {
                                                         <sup
                                                             key={`note-${index}-${i}`}
                                                             className="text-[10px] font-bold text-primary/70 cursor-pointer hover:text-primary hover:underline select-none ml-0.5"
-                                                            onClick={(e) => {
-                                                                if (window.matchMedia('(pointer: coarse)').matches) {
-                                                                    handleFootnoteTouch(e, c.noteId);
-                                                                } else {
-                                                                    e.stopPropagation();
-                                                                    handleFootnoteClick(c.noteId);
-                                                                }
-                                                            }}
+                                                            onClick={(e) => handleFootnoteClick(e, c.noteId)}
                                                             onMouseEnter={(e) => handleFootnoteEnter(e, c.noteId)}
                                                             onMouseLeave={handleFootnoteLeave}
                                                         >

@@ -33,7 +33,7 @@ export default function Drawer({ isOpen, onClose }: DrawerProps) {
       />
 
       {/* Drawer */}
-      <div className="fixed left-0 top-0 h-full w-80 max-w-[85vw] bg-background border-r border-border z-50 shadow-2xl animate-slide-up sm:animate-none sm:transition-transform">
+      <div className="fixed left-0 top-0 h-full w-80 max-w-[85vw] bg-background border-r border-border z-[70] shadow-2xl animate-slide-up sm:animate-none sm:transition-transform">
         {/* Header */}
         <div className="p-6 border-b border-border">
           <div className="flex items-center justify-between mb-2">
