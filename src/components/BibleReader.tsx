@@ -685,7 +685,74 @@ export default function BibleReader() {
 
 
 
-    const renderContent = (content: ChapterContent[], msbContent?: ChapterContent[]) => {
+
+    // Merge Content for Display
+    const mergedContent = useMemo(() => {
+        if (!bsbChapter) return [];
+        if (!showMsb || !msbChapter) return bsbChapter.chapter.content;
+
+        const combined: (ChapterContent & { isMsbOnly?: boolean })[] = [];
+        const bsbContent = bsbChapter.chapter.content;
+        const msbContent = msbChapter.chapter.content;
+
+        let bsbIndex = 0;
+        let msbIndex = 0;
+
+        // Helper to get verse number from content item
+        const getVerseNum = (item: ChapterContent) => item.type === 'verse' ? item.number : -1;
+
+        while (bsbIndex < bsbContent.length || msbIndex < msbContent.length) {
+            const bsbItem = bsbContent[bsbIndex];
+            const msbItem = msbContent[msbIndex];
+
+            // If we've exhausted one list, take from the other
+            if (!bsbItem) {
+                if (msbItem && msbItem.type === 'verse') {
+                    combined.push({ ...msbItem, isMsbOnly: true });
+                }
+                msbIndex++;
+                continue;
+            }
+            if (!msbItem) {
+                combined.push(bsbItem);
+                bsbIndex++;
+                continue;
+            }
+
+            // If both are non-verses (headings, line breaks), prioritize BSB structure
+            if (bsbItem.type !== 'verse') {
+                combined.push(bsbItem);
+                bsbIndex++;
+                // If MSB also has a non-verse here, skip it to avoid duplication if structures align
+                if (msbItem.type !== 'verse') msbIndex++;
+                continue;
+            }
+
+            // If BSB is verse, but MSB is not, skip MSB non-verse
+            if (msbItem.type !== 'verse') {
+                msbIndex++;
+                continue;
+            }
+
+            // Both are verses. Compare numbers.
+            if (bsbItem.number === msbItem.number) {
+                combined.push(bsbItem);
+                bsbIndex++;
+                msbIndex++;
+            } else if (bsbItem.number < msbItem.number) {
+                combined.push(bsbItem);
+                bsbIndex++;
+            } else {
+                // MSB verse number is smaller (or BSB doesn't have it), so it's an MSB-only verse
+                combined.push({ ...msbItem, isMsbOnly: true });
+                msbIndex++;
+            }
+        }
+
+        return combined;
+    }, [bsbChapter, msbChapter, showMsb]);
+
+    const renderContent = (content: (ChapterContent & { isMsbOnly?: boolean })[], msbContent?: ChapterContent[]) => {
         return (
             <>
 
@@ -702,6 +769,25 @@ export default function BibleReader() {
                     if (item.type === 'line_break') {
                         if (viewMode === 'focus') return null;
                         return <br key={index} />;
+                    }
+
+                    // Handle MSB Only Verses
+                    if (item.isMsbOnly && item.type === 'verse') {
+                        return (
+                            <div key={index} className="my-4 p-4 bg-amber-50 dark:bg-amber-950/20 rounded-lg border-l-4 border-amber-500">
+                                <span className="font-bold text-xs uppercase tracking-wider block mb-2 text-amber-600 dark:text-amber-500 flex items-center gap-2">
+                                    <span className="bg-amber-100 dark:bg-amber-900/50 px-1.5 py-0.5 rounded">MSB ONLY VERSE</span>
+                                </span>
+                                <p className="text-muted-foreground italic">
+                                    <sup className="text-xs font-bold mr-1 select-none">{item.number}</sup>
+                                    {item.content.map((c, i) => {
+                                        if (typeof c === 'string') return <span key={i}>{c}</span>;
+                                        if ('text' in c) return <span key={i} className={c.wordsOfJesus ? "text-red-700 dark:text-red-400" : ""}>{c.text}</span>;
+                                        return null;
+                                    })}
+                                </p>
+                            </div>
+                        );
                     }
 
                     if (item.type === 'verse') {
@@ -1215,7 +1301,7 @@ export default function BibleReader() {
 
                     {/* Chapter Content */}
                     <div className={`prose prose-lg dark:prose-invert max-w-none px-2 sm:px-4 ${loading ? 'opacity-50' : ''}`}>
-                        {renderContent(bsbChapter.chapter.content, msbChapter?.chapter.content)}
+                        {renderContent(mergedContent, msbChapter?.chapter.content)}
                     </div>
                 </div>
 

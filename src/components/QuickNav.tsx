@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { Search, ChevronLeft, X, BookOpen } from 'lucide-react';
 import type { BibleBook } from '../data/bibleApi';
 
@@ -15,6 +15,16 @@ export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigat
     const [selectedNavBook, setSelectedNavBook] = useState<BibleBook | null>(null);
     const [bookFilter, setBookFilter] = useState<'ALL' | 'OT' | 'NT' | 'ALPHA'>('ALL');
     const [bookSearchQuery, setBookSearchQuery] = useState('');
+    const inputRef = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+        if (isOpen && navStep === 'books' && window.innerWidth >= 768) {
+            // Small delay to ensure render
+            setTimeout(() => {
+                inputRef.current?.focus();
+            }, 10);
+        }
+    }, [isOpen, navStep]);
 
     // Filtered Books
     const filteredBooks = useMemo(() => {
@@ -60,7 +70,7 @@ export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigat
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in">
+        <div className="fixed inset-0 z-[70] bg-background/80 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in">
             <div className="bg-card border border-border rounded-xl shadow-2xl w-full max-w-4xl flex flex-col max-h-[85vh]">
                 <div className="p-4 border-b border-border flex items-center justify-between shrink-0">
                     <h3 className="font-bold text-lg">
@@ -76,12 +86,12 @@ export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigat
                         <div className="relative">
                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                             <input
+                                ref={inputRef}
                                 type="text"
                                 placeholder="Search books..."
                                 className="w-full pl-9 pr-4 py-2 bg-secondary/10 border-transparent rounded-lg focus:ring-2 focus:ring-primary focus:bg-background transition-all"
                                 value={bookSearchQuery}
                                 onChange={(e) => setBookSearchQuery(e.target.value)}
-                                autoFocus
                             />
                         </div>
                         <div className="flex gap-2 overflow-x-auto pb-1">
