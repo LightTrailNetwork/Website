@@ -16,7 +16,7 @@ export default function Breadcrumbs({ items, showBackButton = true, className = 
     const navigate = useNavigate();
 
     return (
-        <nav className={`flex items-center text-sm text-muted-foreground mb-6 animate-fade-in ${className}`} aria-label="Breadcrumb">
+        <nav className={`flex items-center text-sm text-muted-foreground mb-0 animate-fade-in ${className}`} aria-label="Breadcrumb">
             {showBackButton && (
                 <button
                     onClick={() => navigate(-1)}

@@ -1075,7 +1075,7 @@ export default function BibleReader() {
 
 
     return (
-        <div className="flex flex-col sm:gap-6 relative max-w-7xl mx-auto px-0 sm:px-4">
+        <div className="flex flex-col sm:gap-0 relative max-w-7xl mx-auto px-0 sm:px-4">
             <div className="hidden sm:block px-4 sm:px-0">
                 <Breadcrumbs
                     items={[
@@ -1083,6 +1083,7 @@ export default function BibleReader() {
                         { label: bsbChapter.book.name, to: `/bible/read/${bsbChapter.book.name.replace(/\s+/g, '')}` },
                         { label: `Chapter ${bsbChapter.chapter.number}` }
                     ]}
+                    className="mb-1"
                 />
             </div>
 
@@ -1173,13 +1174,6 @@ export default function BibleReader() {
                                 >
                                     <Globe className="w-5 h-5 text-muted-foreground" />
                                 </button>
-                                <button
-                                    onClick={handleNext}
-                                    disabled={!canGoNext}
-                                    className="p-2 hover:bg-accent/10 rounded-full disabled:opacity-30 transition-colors"
-                                >
-                                    <ChevronRight className="w-6 h-6" />
-                                </button>
                             </div>
                         </div>
 
@@ -1216,16 +1210,22 @@ export default function BibleReader() {
                         <div className="lg:hidden fixed inset-0 bg-background/80 backdrop-blur-sm z-40" onClick={() => setShowCommentary(false)} />
 
                         <div className="fixed z-[60] bg-card border border-border shadow-2xl flex flex-col lg:right-4 lg:top-24 lg:bottom-4 lg:w-[400px] lg:rounded-xl inset-4 rounded-xl lg:inset-auto animate-in slide-in-from-right duration-300">
-                            <div className="flex items-center justify-between mb-4 shrink-0 p-4 pb-0">
-                                <h3 className="font-bold text-lg flex items-center">
-                                    <MessageSquare className="w-4 h-4 mr-2 text-primary" /> Commentary
-                                </h3>
-                                <button onClick={() => setShowCommentary(false)} className="text-muted-foreground hover:text-foreground">
+                            <div className="flex items-center justify-between mb-6 shrink-0 p-4 pb-0">
+                                <div>
+                                    <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2 mb-1">
+                                        <MessageSquare className="w-3 h-3" /> Commentary
+                                    </h3>
+                                    <h2 className="text-2xl font-bold text-foreground">
+                                        {bsbChapter.book.name} {bsbChapter.chapter.number}
+                                    </h2>
+                                </div>
+                                <button onClick={() => setShowCommentary(false)} className="p-2 hover:bg-accent/10 rounded-full transition-colors -mr-2">
                                     <X className="w-5 h-5" />
                                 </button>
                             </div>
 
                             <div className="px-4 pb-2">
+
                                 {/* Commentary Selector */}
                                 <div className="mb-4 shrink-0">
                                     <select
@@ -1324,7 +1324,9 @@ export default function BibleReader() {
                                                         <button
                                                             onClick={() => {
                                                                 scrollToVerseInView(v.verse);
-                                                                setShowCommentary(false); // Close modal on mobile
+                                                                if (window.innerWidth < 1024) {
+                                                                    setShowCommentary(false); // Close modal only on mobile
+                                                                }
                                                             }}
                                                             className="flex items-center gap-2 hover:bg-secondary/10 px-2 py-1 rounded transition-colors group/header"
                                                         >
@@ -1367,7 +1369,9 @@ export default function BibleReader() {
                                                                                         className="text-sm font-medium text-foreground/80 hover:text-primary truncate"
                                                                                         onClick={(e) => {
                                                                                             e.stopPropagation(); // Stop propagation to prevent toggle
-                                                                                            setShowCommentary(false); // Close modal on mobile
+                                                                                            if (window.innerWidth < 1024) {
+                                                                                                setShowCommentary(false); // Close modal only on mobile
+                                                                                            }
                                                                                         }}
                                                                                     >
                                                                                         {bookName} {ref.chapter}:{ref.verse}{ref.endVerse ? `-${ref.endVerse}` : ''}
