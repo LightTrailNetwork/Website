@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { createPortal } from 'react-dom';
 import { useParams, useNavigate, useLocation, useNavigationType, Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, ChevronDown, ChevronUp, BookOpen, Loader2, AlertCircle, MessageSquare, Grid, Globe, X, Search, Filter, Eye, Link as LinkIcon, Columns } from 'lucide-react';
 import { getChapter, getBooks, getTranslations, getCommentaries, getCommentaryChapter, getProfiles, getProfile, getDatasetChapter } from '../data/bibleApi';
@@ -1595,7 +1596,7 @@ export default function BibleReader() {
                     <MessageSquare className="w-5 h-5" />
                 </button>
                 {/* Footnote Popover */}
-                {activeFootnote && (
+                {activeFootnote && createPortal(
                     <div
                         className="fixed z-[60] bg-popover text-popover-foreground p-4 rounded-lg shadow-xl border border-border max-w-xs animate-in fade-in zoom-in-95 duration-200"
                         style={{
@@ -1634,12 +1635,13 @@ export default function BibleReader() {
                                 View in Sidebar
                             </button>
                         </div>
-                    </div>
+                    </div>,
+                    document.body
                 )}
             </div>
 
             {/* Reference Popover */}
-            {refPopover && (
+            {refPopover && createPortal(
                 <div
                     className="fixed z-[60] bg-popover text-popover-foreground px-3 py-2 rounded-lg shadow-lg border border-border animate-in fade-in zoom-in-95 duration-200 max-w-xs pointer-events-auto"
                     style={{ top: refPopover.y, left: refPopover.x, transform: 'translateX(-50%)' }}
@@ -1693,7 +1695,8 @@ export default function BibleReader() {
                     >
                         View all in Sidebar
                     </button>
-                </div>
+                </div>,
+                document.body
             )}
         </div>
     );
