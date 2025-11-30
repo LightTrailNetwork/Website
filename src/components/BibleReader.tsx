@@ -319,6 +319,21 @@ export default function BibleReader() {
         }
     }, [loading, verseRange, bookId, chapter]);
 
+    // Sync sidebar scroll target with verse range navigation
+    useEffect(() => {
+        if (verseRange) {
+            const rangeMatch = verseRange.match(/^(\d+)/);
+            if (rangeMatch) {
+                const verseNum = parseInt(rangeMatch[1]);
+                setSidebarScrollTarget(verseNum);
+                // Also ensure the references tab is selected if commentary is open
+                if (showCommentary) {
+                    setCommentaryTab('references');
+                }
+            }
+        }
+    }, [verseRange, showCommentary]);
+
     // Scroll sidebar to target verse when opened via icon
     useEffect(() => {
         if (showCommentary && commentaryTab === 'references' && sidebarScrollTarget) {
