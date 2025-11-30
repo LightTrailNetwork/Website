@@ -6,14 +6,9 @@ import type { BibleChapter, ChapterContent, BibleBook, BibleTranslation, Comment
 import Breadcrumbs from './Breadcrumbs';
 import QuickNav from './QuickNav';
 import { diffVerses, type DiffToken } from '../utils/diffUtils';
+import { formatPassageText, shouldInsertSpace } from '../utils/bibleUtils';
 
-// Helper to get text content from verse parts
-const getText = (content: (string | { text: string; wordsOfJesus?: boolean } | { noteId: number } | { lineBreak: boolean })[]) =>
-    content.map(c => {
-        if (typeof c === 'string') return c;
-        if ('text' in c) return c.text;
-        return '';
-    }).join('').trim();
+
 
 // Helper to sort references by score (desc) then book order (asc)
 const getSortedReferences = (refs: any[], books: BibleBook[]) => {
@@ -334,7 +329,7 @@ export default function BibleReader() {
         }
     };
 
-    const handleToggleRefText = async (refKey: string, book: string, chapter: number, verse: number) => {
+    const handleToggleRefText = async (refKey: string, book: string, chapter: number, verse: number, endVerse?: number) => {
         if (expandedRefTexts[refKey]) {
             const newExpanded = { ...expandedRefTexts };
             delete newExpanded[refKey];
@@ -345,10 +340,17 @@ export default function BibleReader() {
         setLoadingRefs(prev => ({ ...prev, [refKey]: true }));
         try {
             const data = await getChapter(selectedTranslation, book, chapter);
-            const verseContent = data.chapter.content.find(c => c.type === 'verse' && c.number === verse);
 
-            if (verseContent && 'content' in verseContent) {
-                const text = getText(verseContent.content);
+            const targetEndVerse = endVerse || verse;
+            const verses = data.chapter.content.filter(c => c.type === 'verse' && c.number >= verse && c.number <= targetEndVerse);
+
+            if (verses.length > 0) {
+                const text = verses.map(v => {
+                    if ('content' in v) {
+                        return formatPassageText(v.content);
+                    }
+                    return '';
+                }).join(' ');
                 setExpandedRefTexts(prev => ({ ...prev, [refKey]: text }));
             } else {
                 setExpandedRefTexts(prev => ({ ...prev, [refKey]: 'Verse text not available.' }));
@@ -596,14 +598,7 @@ export default function BibleReader() {
         setRefPopover(null);
     };
 
-    // Helper to check if we should insert a space between content parts
-    const shouldInsertSpace = (prev: any, curr: any) => {
-        const prevText = typeof prev === 'string' ? prev : prev.text;
-        const currText = typeof curr === 'string' ? curr : curr.text;
-        if (!prevText || !currText) return false;
-        // Check for alphanumeric/punctuation boundary including dashes
-        return /[a-zA-Z0-9;,."?!:’')\]—–]$/.test(prevText) && /^[a-zA-Z0-9“"‘(]/.test(currText);
-    };
+
 
     const renderContent = (content: ChapterContent[], msbContent?: ChapterContent[]) => {
         return (
@@ -986,9 +981,19 @@ export default function BibleReader() {
                 if (!newExpanded[refKey]) {
                     try {
                         const data = await getChapter(selectedTranslation, ref.book, ref.chapter);
-                        const verseContent = data.chapter.content.find(c => c.type === 'verse' && c.number === ref.verse);
-                        if (verseContent && 'content' in verseContent) {
-                            newExpanded[refKey] = getText(verseContent.content);
+                        const startVerse = ref.verse;
+                        const endVerse = ref.endVerse || ref.verse;
+                        const verses = data.chapter.content.filter(c => c.type === 'verse' && c.number >= startVerse && c.number <= endVerse);
+
+                        if (verses.length > 0) {
+                            // Map each verse's content to text and join them
+                            const text = verses.map(v => {
+                                if ('content' in v) {
+                                    return formatPassageText(v.content);
+                                }
+                                return '';
+                            }).join(' ');
+                            newExpanded[refKey] = text;
                         } else {
                             newExpanded[refKey] = 'Text not available.';
                         }
@@ -1244,7 +1249,7 @@ export default function BibleReader() {
                                                                 <div
                                                                     key={i}
                                                                     className="flex flex-col bg-card hover:bg-secondary/10 rounded transition-colors border border-transparent hover:border-border/50 cursor-pointer"
-                                                                    onClick={() => handleToggleRefText(refKey, ref.book, ref.chapter, ref.verse)}
+                                                                    onClick={() => handleToggleRefText(refKey, ref.book, ref.chapter, ref.verse, ref.endVerse)}
                                                                 >
                                                                     <div className="flex items-center justify-between p-2">
                                                                         {(() => {
