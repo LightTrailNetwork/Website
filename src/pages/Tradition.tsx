@@ -88,27 +88,6 @@ export default function Tradition() {
           />
         </div>
       </div>
-
-      {/* Footer Info */}
-      <div className="border-t border-border pt-8 mt-8">
-        <div className="text-center space-y-4">
-          <p className="text-sm text-muted-foreground">
-            This pyramid contains 40 foundational Bible passages organized
-            around three core themes:
-          </p>
-          <div className="flex flex-wrap justify-center gap-3 text-sm">
-            <span className="px-3 py-1 bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 rounded-full font-medium">
-              Abide - Personal Relationship with God
-            </span>
-            <span className="px-3 py-1 bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300 rounded-full font-medium">
-              Imitate - Following Christ's Example
-            </span>
-            <span className="px-3 py-1 bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 rounded-full font-medium">
-              Mobilize - Serving Others
-            </span>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }
