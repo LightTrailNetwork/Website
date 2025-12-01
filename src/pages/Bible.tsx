@@ -109,6 +109,8 @@ export default function Bible() {
             <Route path="/read/:bookId/:chapter/:verseRange" element={<BibleReader />} />
             <Route path="/memory" element={<MemorizationHub />} />
             <Route path="/memory/hierarchical" element={<HierarchicalMemory />} />
+            <Route path="/memory/hierarchical/:bookId" element={<HierarchicalMemory />} />
+            <Route path="/memory/hierarchical/:bookId/:chapterId" element={<HierarchicalMemory />} />
             <Route path="/memory/grace" element={<GraceView />} />
             <Route path="/memory/crown-path" element={<CrownPathView />} />
             <Route path="/memory/sentence" element={<John316View />} />
