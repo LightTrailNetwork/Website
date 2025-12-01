@@ -8,6 +8,7 @@ import Breadcrumbs from './Breadcrumbs';
 import QuickNav from './QuickNav';
 import { diffVerses, type DiffToken } from '../utils/diffUtils';
 import { formatPassageText, shouldInsertSpace } from '../utils/bibleUtils';
+import { useSettings } from '../context/SettingsContext';
 
 
 
@@ -48,7 +49,7 @@ export default function BibleReader() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [profileLoading, setProfileLoading] = useState(false);
-    const [showMsb, setShowMsb] = useState(false);
+    const { selectedTranslation, showMsb, setShowMsb } = useSettings();
 
     // Cross Reference State
     const [crossRefs, setCrossRefs] = useState<DatasetBookChapter | null>(null);
@@ -95,19 +96,15 @@ export default function BibleReader() {
     }, [activeFootnote, refPopover]);
 
     // Quick Nav & Translation State
+    // Quick Nav State
     const [showQuickNav, setShowQuickNav] = useState(false);
-    const [showTranslations, setShowTranslations] = useState(false);
     const [books, setBooks] = useState<BibleBook[]>([]);
-    const [translations, setTranslations] = useState<BibleTranslation[]>([]);
-    const [selectedTranslation, setSelectedTranslation] = useState('BSB');
     const [navStep, setNavStep] = useState<'books' | 'chapters'>('books');
     const [selectedNavBook, setSelectedNavBook] = useState<BibleBook | null>(null);
 
     // Enhanced Selectors State
     const [bookFilter, setBookFilter] = useState<'ALL' | 'OT' | 'NT' | 'ALPHA'>('ALL');
     const [bookSearchQuery, setBookSearchQuery] = useState('');
-    const [translationSearch, setTranslationSearch] = useState('');
-    const [languageFilter, setLanguageFilter] = useState<string>('All');
 
     // Universal Search & Filtering State
     const [universalSearchQuery, setUniversalSearchQuery] = useState('');
@@ -164,14 +161,12 @@ export default function BibleReader() {
     useEffect(() => {
         const initData = async () => {
             try {
-                const [booksData, translationsData, commentariesData, profilesData] = await Promise.all([
+                const [booksData, commentariesData, profilesData] = await Promise.all([
                     getBooks('BSB'),
-                    getTranslations(),
                     getCommentaries(),
                     getProfiles()
                 ]);
                 setBooks(booksData);
-                setTranslations(translationsData);
                 setCommentaries(commentariesData);
                 setProfiles(profilesData.profiles);
 
@@ -180,14 +175,6 @@ export default function BibleReader() {
                     // Prefer Matthew Henry or similar popular ones if available, otherwise first
                     const defaultComm = commentariesData.find(c => c.id === 'MHC') || commentariesData[0]!;
                     setSelectedCommentaryId(defaultComm.id);
-                }
-
-                // Detect Browser Language for Default Filter
-                const browserLang = navigator.language;
-                if (browserLang.startsWith('en')) {
-                    setLanguageFilter('English');
-                } else if (browserLang.startsWith('es')) {
-                    setLanguageFilter('Spanish');
                 }
             } catch (e) {
                 console.error("Failed to load initial bible data", e);
@@ -218,41 +205,7 @@ export default function BibleReader() {
         return filtered;
     }, [books, bookFilter, bookSearchQuery]);
 
-    // Unique Languages for Filter
-    const availableLanguages = useMemo(() => {
-        const langs = new Set(translations.map(t => t.languageEnglishName || t.language));
-        return ['All', ...Array.from(langs).sort()];
-    }, [translations]);
 
-    // Enhanced Translation Sorting & Filtering
-    const filteredTranslations = useMemo(() => {
-        let filtered = translations.filter(t => {
-            const matchesSearch =
-                t.name.toLowerCase().includes(translationSearch.toLowerCase()) ||
-                (t.languageEnglishName || t.language).toLowerCase().includes(translationSearch.toLowerCase()) ||
-                t.shortName.toLowerCase().includes(translationSearch.toLowerCase());
-
-            const matchesLang = languageFilter === 'All' || (t.languageEnglishName || t.language) === languageFilter;
-            return matchesSearch && matchesLang;
-        });
-
-        return filtered.sort((a, b) => {
-            // Priority: BSB, MSB
-            if (a.id === 'BSB') return -1;
-            if (b.id === 'BSB') return 1;
-            if (a.id === 'eng_msb') return -1;
-            if (b.id === 'eng_msb') return 1;
-
-            // Then English
-            const aIsEnglish = (a.languageEnglishName || a.language).toLowerCase().includes('english');
-            const bIsEnglish = (b.languageEnglishName || b.language).toLowerCase().includes('english');
-
-            if (aIsEnglish && !bIsEnglish) return -1;
-            if (!aIsEnglish && bIsEnglish) return 1;
-
-            return a.name.localeCompare(b.name);
-        });
-    }, [translations, translationSearch, languageFilter]);
 
     // Fetch Chapter Content
     useEffect(() => {
@@ -1296,15 +1249,7 @@ export default function BibleReader() {
                                 />
                             </form>
 
-                            <div className="flex items-center gap-2 hidden sm:flex">
-                                <button
-                                    onClick={() => setShowTranslations(true)}
-                                    className="p-2 hover:bg-accent/10 rounded-full transition-colors"
-                                    title="Change Translation"
-                                >
-                                    <Globe className="w-5 h-5 text-muted-foreground" />
-                                </button>
-                            </div>
+
                         </div>
 
                         {/* Highlighted Verses Notice Banner */}
@@ -1647,67 +1592,11 @@ export default function BibleReader() {
                 }}
             />
 
-            {/* Translations Modal */}
-            {showTranslations && (
-                <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in">
-                    <div className="bg-card border border-border rounded-xl shadow-2xl w-full max-w-lg max-h-[80vh] flex flex-col">
-                        <div className="p-4 border-b border-border flex items-center justify-between shrink-0">
-                            <h3 className="font-bold text-lg">Select Translation</h3>
-                            <button onClick={() => setShowTranslations(false)} className="p-2 hover:bg-accent/10 rounded-full">
-                                <X className="w-6 h-6" />
-                            </button>
-                        </div>
-                        <div className="p-4 border-b border-border space-y-3 shrink-0">
-                            <div className="relative">
-                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                                <input
-                                    type="text"
-                                    placeholder="Search language or translation..."
-                                    className="w-full pl-9 pr-4 py-2 bg-secondary/10 border-transparent rounded-lg focus:ring-2 focus:ring-primary focus:bg-background transition-all"
-                                    value={translationSearch}
-                                    onChange={(e) => setTranslationSearch(e.target.value)}
-                                />
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <Filter className="w-4 h-4 text-muted-foreground" />
-                                <select
-                                    className="flex-1 bg-secondary/10 border-transparent rounded-lg py-2 px-3 text-sm focus:ring-2 focus:ring-primary focus:bg-background transition-all"
-                                    value={languageFilter}
-                                    onChange={(e) => setLanguageFilter(e.target.value)}
-                                >
-                                    {availableLanguages.map(lang => (
-                                        <option key={lang} value={lang}>{lang}</option>
-                                    ))}
-                                </select>
-                            </div>
-                        </div>
-                        <div className="overflow-y-auto p-2 space-y-1">
-                            {filteredTranslations.map(t => (
-                                <button
-                                    key={t.id}
-                                    onClick={() => { setSelectedTranslation(t.id); setShowTranslations(false); }}
-                                    className={`w-full text-left p-3 rounded-lg transition-colors flex items-center justify-between group ${selectedTranslation === t.id ? 'bg-primary/10' : 'hover:bg-accent/10'
-                                        }`}
-                                >
-                                    <div>
-                                        <div className={`font-bold ${selectedTranslation === t.id ? 'text-primary' : ''}`}>
-                                            {t.name} <span className="text-xs font-normal text-muted-foreground ml-1">({t.shortName})</span>
-                                        </div>
-                                        <div className="text-xs text-muted-foreground group-hover:text-foreground transition-colors">
-                                            {t.languageEnglishName || t.language}
-                                        </div>
-                                    </div>
-                                    {selectedTranslation === t.id && <div className="w-2 h-2 rounded-full bg-primary" />}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            )}
+
 
             {/* Footer Controls */}
             <div className="fixed bottom-6 right-6 gap-2 z-40 hidden sm:flex">
-                {msbChapter && selectedTranslation !== 'eng_msb' && (
+                {msbChapter && selectedTranslation === 'BSB' && (
                     <button
                         onClick={() => setShowMsb(!showMsb)}
                         className={`p-3 rounded-full shadow-lg transition-all ${showMsb

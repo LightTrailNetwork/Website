@@ -12,6 +12,7 @@ import About from './pages/About';
 import Bible from './pages/Bible';
 import { initDB, getProfile, createProfile } from './data/db';
 import { Role } from './data/types';
+import { SettingsProvider } from './context/SettingsContext';
 
 function AppContent() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -140,7 +141,9 @@ function AppContent() {
 export default function App() {
   return (
     <Router>
-      <AppContent />
+      <SettingsProvider>
+        <AppContent />
+      </SettingsProvider>
     </Router>
   );
 }

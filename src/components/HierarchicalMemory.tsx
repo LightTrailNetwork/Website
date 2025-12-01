@@ -3,7 +3,9 @@ import { Book, FileText, Loader2 } from 'lucide-react';
 import { useParams, useNavigate } from 'react-router-dom';
 import mnemonicsData from '../data/bibleMnemonics.json';
 import Breadcrumbs from './Breadcrumbs';
-import { getBooks, type BibleBook } from '../data/bibleApi';
+import { getBooks, getChapter, type BibleBook, type BibleChapter } from '../data/bibleApi';
+import { formatPassageText } from '../utils/bibleUtils';
+import { useSettings } from '../context/SettingsContext';
 
 // Types for our data structure
 interface MnemonicData {
@@ -34,19 +36,25 @@ export default function HierarchicalMemory() {
     const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState<'ALL' | 'OT' | 'NT'>('ALL');
 
+    const { selectedTranslation } = useSettings();
+
+    const [chapterContent, setChapterContent] = useState<BibleChapter | null>(null);
+    const [contentLoading, setContentLoading] = useState(false);
+
+    // Load initial data (Books only)
     useEffect(() => {
-        const fetchBooks = async () => {
+        const loadData = async () => {
             try {
-                const allBooks = await getBooks('BSB');
-                setBooks(allBooks);
+                const booksData = await getBooks(selectedTranslation);
+                setBooks(booksData);
             } catch (error) {
-                console.error("Failed to fetch books", error);
+                console.error('Error loading initial data:', error);
             } finally {
                 setLoading(false);
             }
         };
-        fetchBooks();
-    }, []);
+        loadData();
+    }, [selectedTranslation]);
 
     // Helper to find the mnemonic key for a given BibleBook
     const getMnemonicKey = (book: BibleBook): string | null => {
@@ -110,6 +118,29 @@ export default function HierarchicalMemory() {
     const selectedBookObj = selectedBookKey ? books.find(b => getMnemonicKey(b) === selectedBookKey) : null;
     const selectedBookName = selectedBookObj ? selectedBookObj.name : (bookId || null);
 
+    // Fetch Chapter Content when selection changes
+    useEffect(() => {
+        const fetchChapterContent = async () => {
+            if (!selectedBookObj || !selectedChapter) {
+                setChapterContent(null);
+                return;
+            }
+
+            setContentLoading(true);
+            try {
+                const chapterData = await getChapter(selectedTranslation, selectedBookObj.id, parseInt(selectedChapter));
+                setChapterContent(chapterData);
+            } catch (error) {
+                console.error("Failed to fetch chapter content", error);
+                setChapterContent(null);
+            } finally {
+                setContentLoading(false);
+            }
+        };
+
+        fetchChapterContent();
+    }, [selectedBookObj, selectedChapter, selectedTranslation]);
+
     const handleBookSelect = (book: BibleBook) => {
         // Use full book name without spaces for URL
         const urlName = book.name.replace(/\s+/g, '');
@@ -136,6 +167,20 @@ export default function HierarchicalMemory() {
         })
         .sort((a, b) => a.order - b.order);
 
+    // Helper to get verse text
+    const getVerseText = (verseNum: string) => {
+        if (!chapterContent) return null;
+        const vNum = parseInt(verseNum);
+        const verses = chapterContent.chapter.content.filter(c => c.type === 'verse' && c.number === vNum);
+        if (verses.length === 0) return null;
+
+        return verses.map(v => {
+            if ('content' in v) {
+                return formatPassageText(v.content);
+            }
+            return '';
+        }).join(' ');
+    };
 
     // Breadcrumb Logic
     const breadcrumbItems: { label: string; to?: string }[] = [
@@ -168,13 +213,28 @@ export default function HierarchicalMemory() {
     }
 
     return (
-        <div className="max-w-4xl mx-auto space-y-8 animate-fade-in px-4">
-            <Breadcrumbs
-                items={breadcrumbItems}
-                showBackButton={true}
-            />
+        <div className="max-w-4xl mx-auto p-4 pb-20">
+            {/* Header */}
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                <div className="flex-1 min-w-0 overflow-x-auto">
+                    <Breadcrumbs
+                        items={breadcrumbItems}
+                        showBackButton={true}
+                        className="mb-0"
+                    />
+                </div>
 
-            {/* Level 1: Books */}
+                {/* Translation Indicator */}
+                {selectedBookKey && (
+                    <div className="flex-shrink-0">
+                        <div className="flex items-center gap-1 text-sm text-muted-foreground bg-secondary/10 px-3 py-1.5 rounded-full">
+                            <span className="font-medium text-foreground">{selectedTranslation}</span>
+                        </div>
+                    </div>
+                )}
+            </div>
+
+            {/* Content */}
             {!selectedBookKey && (
                 <div className="space-y-6 animate-slide-up">
                     <div className="text-center space-y-4">
@@ -263,21 +323,38 @@ export default function HierarchicalMemory() {
 
                     <div className="space-y-3">
                         {data.books[selectedBookKey]?.chapters[selectedChapter]?.verses ? (
-                            Object.entries(data.books[selectedBookKey].chapters[selectedChapter].verses).map(([verseNum, verseData]) => (
-                                <div key={verseNum} className="flex items-start p-4 bg-card border border-border rounded-xl">
-                                    <div className="bg-primary/10 px-3 py-1 rounded-md mr-4 font-mono font-bold text-primary min-w-[2.5rem] text-center">
-                                        {verseNum}
+                            Object.entries(data.books[selectedBookKey].chapters[selectedChapter].verses).map(([verseNum, verseData]) => {
+                                const verseText = getVerseText(verseNum);
+                                return (
+                                    <div key={verseNum} className="flex items-start p-4 bg-card border border-border rounded-xl">
+                                        <div className="bg-primary/10 px-3 py-1 rounded-md mr-4 font-mono font-bold text-primary min-w-[2.5rem] text-center shrink-0">
+                                            {verseNum}
+                                        </div>
+                                        <div className="space-y-2 w-full">
+                                            <p className="text-foreground font-medium text-lg border-b border-border/50 pb-2 mb-2">
+                                                <span className="text-primary font-bold text-xl mr-0.5">
+                                                    {verseData.mnemonic.charAt(0)}
+                                                </span>
+                                                {verseData.mnemonic.slice(1)}
+                                            </p>
+                                            {contentLoading ? (
+                                                <div className="flex items-center gap-2 text-muted-foreground text-sm">
+                                                    <Loader2 className="w-3 h-3 animate-spin" />
+                                                    <span>Loading text...</span>
+                                                </div>
+                                            ) : verseText ? (
+                                                <p className="text-muted-foreground leading-relaxed font-serif text-lg">
+                                                    {verseText}
+                                                </p>
+                                            ) : (
+                                                <p className="text-muted-foreground/50 italic text-sm">
+                                                    Text not available
+                                                </p>
+                                            )}
+                                        </div>
                                     </div>
-                                    <div>
-                                        <p className="text-foreground">
-                                            <span className="text-primary font-bold text-lg">
-                                                {verseData.mnemonic.charAt(0)}
-                                            </span>
-                                            {verseData.mnemonic.slice(1)}
-                                        </p>
-                                    </div>
-                                </div>
-                            ))
+                                );
+                            })
                         ) : (
                             <div className="text-center text-muted-foreground">No verse mnemonics available.</div>
                         )}
