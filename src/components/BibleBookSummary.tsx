@@ -36,6 +36,11 @@ export default function BibleBookSummary() {
     const [showQuickNav, setShowQuickNav] = useState(false);
     const [allBooks, setAllBooks] = useState<BibleBook[]>([]);
 
+    // Scroll to top when book changes
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [bookId]);
+
     useEffect(() => {
         const fetchData = async () => {
             if (!bookId) return;

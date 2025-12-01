@@ -102,7 +102,10 @@ export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigat
                                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${bookFilter === filter ? 'bg-primary text-primary-foreground' : 'hover:bg-accent/10'
                                         }`}
                                 >
-                                    {filter === 'ALPHA' ? 'A-Z' : filter === 'OT' ? 'Old Testament' : filter === 'NT' ? 'New Testament' : 'All Books'}
+                                    {filter === 'ALPHA' ? 'A-Z' :
+                                        filter === 'OT' ? <><span className="sm:hidden">Old Tst</span><span className="hidden sm:inline">Old Testament</span></> :
+                                            filter === 'NT' ? <><span className="sm:hidden">New Tst</span><span className="hidden sm:inline">New Testament</span></> :
+                                                'All Books'}
                                 </button>
                             ))}
                         </div>

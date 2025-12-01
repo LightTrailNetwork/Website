@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { useParams, useNavigate, useLocation, useNavigationType, Link } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, ChevronDown, ChevronUp, BookOpen, Loader2, AlertCircle, MessageSquare, Grid, Globe, X, Search, Filter, Eye, Link as LinkIcon, Columns } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ChevronDown, ChevronUp, BookOpen, Loader2, AlertCircle, MessageSquare, Grid, Globe, X, Search, Filter, Eye, Link as LinkIcon, Columns, ArrowLeft, ArrowRight } from 'lucide-react';
 import { getChapter, getBooks, getTranslations, getCommentaries, getCommentaryChapter, getProfiles, getProfile, getDatasetChapter } from '../data/bibleApi';
 import type { BibleChapter, ChapterContent, BibleBook, BibleTranslation, Commentary, CommentaryChapter, Profile, ProfileContent, ChapterFootnote, DatasetBookChapter } from '../data/bibleApi';
 import Breadcrumbs from './Breadcrumbs';
@@ -112,6 +112,20 @@ export default function BibleReader() {
 
     const [sidebarScrollTarget, setSidebarScrollTarget] = useState<number | null>(null);
     const [isSearchExpanded, setIsSearchExpanded] = useState(false);
+
+    // Navigation State
+    const [canGoBack, setCanGoBack] = useState(true);
+    const [canGoForward, setCanGoForward] = useState(false);
+
+    // Update navigation state on location change
+    useEffect(() => {
+        if (typeof window !== 'undefined' && 'navigation' in window) {
+            // @ts-ignore - Navigation API
+            setCanGoBack(window.navigation.canGoBack);
+            // @ts-ignore - Navigation API
+            setCanGoForward(window.navigation.canGoForward);
+        }
+    }, [location]);
 
     // Swipe Navigation State
     const [touchStart, setTouchStart] = useState<number | null>(null);
@@ -284,7 +298,7 @@ export default function BibleReader() {
         if (verseRange) {
             const rangeMatch = verseRange.match(/^(\d+)/);
             if (rangeMatch) {
-                const verseNum = parseInt(rangeMatch[1]);
+                const verseNum = parseInt(rangeMatch[1]!);
                 setSidebarScrollTarget(verseNum);
                 // Also ensure the references tab is selected if commentary is open
                 if (showCommentary) {
@@ -434,13 +448,13 @@ export default function BibleReader() {
     const onTouchStart = (e: React.TouchEvent) => {
         setTouchEnd(null); // Reset touch end
         if (e.targetTouches.length > 0) {
-            setTouchStart(e.targetTouches[0].clientX);
+            setTouchStart(e.targetTouches[0]!.clientX);
         }
     };
 
     const onTouchMove = (e: React.TouchEvent) => {
         if (e.targetTouches.length > 0) {
-            setTouchEnd(e.targetTouches[0].clientX);
+            setTouchEnd(e.targetTouches[0]!.clientX);
         }
     };
 
@@ -1542,11 +1556,19 @@ export default function BibleReader() {
                 {/* Mobile Navigation Footer */}
                 <div className="fixed bottom-0 left-0 right-0 h-12 bg-background/80 backdrop-blur-md border-t border-border flex items-center justify-between px-4 z-50 sm:hidden">
                     <div className="flex items-center gap-4">
-                        <button onClick={() => navigate(-1)} className="p-2 hover:bg-accent/10 rounded-full transition-colors">
-                            <ChevronLeft className="w-6 h-6" />
+                        <button
+                            onClick={() => navigate(-1)}
+                            disabled={!canGoBack}
+                            className={`p-2 rounded-full transition-colors ${!canGoBack ? 'opacity-30 cursor-not-allowed' : 'hover:bg-accent/10'}`}
+                        >
+                            <ArrowLeft className="w-6 h-6" />
                         </button>
-                        <button onClick={() => navigate(1)} className="p-2 hover:bg-accent/10 rounded-full transition-colors">
-                            <ChevronRight className="w-6 h-6" />
+                        <button
+                            onClick={() => navigate(1)}
+                            disabled={!canGoForward}
+                            className={`p-2 rounded-full transition-colors ${!canGoForward ? 'opacity-30 cursor-not-allowed' : 'hover:bg-accent/10'}`}
+                        >
+                            <ArrowRight className="w-6 h-6" />
                         </button>
                     </div>
                     <div className="flex items-center gap-4">
