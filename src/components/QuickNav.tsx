@@ -13,7 +13,7 @@ interface QuickNavProps {
 export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigateToBookOverview }: QuickNavProps) {
     const [navStep, setNavStep] = useState<'books' | 'chapters'>('books');
     const [selectedNavBook, setSelectedNavBook] = useState<BibleBook | null>(null);
-    const [bookFilter, setBookFilter] = useState<'ALL' | 'OT' | 'NT' | 'ALPHA'>('ALL');
+    const [bookFilter, setBookFilter] = useState<'ALL' | 'OT' | 'NT' | 'ALPHA'>('ALPHA');
     const [bookSearchQuery, setBookSearchQuery] = useState('');
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -95,7 +95,7 @@ export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigat
                             />
                         </div>
                         <div className="flex gap-2 overflow-x-auto pb-1">
-                            {(['ALL', 'OT', 'NT', 'ALPHA'] as const).map(filter => (
+                            {(['ALPHA', 'OT', 'NT'] as const).map(filter => (
                                 <button
                                     key={filter}
                                     onClick={() => setBookFilter(filter)}

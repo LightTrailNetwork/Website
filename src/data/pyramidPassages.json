@@ -74,10 +74,10 @@
     "title": "27 Inner Passages",
     "sections": [
       {
-        "category": "GOD / Present / Timeless / Relationship",
+        "category": "Session 1",
         "subsections": [
           {
-            "title": "God and God (Trinity)",
+            "title": "Week 1",
             "passages": [
               {
                 "key": "A",
@@ -97,7 +97,7 @@
             ]
           },
           {
-            "title": "God and Man",
+            "title": "Week 2",
             "passages": [
               {
                 "key": "D",
@@ -117,7 +117,7 @@
             ]
           },
           {
-            "title": "Man and Man",
+            "title": "Week 3",
             "passages": [
               {
                 "key": "G",
@@ -139,10 +139,10 @@
         ]
       },
       {
-        "category": "MAN / Past / Time / Story",
+        "category": "Session 2",
         "subsections": [
           {
-            "title": "Story of God",
+            "title": "Week 1",
             "passages": [
               {
                 "key": "J",
@@ -162,7 +162,7 @@
             ]
           },
           {
-            "title": "Story of Man",
+            "title": "Week 2",
             "passages": [
               {
                 "key": "M",
@@ -182,7 +182,7 @@
             ]
           },
           {
-            "title": "Story of the Future",
+            "title": "Week 3",
             "passages": [
               {
                 "key": "P",
@@ -204,10 +204,10 @@
         ]
       },
       {
-        "category": "WAY / Future / Place / Purpose",
+        "category": "Session 3",
         "subsections": [
           {
-            "title": "Purpose of God",
+            "title": "Week 1",
             "passages": [
               {
                 "key": "S",
@@ -227,7 +227,7 @@
             ]
           },
           {
-            "title": "Purpose of Man",
+            "title": "Week 2",
             "passages": [
               {
                 "key": "V",
@@ -247,7 +247,7 @@
             ]
           },
           {
-            "title": "Purpose of the Future",
+            "title": "Week 3",
             "passages": [
               {
                 "key": "Y",

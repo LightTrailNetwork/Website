@@ -433,7 +433,7 @@ export default function BibleReader() {
         }
     };
 
-    // Scroll sidebar to target verse
+    // Scroll sidebar to target verse (References Tab)
     useEffect(() => {
         if (showCommentary && commentaryTab === 'references' && sidebarScrollTarget !== null) {
             // Small delay to allow sidebar to render/animate in
@@ -447,7 +447,26 @@ export default function BibleReader() {
                         element.classList.remove('bg-primary/5');
                     }, 2000);
                 }
-                setSidebarScrollTarget(null); // Reset after scrolling
+                // We do NOT reset sidebarScrollTarget here so it persists if user switches tabs
+            }, 300); // Match animation duration
+            return () => clearTimeout(timeout);
+        }
+    }, [showCommentary, commentaryTab, sidebarScrollTarget]);
+
+    // Scroll sidebar to target verse (Chapter Tab)
+    useEffect(() => {
+        if (showCommentary && commentaryTab === 'chapter' && sidebarScrollTarget !== null) {
+            // Small delay to allow sidebar to render/animate in
+            const timeout = setTimeout(() => {
+                const element = document.getElementById(`commentary-verse-${sidebarScrollTarget}`);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    // Add temporary highlight
+                    element.classList.add('bg-primary/10', 'transition-colors', 'duration-1000');
+                    setTimeout(() => {
+                        element.classList.remove('bg-primary/10');
+                    }, 2000);
+                }
             }, 300); // Match animation duration
             return () => clearTimeout(timeout);
         }
@@ -556,22 +575,31 @@ export default function BibleReader() {
         setCloseTimeout(timeout);
     };
 
-    const handleFootnoteClick = (e: React.MouseEvent, noteId: number) => {
-        e.stopPropagation();
+    const handleFootnoteClick = (e: React.MouseEvent | null, noteId: number) => {
+        if (e) e.stopPropagation();
 
         // Check if mobile (sm breakpoint is 640px)
         const isMobile = window.innerWidth < 640;
+        const isDirectClick = !!e;
 
-        if (isMobile) {
-            // Mobile: Toggle popover
+        if (isDirectClick && isMobile) {
+            // Mobile marker tap: Toggle popover
             if (activeFootnote?.id === noteId) {
                 setActiveFootnote(null);
             } else {
                 const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
                 setActiveFootnote({ id: noteId, x: rect.left + rect.width / 2, y: rect.bottom });
             }
-        } else {
-            // Desktop: Jump to footnote
+            return;
+        }
+
+        // Desktop marker click OR "View in Sidebar" click (mobile/desktop)
+        setCommentaryTab('footnotes');
+        setShowCommentary(true);
+        setActiveFootnote(null);
+
+        // Wait for sidebar to render/animate
+        setTimeout(() => {
             const element = document.getElementById(`footnote-${noteId}`);
             if (element) {
                 element.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -579,7 +607,7 @@ export default function BibleReader() {
                 element.classList.add('bg-primary/20');
                 setTimeout(() => element.classList.remove('bg-primary/20'), 2000);
             }
-        }
+        }, 300);
     };
 
     const openProfile = async (profileId: string) => {
@@ -1049,7 +1077,7 @@ export default function BibleReader() {
             }
             if (item.type === 'verse') {
                 return (
-                    <p key={index} className="mb-2 text-sm">
+                    <p key={index} id={`commentary-verse-${item.number}`} className="mb-2 text-sm scroll-mt-24">
                         <span className="font-bold text-primary mr-1">{item.number}</span>
                         {item.content.map((c, i) => {
                             if (typeof c === 'string') return c;
@@ -1344,16 +1372,16 @@ export default function BibleReader() {
                                 {/* Tabs */}
                                 <div className="flex border-b border-border mb-2 shrink-0">
                                     <button
+                                        className={`flex-1 pb-2 text-sm font-medium transition-colors ${commentaryTab === 'intro' ? 'border-b-2 border-primary text-primary' : 'text-muted-foreground hover:text-foreground'}`}
+                                        onClick={() => setCommentaryTab('intro')}
+                                    >
+                                        Book
+                                    </button>
+                                    <button
                                         className={`flex-1 pb-2 text-sm font-medium transition-colors ${commentaryTab === 'chapter' ? 'border-b-2 border-primary text-primary' : 'text-muted-foreground hover:text-foreground'}`}
                                         onClick={() => setCommentaryTab('chapter')}
                                     >
                                         Chapter
-                                    </button>
-                                    <button
-                                        className={`flex-1 pb-2 text-sm font-medium transition-colors ${commentaryTab === 'intro' ? 'border-b-2 border-primary text-primary' : 'text-muted-foreground hover:text-foreground'}`}
-                                        onClick={() => setCommentaryTab('intro')}
-                                    >
-                                        Book Intro
                                     </button>
                                     <button
                                         className={`flex-1 pb-2 text-sm font-medium transition-colors ${commentaryTab === 'footnotes' ? 'border-b-2 border-primary text-primary' : 'text-muted-foreground hover:text-foreground'}`}
@@ -1447,7 +1475,7 @@ export default function BibleReader() {
                                                         </button>
                                                     </div>
                                                     <div className="grid grid-cols-1 gap-2">
-                                                        {v.references.map((ref, i) => {
+                                                        {getSortedReferences(v.references, books).map((ref, i) => {
                                                             const refKey = `${v.verse}-${ref.book}-${ref.chapter}-${ref.verse}`;
                                                             const isExpanded = !!expandedRefTexts[refKey];
                                                             const isLoading = !!loadingRefs[refKey];
@@ -1732,11 +1760,10 @@ export default function BibleReader() {
                             <button
                                 onClick={() => {
                                     if (activeFootnote) {
-                                        handleFootnoteClick(activeFootnote.id);
-                                        setActiveFootnote(null);
+                                        handleFootnoteClick(null, activeFootnote.id);
                                     }
                                 }}
-                                className="text-xs text-primary hover:underline font-medium"
+                                className="w-full mt-2 text-[10px] text-primary/80 font-medium text-center bg-primary/5 hover:bg-primary/10 rounded py-0.5 transition-colors"
                             >
                                 View in Sidebar
                             </button>

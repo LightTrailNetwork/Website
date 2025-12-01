@@ -193,17 +193,9 @@ export default function BibleBookSummary() {
                                 <span className="text-muted-foreground">Book Order</span>
                                 <span className="font-medium">#{book.order}</span>
                             </li>
-                            <li className="flex justify-between border-b border-border pb-2">
+                            <li className="flex justify-between">
                                 <span className="text-muted-foreground">Chapters</span>
                                 <span className="font-medium">{book.numberOfChapters}</span>
-                            </li>
-                            <li className="flex justify-between border-b border-border pb-2">
-                                <span className="text-muted-foreground">First Chapter</span>
-                                <span className="font-medium">{book.firstChapterNumber}</span>
-                            </li>
-                            <li className="flex justify-between">
-                                <span className="text-muted-foreground">Last Chapter</span>
-                                <span className="font-medium">{book.lastChapterNumber}</span>
                             </li>
                         </ul>
                     </div>
