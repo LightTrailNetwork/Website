@@ -1,295 +1,187 @@
-import { useState, useEffect } from 'react';
-import { Sun, Sunset, Moon, Share2, Loader2, Circle, CheckCircle2 } from 'lucide-react';
-import { Role } from '../data/types';
+import { useState } from 'react';
+import { Sun, BookOpen, Moon, ChevronRight, CheckCircle2, Circle, Calendar as CalendarIcon, Loader2 } from 'lucide-react';
 import { useProfile } from '../hooks/useProfile';
-import { getRoleContent, getRoleInfo } from '../utils/roleContent';
-import { getTodayData, setTodayData } from '../data/db';
+import { getQuarterInfo, getDailyContent } from '../utils/scheduleUtils';
+import { scoutSchedule, preScoutSchedule } from '../data/tableData';
 
 export default function Today() {
   const { profile, loading } = useProfile();
-  const [viewedRole, setViewedRole] = useState<Role>(Role.MENTEE);
-  const [completed, setCompleted] = useState({
-    morning: false,
-    afternoon: false,
-    night: false
-  });
+  const [completedTasks, setCompletedTasks] = useState<string[]>([]);
+  const [currentDate] = useState(new Date());
 
-  const today = new Date().toLocaleDateString('en-US', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  });
+  // Get dynamic schedule info
+  const quarterInfo = getQuarterInfo(currentDate);
+  const { quarter, session, weekNum, sessionWeek, dayOfWeek } = quarterInfo;
+  const dailyContent = getDailyContent(profile?.currentRole || 'Mentee', quarterInfo);
 
-  // Set initial viewed role to user's current role
-  useEffect(() => {
-    if (profile && !loading) {
-      setViewedRole(profile.currentRole);
-    }
-  }, [profile, loading]);
+  const toggleTask = (taskId: string) => {
+    setCompletedTasks(prev =>
+      prev.includes(taskId)
+        ? prev.filter(id => id !== taskId)
+        : [...prev, taskId]
+    );
+  };
 
-  // Load completion status
-  useEffect(() => {
-    const loadData = async () => {
-      try {
-        const data = await getTodayData();
-        setCompleted(data);
-      } catch (error) {
-        console.error('Failed to load today data:', error);
-      }
-    };
-    loadData();
-  }, []);
-
-  const handleToggle = async (slot: 'morning' | 'afternoon' | 'night') => {
-    // Only allow toggling if viewing own role
-    if (profile?.currentRole !== viewedRole) return;
-
-    const newState = {
-      ...completed,
-      [slot]: !completed[slot]
-    };
-
-    setCompleted(newState);
-    try {
-      await setTodayData(newState);
-    } catch (error) {
-      console.error('Failed to save today data:', error);
-      // Revert on error
-      setCompleted(completed);
+  // Helper to get memory verse based on role
+  const getMemoryContent = () => {
+    if (profile?.currentRole === 'Scout') {
+      const scoutItem = scoutSchedule.find(s => s.weekNum === weekNum);
+      return {
+        verse: scoutItem?.memorize || 'Review',
+        reference: scoutItem?.topic || ''
+      };
+    } else if (profile?.currentRole === 'Pre-Scout') {
+      const preScoutItem = preScoutSchedule.find(s => s.weekNum === weekNum);
+      return {
+        verse: preScoutItem?.memorize || 'Review',
+        reference: ''
+      };
+    } else {
+      // Mentee, Mentor, Steward use the main schedule
+      return {
+        verse: dailyContent?.memorize || 'Review',
+        reference: ''
+      };
     }
   };
 
-  const roleTabs = [
-    { role: Role.MENTEE, label: 'Mentee' },
-    { role: Role.MENTOR, label: 'Mentor' },
-    { role: Role.STEWARD, label: 'Steward' },
-    { role: Role.SCOUT, label: 'Scout' },
-    { role: Role.PRE_SCOUT, label: 'Pre-Scout' }
-  ];
-
-  // Get content for the currently viewed role
-  const roleContent = getRoleContent(viewedRole);
-  const isMe = profile?.currentRole === viewedRole;
+  const memoryContent = getMemoryContent();
 
   if (loading) {
     return (
-      <div className="bg-background min-h-screen flex items-center justify-center">
-        <div className="text-center space-y-4">
-          <Loader2 className="h-10 w-10 animate-spin text-primary mx-auto" />
-          <h1 className="text-xl font-semibold text-foreground">Loading...</h1>
-        </div>
+      <div className="flex items-center justify-center min-h-[50vh]">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
       </div>
     );
   }
 
   return (
-    <div className="space-y-6 animate-fade-in">
-      {/* Date display */}
+    <div className="max-w-2xl mx-auto space-y-8 animate-fade-in pb-20">
+      {/* Date Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-foreground">Today's Plan</h2>
-          <p className="text-muted-foreground">{today}</p>
+          <h1 className="text-3xl font-bold text-foreground tracking-tight">
+            {dayOfWeek}
+          </h1>
+          <p className="text-muted-foreground mt-1">
+            {currentDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })} • Q{quarter} {session} Week {sessionWeek}
+          </p>
         </div>
-        <button className="btn btn-primary flex items-center gap-2">
-          <Share2 className="w-4 h-4" />
-          <span className="hidden sm:inline">Share</span>
-        </button>
-      </div>
-
-      {/* Role Tabs */}
-      <div className="bg-card border border-border rounded-xl p-1 overflow-x-auto">
-        <div className="flex space-x-1 min-w-max">
-          {roleTabs.map(({ role, label }) => {
-            const isActive = viewedRole === role;
-            const isUserRole = role === profile?.currentRole;
-            return (
-              <button
-                key={role}
-                onClick={() => setViewedRole(role)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2 ${isActive
-                  ? 'bg-primary text-primary-foreground shadow-sm'
-                  : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
-                  }`}
-              >
-                {label}
-                {isUserRole && (
-                  <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${isActive ? 'bg-primary-foreground/20' : 'bg-primary/10 text-primary'
-                    }`}>
-                    Me
-                  </span>
-                )}
-              </button>
-            );
-          })}
+        <div className="h-12 w-12 bg-primary/10 rounded-full flex items-center justify-center">
+          <CalendarIcon className="w-6 h-6 text-primary" />
         </div>
       </div>
 
-      {/* MAN Schedule */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Morning */}
-        <div
-          onClick={() => handleToggle('morning')}
-          className={`group relative overflow-hidden bg-card border rounded-xl p-6 transition-all duration-300 ${isMe ? 'cursor-pointer hover:shadow-lg hover:border-primary/20' : ''
-            } ${completed.morning && isMe
-              ? 'bg-green-50/50 dark:bg-green-900/10 border-green-500/30'
-              : 'border-border'
-            }`}
-        >
-          {completed.morning && isMe && (
-            <div className="absolute top-0 right-0 p-4">
-              <div className="bg-green-500 text-white rounded-full p-1 shadow-sm animate-fade-in">
-                <CheckCircle2 className="w-5 h-5" />
-              </div>
-            </div>
-          )}
+      {/* Morning W.O.R.S.H.I.P. */}
+      <section className="space-y-4">
+        <div className="flex items-center space-x-2 text-primary">
+          <Sun className="w-5 h-5" />
+          <h2 className="font-semibold tracking-wide text-sm uppercase">Morning W.O.R.S.H.I.P.</h2>
+        </div>
 
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <div className={`p-2 rounded-lg transition-colors ${completed.morning && isMe
-                  ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400'
-                  : 'bg-orange-100 text-orange-600 group-hover:bg-orange-600 group-hover:text-white'
-                }`}>
-                <Sun className="w-5 h-5" />
+        <div className="bg-card border border-border rounded-xl overflow-hidden shadow-sm transition-all hover:shadow-md">
+          <div className="p-6 space-y-6">
+            <div className="flex items-start justify-between group cursor-pointer" onClick={() => toggleTask('worship')}>
+              <div className="space-y-1">
+                <h3 className="font-medium text-foreground">Worship & Prayer</h3>
+                <p className="text-sm text-muted-foreground">Offer yourself to God</p>
               </div>
-              <h3 className={`text-lg font-semibold transition-colors ${completed.morning && isMe ? 'text-green-700 dark:text-green-400' : 'text-foreground'
-                }`}>Morning</h3>
+              {completedTasks.includes('worship') ? (
+                <CheckCircle2 className="w-6 h-6 text-primary animate-scale-in" />
+              ) : (
+                <Circle className="w-6 h-6 text-muted-foreground/30 group-hover:text-primary/50 transition-colors" />
+              )}
             </div>
-            {!completed.morning && isMe && (
-              <div className="text-muted-foreground group-hover:text-primary transition-colors">
-                <Circle className="w-5 h-5" />
+
+            <div className="h-px bg-border/50" />
+
+            <div className="flex items-start justify-between group cursor-pointer" onClick={() => toggleTask('read')}>
+              <div className="space-y-1">
+                <h3 className="font-medium text-foreground">Read</h3>
+                <p className="text-lg font-medium text-primary">
+                  {dailyContent?.read || "Rest / Catch Up"}
+                </p>
               </div>
-            )}
+              {completedTasks.includes('read') ? (
+                <CheckCircle2 className="w-6 h-6 text-primary animate-scale-in" />
+              ) : (
+                <Circle className="w-6 h-6 text-muted-foreground/30 group-hover:text-primary/50 transition-colors" />
+              )}
+            </div>
+
+            <div className="h-px bg-border/50" />
+
+            <div className="flex items-start justify-between group cursor-pointer" onClick={() => toggleTask('intercede')}>
+              <div className="space-y-1">
+                <h3 className="font-medium text-foreground">Intercede & Practice</h3>
+                <p className="text-sm text-muted-foreground">Pray for others and do good</p>
+              </div>
+              {completedTasks.includes('intercede') ? (
+                <CheckCircle2 className="w-6 h-6 text-primary animate-scale-in" />
+              ) : (
+                <Circle className="w-6 h-6 text-muted-foreground/30 group-hover:text-primary/50 transition-colors" />
+              )}
+            </div>
           </div>
-          <div className={`space-y-3 transition-opacity duration-300 ${completed.morning && isMe ? 'opacity-75' : ''}`}>
-            {roleContent.morning.activities.map((activity, index) => (
-              <div key={index} className="flex items-start gap-2 text-sm text-muted-foreground">
-                <span className={`mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0 ${completed.morning && isMe ? 'bg-green-400' : 'bg-orange-400'
-                  }`} />
-                <span className={completed.morning && isMe ? 'line-through decoration-green-500/30' : ''}>
-                  {activity}
+        </div>
+      </section>
+
+      {/* Afternoon Memorization */}
+      <section className="space-y-4">
+        <div className="flex items-center space-x-2 text-orange-500">
+          <BookOpen className="w-5 h-5" />
+          <h2 className="font-semibold tracking-wide text-sm uppercase">Afternoon Memorization</h2>
+        </div>
+
+        <div className="bg-card border border-border rounded-xl overflow-hidden shadow-sm transition-all hover:shadow-md group cursor-pointer" onClick={() => toggleTask('memorize')}>
+          <div className="p-6 flex items-start justify-between">
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <span className="text-xs font-medium px-2 py-1 rounded-full bg-orange-500/10 text-orange-600">
+                  {profile?.currentRole || 'Mentee'} Track
                 </span>
               </div>
-            ))}
-            {roleContent.morning.focus && (
-              <div className={`mt-4 p-3 rounded-lg text-xs italic border ${completed.morning && isMe
-                  ? 'bg-green-100/50 text-green-700 border-green-200 dark:bg-green-900/20 dark:text-green-400 dark:border-green-900/30'
-                  : 'bg-muted/50 text-muted-foreground border-border'
-                }`}>
-                Focus: {roleContent.morning.focus}
-              </div>
+              <p className="text-lg font-medium text-foreground leading-relaxed">
+                {memoryContent.verse}
+              </p>
+              {memoryContent.reference && (
+                <p className="text-sm font-medium text-muted-foreground">
+                  {memoryContent.reference}
+                </p>
+              )}
+            </div>
+            {completedTasks.includes('memorize') ? (
+              <CheckCircle2 className="w-6 h-6 text-orange-500 animate-scale-in" />
+            ) : (
+              <Circle className="w-6 h-6 text-muted-foreground/30 group-hover:text-orange-500/50 transition-colors" />
             )}
           </div>
         </div>
+      </section>
 
-        {/* Afternoon */}
-        <div
-          onClick={() => handleToggle('afternoon')}
-          className={`group relative overflow-hidden bg-card border rounded-xl p-6 transition-all duration-300 ${isMe ? 'cursor-pointer hover:shadow-lg hover:border-primary/20' : ''
-            } ${completed.afternoon && isMe
-              ? 'bg-green-50/50 dark:bg-green-900/10 border-green-500/30'
-              : 'border-border'
-            }`}
-        >
-          {completed.afternoon && isMe && (
-            <div className="absolute top-0 right-0 p-4">
-              <div className="bg-green-500 text-white rounded-full p-1 shadow-sm animate-fade-in">
-                <CheckCircle2 className="w-5 h-5" />
-              </div>
-            </div>
-          )}
-
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <div className={`p-2 rounded-lg transition-colors ${completed.afternoon && isMe
-                  ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400'
-                  : 'bg-blue-100 text-blue-600 group-hover:bg-blue-600 group-hover:text-white'
-                }`}>
-                <Sunset className="w-5 h-5" />
-              </div>
-              <h3 className={`text-lg font-semibold transition-colors ${completed.afternoon && isMe ? 'text-green-700 dark:text-green-400' : 'text-foreground'
-                }`}>Afternoon</h3>
-            </div>
-            {!completed.afternoon && isMe && (
-              <div className="text-muted-foreground group-hover:text-primary transition-colors">
-                <Circle className="w-5 h-5" />
-              </div>
-            )}
-          </div>
-          <div className={`space-y-3 transition-opacity duration-300 ${completed.afternoon && isMe ? 'opacity-75' : ''}`}>
-            <div className="flex items-start gap-2 text-sm text-muted-foreground">
-              <span className={`mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0 ${completed.afternoon && isMe ? 'bg-green-400' : 'bg-blue-400'
-                }`} />
-              <span className={completed.afternoon && isMe ? 'line-through decoration-green-500/30' : ''}>
-                <span className="font-medium text-foreground">{roleContent.afternoon.title}:</span>{' '}
-                {roleContent.afternoon.content}
-              </span>
-            </div>
-            {roleContent.afternoon.reference && (
-              <div className={`mt-4 p-3 rounded-lg text-xs font-medium border ${completed.afternoon && isMe
-                  ? 'bg-green-100/50 text-green-700 border-green-200 dark:bg-green-900/20 dark:text-green-400 dark:border-green-900/30'
-                  : 'bg-muted/50 text-primary border-border'
-                }`}>
-                {roleContent.afternoon.reference}
-              </div>
-            )}
-          </div>
+      {/* Night Study */}
+      <section className="space-y-4">
+        <div className="flex items-center space-x-2 text-indigo-500">
+          <Moon className="w-5 h-5" />
+          <h2 className="font-semibold tracking-wide text-sm uppercase">Night Study</h2>
         </div>
 
-        {/* Night */}
-        <div
-          onClick={() => handleToggle('night')}
-          className={`group relative overflow-hidden bg-card border rounded-xl p-6 transition-all duration-300 ${isMe ? 'cursor-pointer hover:shadow-lg hover:border-primary/20' : ''
-            } ${completed.night && isMe
-              ? 'bg-green-50/50 dark:bg-green-900/10 border-green-500/30'
-              : 'border-border'
-            }`}
-        >
-          {completed.night && isMe && (
-            <div className="absolute top-0 right-0 p-4">
-              <div className="bg-green-500 text-white rounded-full p-1 shadow-sm animate-fade-in">
-                <CheckCircle2 className="w-5 h-5" />
-              </div>
+        <div className="bg-card border border-border rounded-xl overflow-hidden shadow-sm transition-all hover:shadow-md group cursor-pointer" onClick={() => toggleTask('study')}>
+          <div className="p-6 flex items-center justify-between">
+            <div className="space-y-1">
+              <h3 className="font-medium text-foreground">
+                {dailyContent?.study || "Rest"}
+              </h3>
+              {dailyContent?.area && (
+                <p className="text-sm text-muted-foreground">
+                  {dailyContent.area}
+                </p>
+              )}
             </div>
-          )}
-
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <div className={`p-2 rounded-lg transition-colors ${completed.night && isMe
-                  ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400'
-                  : 'bg-indigo-100 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white'
-                }`}>
-                <Moon className="w-5 h-5" />
-              </div>
-              <h3 className={`text-lg font-semibold transition-colors ${completed.night && isMe ? 'text-green-700 dark:text-green-400' : 'text-foreground'
-                }`}>Night</h3>
-            </div>
-            {!completed.night && isMe && (
-              <div className="text-muted-foreground group-hover:text-primary transition-colors">
-                <Circle className="w-5 h-5" />
-              </div>
-            )}
-          </div>
-          <div className={`space-y-3 transition-opacity duration-300 ${completed.night && isMe ? 'opacity-75' : ''}`}>
-            <div className="flex items-start gap-2 text-sm text-muted-foreground">
-              <span className={`mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0 ${completed.night && isMe ? 'bg-green-400' : 'bg-indigo-400'
-                }`} />
-              <span className={completed.night && isMe ? 'line-through decoration-green-500/30' : ''}>
-                <span className="font-medium text-foreground">{roleContent.night.title}:</span>{' '}
-                {roleContent.night.activity}
-              </span>
-            </div>
-            {roleContent.night.details && (
-              <div className={`mt-4 p-3 rounded-lg text-xs border ${completed.night && isMe
-                  ? 'bg-green-100/50 text-green-700 border-green-200 dark:bg-green-900/20 dark:text-green-400 dark:border-green-900/30'
-                  : 'bg-muted/50 text-muted-foreground border-border'
-                }`}>
-                {roleContent.night.details}
-              </div>
-            )}
+            <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-indigo-500 transition-colors" />
           </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 }
