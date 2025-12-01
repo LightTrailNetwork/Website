@@ -287,19 +287,7 @@ export default function BibleReader() {
         }
     }, [verseRange, showCommentary]);
 
-    // Scroll sidebar to target verse when opened via icon
-    useEffect(() => {
-        if (showCommentary && commentaryTab === 'references' && sidebarScrollTarget) {
-            setTimeout(() => {
-                const element = document.getElementById(`sidebar-ref-verse-${sidebarScrollTarget}`);
-                if (element) {
-                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    // Optional: Add a temporary highlight to the sidebar section
-                }
-                setSidebarScrollTarget(null); // Reset after scrolling
-            }, 300); // Small delay to allow sidebar to render
-        }
-    }, [showCommentary, commentaryTab, sidebarScrollTarget]);
+
 
     const scrollToVerseInView = (verseNum: number) => {
         const element = document.getElementById(`verse-${verseNum}`);
@@ -386,44 +374,38 @@ export default function BibleReader() {
         }
     };
 
-    // Scroll sidebar to target verse (References Tab)
+    // Scroll sidebar to target verse
     useEffect(() => {
-        if (showCommentary && commentaryTab === 'references' && sidebarScrollTarget !== null) {
-            // Small delay to allow sidebar to render/animate in
-            const timeout = setTimeout(() => {
-                const element = document.getElementById(`sidebar-ref-verse-${sidebarScrollTarget}`);
-                if (element) {
-                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    // Add temporary highlight
-                    element.classList.add('bg-primary/5', 'transition-colors', 'duration-1000');
-                    setTimeout(() => {
-                        element.classList.remove('bg-primary/5');
-                    }, 2000);
-                }
-                // We do NOT reset sidebarScrollTarget here so it persists if user switches tabs
-            }, 300); // Match animation duration
-            return () => clearTimeout(timeout);
-        }
-    }, [showCommentary, commentaryTab, sidebarScrollTarget]);
+        console.log('Scroll Effect Triggered:', { showCommentary, sidebarScrollTarget, commentaryLoading, commentaryTab });
+        if (showCommentary && sidebarScrollTarget !== null && !commentaryLoading) {
+            // Determine target element ID based on active tab
+            let targetId = '';
+            if (commentaryTab === 'references') {
+                targetId = `sidebar-ref-verse-${sidebarScrollTarget}`;
+            } else if (commentaryTab === 'chapter') {
+                targetId = `commentary-verse-${sidebarScrollTarget}`;
+            }
 
-    // Scroll sidebar to target verse (Chapter Tab)
-    useEffect(() => {
-        if (showCommentary && commentaryTab === 'chapter' && sidebarScrollTarget !== null) {
-            // Small delay to allow sidebar to render/animate in
-            const timeout = setTimeout(() => {
-                const element = document.getElementById(`commentary-verse-${sidebarScrollTarget}`);
-                if (element) {
-                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    // Add temporary highlight
-                    element.classList.add('bg-primary/10', 'transition-colors', 'duration-1000');
-                    setTimeout(() => {
-                        element.classList.remove('bg-primary/10');
-                    }, 2000);
-                }
-            }, 300); // Match animation duration
-            return () => clearTimeout(timeout);
+            console.log('Target ID:', targetId);
+
+            if (targetId) {
+                // Small delay to allow sidebar to render/animate in
+                const timeout = setTimeout(() => {
+                    const element = document.getElementById(targetId);
+                    console.log('Element found:', !!element, targetId);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        // Add temporary highlight
+                        element.classList.add('bg-primary/5', 'transition-colors', 'duration-1000');
+                        setTimeout(() => {
+                            element.classList.remove('bg-primary/5');
+                        }, 2000);
+                    }
+                }, 300);
+                return () => clearTimeout(timeout);
+            }
         }
-    }, [showCommentary, commentaryTab, sidebarScrollTarget]);
+    }, [showCommentary, commentaryTab, sidebarScrollTarget, commentaryLoading]);
 
     const handlePrev = () => {
         if (!bsbChapter) return;
