@@ -32,8 +32,8 @@ export default defineConfig({
         ],
       },
       manifest: {
-        name: "Christian Men's Mentorship",
-        short_name: "Triad",
+        name: "Light Trail Network",
+        short_name: "Light Trail",
         description: "Local-first Christian men's mentorship app for triad fellowship",
         start_url: "/",
         display: "standalone",

@@ -79,7 +79,7 @@ export default function BibleBookSummary() {
                     try {
                         // Fetch chapter 1 to get the book introduction
                         const commChapter = await getCommentaryChapter(defaultCommId, bookId, 1);
-                        if (commChapter && commChapter.book && commChapter.book.introduction) {
+                        if (commChapter?.book?.introduction) {
                             setIntroText(formatIntroduction(commChapter.book.introduction));
                         }
                     } catch (e) {

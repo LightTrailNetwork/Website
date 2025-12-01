@@ -95,7 +95,7 @@ function AppContent() {
         if (location.pathname.startsWith('/bible')) {
           return { title: 'Bible & Memory', subtitle: 'Read, Study, and Memorize' };
         }
-        return { title: 'Triad', subtitle: 'Christian Mentorship App' };
+        return { title: 'Light Trail', subtitle: 'Christian Mentorship App' };
     }
   };
 

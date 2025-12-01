@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2563EB;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1D4ED8;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="512" height="512" rx="128" fill="url(#grad1)" />
+  
+  <!-- Icon: Light Trail Cross -->
+  <g fill="none" stroke="white" stroke-width="48" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Vertical line down, curving up and right -->
+    <!-- M 180 150 (start vertical) -> L 180 350 (end vertical) -> C 180 420 (control 1) 260 400 (control 2) 420 150 (end) -->
+    <path d="M 180 150 L 180 350 C 180 420 260 400 420 150" />
+    
+    <!-- Cross bar -->
+    <!-- Centered on vertical line at x=180. Let's say y=220. Width 120? x1=120, x2=240 -->
+    <line x1="120" y1="220" x2="240" y2="220" />
+  </g>
+</svg>
