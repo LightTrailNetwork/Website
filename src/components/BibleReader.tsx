@@ -113,6 +113,10 @@ export default function BibleReader() {
     const [sidebarScrollTarget, setSidebarScrollTarget] = useState<number | null>(null);
     const [isSearchExpanded, setIsSearchExpanded] = useState(false);
 
+    // Swipe Navigation State
+    const [touchStart, setTouchStart] = useState<number | null>(null);
+    const [touchEnd, setTouchEnd] = useState<number | null>(null);
+
     // Resolve bookId from URL to API ID
 
     const resolvedBookId = useMemo(() => {
@@ -421,6 +425,36 @@ export default function BibleReader() {
                 const prevBook = books[currentBookIndex - 1]!;
                 navigate(`/bible/read/${prevBook.name.replace(/\s+/g, '')}/${prevBook.numberOfChapters}`);
             }
+        }
+    };
+
+    // Swipe Handlers
+    const minSwipeDistance = 50;
+
+    const onTouchStart = (e: React.TouchEvent) => {
+        setTouchEnd(null); // Reset touch end
+        if (e.targetTouches.length > 0) {
+            setTouchStart(e.targetTouches[0].clientX);
+        }
+    };
+
+    const onTouchMove = (e: React.TouchEvent) => {
+        if (e.targetTouches.length > 0) {
+            setTouchEnd(e.targetTouches[0].clientX);
+        }
+    };
+
+    const onTouchEnd = () => {
+        if (!touchStart || !touchEnd) return;
+
+        const distance = touchStart - touchEnd;
+        const isLeftSwipe = distance > minSwipeDistance;
+        const isRightSwipe = distance < -minSwipeDistance;
+
+        if (isLeftSwipe) {
+            handleNext();
+        } else if (isRightSwipe) {
+            handlePrev();
         }
     };
 
@@ -1138,7 +1172,12 @@ export default function BibleReader() {
 
 
     return (
-        <div className="flex flex-col sm:gap-0 relative max-w-7xl mx-auto px-0 sm:px-4">
+        <div
+            className="flex flex-col sm:gap-0 relative max-w-7xl mx-auto px-0 sm:px-4"
+            onTouchStart={onTouchStart}
+            onTouchMove={onTouchMove}
+            onTouchEnd={onTouchEnd}
+        >
 
 
             <div className="flex gap-6 relative">
