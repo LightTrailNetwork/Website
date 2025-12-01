@@ -10,6 +10,7 @@ import Settings from './pages/Settings';
 import Tradition from './pages/Tradition';
 import About from './pages/About';
 import Bible from './pages/Bible';
+import Table from './pages/Table';
 import { initDB, getProfile, createProfile } from './data/db';
 import { Role } from './data/types';
 import { SettingsProvider } from './context/SettingsContext';
@@ -87,6 +88,8 @@ function AppContent() {
         return { title: 'Link & QR', subtitle: 'Connect with your triad members' };
       case '/tradition':
         return { title: 'Tradition', subtitle: 'Our shared creed and passage pyramid' };
+      case '/table':
+        return { title: 'T.A.B.L.E.', subtitle: 'Quarter Curriculum' };
       case '/settings':
         return { title: 'Role & Settings', subtitle: 'Manage your profile and app settings' };
       case '/about':
@@ -129,6 +132,7 @@ function AppContent() {
           <Route path="/" element={<Today />} />
           <Route path="/link" element={<Link />} />
           <Route path="/tradition" element={<Tradition />} />
+          <Route path="/table" element={<Table />} />
           <Route path="/bible/*" element={<Bible />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/about" element={<About />} />
