@@ -188,8 +188,8 @@ export default function HierarchicalMemory() {
                                     key={t}
                                     onClick={() => setFilter(t)}
                                     className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${filter === t
-                                            ? 'bg-primary text-primary-foreground'
-                                            : 'bg-secondary/10 hover:bg-secondary/20 text-muted-foreground'
+                                        ? 'bg-primary text-primary-foreground'
+                                        : 'bg-secondary/10 hover:bg-secondary/20 text-muted-foreground'
                                         }`}
                                 >
                                     {t === 'ALL' ? 'All Books' : t === 'OT' ? 'Old Testament' : 'New Testament'}
@@ -265,11 +265,16 @@ export default function HierarchicalMemory() {
                         {data.books[selectedBookKey]?.chapters[selectedChapter]?.verses ? (
                             Object.entries(data.books[selectedBookKey].chapters[selectedChapter].verses).map(([verseNum, verseData]) => (
                                 <div key={verseNum} className="flex items-start p-4 bg-card border border-border rounded-xl">
-                                    <div className="bg-secondary/10 px-3 py-1 rounded-md mr-4 font-mono font-bold text-secondary">
+                                    <div className="bg-primary/10 px-3 py-1 rounded-md mr-4 font-mono font-bold text-primary min-w-[2.5rem] text-center">
                                         {verseNum}
                                     </div>
                                     <div>
-                                        <p className="text-foreground">{verseData.mnemonic}</p>
+                                        <p className="text-foreground">
+                                            <span className="text-primary font-bold text-lg">
+                                                {verseData.mnemonic.charAt(0)}
+                                            </span>
+                                            {verseData.mnemonic.slice(1)}
+                                        </p>
                                     </div>
                                 </div>
                             ))
