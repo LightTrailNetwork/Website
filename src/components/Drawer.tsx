@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Calendar, Scroll, Link as LinkIcon, Settings, Info, X, Book } from 'lucide-react';
+import { Calendar, Scroll, X, Book } from 'lucide-react';
 
 interface DrawerProps {
   isOpen: boolean;
@@ -12,10 +12,7 @@ export default function Drawer({ isOpen, onClose }: DrawerProps) {
   const menuItems = [
     { path: '/', label: 'Today', icon: Calendar },
     { path: '/tradition', label: 'Tradition', icon: Scroll },
-    { path: '/bible', label: 'Bible & Memory', icon: Book },
-    { path: '/link', label: 'Link & QR', icon: LinkIcon },
-    { path: '/settings', label: 'Role & Settings', icon: Settings },
-    { path: '/about', label: 'About & Privacy', icon: Info }
+    { path: '/bible', label: 'Bible & Memory', icon: Book }
   ];
 
   const handleItemClick = () => {

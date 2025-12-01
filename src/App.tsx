@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { Loader2 } from 'lucide-react';
 import Header from './components/Header';
 import Drawer from './components/Drawer';
+import SettingsModal from './components/SettingsModal';
 import Today from './pages/Today';
 import Link from './pages/Link';
 import Settings from './pages/Settings';
@@ -14,6 +15,7 @@ import { Role } from './data/types';
 
 function AppContent() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
   const location = useLocation();
 
@@ -55,9 +57,10 @@ function AppContent() {
     return () => clearTimeout(timeoutId);
   }, []);
 
-  // Close drawer when route changes
+  // Close drawer and settings when route changes
   useEffect(() => {
     setIsDrawerOpen(false);
+    setIsSettingsOpen(false);
   }, [location.pathname]);
 
   if (!isInitialized) {
@@ -101,13 +104,23 @@ function AppContent() {
     <div className="min-h-screen bg-background text-foreground font-sans selection:bg-primary/20">
       {/* Header with integrated navigation */}
       <Header
-        onMenuClick={() => setIsDrawerOpen(true)}
+        onMenuClick={() => {
+          setIsDrawerOpen(true);
+          setIsSettingsOpen(false);
+        }}
+        onSettingsClick={() => {
+          setIsSettingsOpen(true);
+          setIsDrawerOpen(false);
+        }}
         title={title}
         subtitle={subtitle}
       />
 
       {/* Drawer Navigation */}
       <Drawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
+
+      {/* Settings Modal */}
+      <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
 
       {/* Main Content */}
       <main className={`min-h-screen ${location.pathname.startsWith('/bible/read') ? 'pt-0 sm:pt-0' : 'pt-20'} pb-10 px-4 max-w-7xl mx-auto animate-slide-up`}>

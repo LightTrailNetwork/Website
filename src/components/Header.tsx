@@ -1,12 +1,13 @@
-import { Menu, Cross } from 'lucide-react';
+import { Menu, Settings } from 'lucide-react';
 
 interface HeaderProps {
   onMenuClick: () => void;
+  onSettingsClick: () => void;
   title: string;
   subtitle?: string;
 }
 
-export default function Header({ onMenuClick, title, subtitle }: HeaderProps) {
+export default function Header({ onMenuClick, onSettingsClick, title, subtitle }: HeaderProps) {
   return (
     <header className="bg-background/80 backdrop-blur-md border-b border-border sticky top-0 z-50">
       <div className="max-w-7xl mx-auto">
@@ -31,10 +32,15 @@ export default function Header({ onMenuClick, title, subtitle }: HeaderProps) {
             </div>
           </div>
 
-          {/* Right side - App logo/name on desktop */}
-          <div className="hidden md:flex items-center space-x-2 text-primary">
-            <Cross className="w-6 h-6" />
-            <span className="text-lg font-semibold text-foreground">Triad</span>
+          {/* Right side - Settings Button */}
+          <div className="flex items-center space-x-2">
+            <button
+              onClick={onSettingsClick}
+              className="p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent focus:outline-none focus:ring-2 focus:ring-ring transition-colors"
+              aria-label="Open settings"
+            >
+              <Settings className="w-6 h-6" />
+            </button>
           </div>
         </div>
       </div>
