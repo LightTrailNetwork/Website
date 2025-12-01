@@ -14,10 +14,17 @@ export const shouldInsertSpace = (prev: any, curr: any) => {
 export const formatPassageText = (content: (string | { text: string; wordsOfJesus?: boolean } | { noteId: number } | { lineBreak: boolean })[]): string => {
     let text = '';
 
-    content.forEach((item, index) => {
+    // Filter out content that doesn't contribute to text (like footnotes)
+    const visibleContent = content.filter(item =>
+        typeof item === 'string' ||
+        ('text' in item) ||
+        ('lineBreak' in item)
+    );
+
+    visibleContent.forEach((item, index) => {
         // Handle string content
         if (typeof item === 'string') {
-            if (index > 0 && shouldInsertSpace(content[index - 1], item)) {
+            if (index > 0 && shouldInsertSpace(visibleContent[index - 1], item)) {
                 text += ' ';
             }
             text += item;
@@ -26,14 +33,13 @@ export const formatPassageText = (content: (string | { text: string; wordsOfJesu
 
         // Handle object content
         if ('text' in item) {
-            if (index > 0 && shouldInsertSpace(content[index - 1], item)) {
+            if (index > 0 && shouldInsertSpace(visibleContent[index - 1], item)) {
                 text += ' ';
             }
             text += item.text;
         } else if ('lineBreak' in item) {
             text += '\n';
         }
-        // Ignore footnotes (noteId) for plain text representation
     });
 
     return text.trim();
