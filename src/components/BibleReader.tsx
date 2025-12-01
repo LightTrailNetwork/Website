@@ -39,10 +39,10 @@ export default function BibleReader() {
 
     // Scroll to top on new navigation
     useEffect(() => {
-        if (navType !== 'POP') {
+        if (navType !== 'POP' && !(location.state as any)?.preserveScroll) {
             window.scrollTo(0, 0);
         }
-    }, [location.pathname, navType, chapter, bookId]);
+    }, [location.pathname, navType, chapter, bookId, location.state]);
 
     const [bsbChapter, setBsbChapter] = useState<BibleChapter | null>(null);
     const [msbChapter, setMsbChapter] = useState<BibleChapter | null>(null);
@@ -1266,7 +1266,15 @@ export default function BibleReader() {
                                         {viewMode === 'full' ? <Eye className="w-3 h-3" /> : <BookOpen className="w-3 h-3" />}
                                         {viewMode === 'full' ? 'Focus View' : 'Show Full Chapter'}
                                     </button>
-                                    <button onClick={() => navigate(`/bible/read/${bsbChapter.book.name.replace(/\s+/g, '')}/${chapter}`)} className="text-xs text-primary hover:underline">Clear</button>
+                                    <button
+                                        onClick={() => navigate(`/bible/read/${bsbChapter.book.name.replace(/\s+/g, '')}/${chapter}`, {
+                                            replace: true,
+                                            state: { preserveScroll: true }
+                                        })}
+                                        className="text-xs text-primary hover:underline"
+                                    >
+                                        Clear
+                                    </button>
                                 </div>
                             </div>
                         )}
