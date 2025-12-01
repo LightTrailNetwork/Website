@@ -214,7 +214,10 @@ export default function BibleReader() {
 
             setLoading(true);
             setError(null);
+            setLoading(true);
+            setError(null);
             setExpandedRefTexts({}); // Reset expanded refs on navigation
+            setSidebarScrollTarget(null); // Reset scroll target on navigation
 
             try {
                 // Fetch Primary Translation
@@ -376,7 +379,6 @@ export default function BibleReader() {
 
     // Scroll sidebar to target verse
     useEffect(() => {
-        console.log('Scroll Effect Triggered:', { showCommentary, sidebarScrollTarget, commentaryLoading, commentaryTab });
         if (showCommentary && sidebarScrollTarget !== null && !commentaryLoading) {
             // Determine target element ID based on active tab
             let targetId = '';
@@ -386,13 +388,10 @@ export default function BibleReader() {
                 targetId = `commentary-verse-${sidebarScrollTarget}`;
             }
 
-            console.log('Target ID:', targetId);
-
             if (targetId) {
                 // Small delay to allow sidebar to render/animate in
                 const timeout = setTimeout(() => {
                     const element = document.getElementById(targetId);
-                    console.log('Element found:', !!element, targetId);
                     if (element) {
                         element.scrollIntoView({ behavior: 'smooth', block: 'start' });
                         // Add temporary highlight
