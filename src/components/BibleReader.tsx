@@ -1603,12 +1603,12 @@ export default function BibleReader() {
 
 
             {/* Footer Controls */}
-            <div className="fixed bottom-6 right-6 gap-2 z-40 hidden sm:flex">
+            <div className={`fixed bottom-6 gap-2 z-40 hidden sm:flex transition-all duration-300 ${showCommentary ? 'right-6 lg:right-[430px]' : 'right-6'}`}>
                 {msbChapter && selectedTranslation === 'BSB' && (
                     <button
                         onClick={() => setShowMsb(!showMsb)}
                         className={`p-3 rounded-full shadow-lg transition-all ${showMsb
-                            ? 'bg-secondary text-secondary-foreground'
+                            ? 'bg-primary text-primary-foreground'
                             : 'bg-card border border-border text-muted-foreground hover:text-foreground'
                             }`}
                         title="Toggle MSB Comparison"
