@@ -1,46 +1,67 @@
-// Map full book names to abbreviations used in the Bible reader
-const bookMap: { [key: string]: string } = {
-    'Genesis': 'GEN', 'Exodus': 'EXO', 'Leviticus': 'LEV', 'Numbers': 'NUM', 'Deuteronomy': 'DEU',
-    'Joshua': 'JOS', 'Judges': 'JDG', 'Ruth': 'RUT', '1 Samuel': '1SA', '2 Samuel': '2SA',
-    '1 Kings': '1KI', '2 Kings': '2KI', '1 Chronicles': '1CH', '2 Chronicles': '2CH',
-    'Ezra': 'EZR', 'Nehemiah': 'NEH', 'Esther': 'EST', 'Job': 'JOB', 'Psalm': 'PSA', 'Psalms': 'PSA',
-    'Proverbs': 'PRO', 'Ecclesiastes': 'ECC', 'Song of Solomon': 'SNG', 'Isaiah': 'ISA',
-    'Jeremiah': 'JER', 'Lamentations': 'LAM', 'Ezekiel': 'EZK', 'Daniel': 'DAN',
-    'Hosea': 'HOS', 'Joel': 'JOL', 'Amos': 'AMO', 'Obadiah': 'OBA', 'Jonah': 'JON',
-    'Micah': 'MIC', 'Nahum': 'NAM', 'Habakkuk': 'HAB', 'Zephaniah': 'ZEP',
-    'Haggai': 'HAG', 'Zechariah': 'ZEC', 'Malachi': 'MAL',
-    'Matthew': 'MAT', 'Mark': 'MRK', 'Luke': 'LUK', 'John': 'JHN', 'Acts': 'ACT',
-    'Romans': 'ROM', '1 Corinthians': '1CO', '2 Corinthians': '2CO', 'Galatians': 'GAL',
-    'Ephesians': 'EPH', 'Philippians': 'PHP', 'Colossians': 'COL',
-    '1 Thessalonians': '1TH', '2 Thessalonians': '2TH', '1 Timothy': '1TI', '2 Timothy': '2TI',
-    'Titus': 'TIT', 'Philemon': 'PHM', 'Hebrews': 'HEB', 'James': 'JAS',
-    '1 Peter': '1PE', '2 Peter': '2PE', '1 John': '1JN', '2 John': '2JN', '3 John': '3JN',
-    'Jude': 'JUD', 'Revelation': 'REV'
-};
+// Map full book names to themselves (normalized) or handle variations if needed.
+// The BibleReader expects full names without spaces for the URL, e.g. "1John".
+// We will normalize the input book name to this format.
 
-export function getBibleLink(reference: string): string | null {
-    if (!reference) return null;
+export function getBibleLink(text: string): string | null {
+    if (!text) return null;
 
-    // Clean up the reference
-    const cleanRef = reference.trim();
+    // Regex to find a Bible reference.
+    // Looks for: (Number? Space? Name) Space (Chapter) (:Verse)? (-EndVerse)?
+    // Examples: "Matthew 28:19", "1 John 1:9", "Gen 1", "Matthew 28:19-20"
+    // We look for the LAST occurrence if there are multiple, or just the one present.
+    // The text might be "Go... - Matthew 28:19".
 
-    // Try to match "Book Chapter:Verse" or "Book Chapter"
-    // Regex looks for: (Number? Space? Name) Space (Chapter) (:Verse)?
-    const match = cleanRef.match(/^(\d?\s?[a-zA-Z]+)\s+(\d+)(?::(\d+))?/);
+    // List of common book names to help the regex identify valid books
+    const bookNames = [
+        'Genesis', 'Exodus', 'Leviticus', 'Numbers', 'Deuteronomy',
+        'Joshua', 'Judges', 'Ruth', '1 Samuel', '2 Samuel', '1 Kings', '2 Kings',
+        '1 Chronicles', '2 Chronicles', 'Ezra', 'Nehemiah', 'Esther', 'Job',
+        'Psalm', 'Psalms', 'Proverbs', 'Ecclesiastes', 'Song of Solomon', 'Isaiah',
+        'Jeremiah', 'Lamentations', 'Ezekiel', 'Daniel', 'Hosea', 'Joel', 'Amos',
+        'Obadiah', 'Jonah', 'Micah', 'Nahum', 'Habakkuk', 'Zephaniah', 'Haggai',
+        'Zechariah', 'Malachi', 'Matthew', 'Mark', 'Luke', 'John', 'Acts',
+        'Romans', '1 Corinthians', '2 Corinthians', 'Galatians', 'Ephesians',
+        'Philippians', 'Colossians', '1 Thessalonians', '2 Thessalonians',
+        '1 Timothy', '2 Timothy', 'Titus', 'Philemon', 'Hebrews', 'James',
+        '1 Peter', '2 Peter', '1 John', '2 John', '3 John', 'Jude', 'Revelation'
+    ];
 
-    if (!match) return null;
+    // Construct a regex pattern that matches any of these books
+    // We sort by length descending to match "1 John" before "John"
+    const bookPattern = bookNames.sort((a, b) => b.length - a.length).join('|');
 
-    const bookName = match[1].trim();
+    // Regex:
+    // \b(${bookPattern})  -> Match a book name (boundary to avoid partial matches inside words)
+    // \s+                 -> Space
+    // (\d+)               -> Chapter
+    // (?::(\d+))?         -> Optional :Verse
+    // (?:-(\d+))?         -> Optional -EndVerse
+    // We use 'gi' to match case-insensitive and global to find all, then take the best one.
+    const regex = new RegExp(`\\b(${bookPattern})\\s+(\\d+)(?::(\\d+))?(?:-(\\d+))?`, 'gi');
+
+    const matches = [...text.matchAll(regex)];
+
+    if (matches.length === 0) return null;
+
+    // Use the last match found, as references often come at the end of a quote
+    const match = matches[matches.length - 1];
+
+    const bookName = match[1];
     const chapter = match[2];
-    const verse = match[3];
+    const startVerse = match[3];
+    const endVerse = match[4];
 
-    const bookAbbr = bookMap[bookName];
+    // Normalize book name for URL: remove spaces
+    // e.g. "1 John" -> "1John", "Song of Solomon" -> "SongofSolomon"
+    const urlBook = bookName.replace(/\s+/g, '');
 
-    if (!bookAbbr) return null;
+    let link = `/bible/read/${urlBook}/${chapter}`;
 
-    let link = `/bible/read/${bookAbbr}.${chapter}`;
-    if (verse) {
-        link += `.${verse}`;
+    if (startVerse) {
+        link += `/${startVerse}`;
+        if (endVerse) {
+            link += `-${endVerse}`;
+        }
     }
 
     return link;

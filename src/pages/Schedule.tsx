@@ -175,7 +175,7 @@ export default function Schedule() {
                                         </td>
                                         <td className="p-4 text-muted-foreground text-xs">
                                             {displayArea && (
-                                                <span className="px-2 py-1 rounded-full bg-muted border border-border">
+                                                <span className="px-2 py-1 rounded-full bg-muted border border-border whitespace-nowrap">
                                                     {displayArea}
                                                 </span>
                                             )}
@@ -262,7 +262,7 @@ export default function Schedule() {
                                                 <div className="flex items-center justify-between">
                                                     <span className="font-medium text-sm text-muted-foreground">{dayName}</span>
                                                     {displayArea && (
-                                                        <span className="text-xs px-2 py-0.5 rounded-full bg-muted border border-border text-muted-foreground">
+                                                        <span className="text-xs px-2 py-0.5 rounded-full bg-muted border border-border text-muted-foreground whitespace-nowrap">
                                                             {displayArea}
                                                         </span>
                                                     )}

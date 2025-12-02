@@ -81,7 +81,7 @@ export default function Today() {
             {dayOfWeek}
           </h1>
           <p className="text-muted-foreground mt-1">
-            {currentDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })} • Q{quarter} {session} Week {sessionWeek}
+            {currentDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })} • {session} • Week {sessionWeek} • Q{quarter}
           </p>
         </div>
         <div className="h-12 w-12 bg-primary/10 rounded-full flex items-center justify-center">
