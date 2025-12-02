@@ -5,6 +5,8 @@ interface SettingsContextType {
     setSelectedTranslation: (id: string) => void;
     showMsb: boolean;
     setShowMsb: (show: boolean) => void;
+    readerMode: boolean;
+    setReaderMode: (enabled: boolean) => void;
 }
 
 const SettingsContext = createContext<SettingsContextType | undefined>(undefined);
@@ -19,6 +21,10 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
         return localStorage.getItem('bible_show_msb') === 'true';
     });
 
+    const [readerMode, setReaderMode] = useState(() => {
+        return localStorage.getItem('bible_reader_mode') === 'true';
+    });
+
     // Persist changes
     useEffect(() => {
         localStorage.setItem('bible_translation', selectedTranslation);
@@ -28,12 +34,18 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
         localStorage.setItem('bible_show_msb', String(showMsb));
     }, [showMsb]);
 
+    useEffect(() => {
+        localStorage.setItem('bible_reader_mode', String(readerMode));
+    }, [readerMode]);
+
     return (
         <SettingsContext.Provider value={{
             selectedTranslation,
             setSelectedTranslation,
             showMsb,
-            setShowMsb
+            setShowMsb,
+            readerMode,
+            setReaderMode
         }}>
             {children}
         </SettingsContext.Provider>

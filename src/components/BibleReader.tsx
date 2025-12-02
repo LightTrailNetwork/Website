@@ -49,7 +49,7 @@ export default function BibleReader() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [profileLoading, setProfileLoading] = useState(false);
-    const { selectedTranslation, showMsb, setShowMsb } = useSettings();
+    const { selectedTranslation, showMsb, setShowMsb, readerMode } = useSettings();
 
     // Cross Reference State
     const [crossRefs, setCrossRefs] = useState<DatasetBookChapter | null>(null);
@@ -823,20 +823,22 @@ export default function BibleReader() {
                                 id={`verse-${item.number}`}
                                 className={`relative group ${isHighlighted ? "bg-yellow-100 dark:bg-yellow-900/30 transition-colors duration-1000 rounded px-1 -mx-1 box-decoration-clone" : ""}`}
                             >
-                                <sup className="text-xs font-bold text-muted-foreground mr-1 select-none inline-flex items-center">
-                                    {item.number}
-                                    {hasCrossRefs && (
-                                        <button
-                                            onClick={(e) => handleRefClick(e, item.number, verseRefs)}
-                                            onMouseEnter={(e) => handleRefMouseEnter(e, item.number, verseRefs)}
-                                            onMouseLeave={handleRefMouseLeave}
-                                            className="ml-0.5 text-primary/60 hover:text-primary transition-colors"
-                                            title="View Cross References"
-                                        >
-                                            <LinkIcon className="w-2.5 h-2.5" />
-                                        </button>
-                                    )}
-                                </sup>
+                                {!readerMode && (
+                                    <sup className="text-xs font-bold text-muted-foreground mr-1 select-none inline-flex items-center">
+                                        {item.number}
+                                        {hasCrossRefs && (
+                                            <button
+                                                onClick={(e) => handleRefClick(e, item.number, verseRefs)}
+                                                onMouseEnter={(e) => handleRefMouseEnter(e, item.number, verseRefs)}
+                                                onMouseLeave={handleRefMouseLeave}
+                                                className="ml-0.5 text-primary/60 hover:text-primary transition-colors"
+                                                title="View Cross References"
+                                            >
+                                                <LinkIcon className="w-2.5 h-2.5" />
+                                            </button>
+                                        )}
+                                    </sup>
+                                )}
                                 {/* MSB Comparison Overlay (if enabled) */}
                                 {showMsb && msbVerse ? (
                                     (() => {
@@ -991,7 +993,7 @@ export default function BibleReader() {
                                                 }
 
                                                 if ('noteId' in c) {
-                                                    const noteMarker = showFootnotes ? (
+                                                    const noteMarker = (showFootnotes && !readerMode) ? (
                                                         <sup
                                                             key={`note-${index}-${i}`}
                                                             className="text-[10px] font-bold text-primary/70 cursor-pointer hover:text-primary hover:underline select-none ml-0.5"

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { X, Link as LinkIcon, Settings, Info, ChevronRight, ChevronLeft, Globe, Search, Filter } from 'lucide-react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { X, Link as LinkIcon, Settings, Info, ChevronRight, ChevronLeft, Globe, Search, Filter, BookOpen } from 'lucide-react';
 import { useSettings } from '../context/SettingsContext';
 import { getTranslations, type BibleTranslation } from '../data/bibleApi';
 
@@ -11,13 +11,16 @@ interface SettingsModalProps {
 
 export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
     const navigate = useNavigate();
-    const { selectedTranslation, setSelectedTranslation, showMsb, setShowMsb } = useSettings();
+    const location = useLocation();
+    const { selectedTranslation, setSelectedTranslation, showMsb, setShowMsb, readerMode, setReaderMode } = useSettings();
 
     // Translation State
     const [translations, setTranslations] = useState<BibleTranslation[]>([]);
     const [translationSearch, setTranslationSearch] = useState('');
     const [languageFilter, setLanguageFilter] = useState<string>('English');
-    const [currentView, setCurrentView] = useState<'main' | 'translation'>('main');
+    const [currentView, setCurrentView] = useState<'main' | 'translation' | 'reader'>('main');
+
+    const isBiblePage = location.pathname.startsWith('/bible/read');
 
     useEffect(() => {
         if (isOpen && translations.length === 0) {
@@ -57,12 +60,12 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
 
     return (
         <div className="fixed inset-0 z-[60] bg-background/80 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in" onClick={onClose}>
-            <div className="bg-card border border-border rounded-xl shadow-2xl w-full max-w-md overflow-hidden animate-in zoom-in-95 duration-200 flex flex-col max-h-[85vh]" onClick={e => e.stopPropagation()}>
+            <div className="bg-card border border-border rounded-xl shadow-2xl w-full max-w-2xl overflow-hidden animate-in zoom-in-95 duration-200 flex flex-col max-h-[90vh]" onClick={e => e.stopPropagation()}>
 
                 {/* Header */}
                 <div className="p-4 border-b border-border flex items-center justify-between shrink-0">
                     <div className="flex items-center gap-2">
-                        {currentView === 'translation' && (
+                        {currentView !== 'main' && (
                             <button
                                 onClick={() => setCurrentView('main')}
                                 className="p-1 -ml-2 hover:bg-accent/10 rounded-full transition-colors"
@@ -71,7 +74,8 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                             </button>
                         )}
                         <h2 className="text-lg font-bold">
-                            {currentView === 'main' ? 'Settings & More' : 'Bible Translation'}
+                            {currentView === 'main' ? 'Settings & More' :
+                                currentView === 'translation' ? 'Bible Translation' : 'Reader Settings'}
                         </h2>
                     </div>
                     <button onClick={onClose} className="p-2 hover:bg-accent/10 rounded-full transition-colors">
@@ -82,7 +86,24 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                 {/* Content */}
                 <div className="overflow-y-auto custom-scrollbar flex-1">
                     {currentView === 'main' ? (
-                        <div className="p-2">
+                        <div className="p-2 space-y-2">
+                            {/* Reader Settings Entry Point (Only on Bible Pages) */}
+                            {isBiblePage && (
+                                <button
+                                    onClick={() => setCurrentView('reader')}
+                                    className="w-full flex items-center p-4 hover:bg-accent/5 rounded-lg transition-colors group text-left bg-primary/5 border border-primary/10"
+                                >
+                                    <div className="p-2 bg-primary/10 rounded-lg mr-4 group-hover:bg-primary/20 transition-colors">
+                                        <BookOpen className="w-5 h-5 text-primary" />
+                                    </div>
+                                    <div className="flex-1">
+                                        <h3 className="font-medium text-foreground">Reader Settings</h3>
+                                        <p className="text-xs text-muted-foreground">Customize your reading experience</p>
+                                    </div>
+                                    <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
+                                </button>
+                            )}
+
                             {/* Translation Entry Point */}
                             <button
                                 onClick={() => setCurrentView('translation')}
@@ -120,8 +141,46 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                                 );
                             })}
                         </div>
+                    ) : currentView === 'reader' ? (
+                        <div className="p-4 space-y-4 animate-in slide-in-from-right duration-200">
+                            {/* Reader Mode Toggle */}
+                            <div className="flex items-center justify-between p-4 bg-secondary/5 rounded-lg border border-border">
+                                <div className="flex flex-col gap-1">
+                                    <span className="font-medium flex items-center gap-2">
+                                        <BookOpen className="w-4 h-4 text-primary" />
+                                        Reader Mode
+                                    </span>
+                                    <span className="text-xs text-muted-foreground max-w-[200px]">
+                                        Hides verse numbers, footnotes, and cross-references for a clean reading experience.
+                                    </span>
+                                </div>
+                                <button
+                                    onClick={() => setReaderMode(!readerMode)}
+                                    className={`w-12 h-7 rounded-full transition-colors relative ${readerMode ? 'bg-primary' : 'bg-secondary'}`}
+                                >
+                                    <div className={`w-5 h-5 bg-white rounded-full absolute top-1 transition-transform shadow-sm ${readerMode ? 'left-6' : 'left-1'}`} />
+                                </button>
+                            </div>
+
+                            {/* MSB Toggle (Moved here for convenience when reading) */}
+                            {selectedTranslation === 'BSB' && (
+                                <div className="flex items-center justify-between p-4 bg-secondary/5 rounded-lg border border-border">
+                                    <div className="flex flex-col gap-1">
+                                        <span className="font-medium">Compare with MSB</span>
+                                        <span className="text-xs text-muted-foreground">Show MSB alongside BSB</span>
+                                    </div>
+                                    <button
+                                        onClick={() => setShowMsb(!showMsb)}
+                                        className={`w-12 h-7 rounded-full transition-colors relative ${showMsb ? 'bg-primary' : 'bg-secondary'}`}
+                                    >
+                                        <div className={`w-5 h-5 bg-white rounded-full absolute top-1 transition-transform shadow-sm ${showMsb ? 'left-6' : 'left-1'}`} />
+                                    </button>
+                                </div>
+                            )}
+                        </div>
                     ) : (
                         <div className="p-4 space-y-4 animate-in slide-in-from-right duration-200">
+
                             {/* MSB Toggle */}
                             {selectedTranslation === 'BSB' && (
                                 <div className="flex items-center justify-between p-3 bg-secondary/5 rounded-lg border border-border">
