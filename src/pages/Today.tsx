@@ -5,6 +5,9 @@ import { useProfile } from '../hooks/useProfile';
 import { getQuarterInfo, getDailyContent } from '../utils/scheduleUtils';
 import { scoutSchedule, preScoutSchedule } from '../data/tableData';
 import { getBibleLink } from '../utils/linkUtils';
+import { getStudyContent } from '../utils/contentUtils';
+import { CollapsibleText } from '../components/CollapsibleText';
+import { Role } from '../data/types';
 
 export default function Today() {
   const { profile, loading } = useProfile();
@@ -14,7 +17,11 @@ export default function Today() {
   // Get dynamic schedule info
   const quarterInfo = getQuarterInfo(currentDate);
   const { quarter, session, weekNum, sessionWeek, dayOfWeek } = quarterInfo;
-  const dailyContent = getDailyContent(profile?.currentRole || 'Mentee', quarterInfo);
+  const dailyContent = getDailyContent(profile?.currentRole || Role.MENTEE, quarterInfo);
+
+  // Get detailed study content
+  const studyContentRows = getStudyContent(dailyContent);
+  const userRole = profile?.currentRole || Role.MENTEE;
 
   const toggleTask = (taskId: string) => {
     setCompletedTasks(prev =>
@@ -37,13 +44,13 @@ export default function Today() {
 
   // Helper to get memory verse based on role
   const getMemoryContent = () => {
-    if (profile?.currentRole === 'Scout') {
+    if (profile?.currentRole === Role.SCOUT) {
       const scoutItem = scoutSchedule.find(s => s.weekNum === weekNum);
       return {
         verse: scoutItem?.memorize || 'Review',
         reference: scoutItem?.topic || ''
       };
-    } else if (profile?.currentRole === 'Pre-Scout') {
+    } else if (profile?.currentRole === Role.PRE_SCOUT) {
       const preScoutItem = preScoutSchedule.find(s => s.weekNum === weekNum);
       return {
         verse: preScoutItem?.memorize || 'Review',
@@ -179,7 +186,7 @@ export default function Today() {
             <div className="space-y-2 flex-1 pr-4">
               <div className="flex items-center space-x-2">
                 <span className="text-xs font-medium px-2 py-1 rounded-full bg-orange-500/10 text-orange-600">
-                  {profile?.currentRole || 'Mentee'} Track
+                  {profile?.currentRole || Role.MENTEE} Track
                 </span>
               </div>
               {memoryLink ? (
@@ -215,26 +222,53 @@ export default function Today() {
           <h2 className="font-semibold tracking-wide text-sm uppercase">Night Study</h2>
         </div>
 
-        <div className="bg-card border border-border rounded-xl overflow-hidden shadow-sm transition-all hover:shadow-md group cursor-pointer" onClick={() => toggleTask('study')}>
-          <div className="p-6 flex items-center justify-between">
-            <div className="space-y-1">
-              <h3 className="font-medium text-foreground">
-                {dailyContent?.study || "Rest"}
-              </h3>
-              {dailyContent?.area && (
-                <p className="text-sm text-muted-foreground">
-                  {dailyContent.area}
-                </p>
-              )}
+        <div className="bg-card border border-border rounded-xl overflow-hidden shadow-sm transition-all hover:shadow-md group">
+          <div className="p-6">
+            <div className="flex items-center justify-between mb-4 cursor-pointer" onClick={() => toggleTask('study')}>
+              <div className="space-y-1">
+                <h3 className="font-medium text-foreground">
+                  {dailyContent?.study || "Rest"}
+                </h3>
+                {dailyContent?.area && (
+                  <p className="text-sm text-muted-foreground">
+                    {dailyContent.area}
+                  </p>
+                )}
+              </div>
+              <div className="flex items-center gap-4">
+                {completedTasks.includes('study') ? (
+                  <CheckCircle2 className="w-6 h-6 text-indigo-500 animate-scale-in" />
+                ) : (
+                  <Circle className="w-6 h-6 text-muted-foreground/30 group-hover:text-indigo-500/50 transition-colors" />
+                )}
+              </div>
             </div>
-            <div className="flex items-center gap-4">
-              {completedTasks.includes('study') ? (
-                <CheckCircle2 className="w-6 h-6 text-indigo-500 animate-scale-in" />
-              ) : (
-                <Circle className="w-6 h-6 text-muted-foreground/30 group-hover:text-indigo-500/50 transition-colors" />
-              )}
-              <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-indigo-500 transition-colors" />
-            </div>
+
+            {/* Detailed Content from Table */}
+            {studyContentRows.length > 0 && (
+              <div className="mt-4 pt-4 border-t border-border/50 space-y-4">
+                {studyContentRows.map((row, index) => {
+                  // Determine content based on role
+                  let content = '';
+                  if (userRole === Role.STEWARD) content = row.steward;
+                  else if (userRole === Role.MENTOR) content = row.mentor;
+                  else content = row.mentee; // Default to Mentee
+
+                  return (
+                    <div key={index} className="space-y-2">
+                      {row.topic && (
+                        <h4 className="text-sm font-semibold text-indigo-500 uppercase tracking-wider">
+                          {row.topic}
+                        </h4>
+                      )}
+                      <div className="text-sm text-muted-foreground">
+                        <CollapsibleText text={content} />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </div>
       </section>

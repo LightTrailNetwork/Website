@@ -1,37 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { tableFullContent } from '../data/tableFullContent';
-import { ChevronDown, ChevronUp } from 'lucide-react';
-
-const CollapsibleText: React.FC<{ text: string }> = ({ text }) => {
-    const [isExpanded, setIsExpanded] = useState(false);
-    const maxLength = 300; // Character limit for preview
-
-    if (text.length <= maxLength) {
-        return <div className="whitespace-pre-wrap leading-relaxed">{text}</div>;
-    }
-
-    return (
-        <div className="flex flex-col items-start gap-2">
-            <div className={`whitespace-pre-wrap leading-relaxed ${!isExpanded ? 'line-clamp-[10]' : ''}`}>
-                {isExpanded ? text : text.slice(0, maxLength) + '...'}
-            </div>
-            <button
-                onClick={() => setIsExpanded(!isExpanded)}
-                className="text-xs font-medium text-primary hover:underline flex items-center gap-1 mt-1"
-            >
-                {isExpanded ? (
-                    <>
-                        Show Less <ChevronUp className="h-3 w-3" />
-                    </>
-                ) : (
-                    <>
-                        Show More <ChevronDown className="h-3 w-3" />
-                    </>
-                )}
-            </button>
-        </div>
-    );
-};
+import { CollapsibleText } from '../components/CollapsibleText';
 
 const Table: React.FC = () => {
     return (

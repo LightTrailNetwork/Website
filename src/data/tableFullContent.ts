@@ -11,8 +11,8 @@ export const tableFullContent: TableRow[] = [
     {
         section: "Tradition",
         mentee: "I AIM to Abide in God, Imitate a Man of God, and Mobilize into the Way of God.\n(Plus memorize the 4 top-level verses)",
-        mentor: "I will Glorify, Obey, and Delight in GOD.\nI am a MAN Made by God, Aware of my sin, New in Christ.\nI am a Witness of the Acts of Jesus and will Yield to his WAY.\n(Plus memorize the 9 mid-level verses)",
-        steward: "(Plus memorize the 27 low-level verses)"
+        mentor: "I will Glorify, Obey, and Delight in GOD.\nI am a MAN Made by God, Aware of my sin, New in Christ.\nI am a Witness of the Acts of Jesus and will Yield to his WAY.\n(Plus memorize the 13 outer verses)",
+        steward: "(Plus memorize the 27 inner verses)"
     },
     {
         section: "Apologetics",
@@ -1276,9 +1276,168 @@ The STORY ends where it began — with God walking again with His people, fully 
     },
     {
         section: "Ethos",
-        mentee: "I AIM to live a life of integrity, serving others with humility and love.",
-        mentor: "I will live a life of discipleship, mentoring others in the faith and leading by example.",
-        steward: "I will live a life of stewardship, managing God's resources wisely and investing in His Kingdom."
+        subsection: "The ETHOS of the Triads",
+        topic: "Ethics - Heart",
+        mentee: `“Keep your heart with all vigilance, for from it flow the springs of life.” Proverbs 4:23`,
+        mentor: `"out of the abundance of the heart his mouth speaks" Luke 6:45`,
+        steward: `“The heart is deceitful above all things, and desperately sick; who can understand it?” Jeremiah 17:9`
+    },
+    {
+        section: "Ethos",
+        subsection: "The ETHOS of the Triads",
+        topic: "Ethics - Mind",
+        mentee: `2 Corinthians 10:5 – "take every thought captive to obey Christ"`,
+        mentor: `"...think about these things." (Philippians 4:8)`,
+        steward: `"Do not be conformed to this world, but be transformed by the renewal of your mind..." Romans 12:2`
+    },
+    {
+        section: "Ethos",
+        subsection: "The ETHOS of the Triads",
+        topic: "Ethics - Words",
+        mentee: `“Death and life are in the power of the tongue.” Proverbs 18:21`,
+        mentor: `"Let no corrupting talk come out of your mouths, but only such as is good for building up, as fits the occasion, that it may give grace to those who hear." Ephesians 4:29`,
+        steward: `"Let your speech always be gracious, seasoned with salt." Colossians 4:6`
+    },
+    {
+        section: "Ethos",
+        subsection: "The ETHOS of the Triads",
+        topic: "Ethics - Actions",
+        mentee: `"whatever you wish that others would do to you, do also to them" Matthew 7:12`,
+        mentor: `"He has told you, O man, what is good; and what does the Lord require of you but to do justice, and to love kindness, and to walk humbly with your God?" Micah 6:8`,
+        steward: `"...walk in love, as Christ loved us and gave himself up for us..." Ephesians 5:2`
+    },
+    {
+        section: "Ethos",
+        subsection: "The ETHOS of the Triads",
+        topic: "Traditions",
+        mentee: `Biblical: Lord's Supper
+Brotherly: Fellowship`,
+        mentor: `Biblical: Lord's Supper
+Brotherly: Fellowship`,
+        steward: `Biblical: Lord's Supper
+Brotherly: Fellowship`
+    },
+    {
+        section: "Ethos",
+        subsection: "The Core HABITS of a Christian MAN",
+        topic: "Honor",
+        mentee: `"Love one another with brotherly affection. Outdo one another in showing honor." Romans 12:10
+
+Hold steak dinner for all members of the Triad past, present, and future (scouts and pre-scouts) during the closing weekend of preparation week after fasting for 1 day that week, celebrating entering into discipleship training.`,
+        mentor: `Hold a small ceremony with the mentee and steward before the steak dinner to pass the triad cloak off to the mentee after fasting 2 days during preparation week.
+
+Write Mentee a letter to be delivered on the final Sabbath of each session sharing God's love for him, your brotherly love for him, and how you have seen him love others well (3 letters total during the quarter).`,
+        steward: `Fast 3 days during preparation week and then attend the transfer ceremony and steak dinner.
+
+Host interest meetings with Christian men (including brand new believers) interested in becoming scouts.
+
+Meet in preparation week with mentee to recommend which of the 2 scouts to choose to become mentee.`
+    },
+    {
+        section: "Ethos",
+        subsection: "The Core HABITS of a Christian MAN",
+        topic: "Attend",
+        mentee: `"...think about these things." Philippians 4:8
+
+Weekly Activity Review & Plan (WAR Plan) so you can know what you are attending to and not attending to.
+Weekly Church Attendance.`,
+        mentor: `Weekly Activity Review & Plan (WAR Plan) so you can know what you are attending to and not attending to.
+Weekly Church Attendance.`,
+        steward: `Weekly Activity Review & Plan (WAR Plan) so you can know what you are attending to and not attending to.
+Weekly Church Attendance.`
+    },
+    {
+        section: "Ethos",
+        subsection: "The Core HABITS of a Christian MAN",
+        topic: "Belong",
+        mentee: `"Finally, all of you, have unity of mind, sympathy, brotherly love, a tender heart, and a humble mind." 1 Peter 3:8
+
+Tuesday & Thursday 30 minute meetings with mentor.`,
+        mentor: `Tuesday & Thursday 30 minute meetings with mentee.
+Tuesday meeting with Steward after meeting with mentee.
+Thursday night serve day selection.`,
+        steward: `Tuesday meeting with mentor.
+Thursday meeting with scouts to plan upcoming serve day.
+Regular meetings with other stewards to plan second and third session serve days.`
+    },
+    {
+        section: "Ethos",
+        subsection: "The Core HABITS of a Christian MAN",
+        topic: "Intercede",
+        mentee: `LIFE PAIN / LIFE GAIN mnemonics
+
+Daily Morning Intercession Prayer and Daily Practical Acts of Service.`,
+        mentor: `Daily Morning Intercession Prayer and Daily Practical Acts of Service.`,
+        steward: `Daily Morning Intercession Prayer and Daily Practical Acts of Service.`
+    },
+    {
+        section: "Ethos",
+        subsection: "The Core HABITS of a Christian MAN",
+        topic: "Train",
+        mentee: `"Train yourself for godliness" 1 Timothy 4:7
+
+FLESH (Verses for Fame, Lust, Envy, Sloth, and Hunger for Power).`,
+        mentor: `Spiritual Growth Ladder (2 Peter 1:5–8)`,
+        steward: `Overseer Qualifications (1 Timothy 3:1–7)`
+    },
+    {
+        section: "Ethos",
+        subsection: "The Core HABITS of a Christian MAN",
+        topic: "Serve",
+        mentee: `"For even the Son of Man came not to be served but to serve, and to give his life as a ransom for many." Mark 10:45
+
+Serve Day Every Weekend.`,
+        mentor: `Serve Day First Two Weekends Every Session.`,
+        steward: `Serve Day on Second Weekend Every Session.`
+    },
+    {
+        section: "Ethos",
+        subsection: "The Core HABITS of a Christian MAN",
+        topic: "Morning",
+        mentee: `"O Lord, in the morning you hear my voice" Psalm 5:3
+
+Morning WORSHIP.
+Intercede based on ANCHOR Schedule.`,
+        mentor: `Morning WORSHIP.
+Intercede based on ANCHOR Schedule.`,
+        steward: `Morning WORSHIP.
+Intercede based on ANCHOR Schedule.`
+    },
+    {
+        section: "Ethos",
+        subsection: "The Core HABITS of a Christian MAN",
+        topic: "Afternoon",
+        mentee: `"I have stored up your word in my heart, that I might not sin against you." Psalm 119:11
+
+Memorization.`,
+        mentor: `Memorization.`,
+        steward: `Memorization.`
+    },
+    {
+        section: "Ethos",
+        subsection: "The Core HABITS of a Christian MAN",
+        topic: "Night",
+        mentee: `"His delight is in the law of the Lord, and on his law he meditates day and night." Psalm 1:2
+
+Study Time plus Followup through Message/Video or Fellowship depending on the day (tell next higher up what you memorized and learned that day).`,
+        mentor: `Study Time plus Followup through Message/Video or Fellowship depending on the day (tell next higher up what you memorized and learned that day).`,
+        steward: `Study Time plus Followup through Message/Video or Fellowship depending on the day (tell next higher up what you memorized and learned that day).`
+    },
+    {
+        section: "Ethos",
+        subsection: "Organization",
+        topic: "Structure",
+        mentee: `Roles`,
+        mentor: `Triple Triads`,
+        steward: `Triple Triple Triads`
+    },
+    {
+        section: "Ethos",
+        subsection: "Stewardship",
+        topic: "Triad Tribe",
+        mentee: `The group of men who have been members of this triad in the past.`,
+        mentor: `The group of men who have been members of this triad in the past.`,
+        steward: `The group of men who have been members of this triad in the past.`
     }
 ];
 
