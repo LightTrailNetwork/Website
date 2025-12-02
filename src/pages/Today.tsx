@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { Sun, BookOpen, Moon, ChevronRight, CheckCircle2, Circle, Calendar as CalendarIcon, Loader2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useProfile } from '../hooks/useProfile';
 import { getQuarterInfo, getDailyContent } from '../utils/scheduleUtils';
 import { scoutSchedule, preScoutSchedule } from '../data/tableData';
+import { getBibleLink } from '../utils/linkUtils';
 
 export default function Today() {
   const { profile, loading } = useProfile();
@@ -20,6 +22,17 @@ export default function Today() {
         ? prev.filter(id => id !== taskId)
         : [...prev, taskId]
     );
+  };
+
+  const toggleAllMorning = () => {
+    const morningTasks = ['worship', 'read', 'intercede'];
+    const allCompleted = morningTasks.every(t => completedTasks.includes(t));
+
+    if (allCompleted) {
+      setCompletedTasks(prev => prev.filter(t => !morningTasks.includes(t)));
+    } else {
+      setCompletedTasks(prev => [...new Set([...prev, ...morningTasks])]);
+    }
   };
 
   // Helper to get memory verse based on role
@@ -46,6 +59,8 @@ export default function Today() {
   };
 
   const memoryContent = getMemoryContent();
+  const readLink = dailyContent?.read ? getBibleLink(dailyContent.read) : null;
+  const memoryLink = memoryContent.verse ? getBibleLink(memoryContent.verse) : null;
 
   if (loading) {
     return (
@@ -54,6 +69,8 @@ export default function Today() {
       </div>
     );
   }
+
+  const isMorningComplete = ['worship', 'read', 'intercede'].every(t => completedTasks.includes(t));
 
   return (
     <div className="max-w-2xl mx-auto space-y-8 animate-fade-in pb-20">
@@ -74,53 +91,77 @@ export default function Today() {
 
       {/* Morning W.O.R.S.H.I.P. */}
       <section className="space-y-4">
-        <div className="flex items-center space-x-2 text-primary">
-          <Sun className="w-5 h-5" />
-          <h2 className="font-semibold tracking-wide text-sm uppercase">Morning W.O.R.S.H.I.P.</h2>
+        <div className="flex items-center justify-between text-primary">
+          <div className="flex items-center space-x-2">
+            <Sun className="w-5 h-5" />
+            <h2 className="font-semibold tracking-wide text-sm uppercase">Morning W.O.R.S.H.I.P.</h2>
+          </div>
+          <button
+            onClick={toggleAllMorning}
+            className="text-primary hover:text-primary/80 transition-colors"
+          >
+            {isMorningComplete ? (
+              <CheckCircle2 className="w-6 h-6 animate-scale-in" />
+            ) : (
+              <Circle className="w-6 h-6 text-muted-foreground/30" />
+            )}
+          </button>
         </div>
 
         <div className="bg-card border border-border rounded-xl overflow-hidden shadow-sm transition-all hover:shadow-md">
           <div className="p-6 space-y-6">
-            <div className="flex items-start justify-between group cursor-pointer" onClick={() => toggleTask('worship')}>
+            <div className="flex items-start justify-between group">
               <div className="space-y-1">
                 <h3 className="font-medium text-foreground">Worship & Prayer</h3>
                 <p className="text-sm text-muted-foreground">Offer yourself to God</p>
               </div>
-              {completedTasks.includes('worship') ? (
-                <CheckCircle2 className="w-6 h-6 text-primary animate-scale-in" />
-              ) : (
-                <Circle className="w-6 h-6 text-muted-foreground/30 group-hover:text-primary/50 transition-colors" />
-              )}
+              <button onClick={() => toggleTask('worship')} className="focus:outline-none">
+                {completedTasks.includes('worship') ? (
+                  <CheckCircle2 className="w-6 h-6 text-primary animate-scale-in" />
+                ) : (
+                  <Circle className="w-6 h-6 text-muted-foreground/30 group-hover:text-primary/50 transition-colors" />
+                )}
+              </button>
             </div>
 
             <div className="h-px bg-border/50" />
 
-            <div className="flex items-start justify-between group cursor-pointer" onClick={() => toggleTask('read')}>
+            <div className="flex items-start justify-between group">
               <div className="space-y-1">
                 <h3 className="font-medium text-foreground">Read</h3>
-                <p className="text-lg font-medium text-primary">
-                  {dailyContent?.read || "Rest / Catch Up"}
-                </p>
+                {readLink ? (
+                  <Link to={readLink} className="text-lg font-medium text-primary hover:underline">
+                    {dailyContent?.read}
+                  </Link>
+                ) : (
+                  <p className="text-lg font-medium text-primary">
+                    {dailyContent?.read || "Rest / Catch Up"}
+                  </p>
+                )}
               </div>
-              {completedTasks.includes('read') ? (
-                <CheckCircle2 className="w-6 h-6 text-primary animate-scale-in" />
-              ) : (
-                <Circle className="w-6 h-6 text-muted-foreground/30 group-hover:text-primary/50 transition-colors" />
-              )}
+              <button onClick={() => toggleTask('read')} className="focus:outline-none">
+                {completedTasks.includes('read') ? (
+                  <CheckCircle2 className="w-6 h-6 text-primary animate-scale-in" />
+                ) : (
+                  <Circle className="w-6 h-6 text-muted-foreground/30 group-hover:text-primary/50 transition-colors" />
+                )}
+              </button>
             </div>
 
             <div className="h-px bg-border/50" />
 
-            <div className="flex items-start justify-between group cursor-pointer" onClick={() => toggleTask('intercede')}>
+            <div className="flex items-start justify-between group">
               <div className="space-y-1">
                 <h3 className="font-medium text-foreground">Intercede & Practice</h3>
                 <p className="text-sm text-muted-foreground">Pray for others and do good</p>
               </div>
-              {completedTasks.includes('intercede') ? (
-                <CheckCircle2 className="w-6 h-6 text-primary animate-scale-in" />
-              ) : (
-                <Circle className="w-6 h-6 text-muted-foreground/30 group-hover:text-primary/50 transition-colors" />
-              )}
+              <button onClick={() => toggleTask('intercede')} className="focus:outline-none">
+                {completedTasks.includes('intercede') ? (
+                  <CheckCircle2 className="w-6 h-6 text-primary animate-scale-in" />
+                ) : (
+                  <Circle className="w-6 h-6 text-muted-foreground/30 group-hover:text-primary/50 transition-colors" />
+                )}
+              </button>
             </div>
           </div>
         </div>
@@ -133,28 +174,36 @@ export default function Today() {
           <h2 className="font-semibold tracking-wide text-sm uppercase">Afternoon Memorization</h2>
         </div>
 
-        <div className="bg-card border border-border rounded-xl overflow-hidden shadow-sm transition-all hover:shadow-md group cursor-pointer" onClick={() => toggleTask('memorize')}>
+        <div className="bg-card border border-border rounded-xl overflow-hidden shadow-sm transition-all hover:shadow-md">
           <div className="p-6 flex items-start justify-between">
-            <div className="space-y-2">
+            <div className="space-y-2 flex-1 pr-4">
               <div className="flex items-center space-x-2">
                 <span className="text-xs font-medium px-2 py-1 rounded-full bg-orange-500/10 text-orange-600">
                   {profile?.currentRole || 'Mentee'} Track
                 </span>
               </div>
-              <p className="text-lg font-medium text-foreground leading-relaxed">
-                {memoryContent.verse}
-              </p>
+              {memoryLink ? (
+                <Link to={memoryLink} className="block text-lg font-medium text-foreground leading-relaxed hover:text-orange-600 transition-colors">
+                  {memoryContent.verse}
+                </Link>
+              ) : (
+                <p className="text-lg font-medium text-foreground leading-relaxed">
+                  {memoryContent.verse}
+                </p>
+              )}
               {memoryContent.reference && (
                 <p className="text-sm font-medium text-muted-foreground">
                   {memoryContent.reference}
                 </p>
               )}
             </div>
-            {completedTasks.includes('memorize') ? (
-              <CheckCircle2 className="w-6 h-6 text-orange-500 animate-scale-in" />
-            ) : (
-              <Circle className="w-6 h-6 text-muted-foreground/30 group-hover:text-orange-500/50 transition-colors" />
-            )}
+            <button onClick={() => toggleTask('memorize')} className="focus:outline-none group">
+              {completedTasks.includes('memorize') ? (
+                <CheckCircle2 className="w-6 h-6 text-orange-500 animate-scale-in" />
+              ) : (
+                <Circle className="w-6 h-6 text-muted-foreground/30 group-hover:text-orange-500/50 transition-colors" />
+              )}
+            </button>
           </div>
         </div>
       </section>
@@ -178,7 +227,14 @@ export default function Today() {
                 </p>
               )}
             </div>
-            <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-indigo-500 transition-colors" />
+            <div className="flex items-center gap-4">
+              {completedTasks.includes('study') ? (
+                <CheckCircle2 className="w-6 h-6 text-indigo-500 animate-scale-in" />
+              ) : (
+                <Circle className="w-6 h-6 text-muted-foreground/30 group-hover:text-indigo-500/50 transition-colors" />
+              )}
+              <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-indigo-500 transition-colors" />
+            </div>
           </div>
         </div>
       </section>

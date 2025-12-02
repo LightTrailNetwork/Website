@@ -11,6 +11,7 @@ import Tradition from './pages/Tradition';
 import About from './pages/About';
 import Bible from './pages/Bible';
 import Table from './pages/Table';
+import Schedule from './pages/Schedule';
 import { initDB, getProfile, createProfile } from './data/db';
 import { Role } from './data/types';
 import { SettingsProvider } from './context/SettingsContext';
@@ -133,6 +134,7 @@ function AppContent() {
           <Route path="/link" element={<Link />} />
           <Route path="/tradition" element={<Tradition />} />
           <Route path="/table" element={<Table />} />
+          <Route path="/schedule" element={<Schedule />} />
           <Route path="/bible/*" element={<Bible />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/about" element={<About />} />

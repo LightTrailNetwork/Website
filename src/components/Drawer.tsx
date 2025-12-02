@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Calendar, Scroll, X, Book, Table } from 'lucide-react';
+import { Calendar, Scroll, X, Book, Table, LayoutGrid, Home } from 'lucide-react';
 
 interface DrawerProps {
   isOpen: boolean;
@@ -10,7 +10,8 @@ export default function Drawer({ isOpen, onClose }: DrawerProps) {
   const location = useLocation();
 
   const menuItems = [
-    { path: '/', label: 'Today', subtitle: 'Action Items', icon: Calendar },
+    { path: '/', label: 'Today', subtitle: 'Action Items', icon: Home },
+    { path: '/schedule', label: 'Schedule', subtitle: 'Quarterly Plan', icon: LayoutGrid },
     { path: '/table', label: 'T.A.B.L.E.', subtitle: 'Quarter Curriculum', icon: Table },
     { path: '/tradition', label: 'Tradition', subtitle: 'Creed & Pyramid', icon: Scroll },
     { path: '/bible', label: 'Bible & Memory', subtitle: 'Read & Memorize', icon: Book }
