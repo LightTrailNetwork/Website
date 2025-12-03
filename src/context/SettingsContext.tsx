@@ -7,6 +7,10 @@ interface SettingsContextType {
     setShowMsb: (show: boolean) => void;
     readerMode: boolean;
     setReaderMode: (enabled: boolean) => void;
+    showMnemonics: boolean;
+    setShowMnemonics: (enabled: boolean) => void;
+    showVerseMnemonics: boolean;
+    setShowVerseMnemonics: (enabled: boolean) => void;
 }
 
 const SettingsContext = createContext<SettingsContextType | undefined>(undefined);
@@ -25,6 +29,14 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
         return localStorage.getItem('bible_reader_mode') === 'true';
     });
 
+    const [showMnemonics, setShowMnemonics] = useState(() => {
+        return localStorage.getItem('bible_show_mnemonics') === 'true';
+    });
+
+    const [showVerseMnemonics, setShowVerseMnemonics] = useState(() => {
+        return localStorage.getItem('bible_show_verse_mnemonics') === 'true';
+    });
+
     // Persist changes
     useEffect(() => {
         localStorage.setItem('bible_translation', selectedTranslation);
@@ -38,6 +50,14 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
         localStorage.setItem('bible_reader_mode', String(readerMode));
     }, [readerMode]);
 
+    useEffect(() => {
+        localStorage.setItem('bible_show_mnemonics', String(showMnemonics));
+    }, [showMnemonics]);
+
+    useEffect(() => {
+        localStorage.setItem('bible_show_verse_mnemonics', String(showVerseMnemonics));
+    }, [showVerseMnemonics]);
+
     return (
         <SettingsContext.Provider value={{
             selectedTranslation,
@@ -45,7 +65,11 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
             showMsb,
             setShowMsb,
             readerMode,
-            setReaderMode
+            setReaderMode,
+            showMnemonics,
+            setShowMnemonics,
+            showVerseMnemonics,
+            setShowVerseMnemonics
         }}>
             {children}
         </SettingsContext.Provider>

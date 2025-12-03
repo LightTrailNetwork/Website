@@ -12,7 +12,7 @@ interface SettingsModalProps {
 export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
     const navigate = useNavigate();
     const location = useLocation();
-    const { selectedTranslation, setSelectedTranslation, showMsb, setShowMsb, readerMode, setReaderMode } = useSettings();
+    const { selectedTranslation, setSelectedTranslation, showMsb, setShowMsb, readerMode, setReaderMode, showMnemonics, setShowMnemonics, showVerseMnemonics, setShowVerseMnemonics } = useSettings();
 
     // Translation State
     const [translations, setTranslations] = useState<BibleTranslation[]>([]);
@@ -160,6 +160,43 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                                 >
                                     <div className={`w-5 h-5 bg-white rounded-full absolute top-1 transition-transform shadow-sm ${readerMode ? 'left-6' : 'left-1'}`} />
                                 </button>
+                            </div>
+
+                            {/* Mnemonic Toggles */}
+                            <div className="space-y-3">
+                                <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider ml-1">Mnemonics</h4>
+
+                                {/* Book & Chapter Mnemonics */}
+                                <div className="flex items-center justify-between p-4 bg-secondary/5 rounded-lg border border-border">
+                                    <div className="flex flex-col gap-1">
+                                        <span className="font-medium">Book & Chapter Mnemonics</span>
+                                        <span className="text-xs text-muted-foreground">
+                                            Show memory aids above and below the navigation bar.
+                                        </span>
+                                    </div>
+                                    <button
+                                        onClick={() => setShowMnemonics(!showMnemonics)}
+                                        className={`w-12 h-7 rounded-full transition-colors relative ${showMnemonics ? 'bg-primary' : 'bg-secondary'}`}
+                                    >
+                                        <div className={`w-5 h-5 bg-white rounded-full absolute top-1 transition-transform shadow-sm ${showMnemonics ? 'left-6' : 'left-1'}`} />
+                                    </button>
+                                </div>
+
+                                {/* Verse Mnemonics */}
+                                <div className="flex items-center justify-between p-4 bg-secondary/5 rounded-lg border border-border">
+                                    <div className="flex flex-col gap-1">
+                                        <span className="font-medium">Verse Mnemonics</span>
+                                        <span className="text-xs text-muted-foreground">
+                                            Show memory aids inline with verses.
+                                        </span>
+                                    </div>
+                                    <button
+                                        onClick={() => setShowVerseMnemonics(!showVerseMnemonics)}
+                                        className={`w-12 h-7 rounded-full transition-colors relative ${showVerseMnemonics ? 'bg-primary' : 'bg-secondary'}`}
+                                    >
+                                        <div className={`w-5 h-5 bg-white rounded-full absolute top-1 transition-transform shadow-sm ${showVerseMnemonics ? 'left-6' : 'left-1'}`} />
+                                    </button>
+                                </div>
                             </div>
 
                             {/* MSB Toggle (Moved here for convenience when reading) */}
