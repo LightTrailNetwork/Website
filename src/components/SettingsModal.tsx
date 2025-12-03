@@ -156,7 +156,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                                 </div>
                                 <button
                                     onClick={() => setReaderMode(!readerMode)}
-                                    className={`w-12 h-7 rounded-full transition-colors relative ${readerMode ? 'bg-primary' : 'bg-secondary'}`}
+                                    className={`w-12 h-7 rounded-full transition-colors relative ${readerMode ? 'bg-primary' : 'bg-gray-300 dark:bg-gray-600'}`}
                                 >
                                     <div className={`w-5 h-5 bg-white rounded-full absolute top-1 transition-transform shadow-sm ${readerMode ? 'left-6' : 'left-1'}`} />
                                 </button>
@@ -176,7 +176,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                                     </div>
                                     <button
                                         onClick={() => setShowMnemonics(!showMnemonics)}
-                                        className={`w-12 h-7 rounded-full transition-colors relative ${showMnemonics ? 'bg-primary' : 'bg-secondary'}`}
+                                        className={`w-12 h-7 rounded-full transition-colors relative ${showMnemonics ? 'bg-primary' : 'bg-gray-300 dark:bg-gray-600'}`}
                                     >
                                         <div className={`w-5 h-5 bg-white rounded-full absolute top-1 transition-transform shadow-sm ${showMnemonics ? 'left-6' : 'left-1'}`} />
                                     </button>
@@ -192,7 +192,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                                     </div>
                                     <button
                                         onClick={() => setShowVerseMnemonics(!showVerseMnemonics)}
-                                        className={`w-12 h-7 rounded-full transition-colors relative ${showVerseMnemonics ? 'bg-primary' : 'bg-secondary'}`}
+                                        className={`w-12 h-7 rounded-full transition-colors relative ${showVerseMnemonics ? 'bg-primary' : 'bg-gray-300 dark:bg-gray-600'}`}
                                     >
                                         <div className={`w-5 h-5 bg-white rounded-full absolute top-1 transition-transform shadow-sm ${showVerseMnemonics ? 'left-6' : 'left-1'}`} />
                                     </button>
@@ -208,7 +208,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                                     </div>
                                     <button
                                         onClick={() => setShowMsb(!showMsb)}
-                                        className={`w-12 h-7 rounded-full transition-colors relative ${showMsb ? 'bg-primary' : 'bg-secondary'}`}
+                                        className={`w-12 h-7 rounded-full transition-colors relative ${showMsb ? 'bg-primary' : 'bg-gray-300 dark:bg-gray-600'}`}
                                     >
                                         <div className={`w-5 h-5 bg-white rounded-full absolute top-1 transition-transform shadow-sm ${showMsb ? 'left-6' : 'left-1'}`} />
                                     </button>
@@ -227,7 +227,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                                     </div>
                                     <button
                                         onClick={() => setShowMsb(!showMsb)}
-                                        className={`w-11 h-6 rounded-full transition-colors relative ${showMsb ? 'bg-primary' : 'bg-secondary'}`}
+                                        className={`w-11 h-6 rounded-full transition-colors relative ${showMsb ? 'bg-primary' : 'bg-gray-300 dark:bg-gray-600'}`}
                                     >
                                         <div className={`w-4 h-4 bg-white rounded-full absolute top-1 transition-transform ${showMsb ? 'left-6' : 'left-1'}`} />
                                     </button>
