@@ -11,14 +11,15 @@ export const shouldInsertSpace = (prev: any, curr: any) => {
 };
 
 // Helper to format passage text from content array
-export const formatPassageText = (content: (string | { text: string; wordsOfJesus?: boolean } | { noteId: number } | { lineBreak: boolean })[]): string => {
+export const formatPassageText = (content: (string | { text: string; wordsOfJesus?: boolean } | { noteId: number } | { lineBreak: boolean } | { type: string })[]): string => {
     let text = '';
 
     // Filter out content that doesn't contribute to text (like footnotes)
     const visibleContent = content.filter(item =>
         typeof item === 'string' ||
         ('text' in item) ||
-        ('lineBreak' in item)
+        ('lineBreak' in item) ||
+        (item && typeof item === 'object' && 'type' in item && item.type === 'line_break')
     );
 
     visibleContent.forEach((item, index) => {
@@ -39,6 +40,52 @@ export const formatPassageText = (content: (string | { text: string; wordsOfJesu
             text += item.text;
         } else if ('lineBreak' in item) {
             text += '\n';
+        } else if ('type' in item && item.type === 'line_break') {
+            text += '\n';
+        }
+    });
+
+    return text.trim();
+};
+
+// Helper to format a range of chapter content into text with line breaks
+export const formatChapterContent = (content: any[], startVerse: number, endVerse: number): string => {
+    // Filter content to the requested range
+    // We need to include line breaks that might be between verses in the range
+    // But we also need to be careful not to include line breaks that are outside the range if they are strictly before or after
+
+    // Simple approach: Iterate through content, keep track of current verse number
+    // If we are within the range (inclusive), append text.
+    // Line breaks: If we have seen the start verse, and haven't passed the end verse, include them.
+
+    let text = '';
+    let currentVerse = 0;
+    let hasStarted = false;
+
+    content.forEach((item, index) => {
+        if (item.type === 'verse') {
+            currentVerse = item.number;
+        }
+
+        if (currentVerse >= startVerse && currentVerse <= endVerse) {
+            hasStarted = true;
+            if (item.type === 'verse') {
+                // Add space if needed between previous content and this verse
+                // (Logic simplified for now, usually verses start on new lines or after spaces)
+                if (text.length > 0 && !text.endsWith('\n') && !text.endsWith(' ')) {
+                    text += ' ';
+                }
+
+                // Format the verse content itself
+                if (item.content) {
+                    text += formatPassageText(item.content);
+                }
+            } else if (item.type === 'line_break') {
+                text += '\n';
+            } else if (item.type === 'heading') {
+                // Optional: Include headings? Usually reference text is just the verses.
+                // Skipping headings for reference text to keep it clean.
+            }
         }
     });
 

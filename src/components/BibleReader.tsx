@@ -7,7 +7,7 @@ import type { BibleChapter, ChapterContent, BibleBook, BibleTranslation, Comment
 import Breadcrumbs from './Breadcrumbs';
 import QuickNav from './QuickNav';
 import { diffVerses, type DiffToken } from '../utils/diffUtils';
-import { formatPassageText, shouldInsertSpace } from '../utils/bibleUtils';
+import { formatPassageText, shouldInsertSpace, formatChapterContent } from '../utils/bibleUtils';
 import { useSettings } from '../context/SettingsContext';
 import { getBookMnemonic, getChapterMnemonic, getVerseMnemonic, getMnemonicHighlightIndex } from '../utils/mnemonicUtils';
 
@@ -344,12 +344,8 @@ export default function BibleReader() {
             const verses = data.chapter.content.filter(c => c.type === 'verse' && c.number >= verse && c.number <= targetEndVerse);
 
             if (verses.length > 0) {
-                const text = verses.map(v => {
-                    if ('content' in v) {
-                        return formatPassageText(v.content);
-                    }
-                    return '';
-                }).join(' ');
+                // Use new helper to format with line breaks
+                const text = formatChapterContent(data.chapter.content, verse, targetEndVerse);
                 setExpandedRefTexts(prev => ({ ...prev, [refKey]: text }));
             } else {
                 setExpandedRefTexts(prev => ({ ...prev, [refKey]: 'Verse text not available.' }));
@@ -755,7 +751,8 @@ export default function BibleReader() {
 
                     if (item.type === 'line_break') {
                         if (viewMode === 'focus') return null;
-                        return <br key={index} />;
+                        // Use a div with height instead of br for better spacing/paragraph break
+                        return <div key={index} className="h-4" />;
                     }
 
                     // Handle MSB Only Verses
@@ -1053,7 +1050,7 @@ export default function BibleReader() {
                 return <h4 key={index} className="font-bold mt-4 mb-2">{item.content.join(' ')}</h4>;
             }
             if (item.type === 'line_break') {
-                return <br key={index} />;
+                return <div key={index} className="h-4" />;
             }
             if (item.type === 'verse') {
                 return (
@@ -1158,12 +1155,8 @@ export default function BibleReader() {
                         const verses = data.chapter.content.filter(c => c.type === 'verse' && c.number >= startVerse && c.number <= endVerse);
 
                         if (verses.length > 0) {
-                            const text = verses.map(v => {
-                                if ('content' in v) {
-                                    return formatPassageText(v.content);
-                                }
-                                return '';
-                            }).join(' ');
+                            // Use new helper
+                            const text = formatChapterContent(data.chapter.content, startVerse, endVerse);
                             newExpanded[refKey] = text;
                         } else {
                             newExpanded[refKey] = 'Text not available.';
