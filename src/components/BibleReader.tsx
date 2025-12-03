@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { useParams, useNavigate, useLocation, useNavigationType, Link } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, ChevronDown, ChevronUp, BookOpen, Loader2, AlertCircle, MessageSquare, Grid, Globe, X, Search, Filter, Eye, Link as LinkIcon, Columns, ArrowLeft, ArrowRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ChevronDown, ChevronUp, BookOpen, Loader2, AlertCircle, MessageSquare, Grid, Globe, X, Search, Filter, Eye, Link as LinkIcon, Columns, ArrowLeft, ArrowRight, History } from 'lucide-react';
 import { getChapter, getBooks, getTranslations, getCommentaries, getCommentaryChapter, getProfiles, getProfile, getDatasetChapter } from '../data/bibleApi';
 import type { BibleChapter, ChapterContent, BibleBook, BibleTranslation, Commentary, CommentaryChapter, Profile, ProfileContent, ChapterFootnote, DatasetBookChapter } from '../data/bibleApi';
 import Breadcrumbs from './Breadcrumbs';
@@ -138,6 +138,23 @@ export default function BibleReader() {
 
     // Mnemonic Interaction State
     const [activeVerse, setActiveVerse] = useState<number | null>(null);
+
+    // History State
+    const [history, setHistory] = useState<{ label: string; path: string }[]>([]);
+    const [showHistory, setShowHistory] = useState(false);
+
+    // Update History
+    useEffect(() => {
+        if (bsbChapter) {
+            const label = `${bsbChapter.book.name} ${bsbChapter.chapter.number}`;
+            const path = `/bible/read/${bsbChapter.book.name.replace(/\s+/g, '')}/${bsbChapter.chapter.number}`;
+
+            setHistory(prev => {
+                const newHistory = prev.filter(h => h.path !== path); // Remove if exists (to move to top)
+                return [{ label, path }, ...newHistory].slice(0, 10); // Add to top, limit to 10
+            });
+        }
+    }, [bsbChapter]);
 
     // Resolve bookId from URL to API ID
 
@@ -1685,20 +1702,13 @@ export default function BibleReader() {
 
             {/* Mobile Navigation Footer */}
             <div className={`fixed bottom-0 left-0 right-0 h-12 bg-background/80 backdrop-blur-md border-t border-border flex items-center justify-between px-4 z-50 sm:hidden transition-transform duration-300 ${scrollDirection === 'down' && !isAtTop ? 'translate-y-full' : 'translate-y-0'}`}>
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-4 relative">
                     <button
-                        onClick={() => navigate(-1)}
-                        disabled={!canGoBack}
-                        className={`p-2 rounded-full transition-colors ${!canGoBack ? 'opacity-30 cursor-not-allowed' : 'hover:bg-accent/10'}`}
+                        onClick={() => setShowHistory(!showHistory)}
+                        className={`p-2 rounded-full transition-colors ${showHistory ? 'bg-primary/10 text-primary' : 'hover:bg-accent/10 text-muted-foreground'}`}
+                        title="History"
                     >
-                        <ArrowLeft className="w-6 h-6" />
-                    </button>
-                    <button
-                        onClick={() => navigate(1)}
-                        disabled={!canGoForward}
-                        className={`p-2 rounded-full transition-colors ${!canGoForward ? 'opacity-30 cursor-not-allowed' : 'hover:bg-accent/10'}`}
-                    >
-                        <ArrowRight className="w-6 h-6" />
+                        <History className="w-6 h-6" />
                     </button>
                 </div>
                 <div className="flex items-center gap-4">
@@ -1718,6 +1728,39 @@ export default function BibleReader() {
                     </button>
                 </div>
             </div>
+
+            {/* History Popover (Portal) */}
+            {showHistory && createPortal(
+                <>
+                    <div className="fixed inset-0 z-[60] bg-background/20 backdrop-blur-sm" onClick={() => setShowHistory(false)} />
+                    <div className="fixed bottom-14 left-4 w-48 bg-popover border border-border rounded-lg shadow-xl z-[70] overflow-hidden animate-in fade-in slide-in-from-bottom-2 duration-200">
+                        <div className="text-xs font-bold px-3 py-2 border-b border-border/50 bg-secondary/10 text-muted-foreground">
+                            Recent History
+                        </div>
+                        <div className="max-h-60 overflow-y-auto">
+                            {history.length > 0 ? (
+                                history.map((item, i) => (
+                                    <button
+                                        key={i}
+                                        onClick={() => {
+                                            navigate(item.path);
+                                            setShowHistory(false);
+                                        }}
+                                        className={`w-full text-left px-3 py-2 text-sm hover:bg-accent/10 transition-colors truncate ${i === 0 ? 'font-medium text-primary' : ''}`}
+                                    >
+                                        {item.label}
+                                    </button>
+                                ))
+                            ) : (
+                                <div className="px-3 py-4 text-xs text-muted-foreground text-center italic">
+                                    No history yet
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </>,
+                document.body
+            )}
 
             {/* Profile Modal */}
             {
