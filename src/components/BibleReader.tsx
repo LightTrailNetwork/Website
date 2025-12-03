@@ -811,8 +811,8 @@ export default function BibleReader() {
                                         const firstChar = vMnemonic.charAt(0);
                                         const rest = vMnemonic.slice(1);
                                         return (
-                                            <span className="inline-block mr-1 select-none">
-                                                <span className="text-[10px] font-mono text-muted-foreground/70 bg-secondary/30 px-1 rounded inline-flex items-center">
+                                            <span className="inline-block mr-1 select-none max-w-full">
+                                                <span className="text-[10px] font-mono text-muted-foreground/70 bg-secondary/30 px-1 rounded inline-flex items-center whitespace-normal">
                                                     <span className="text-primary/70 font-bold">{firstChar}</span>{rest}
                                                 </span>
                                             </span>
@@ -1241,7 +1241,7 @@ export default function BibleReader() {
             <div className="flex gap-6 relative">
                 <div
                     className={`flex-1 w-full lg:max-w-3xl mx-auto pb-20 animate-fade-in transition-all duration-75 ease-out ${showCommentary ? 'lg:mr-[320px]' : ''}`}
-                    style={{ transform: `translateX(${translateX}px)` }}
+                    style={translateX !== 0 ? { transform: `translateX(${translateX}px)` } : undefined}
                     onTouchStart={onTouchStart}
                     onTouchMove={onTouchMove}
                     onTouchEnd={onTouchEnd}
@@ -1257,7 +1257,7 @@ export default function BibleReader() {
                         />
                     </div>
                     {/* Navigation Header */}
-                    <div id="bible-nav-header" className={`sticky top-16 z-10 bg-background/80 backdrop-blur-md border-b border-border mb-0 sm:mb-6 shadow-sm flex flex-col transition-all duration-300 -mx-4 sm:mx-0 sm:rounded-b-xl ${showMnemonics ? 'py-0 sm:py-0' : ''}`}>
+                    <div id="bible-nav-header" className={`sticky top-16 z-10 bg-background/80 backdrop-blur-md border-b border-border mb-0 sm:mb-6 shadow-sm flex flex-col transition-all duration-300 sm:rounded-b-xl ${showMnemonics ? 'py-0 sm:py-0' : ''}`}>
                         {/* Book Mnemonic */}
                         {showMnemonics && resolvedBookId && chapter && (
                             (() => {
@@ -1280,7 +1280,7 @@ export default function BibleReader() {
 
                             {/* Mobile Search Expanded View */}
                             {isSearchExpanded && (
-                                <div className="flex w-full items-center gap-2 sm:hidden animate-in fade-in slide-in-from-right-5 duration-200">
+                                <div className="flex w-full items-center gap-2 sm:hidden animate-in fade-in slide-in-from-right-5 duration-200 relative z-50">
                                     <form onSubmit={(e) => { handleUniversalSearch(e); setIsSearchExpanded(false); }} className="relative flex-1">
                                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                                         <input
@@ -1390,9 +1390,18 @@ export default function BibleReader() {
                                             {(() => {
                                                 const highlightIdx = activeVerse ? getMnemonicHighlightIndex(cMnemonic, activeVerse) : -1;
                                                 if (highlightIdx === -1) return cMnemonic;
+
+                                                // Get verse mnemonic if active
+                                                const vMnemonic = activeVerse ? getVerseMnemonic(resolvedBookId, parseInt(chapter), activeVerse) : null;
+
                                                 return cMnemonic.split('').map((char, i) => (
-                                                    <span key={i} className={i === highlightIdx ? "text-primary font-bold scale-110 inline-block transition-all" : ""}>
+                                                    <span key={i} className={`relative inline-flex flex-col items-center ${i === highlightIdx ? "text-primary font-bold scale-110" : ""}`}>
                                                         {char}
+                                                        {i === highlightIdx && vMnemonic && (
+                                                            <span className="absolute top-full mt-0.5 left-1/2 -translate-x-1/2 text-[8px] leading-none font-normal normal-case text-primary bg-primary/10 px-1 py-0.5 rounded whitespace-nowrap z-20 pointer-events-none">
+                                                                {vMnemonic}
+                                                            </span>
+                                                        )}
                                                     </span>
                                                 ));
                                             })()}

@@ -13,7 +13,7 @@ interface MnemonicData {
                 [key: string]: {
                     mnemonic: string;
                     verses: {
-                        [key: string]: string;
+                        [key: string]: string | { mnemonic: string };
                     };
                 };
             };
@@ -74,13 +74,21 @@ export function getVerseMnemonic(bookId: string, chapter: number, verse: number)
     if (!chapterData) return null;
 
     const verseMnemonic = chapterData.verses[verse.toString()];
-    return verseMnemonic || null;
+    if (!verseMnemonic) return null;
+
+    if (typeof verseMnemonic === 'string') {
+        return verseMnemonic;
+    } else if (typeof verseMnemonic === 'object' && verseMnemonic !== null && 'mnemonic' in verseMnemonic) {
+        return (verseMnemonic as any).mnemonic;
+    }
+
+    return null;
 }
 
 export function getMnemonicHighlightIndex(text: string, targetCount: number): number {
     let letterCount = 0;
     for (let i = 0; i < text.length; i++) {
-        const char = text[i];
+        const char = text.charAt(i);
         // Ignore non-alphanumeric characters
         if (/[a-zA-Z0-9]/.test(char)) {
             letterCount++;
