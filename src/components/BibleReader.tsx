@@ -1396,7 +1396,7 @@ export default function BibleReader() {
 
                                                 return cMnemonic.split('').map((char, i) => (
                                                     <span key={i} className={`relative inline-flex flex-col items-center ${i === highlightIdx ? "text-primary font-bold scale-110" : ""}`}>
-                                                        {char}
+                                                        {char === ' ' ? '\u00A0' : char}
                                                         {i === highlightIdx && vMnemonic && (
                                                             <span className="absolute top-full mt-0.5 left-1/2 -translate-x-1/2 text-[8px] leading-none font-normal normal-case text-primary bg-primary/10 px-1 py-0.5 rounded whitespace-nowrap z-20 pointer-events-none">
                                                                 {vMnemonic}
