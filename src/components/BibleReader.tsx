@@ -428,6 +428,13 @@ export default function BibleReader() {
         }
     }, [showCommentary, commentaryTab, sidebarScrollTarget, commentaryLoading]);
 
+    // Reset scroll target when sidebar closes
+    useEffect(() => {
+        if (!showCommentary) {
+            setSidebarScrollTarget(null);
+        }
+    }, [showCommentary]);
+
     const handlePrev = () => {
         if (!bsbChapter) return;
 
@@ -1252,7 +1259,7 @@ export default function BibleReader() {
                         />
                     </div>
                     {/* Navigation Header */}
-                    <div id="bible-nav-header" className={`sticky z-10 bg-background/80 backdrop-blur-md border-b border-border mb-0 sm:mb-6 shadow-sm flex flex-col transition-all duration-300 sm:rounded-b-xl ${showMnemonics ? 'py-0 sm:py-0' : ''} ${scrollDirection === 'down' && !isAtTop ? 'top-0' : 'top-16'}`}>
+                    <div id="bible-nav-header" className={`sticky z-10 bg-background/80 backdrop-blur-md border-b border-border mb-0 sm:mb-6 shadow-sm flex flex-col transition-all duration-300 sm:rounded-b-xl -mx-4 sm:mx-0 px-0 sm:px-0 ${showMnemonics ? 'py-0 sm:py-0' : ''} ${scrollDirection === 'down' && !isAtTop ? 'top-0' : 'top-16'}`}>
                         {/* Book Mnemonic */}
                         {showMnemonics && resolvedBookId && chapter && (
                             (() => {
@@ -1286,23 +1293,24 @@ export default function BibleReader() {
                                         <input
                                             type="text"
                                             placeholder="Search (e.g. John 3:16)"
-                                            className="w-full pl-9 pr-4 py-2 bg-secondary/10 border-transparent rounded-full focus:ring-2 focus:ring-primary focus:bg-background transition-all text-sm"
+                                            className="w-full pl-9 pr-10 py-2 bg-secondary/10 border-transparent rounded-full focus:ring-2 focus:ring-primary focus:bg-background transition-all text-base sm:text-sm"
                                             value={universalSearchQuery}
                                             onChange={(e) => setUniversalSearchQuery(e.target.value)}
                                             autoFocus
                                         />
+                                        <button
+                                            type="button"
+                                            onClick={() => { setIsSearchExpanded(false); setUniversalSearchQuery(''); }}
+                                            className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 hover:bg-accent/10 rounded-full transition-colors text-muted-foreground hover:text-foreground"
+                                        >
+                                            <X className="w-4 h-4" />
+                                        </button>
                                     </form>
-                                    <button
-                                        onClick={() => setIsSearchExpanded(false)}
-                                        className="p-2 hover:bg-accent/10 rounded-full transition-colors"
-                                    >
-                                        <X className="w-5 h-5 text-muted-foreground" />
-                                    </button>
                                 </div>
                             )}
 
                             {/* Standard Navigation View */}
-                            <div className={`flex items-center justify-between w-full sm:w-auto sm:justify-start sm:gap-2 ${isSearchExpanded ? 'hidden sm:flex' : 'flex'}`}>
+                            <div className={`flex items-center justify-between w-full sm:w-auto sm:justify-start sm:gap-2 relative ${isSearchExpanded ? 'hidden sm:flex' : 'flex'}`}>
                                 <button
                                     onClick={handlePrev}
                                     disabled={!canGoPrev}
@@ -1322,7 +1330,7 @@ export default function BibleReader() {
                                     </div>
                                 </button>
 
-                                <div className="flex items-center gap-1 sm:hidden">
+                                <div className="flex items-center gap-1 sm:hidden absolute right-12 top-1/2 -translate-y-1/2 z-20">
                                     <button
                                         onClick={() => setIsSearchExpanded(true)}
                                         className="p-1.5 hover:bg-accent/10 rounded-full transition-colors shrink-0"
@@ -1356,7 +1364,7 @@ export default function BibleReader() {
                         {highlightStart !== null && (
                             <div className="px-4 py-2 bg-yellow-100/90 dark:bg-yellow-900/40 border-t border-yellow-200 dark:border-yellow-800 flex items-center justify-between animate-in slide-in-from-top-2">
                                 <div className="flex items-center gap-2">
-                                    <span className="font-semibold text-sm">Highlighted Verses: {highlightStart}{highlightEnd && highlightEnd !== highlightStart ? `-${highlightEnd}` : ''}</span>
+                                    <span className="font-semibold text-sm">Highlighted: v. {highlightStart}{highlightEnd && highlightEnd !== highlightStart ? `-${highlightEnd}` : ''}</span>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <button
@@ -1365,6 +1373,13 @@ export default function BibleReader() {
                                     >
                                         {viewMode === 'full' ? <Eye className="w-3 h-3" /> : <BookOpen className="w-3 h-3" />}
                                         {viewMode === 'full' ? 'Focus View' : 'Show Full Chapter'}
+                                    </button>
+                                    <button
+                                        onClick={() => navigate(-1)}
+                                        className="text-xs text-primary hover:underline flex items-center gap-1"
+                                    >
+                                        <ArrowLeft className="w-3 h-3" />
+                                        Back
                                     </button>
                                     <button
                                         onClick={() => navigate(`/bible/read/${bsbChapter.book.name.replace(/\s+/g, '')}/${chapter}`, {
