@@ -548,6 +548,8 @@ export default function BibleReader() {
     };
 
     const handleFootnoteLeave = () => {
+        if (window.matchMedia('(pointer: coarse)').matches) return; // Skip on touch devices
+
         if (hoverTimeout) clearTimeout(hoverTimeout);
 
         const timeout = setTimeout(() => {
@@ -556,8 +558,21 @@ export default function BibleReader() {
         setCloseTimeout(timeout);
     };
 
+    const closeFootnote = (e?: React.MouseEvent) => {
+        if (e) e.stopPropagation();
+        if (hoverTimeout) clearTimeout(hoverTimeout);
+        if (closeTimeout) clearTimeout(closeTimeout);
+        setActiveFootnote(null);
+    };
+
     const handleFootnoteClick = (e: React.MouseEvent | null, noteId: number) => {
         if (e) e.stopPropagation();
+
+        // Clear any pending close timeout to prevent race conditions
+        if (closeTimeout) {
+            clearTimeout(closeTimeout);
+            setCloseTimeout(null);
+        }
 
         // Check if mobile (sm breakpoint is 640px)
         const isMobile = window.innerWidth < 640;
@@ -1844,44 +1859,50 @@ export default function BibleReader() {
                 </button>
                 {/* Footnote Popover */}
                 {activeFootnote && createPortal(
-                    <div
-                        className="fixed z-[60] bg-popover text-popover-foreground p-4 rounded-lg shadow-xl border border-border max-w-xs animate-in fade-in zoom-in-95 duration-200"
-                        style={{
-                            left: activeFootnote.x,
-                            top: activeFootnote.y + 20, // Position slightly below
-                            transform: 'translateX(-50%)'
-                        }}
-                        onMouseEnter={() => {
-                            if (hoverTimeout) clearTimeout(hoverTimeout);
-                            if (closeTimeout) {
-                                clearTimeout(closeTimeout);
-                                setCloseTimeout(null);
-                            }
-                        }}
-                        onMouseLeave={handleFootnoteLeave}
-                    >
-                        <div className="text-sm">
-                            <div className="font-bold mb-1 flex items-center justify-between">
-                                <span>Footnote</span>
-                                <button onClick={handleFootnoteLeave} className="text-muted-foreground hover:text-foreground md:hidden">
-                                    <X className="w-4 h-4" />
+                    <>
+                        {/* Mobile Backdrop for click-away */}
+                        <div className="fixed inset-0 z-[59] bg-transparent sm:hidden" onClick={closeFootnote} />
+                        <div
+                            className="fixed z-[60] bg-popover text-popover-foreground p-4 rounded-lg shadow-xl border border-border max-w-xs animate-in fade-in zoom-in-95 duration-200"
+                            style={{
+                                left: window.innerWidth < 640
+                                    ? Math.max(160, Math.min(activeFootnote.x, window.innerWidth - 160))
+                                    : activeFootnote.x,
+                                top: activeFootnote.y + 20, // Position slightly below
+                                transform: 'translateX(-50%)'
+                            }}
+                            onMouseEnter={() => {
+                                if (hoverTimeout) clearTimeout(hoverTimeout);
+                                if (closeTimeout) {
+                                    clearTimeout(closeTimeout);
+                                    setCloseTimeout(null);
+                                }
+                            }}
+                            onMouseLeave={handleFootnoteLeave}
+                        >
+                            <div className="text-sm">
+                                <div className="font-bold mb-1 flex items-center justify-between">
+                                    <span>Footnote</span>
+                                    <button onClick={closeFootnote} className="text-muted-foreground hover:text-foreground md:hidden">
+                                        <X className="w-4 h-4" />
+                                    </button>
+                                </div>
+                                <p className="mb-2 leading-relaxed">
+                                    {bsbChapter?.chapter.footnotes.find(n => n.noteId === activeFootnote?.id)?.text}
+                                </p>
+                                <button
+                                    onClick={() => {
+                                        if (activeFootnote) {
+                                            handleFootnoteClick(null, activeFootnote.id);
+                                        }
+                                    }}
+                                    className="w-full mt-2 text-[10px] text-primary/80 font-medium text-center bg-primary/5 hover:bg-primary/10 rounded py-0.5 transition-colors"
+                                >
+                                    View in Sidebar
                                 </button>
                             </div>
-                            <p className="mb-2 leading-relaxed">
-                                {bsbChapter?.chapter.footnotes.find(n => n.noteId === activeFootnote?.id)?.text}
-                            </p>
-                            <button
-                                onClick={() => {
-                                    if (activeFootnote) {
-                                        handleFootnoteClick(null, activeFootnote.id);
-                                    }
-                                }}
-                                className="w-full mt-2 text-[10px] text-primary/80 font-medium text-center bg-primary/5 hover:bg-primary/10 rounded py-0.5 transition-colors"
-                            >
-                                View in Sidebar
-                            </button>
                         </div>
-                    </div>,
+                    </>,
                     document.body
                 )}
             </div>
