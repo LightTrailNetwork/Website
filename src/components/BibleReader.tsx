@@ -1257,8 +1257,13 @@ export default function BibleReader() {
                                 const bMnemonic = getBookMnemonic(resolvedBookId, parseInt(chapter));
                                 if (!bMnemonic) return null;
                                 return (
-                                    <div className="w-full bg-background/95 backdrop-blur border-b border-border/50 px-4 py-1 flex justify-center overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
-                                        <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground/70 font-medium text-center whitespace-nowrap">
+                                    <div
+                                        className="w-full bg-background/95 backdrop-blur border-b border-border/50 px-8 py-1 flex overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']"
+                                        onTouchStart={(e) => e.stopPropagation()}
+                                        onTouchMove={(e) => e.stopPropagation()}
+                                        onTouchEnd={(e) => e.stopPropagation()}
+                                    >
+                                        <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground/70 font-medium text-center whitespace-nowrap min-w-max px-4 mx-auto">
                                             {bMnemonic.text.split('').map((char, i) => (
                                                 <span key={i} className={i === bMnemonic.highlightIndex ? "text-primary font-bold scale-110 inline-block" : ""}>
                                                     {char}
@@ -1378,8 +1383,13 @@ export default function BibleReader() {
                                 const cMnemonic = getChapterMnemonic(resolvedBookId, parseInt(chapter));
                                 if (!cMnemonic) return null;
                                 return (
-                                    <div className="w-full bg-background/95 backdrop-blur border-t border-border/50 px-4 py-1 flex justify-center overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
-                                        <p className="text-[10px] italic text-muted-foreground/70 text-center whitespace-nowrap">
+                                    <div
+                                        className="w-full bg-background/95 backdrop-blur border-t border-border/50 px-8 py-1 flex overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']"
+                                        onTouchStart={(e) => e.stopPropagation()}
+                                        onTouchMove={(e) => e.stopPropagation()}
+                                        onTouchEnd={(e) => e.stopPropagation()}
+                                    >
+                                        <p className="text-[10px] italic text-muted-foreground/70 text-center whitespace-nowrap min-w-max px-4 mx-auto">
                                             {(() => {
                                                 const highlightIdx = activeVerse ? getMnemonicHighlightIndex(cMnemonic, activeVerse) : -1;
                                                 if (highlightIdx === -1) return cMnemonic;
@@ -1650,7 +1660,7 @@ export default function BibleReader() {
             </div >
 
             {/* Mobile Navigation Footer */}
-            <div className="fixed bottom-0 left-0 right-0 h-12 bg-background/80 backdrop-blur-md border-t border-border flex items-center justify-between px-4 z-50 sm:hidden">
+            < div className="fixed bottom-0 left-0 right-0 h-12 bg-background/80 backdrop-blur-md border-t border-border flex items-center justify-between px-4 z-50 sm:hidden" >
                 <div className="flex items-center gap-4">
                     <button
                         onClick={() => navigate(-1)}
@@ -1683,7 +1693,7 @@ export default function BibleReader() {
                         <MessageSquare className="w-5 h-5" />
                     </button>
                 </div>
-            </div>
+            </div >
 
             {/* Profile Modal */}
             {
