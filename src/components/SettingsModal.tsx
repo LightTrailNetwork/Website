@@ -114,7 +114,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                                 </div>
                                 <div className="flex-1">
                                     <h3 className="font-medium text-foreground">Bible Translation</h3>
-                                    <p className="text-xs text-muted-foreground">Current: {selectedTranslation}</p>
+                                    <p className="text-xs text-muted-foreground">Current: {translations.find(t => t.id === selectedTranslation)?.shortName || selectedTranslation}</p>
                                 </div>
                                 <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
                             </button>

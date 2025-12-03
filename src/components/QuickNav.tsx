@@ -8,9 +8,10 @@ interface QuickNavProps {
     books: BibleBook[];
     onNavigate: (bookId: string, chapter: number) => void;
     onNavigateToBookOverview?: (bookId: string) => void;
+    initialBook?: BibleBook | null;
 }
 
-export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigateToBookOverview }: QuickNavProps) {
+export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigateToBookOverview, initialBook }: QuickNavProps) {
     const [navStep, setNavStep] = useState<'books' | 'chapters'>('books');
     const [selectedNavBook, setSelectedNavBook] = useState<BibleBook | null>(null);
     const [bookFilter, setBookFilter] = useState<'ALL' | 'OT' | 'NT' | 'ALPHA'>('ALPHA');
@@ -18,13 +19,23 @@ export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigat
     const inputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
-        if (isOpen && navStep === 'books' && window.innerWidth >= 768) {
-            // Small delay to ensure render
-            setTimeout(() => {
-                inputRef.current?.focus();
-            }, 10);
+        if (isOpen) {
+            if (initialBook) {
+                setSelectedNavBook(initialBook);
+                setNavStep('chapters');
+            } else {
+                setNavStep('books');
+                setSelectedNavBook(null);
+            }
+
+            if (navStep === 'books' && window.innerWidth >= 768) {
+                // Small delay to ensure render
+                setTimeout(() => {
+                    inputRef.current?.focus();
+                }, 10);
+            }
         }
-    }, [isOpen, navStep]);
+    }, [isOpen, initialBook]);
 
     // Filtered Books
     const filteredBooks = useMemo(() => {
@@ -113,6 +124,14 @@ export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigat
                 )}
 
                 <div className="overflow-y-auto p-4 flex flex-col gap-3">
+                    {navStep === 'chapters' && (
+                        <button
+                            onClick={() => setNavStep('books')}
+                            className="w-full p-3 mb-2 bg-secondary/10 hover:bg-secondary/20 text-foreground font-medium rounded-xl transition-colors flex items-center justify-center gap-2"
+                        >
+                            <ChevronLeft className="w-4 h-4" /> Back to Books
+                        </button>
+                    )}
                     {navStep === 'chapters' && selectedNavBook && onNavigateToBookOverview && (
                         <button
                             onClick={() => {
@@ -150,13 +169,7 @@ export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigat
                         )}
                     </div>
                 </div>
-                {navStep === 'chapters' && (
-                    <div className="p-4 border-t border-border shrink-0">
-                        <button onClick={() => setNavStep('books')} className="text-sm text-primary hover:underline flex items-center">
-                            <ChevronLeft className="w-4 h-4 mr-1" /> Back to Books
-                        </button>
-                    </div>
-                )}
+
             </div>
         </div>
     );

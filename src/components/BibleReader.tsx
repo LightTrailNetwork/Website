@@ -100,6 +100,7 @@ export default function BibleReader() {
     // Quick Nav & Translation State
     // Quick Nav State
     const [showQuickNav, setShowQuickNav] = useState(false);
+    const [translations, setTranslations] = useState<BibleTranslation[]>([]);
     const [books, setBooks] = useState<BibleBook[]>([]);
     const [navStep, setNavStep] = useState<'books' | 'chapters'>('books');
     const [selectedNavBook, setSelectedNavBook] = useState<BibleBook | null>(null);
@@ -204,14 +205,16 @@ export default function BibleReader() {
     useEffect(() => {
         const initData = async () => {
             try {
-                const [booksData, commentariesData, profilesData] = await Promise.all([
+                const [booksData, commentariesData, profilesData, translationsData] = await Promise.all([
                     getBooks('BSB'),
                     getCommentaries(),
-                    getProfiles()
+                    getProfiles(),
+                    getTranslations()
                 ]);
                 setBooks(booksData);
                 setCommentaries(commentariesData);
                 setProfiles(profilesData.profiles);
+                setTranslations(translationsData);
 
                 // Set default commentary if available
                 if (commentariesData.length > 0) {
@@ -1358,7 +1361,9 @@ export default function BibleReader() {
                                     <div className="hidden sm:block"><Grid className="w-5 h-5 text-primary" /></div>
                                     <div>
                                         <h2 className="text-base sm:text-lg font-bold leading-none truncate">{bsbChapter.book.name} {bsbChapter.chapter.number}</h2>
-                                        <p className="text-[10px] text-muted-foreground uppercase tracking-wider">{selectedTranslation}</p>
+                                        <p className="text-[10px] text-muted-foreground uppercase tracking-wider">
+                                            {translations.find(t => t.id === selectedTranslation)?.shortName || selectedTranslation}
+                                        </p>
                                     </div>
                                 </button>
 
@@ -1829,6 +1834,7 @@ export default function BibleReader() {
                     const bookName = books.find(b => b.id === bookId)?.name.replace(/\s+/g, '') || bookId;
                     navigate(`/bible/read/${bookName}`);
                 }}
+                initialBook={bsbChapter?.book}
             />
 
 
