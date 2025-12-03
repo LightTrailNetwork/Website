@@ -8,6 +8,7 @@ import Breadcrumbs from './Breadcrumbs';
 import QuickNav from './QuickNav';
 import { diffVerses, type DiffToken } from '../utils/diffUtils';
 import { formatPassageText, shouldInsertSpace, formatChapterContent } from '../utils/bibleUtils';
+import { useScrollDirection } from '../hooks/useScrollDirection';
 import { useSettings } from '../context/SettingsContext';
 import { getBookMnemonic, getChapterMnemonic, getVerseMnemonic, getMnemonicHighlightIndex } from '../utils/mnemonicUtils';
 
@@ -133,6 +134,7 @@ export default function BibleReader() {
     const [touchEnd, setTouchEnd] = useState<{ x: number, y: number } | null>(null);
     const [swipeAxis, setSwipeAxis] = useState<'horizontal' | 'vertical' | null>(null);
     const [translateX, setTranslateX] = useState(0);
+    const { scrollDirection, isAtTop } = useScrollDirection();
 
     // Mnemonic Interaction State
     const [activeVerse, setActiveVerse] = useState<number | null>(null);
@@ -1250,7 +1252,7 @@ export default function BibleReader() {
                         />
                     </div>
                     {/* Navigation Header */}
-                    <div id="bible-nav-header" className={`sticky top-16 z-10 bg-background/80 backdrop-blur-md border-b border-border mb-0 sm:mb-6 shadow-sm flex flex-col transition-all duration-300 sm:rounded-b-xl ${showMnemonics ? 'py-0 sm:py-0' : ''}`}>
+                    <div id="bible-nav-header" className={`sticky z-10 bg-background/80 backdrop-blur-md border-b border-border mb-0 sm:mb-6 shadow-sm flex flex-col transition-all duration-300 sm:rounded-b-xl ${showMnemonics ? 'py-0 sm:py-0' : ''} ${scrollDirection === 'down' && !isAtTop ? 'top-0' : 'top-16'}`}>
                         {/* Book Mnemonic */}
                         {showMnemonics && resolvedBookId && chapter && (
                             (() => {
@@ -1660,7 +1662,7 @@ export default function BibleReader() {
             </div >
 
             {/* Mobile Navigation Footer */}
-            < div className="fixed bottom-0 left-0 right-0 h-12 bg-background/80 backdrop-blur-md border-t border-border flex items-center justify-between px-4 z-50 sm:hidden" >
+            <div className={`fixed bottom-0 left-0 right-0 h-12 bg-background/80 backdrop-blur-md border-t border-border flex items-center justify-between px-4 z-50 sm:hidden transition-transform duration-300 ${scrollDirection === 'down' && !isAtTop ? 'translate-y-full' : 'translate-y-0'}`}>
                 <div className="flex items-center gap-4">
                     <button
                         onClick={() => navigate(-1)}
@@ -1693,7 +1695,7 @@ export default function BibleReader() {
                         <MessageSquare className="w-5 h-5" />
                     </button>
                 </div>
-            </div >
+            </div>
 
             {/* Profile Modal */}
             {

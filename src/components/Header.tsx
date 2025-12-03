@@ -1,4 +1,5 @@
 import { Menu, Settings } from 'lucide-react';
+import { useScrollDirection } from '../hooks/useScrollDirection';
 
 interface HeaderProps {
   onMenuClick: () => void;
@@ -8,8 +9,11 @@ interface HeaderProps {
 }
 
 export default function Header({ onMenuClick, onSettingsClick, title, subtitle }: HeaderProps) {
+  const { scrollDirection, isAtTop } = useScrollDirection();
+  const isHidden = scrollDirection === 'down' && !isAtTop;
+
   return (
-    <header className="bg-background/80 backdrop-blur-md border-b border-border sticky top-0 z-50">
+    <header className={`bg-background/80 backdrop-blur-md border-b border-border sticky top-0 z-50 transition-transform duration-300 ${isHidden ? '-translate-y-full' : 'translate-y-0'}`}>
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
           {/* Left side - Menu button and title */}
