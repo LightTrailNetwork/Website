@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { useParams, useNavigate, useLocation, useNavigationType, Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, ChevronDown, ChevronUp, BookOpen, Loader2, AlertCircle, MessageSquare, Grid, Globe, X, Search, Filter, Eye, Link as LinkIcon, Columns, ArrowLeft, ArrowRight, History } from 'lucide-react';
@@ -111,6 +111,7 @@ export default function BibleReader() {
 
     // Universal Search & Filtering State
     const [universalSearchQuery, setUniversalSearchQuery] = useState('');
+    const searchInputRef = useRef<HTMLInputElement>(null);
     const [viewMode, setViewMode] = useState<'full' | 'focus'>('full');
 
     const [sidebarScrollTarget, setSidebarScrollTarget] = useState<number | null>(null);
@@ -1322,26 +1323,33 @@ export default function BibleReader() {
 
                             {/* Mobile Search Expanded View */}
                             {isSearchExpanded && (
-                                <div className="flex w-full items-center gap-2 sm:hidden animate-in fade-in slide-in-from-right-5 duration-200 relative z-50">
-                                    <form onSubmit={(e) => { handleUniversalSearch(e); setIsSearchExpanded(false); }} className="relative flex-1">
-                                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                                        <input
-                                            type="text"
-                                            placeholder="Search (e.g. John 3:16)"
-                                            className="w-full pl-9 pr-10 py-2 bg-secondary/10 border-transparent rounded-full focus:ring-2 focus:ring-primary focus:bg-background transition-all text-base sm:text-sm"
-                                            value={universalSearchQuery}
-                                            onChange={(e) => setUniversalSearchQuery(e.target.value)}
-                                            autoFocus
-                                        />
-                                        <button
-                                            type="button"
-                                            onClick={() => { setIsSearchExpanded(false); setUniversalSearchQuery(''); }}
-                                            className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 hover:bg-accent/10 rounded-full transition-colors text-muted-foreground hover:text-foreground"
-                                        >
-                                            <X className="w-4 h-4" />
-                                        </button>
-                                    </form>
-                                </div>
+                                <>
+                                    {createPortal(
+                                        <div className="fixed inset-0 z-[40] bg-transparent" onClick={() => { setIsSearchExpanded(false); setUniversalSearchQuery(''); }} />,
+                                        document.body
+                                    )}
+                                    <div className="flex w-full items-center gap-2 sm:hidden animate-in fade-in slide-in-from-right-5 duration-200 relative z-50">
+                                        <form onSubmit={(e) => { handleUniversalSearch(e); setIsSearchExpanded(false); }} className="relative flex-1">
+                                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                                            <input
+                                                ref={searchInputRef}
+                                                type="text"
+                                                placeholder="Search (e.g. John 3:16)"
+                                                className="w-full pl-9 pr-10 py-2 bg-secondary/10 border-transparent rounded-full focus:ring-2 focus:ring-primary focus:bg-background transition-all text-base sm:text-sm"
+                                                value={universalSearchQuery}
+                                                onChange={(e) => setUniversalSearchQuery(e.target.value)}
+                                                autoFocus
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => { setUniversalSearchQuery(''); searchInputRef.current?.focus(); }}
+                                                className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 hover:bg-accent/10 rounded-full transition-colors text-muted-foreground hover:text-foreground"
+                                            >
+                                                <X className="w-4 h-4" />
+                                            </button>
+                                        </form>
+                                    </div>
+                                </>
                             )}
 
                             {/* Standard Navigation View */}
