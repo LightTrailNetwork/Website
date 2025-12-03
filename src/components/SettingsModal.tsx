@@ -144,7 +144,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                     ) : currentView === 'reader' ? (
                         <div className="p-4 space-y-4 animate-in slide-in-from-right duration-200">
                             {/* Reader Mode Toggle */}
-                            <div className="flex items-center justify-between p-4 bg-secondary/5 rounded-lg border border-border">
+                            <div className="flex items-center justify-between p-4 bg-secondary/5 rounded-lg border border-border gap-4">
                                 <div className="flex flex-col gap-1">
                                     <span className="font-medium flex items-center gap-2">
                                         <BookOpen className="w-4 h-4 text-primary" />
@@ -156,7 +156,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                                 </div>
                                 <button
                                     onClick={() => setReaderMode(!readerMode)}
-                                    className={`w-12 h-7 rounded-full transition-colors relative ${readerMode ? 'bg-primary' : 'bg-gray-300 dark:bg-gray-600'}`}
+                                    className={`w-12 h-7 rounded-full transition-colors relative flex-shrink-0 ${readerMode ? 'bg-primary' : 'bg-gray-300 dark:bg-gray-600'}`}
                                 >
                                     <div className={`w-5 h-5 bg-white rounded-full absolute top-1 transition-transform shadow-sm ${readerMode ? 'left-6' : 'left-1'}`} />
                                 </button>
@@ -167,7 +167,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                                 <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider ml-1">Mnemonics</h4>
 
                                 {/* Book & Chapter Mnemonics */}
-                                <div className="flex items-center justify-between p-4 bg-secondary/5 rounded-lg border border-border">
+                                <div className="flex items-center justify-between p-4 bg-secondary/5 rounded-lg border border-border gap-4">
                                     <div className="flex flex-col gap-1">
                                         <span className="font-medium">Book & Chapter Mnemonics</span>
                                         <span className="text-xs text-muted-foreground">
@@ -176,14 +176,14 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                                     </div>
                                     <button
                                         onClick={() => setShowMnemonics(!showMnemonics)}
-                                        className={`w-12 h-7 rounded-full transition-colors relative ${showMnemonics ? 'bg-primary' : 'bg-gray-300 dark:bg-gray-600'}`}
+                                        className={`w-12 h-7 rounded-full transition-colors relative flex-shrink-0 ${showMnemonics ? 'bg-primary' : 'bg-gray-300 dark:bg-gray-600'}`}
                                     >
                                         <div className={`w-5 h-5 bg-white rounded-full absolute top-1 transition-transform shadow-sm ${showMnemonics ? 'left-6' : 'left-1'}`} />
                                     </button>
                                 </div>
 
                                 {/* Verse Mnemonics */}
-                                <div className="flex items-center justify-between p-4 bg-secondary/5 rounded-lg border border-border">
+                                <div className="flex items-center justify-between p-4 bg-secondary/5 rounded-lg border border-border gap-4">
                                     <div className="flex flex-col gap-1">
                                         <span className="font-medium">Verse Mnemonics</span>
                                         <span className="text-xs text-muted-foreground">
@@ -192,7 +192,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                                     </div>
                                     <button
                                         onClick={() => setShowVerseMnemonics(!showVerseMnemonics)}
-                                        className={`w-12 h-7 rounded-full transition-colors relative ${showVerseMnemonics ? 'bg-primary' : 'bg-gray-300 dark:bg-gray-600'}`}
+                                        className={`w-12 h-7 rounded-full transition-colors relative flex-shrink-0 ${showVerseMnemonics ? 'bg-primary' : 'bg-gray-300 dark:bg-gray-600'}`}
                                     >
                                         <div className={`w-5 h-5 bg-white rounded-full absolute top-1 transition-transform shadow-sm ${showVerseMnemonics ? 'left-6' : 'left-1'}`} />
                                     </button>
@@ -201,14 +201,14 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
 
                             {/* MSB Toggle (Moved here for convenience when reading) */}
                             {selectedTranslation === 'BSB' && (
-                                <div className="flex items-center justify-between p-4 bg-secondary/5 rounded-lg border border-border">
+                                <div className="flex items-center justify-between p-4 bg-secondary/5 rounded-lg border border-border gap-4">
                                     <div className="flex flex-col gap-1">
                                         <span className="font-medium">Compare with MSB</span>
                                         <span className="text-xs text-muted-foreground">Show MSB alongside BSB</span>
                                     </div>
                                     <button
                                         onClick={() => setShowMsb(!showMsb)}
-                                        className={`w-12 h-7 rounded-full transition-colors relative ${showMsb ? 'bg-primary' : 'bg-gray-300 dark:bg-gray-600'}`}
+                                        className={`w-12 h-7 rounded-full transition-colors relative flex-shrink-0 ${showMsb ? 'bg-primary' : 'bg-gray-300 dark:bg-gray-600'}`}
                                     >
                                         <div className={`w-5 h-5 bg-white rounded-full absolute top-1 transition-transform shadow-sm ${showMsb ? 'left-6' : 'left-1'}`} />
                                     </button>
