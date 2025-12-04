@@ -14,28 +14,30 @@ interface QuickNavProps {
 export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigateToBookOverview, initialBook }: QuickNavProps) {
     const [navStep, setNavStep] = useState<'books' | 'chapters'>('books');
     const [selectedNavBook, setSelectedNavBook] = useState<BibleBook | null>(null);
-    const [bookFilter, setBookFilter] = useState<'ALL' | 'OT' | 'NT' | 'ALPHA'>('ALPHA');
+    const [bookFilter, setBookFilter] = useState<'ALL' | 'OT' | 'NT' | 'ALPHA'>('ALL');
     const [bookSearchQuery, setBookSearchQuery] = useState('');
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         if (isOpen) {
+            // Always start at books list, but select the current book for the top bar context
+            setNavStep('books');
             if (initialBook) {
                 setSelectedNavBook(initialBook);
-                setNavStep('chapters');
             } else {
-                setNavStep('books');
                 setSelectedNavBook(null);
             }
-
-            if (navStep === 'books' && window.innerWidth >= 768) {
-                // Small delay to ensure render
-                setTimeout(() => {
-                    inputRef.current?.focus();
-                }, 10);
-            }
+            setIsSearchOpen(false);
+            setBookSearchQuery('');
         }
     }, [isOpen, initialBook]);
+
+    useEffect(() => {
+        if (isSearchOpen && inputRef.current) {
+            inputRef.current.focus();
+        }
+    }, [isSearchOpen]);
 
     // Filtered Books
     const filteredBooks = useMemo(() => {
@@ -94,32 +96,83 @@ export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigat
 
                 {navStep === 'books' && (
                     <div className="p-4 border-b border-border space-y-3 shrink-0">
-                        <div className="relative">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                            <input
-                                ref={inputRef}
-                                type="text"
-                                placeholder="Search books..."
-                                className="w-full pl-9 pr-4 py-2 bg-secondary/10 border-transparent rounded-lg focus:ring-2 focus:ring-primary focus:bg-background transition-all"
-                                value={bookSearchQuery}
-                                onChange={(e) => setBookSearchQuery(e.target.value)}
-                            />
+                        <div className="flex items-center gap-3 min-h-[40px]">
+                            {isSearchOpen ? (
+                                <div className="relative flex-1 animate-fade-in">
+                                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                                    <input
+                                        ref={inputRef}
+                                        type="text"
+                                        placeholder="Search books..."
+                                        className="w-full pl-9 pr-10 py-2 bg-secondary/10 border-transparent rounded-lg focus:ring-2 focus:ring-primary focus:bg-background transition-all"
+                                        value={bookSearchQuery}
+                                        onChange={(e) => setBookSearchQuery(e.target.value)}
+                                    />
+                                    <button
+                                        onClick={() => {
+                                            setIsSearchOpen(false);
+                                            setBookSearchQuery('');
+                                        }}
+                                        className="absolute right-2 top-1/2 -translate-y-1/2 p-1 hover:bg-accent/10 rounded-full"
+                                    >
+                                        <X className="w-4 h-4 text-muted-foreground" />
+                                    </button>
+                                </div>
+                            ) : (
+                                <>
+                                    <button
+                                        onClick={() => setIsSearchOpen(true)}
+                                        className="p-2 hover:bg-accent/10 rounded-full text-muted-foreground hover:text-foreground transition-colors"
+                                        title="Search Books"
+                                    >
+                                        <Search className="w-5 h-5" />
+                                    </button>
+
+                                    {selectedNavBook ? (
+                                        <div className="flex-1 flex items-center gap-3 overflow-hidden animate-fade-in">
+                                            <span className="font-bold whitespace-nowrap">{selectedNavBook.name}</span>
+                                            <div className="h-4 w-[1px] bg-border shrink-0" />
+                                            <div className="flex-1 overflow-x-auto flex items-center gap-1 pb-1 scrollbar-hide mask-linear-fade">
+                                                {Array.from({ length: selectedNavBook.numberOfChapters }, (_, i) => i + 1).map(chap => (
+                                                    <button
+                                                        key={chap}
+                                                        onClick={() => {
+                                                            onNavigate(selectedNavBook.id, chap);
+                                                            handleClose();
+                                                        }}
+                                                        className="w-8 h-8 shrink-0 flex items-center justify-center rounded-md text-xs font-medium hover:bg-primary/10 hover:text-primary transition-colors"
+                                                    >
+                                                        {chap}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <div className="flex-1 text-sm text-muted-foreground italic">
+                                            Select a book...
+                                        </div>
+                                    )}
+                                </>
+                            )}
                         </div>
-                        <div className="flex gap-2 overflow-x-auto pb-1">
-                            {(['ALPHA', 'OT', 'NT'] as const).map(filter => (
-                                <button
-                                    key={filter}
-                                    onClick={() => setBookFilter(filter)}
-                                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${bookFilter === filter ? 'bg-primary text-primary-foreground' : 'hover:bg-accent/10'
-                                        }`}
-                                >
-                                    {filter === 'ALPHA' ? 'A-Z' :
-                                        filter === 'OT' ? <><span className="sm:hidden">Old Tst</span><span className="hidden sm:inline">Old Testament</span></> :
-                                            filter === 'NT' ? <><span className="sm:hidden">New Tst</span><span className="hidden sm:inline">New Testament</span></> :
-                                                'All Books'}
-                                </button>
-                            ))}
-                        </div>
+
+                        {!isSearchOpen && (
+                            <div className="flex flex-wrap gap-2 pb-1 animate-fade-in">
+                                {(['ALL', 'ALPHA', 'OT', 'NT'] as const).map(filter => (
+                                    <button
+                                        key={filter}
+                                        onClick={() => setBookFilter(filter)}
+                                        className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${bookFilter === filter ? 'bg-primary text-primary-foreground' : 'bg-secondary/10 hover:bg-secondary/20 text-foreground'
+                                            }`}
+                                    >
+                                        {filter === 'ALPHA' ? 'Alphabetical' :
+                                            filter === 'OT' ? 'Old Testament' :
+                                                filter === 'NT' ? 'New Testament' :
+                                                    'All Books'}
+                                    </button>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 )}
 
@@ -147,29 +200,46 @@ export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigat
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
                         {navStep === 'books' ? (
                             filteredBooks.map(book => (
-                                <button
+                                <div
                                     key={book.id}
-                                    onClick={() => handleBookSelect(book)}
-                                    className="p-4 text-sm font-medium bg-secondary/10 hover:bg-secondary/20 rounded-xl transition-colors text-center truncate min-h-[60px] flex items-center justify-center"
-                                    title={book.name}
+                                    className="flex items-stretch rounded-lg border border-border bg-card overflow-hidden hover:border-primary/50 transition-colors h-[50px]"
                                 >
-                                    {book.name}
-                                </button>
+                                    <button
+                                        onClick={() => handleBookSelect(book)}
+                                        className="flex-1 px-3 text-sm font-medium text-left hover:bg-secondary/10 transition-colors truncate flex items-center"
+                                        title={book.name}
+                                    >
+                                        {book.name}
+                                    </button>
+                                    <div className="w-[1px] bg-border" />
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            onNavigate(book.id, 1);
+                                            handleClose();
+                                        }}
+                                        className="w-[40px] flex items-center justify-center text-xs font-bold text-muted-foreground hover:text-primary hover:bg-secondary/10 transition-colors"
+                                        title={`Go to ${book.name} Chapter 1`}
+                                    >
+                                        1
+                                    </button>
+                                </div>
                             ))
                         ) : (
-                            Array.from({ length: selectedNavBook?.numberOfChapters || 0 }, (_, i) => i + 1).map(chap => (
-                                <button
-                                    key={chap}
-                                    onClick={() => handleChapterSelect(chap)}
-                                    className="p-4 text-lg font-bold bg-primary/10 hover:bg-primary/20 rounded-xl transition-colors text-center min-h-[60px] flex items-center justify-center"
-                                >
-                                    {chap}
-                                </button>
-                            ))
+                            <div className="col-span-full grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 gap-2">
+                                {Array.from({ length: selectedNavBook?.numberOfChapters || 0 }, (_, i) => i + 1).map(chap => (
+                                    <button
+                                        key={chap}
+                                        onClick={() => handleChapterSelect(chap)}
+                                        className="p-2 text-sm font-bold bg-primary/10 hover:bg-primary/20 rounded-lg transition-colors text-center min-h-[40px] flex items-center justify-center"
+                                    >
+                                        {chap}
+                                    </button>
+                                ))}
+                            </div>
                         )}
                     </div>
                 </div>
-
             </div>
         </div>
     );
