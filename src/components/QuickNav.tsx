@@ -30,8 +30,20 @@ export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigat
             }
             setIsSearchOpen(false);
             setBookSearchQuery('');
+            setBookFilter('ALL');
         }
     }, [isOpen, initialBook]);
+
+    useEffect(() => {
+        if (isOpen && navStep === 'books' && initialBook && bookFilter === 'ALL' && !bookSearchQuery) {
+            setTimeout(() => {
+                const element = document.getElementById(`book-item-${initialBook.id}`);
+                if (element) {
+                    element.scrollIntoView({ block: 'center', behavior: 'smooth' });
+                }
+            }, 100);
+        }
+    }, [isOpen, navStep, initialBook, bookFilter, bookSearchQuery]);
 
     useEffect(() => {
         if (isSearchOpen && inputRef.current) {
@@ -202,7 +214,11 @@ export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigat
                             filteredBooks.map(book => (
                                 <div
                                     key={book.id}
-                                    className="flex items-stretch rounded-lg border border-border bg-card overflow-hidden hover:border-primary/50 transition-colors h-[50px]"
+                                    id={`book-item-${book.id}`}
+                                    className={`flex items-stretch rounded-lg border bg-card overflow-hidden transition-colors h-[50px] ${initialBook?.id === book.id
+                                        ? 'border-primary ring-1 ring-primary shadow-sm'
+                                        : 'border-border hover:border-primary/50'
+                                        }`}
                                 >
                                     <button
                                         onClick={() => handleBookSelect(book)}
