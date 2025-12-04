@@ -6,6 +6,11 @@ interface MnemonicData {
         version: string;
         description: string;
     };
+    testaments?: {
+        [key: string]: {
+            mnemonic: string;
+        };
+    };
     books: {
         [key: string]: {
             mnemonic: string;

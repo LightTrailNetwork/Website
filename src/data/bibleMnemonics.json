@@ -3,6 +3,11 @@
         "version": "1.0",
         "description": "Hierarchical mnemonics for Bible memorization"
     },
+    "testaments": {
+        "OT": {
+            "mnemonic": "FIRST IS THE STORY OF TRUTH ABOUT EVERYONE'S SIN"
+        }
+    },
     "books": {
         "GEN": {
             "mnemonic": "FIRST GOD CREATES ADAM THEN CHOOSES ABRAHAM ISAAC AND JACOB",
@@ -488,7 +493,7 @@
             }
         },
         "NUM": {
-            "mnemonic": "NUMBERS COUNTS ISRAEL WHILE THEY WANDER ON",
+            "mnemonic": "STORY FROM MOUNT SINAI TO THE PROMISED LAND",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -637,7 +642,7 @@
             }
         },
         "DEU": {
-            "mnemonic": "MOSES REPEATS LAW, URGES FAITHFUL HEARTS",
+            "mnemonic": "THE SECOND READING OF GOD'S LAWS VIA MOSES",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -879,7 +884,7 @@
             }
         },
         "JDG": {
-            "mnemonic": "JUDGES SIN AND SALVATION",
+            "mnemonic": "SIN CYCLE THROUGH JUDGES",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -968,7 +973,7 @@
             }
         },
         "RUT": {
-            "mnemonic": "RUTH",
+            "mnemonic": "TEND",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -989,7 +994,7 @@
             }
         },
         "1SA": {
-            "mnemonic": "SAUL RISES, FALLS; DAVID CHOSEN",
+            "mnemonic": "HOW GOD CHOSE ISRAEL'S FIRST TWO KINGS",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -1118,7 +1123,7 @@
             }
         },
         "2SA": {
-            "mnemonic": "DAVID BECOMES KING OF ISRAEL",
+            "mnemonic": "ETERNAL RULE OF DAVID BEGINS",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -1219,7 +1224,7 @@
             }
         },
         "1KI": {
-            "mnemonic": "KING FALLS; KINGDOM SPLITS",
+            "mnemonic": "SOLOMON BUILDS THE TEMPLE",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -1312,7 +1317,7 @@
             }
         },
         "2KI": {
-            "mnemonic": "KINGS DECLINE UNTIL SAD EXILE",
+            "mnemonic": "TAKEN INTO EXILE BY ATTACKERS",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -1417,7 +1422,7 @@
             }
         },
         "1CH": {
-            "mnemonic": "CHRONICLES: DAVID PREPARES TEMPLE",
+            "mnemonic": "OVERVIEW OF ISRAEL AND DAVID'S RULE",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -1538,7 +1543,7 @@
             }
         },
         "2CH": {
-            "mnemonic": "CHRONICLES JUDAH KINGS UNTIL TEMPLE FALLS",
+            "mnemonic": "RULE OF SOLOMON FROM THE TEMPLE TO THE EXILE",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -1687,7 +1692,7 @@
             }
         },
         "EZR": {
-            "mnemonic": "BOOK OF EZRA",
+            "mnemonic": "YEARS LATER",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -1732,7 +1737,7 @@
             }
         },
         "NEH": {
-            "mnemonic": "NEHEMIAH'S WALL",
+            "mnemonic": "ORGANIZES WORK",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -1789,7 +1794,7 @@
             }
         },
         "EST": {
-            "mnemonic": "ESTHER BOOK",
+            "mnemonic": "FINDS FAVOR",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -1834,7 +1839,7 @@
             }
         },
         "JOB": {
-            "mnemonic": "LORD LETS JOB SUFFER YET SPEAKS AND FULLY RESTORES",
+            "mnemonic": "THE STORY OF A RIGHTEOUS MAN WHO LOST ALL HE EVER HAD",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -2007,7 +2012,7 @@
             }
         },
         "PSA": {
-            "mnemonic": "ALWAYS SING SHEPHERD SONGS OF PRAISE AND PRAYER FOR EVERY WOUNDED HEART IN EVERY SEASON OF LIFE THROUGH VALLEYS BATTLES QUESTIONS AND HOPE AND TRUST IN GODS STEADFAST LOVE FOREVER",
+            "mnemonic": "RESPONDING TO GODS GOODNESS WITH PRAISE AND WORSHIP WHILE ALSO PLEADING WITH GOD TO RESCUE US FROM OUR ENEMIES. THE MESSIANIC PSALMS PREDICT THE COMING OF JESUS CHRIST AND HIS DEATH.",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -2612,7 +2617,7 @@
             }
         },
         "PRO": {
-            "mnemonic": "PROVERBS GIVES GODLY WISDOM FOR LIFE",
+            "mnemonic": "UNDERSTANDING GODLY WISDOM FOR LIFE",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -2741,7 +2746,7 @@
             }
         },
         "ECC": {
-            "mnemonic": "WISDOMS LIMIT",
+            "mnemonic": "TRUTHFULNESS",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -2794,7 +2799,7 @@
             }
         },
         "SNG": {
-            "mnemonic": "TRUE LOVE",
+            "mnemonic": "HOLY LOVE",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -2831,7 +2836,7 @@
             }
         },
         "ISA": {
-            "mnemonic": "ISAIAH SHOWS GOD JUDGING SINS YET PROMISING SERVANT COMFORT AND NEW CREATIONS",
+            "mnemonic": "ANNOUNCES GOD'S JUDGMENT AND SALVATION THROUGH THE SUFFERING SERVANT MESSIAH",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -3100,7 +3105,7 @@
             }
         },
         "JER": {
-            "mnemonic": "JEREMIAH WARNS, JUDAH WEEPS, YET PROMISES NEW LASTING COVENANT",
+            "mnemonic": "BOLDLY WARNS OF BABYLONIAN EXILE BUT FORETELLS A NEW COVENANT",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -3313,7 +3318,7 @@
             }
         },
         "LAM": {
-            "mnemonic": "CRIES",
+            "mnemonic": "OH GOD",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -3338,7 +3343,7 @@
             }
         },
         "EZK": {
-            "mnemonic": "EZEKIEL SEES GODS GLORY JUDGING YET PROMISING NEW HEARTS",
+            "mnemonic": "USES VISIONS OF JUDGMENT, RESTORATION, AND ANOTHER TEMPLE",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -3535,7 +3540,7 @@
             }
         },
         "DAN": {
-            "mnemonic": "STANDING FIRM",
+            "mnemonic": "TRIBULATIONS",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -3588,7 +3593,7 @@
             }
         },
         "HOS": {
-            "mnemonic": "LOYAL LOVE AGAIN",
+            "mnemonic": "EXAMPLE OF GRACE",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -3649,7 +3654,7 @@
             }
         },
         "JOL": {
-            "mnemonic": "DAY",
+            "mnemonic": "VOW",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -3666,7 +3671,7 @@
             }
         },
         "AMO": {
-            "mnemonic": "PLUMBLINE",
+            "mnemonic": "EQUAL CARE",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -3707,7 +3712,7 @@
             }
         },
         "OBA": {
-            "mnemonic": "EDOM FALLS ISRAEL RAISED",
+            "mnemonic": "RETRIBUTION PROPHESIED",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -3780,7 +3785,7 @@
             }
         },
         "JON": {
-            "mnemonic": "USED",
+            "mnemonic": "YE GO",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -3801,7 +3806,7 @@
             }
         },
         "MIC": {
-            "mnemonic": "JUSTICE",
+            "mnemonic": "OBEY GOD",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -3834,7 +3839,7 @@
             }
         },
         "NAM": {
-            "mnemonic": "WOE",
+            "mnemonic": "NOW",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -3851,7 +3856,7 @@
             }
         },
         "HAB": {
-            "mnemonic": "YET",
+            "mnemonic": "EAR",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -3868,7 +3873,7 @@
             }
         },
         "ZEP": {
-            "mnemonic": "JOY",
+            "mnemonic": "SIN",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -3885,7 +3890,7 @@
             }
         },
         "HAG": {
-            "mnemonic": "UP",
+            "mnemonic": "SO",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -3898,7 +3903,7 @@
             }
         },
         "ZEC": {
-            "mnemonic": "ZION KING COMING",
+            "mnemonic": "INCOMING CHRIST",
             "chapters": {
                 "1": {
                     "mnemonic": "",
