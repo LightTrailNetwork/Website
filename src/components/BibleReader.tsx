@@ -1891,7 +1891,8 @@ export default function BibleReader() {
                                 left: window.innerWidth < 640
                                     ? Math.max(160, Math.min(activeFootnote.x, window.innerWidth - 160))
                                     : activeFootnote.x,
-                                top: activeFootnote.y + 20, // Position slightly below
+                                top: activeFootnote.y > window.innerHeight - 250 ? 'auto' : activeFootnote.y + 20,
+                                bottom: activeFootnote.y > window.innerHeight - 250 ? (window.innerHeight - activeFootnote.y) + 10 : 'auto',
                                 transform: 'translateX(-50%)'
                             }}
                             onMouseEnter={() => {
@@ -1927,8 +1928,9 @@ export default function BibleReader() {
                         </div>
                     </>,
                     document.body
-                )}
-            </div>
+                )
+                }
+            </div >
 
             {/* Reference Popover */}
             {
