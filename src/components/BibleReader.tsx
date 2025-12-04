@@ -1937,7 +1937,12 @@ export default function BibleReader() {
                 refPopover && createPortal(
                     <div
                         className="fixed z-[60] bg-popover text-popover-foreground px-3 py-2 rounded-lg shadow-lg border border-border animate-in fade-in zoom-in-95 duration-200 max-w-xs pointer-events-auto"
-                        style={{ top: refPopover.y, left: refPopover.x, transform: 'translateX(-50%)' }}
+                        style={{
+                            top: refPopover.y > window.innerHeight - 250 ? 'auto' : refPopover.y,
+                            bottom: refPopover.y > window.innerHeight - 250 ? (window.innerHeight - refPopover.y) + 10 : 'auto',
+                            left: refPopover.x,
+                            transform: 'translateX(-50%)'
+                        }}
                         onMouseEnter={() => {
                             if (closeTimeout) {
                                 clearTimeout(closeTimeout);
