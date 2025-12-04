@@ -190,7 +190,7 @@ export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigat
                         </div>
 
                         {!isSearchOpen && (
-                            <div className="flex flex-wrap gap-2 pb-1 animate-fade-in">
+                            <div className="flex flex-wrap gap-2 pb-1 animate-fade-in justify-center">
                                 {(['ALL', 'ALPHA', 'OT', 'NT'] as const).map(filter => (
                                     <button
                                         key={filter}
