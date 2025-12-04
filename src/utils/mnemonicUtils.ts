@@ -14,6 +14,7 @@ interface MnemonicData {
     books: {
         [key: string]: {
             mnemonic: string;
+            mnemonicHint?: string;
             chapters: {
                 [key: string]: {
                     mnemonic: string;
@@ -31,6 +32,7 @@ const data = bibleMnemonics as unknown as MnemonicData;
 export interface BookMnemonicResult {
     text: string;
     highlightIndex: number; // 0-based index of the character to highlight
+    hint?: string;
 }
 
 export function getBookMnemonic(bookId: string, chapter: number): BookMnemonicResult | null {
@@ -55,10 +57,16 @@ export function getBookMnemonic(bookId: string, chapter: number): BookMnemonicRe
         }
     }
 
-    return {
+    const result: BookMnemonicResult = {
         text: bookData.mnemonic,
         highlightIndex
     };
+
+    if (bookData.mnemonicHint) {
+        result.hint = bookData.mnemonicHint;
+    }
+
+    return result;
 }
 
 export function getChapterMnemonic(bookId: string, chapter: number): string | null {

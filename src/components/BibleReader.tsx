@@ -1314,6 +1314,15 @@ export default function BibleReader() {
                                                     {char}
                                                 </span>
                                             ))}
+                                            {bMnemonic.hint && (
+                                                <span className="ml-2 normal-case tracking-normal italic text-muted-foreground/50">
+                                                    {bMnemonic.hint.split('**').map((part, i) => (
+                                                        <span key={i} className={i % 2 === 1 ? "font-bold text-muted-foreground/70" : ""}>
+                                                            {part}
+                                                        </span>
+                                                    ))}
+                                                </span>
+                                            )}
                                         </div>
                                     </div>
                                 );

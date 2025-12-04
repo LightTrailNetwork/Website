@@ -6,6 +6,9 @@
     "testaments": {
         "OT": {
             "mnemonic": "FIRST IS THE STORY OF TRUTH ABOUT EVERYONE'S SIN"
+        },
+        "NT": {
+            "mnemonic": "JESUS SENT HIS SPIRIT TO ALL OF US"
         }
     },
     "books": {
@@ -4102,7 +4105,7 @@
             }
         },
         "MRK": {
-            "mnemonic": "RAPID SERVANT KING",
+            "mnemonic": "ESSENTIAL ACCOUNT",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -4171,7 +4174,7 @@
             }
         },
         "LUK": {
-            "mnemonic": "ORDERLY LIFE OF JESUS CHRIST",
+            "mnemonic": "SYSTEMATIC ACCOUNT OF JESUS",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -4272,7 +4275,7 @@
             }
         },
         "JHN": {
-            "mnemonic": "BELOVED WITNESS OF JESUS",
+            "mnemonic": "UNIQUE GOSPEL ABOUT LOVE",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -7524,7 +7527,7 @@
             }
         },
         "ROM": {
-            "mnemonic": "JUSTIFYING GOSPEL",
+            "mnemonic": "SINNERS JUSTIFIED",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -7593,7 +7596,7 @@
             }
         },
         "1CO": {
-            "mnemonic": "LOVE BUILDS CHURCH",
+            "mnemonic": "EVERYTHING IN LOVE",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -7662,7 +7665,7 @@
             }
         },
         "2CO": {
-            "mnemonic": "WEAKNESS POWER",
+            "mnemonic": "NOTHING TO GAIN",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -7719,7 +7722,7 @@
             }
         },
         "GAL": {
-            "mnemonic": "SPIRIT",
+            "mnemonic": "THE LAW",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -7748,7 +7751,7 @@
             }
         },
         "EPH": {
-            "mnemonic": "UNITED",
+            "mnemonic": "HELMET",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -7777,7 +7780,7 @@
             }
         },
         "PHP": {
-            "mnemonic": "GAIN",
+            "mnemonic": "I CAN",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -7798,7 +7801,7 @@
             }
         },
         "COL": {
-            "mnemonic": "LORD",
+            "mnemonic": "SELF",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -7844,7 +7847,7 @@
             }
         },
         "2TH": {
-            "mnemonic": "DAY",
+            "mnemonic": "PAY",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -7911,7 +7914,8 @@
             }
         },
         "TIT": {
-            "mnemonic": "NEW",
+            "mnemonic": "IGW",
+            "mnemonicHint": "(**I**nstructions for **G**ood **W**orks)",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -7928,7 +7932,7 @@
             }
         },
         "PHM": {
-            "mnemonic": "RECEIVE ONESIMUS AS A BROTHER",
+            "mnemonic": "TAKE BACK ONESIMUS AS BROTHER",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -8013,7 +8017,7 @@
             }
         },
         "HEB": {
-            "mnemonic": "BOOK OF HEBREWS",
+            "mnemonic": "THE HIGH PRIEST",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -8070,7 +8074,7 @@
             }
         },
         "JAS": {
-            "mnemonic": "JAMES",
+            "mnemonic": "OVERT",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -8095,7 +8099,7 @@
             }
         },
         "1PE": {
-            "mnemonic": "PETER",
+            "mnemonic": "A CALL",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -8120,7 +8124,7 @@
             }
         },
         "2PE": {
-            "mnemonic": "TWO",
+            "mnemonic": "LOT",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -8162,7 +8166,7 @@
             }
         },
         "2JN": {
-            "mnemonic": "WALKING IN LOVE",
+            "mnemonic": "OVERJOYED BY IT",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -8211,7 +8215,7 @@
             }
         },
         "3JN": {
-            "mnemonic": "LOVING THE CHURCH",
+            "mnemonic": "FAITHFUL WORKER",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -8351,7 +8355,7 @@
             }
         },
         "REV": {
-            "mnemonic": "REVELATION, THE END OF TIME",
+            "mnemonic": "SECOND COMING OF JUDGMENT",
             "chapters": {
                 "1": {
                     "mnemonic": "",
