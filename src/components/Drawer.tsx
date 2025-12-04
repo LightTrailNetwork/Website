@@ -12,7 +12,7 @@ export default function Drawer({ isOpen, onClose }: DrawerProps) {
   const menuItems = [
     { path: '/', label: 'Today', subtitle: 'Action Items', icon: Home },
     { path: '/schedule', label: 'Schedule', subtitle: 'Quarterly Plan', icon: LayoutGrid },
-    { path: '/table', label: 'T.A.B.L.E.', subtitle: 'Quarter Curriculum', icon: Table },
+    { path: '/table', label: 'Curriculum', subtitle: 'Quarterly Content', icon: Table },
     { path: '/tradition', label: 'Tradition', subtitle: 'Creed & Pyramid', icon: Scroll },
     { path: '/bible', label: 'Bible & Memory', subtitle: 'Read & Memorize', icon: Book }
   ];
