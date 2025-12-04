@@ -112,3 +112,26 @@ export function getMnemonicHighlightIndex(text: string, targetCount: number): nu
     }
     return -1;
 }
+
+export function getTestamentMnemonic(testament: 'OT' | 'NT'): string | null {
+    if (!data.testaments) return null;
+    return data.testaments[testament]?.mnemonic || null;
+}
+
+export function getBookMnemonicText(bookId: string): string | null {
+    const bookData = data.books[bookId.toUpperCase()];
+    if (!bookData) return null;
+
+    if (bookData.mnemonic) {
+        return bookData.mnemonic;
+    }
+
+    // Fallback for single-chapter books (or if main mnemonic is missing but chapter 1 exists)
+    // Check if it has exactly one chapter or if we should just default to chapter 1
+    const chapterKeys = Object.keys(bookData.chapters);
+    if (chapterKeys.length === 1 && chapterKeys[0] === '1') {
+        return bookData.chapters['1']?.mnemonic;
+    }
+
+    return null;
+}

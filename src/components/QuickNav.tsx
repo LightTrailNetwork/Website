@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
-import { Search, ChevronLeft, X, BookOpen } from 'lucide-react';
+import { Search, ChevronLeft, X, BookOpen, Book, Brain } from 'lucide-react';
 import type { BibleBook } from '../data/bibleApi';
+import { getTestamentMnemonic, getBookMnemonicText } from '../utils/mnemonicUtils';
 
 interface QuickNavProps {
     isOpen: boolean;
@@ -17,6 +18,7 @@ export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigat
     const [bookFilter, setBookFilter] = useState<'ALL' | 'OT' | 'NT' | 'ALPHA'>('ALL');
     const [bookSearchQuery, setBookSearchQuery] = useState('');
     const [isSearchOpen, setIsSearchOpen] = useState(false);
+    const [activeTab, setActiveTab] = useState<'books' | 'mnemonics'>('books');
     const inputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
@@ -98,15 +100,34 @@ export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigat
         <div className="fixed inset-0 z-[70] bg-background/80 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in">
             <div className="bg-card border border-border rounded-xl shadow-2xl w-full max-w-4xl flex flex-col max-h-[85vh]">
                 <div className="p-4 border-b border-border flex items-center justify-between shrink-0">
-                    <h3 className="font-bold text-lg">
-                        {navStep === 'books' ? 'Select Book' : `Select Chapter (${selectedNavBook?.name})`}
-                    </h3>
+                    <div className="flex items-center gap-2 bg-secondary/10 p-1 rounded-lg">
+                        <button
+                            onClick={() => setActiveTab('books')}
+                            className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all flex items-center gap-2 ${activeTab === 'books'
+                                ? 'bg-background shadow-sm text-foreground'
+                                : 'text-muted-foreground hover:text-foreground'
+                                }`}
+                        >
+                            <Book className="w-4 h-4" />
+                            Books
+                        </button>
+                        <button
+                            onClick={() => setActiveTab('mnemonics')}
+                            className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all flex items-center gap-2 ${activeTab === 'mnemonics'
+                                ? 'bg-background shadow-sm text-foreground'
+                                : 'text-muted-foreground hover:text-foreground'
+                                }`}
+                        >
+                            <Brain className="w-4 h-4" />
+                            Mnemonics
+                        </button>
+                    </div>
                     <button onClick={handleClose} className="p-2 hover:bg-accent/10 rounded-full">
                         <X className="w-6 h-6" />
                     </button>
                 </div>
 
-                {navStep === 'books' && (
+                {navStep === 'books' && activeTab === 'books' && (
                     <div className="p-4 border-b border-border space-y-3 shrink-0">
                         <div className="flex items-center gap-3 min-h-[40px]">
                             {isSearchOpen ? (
@@ -188,74 +209,186 @@ export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigat
                     </div>
                 )}
 
-                <div className="overflow-y-auto p-4 flex flex-col gap-3">
-                    {navStep === 'chapters' && (
-                        <button
-                            onClick={() => setNavStep('books')}
-                            className="w-full p-3 mb-2 bg-secondary/10 hover:bg-secondary/20 text-foreground font-medium rounded-xl transition-colors flex items-center justify-center gap-2"
-                        >
-                            <ChevronLeft className="w-4 h-4" /> Back to Books
-                        </button>
-                    )}
-                    {navStep === 'chapters' && selectedNavBook && onNavigateToBookOverview && (
-                        <button
-                            onClick={() => {
-                                onNavigateToBookOverview(selectedNavBook.id);
-                                handleClose();
-                            }}
-                            className="w-full p-3 mb-2 bg-primary/5 hover:bg-primary/10 text-primary font-semibold rounded-xl transition-colors flex items-center justify-center gap-2"
-                        >
-                            <BookOpen className="w-4 h-4" />
-                            View {selectedNavBook.name} Overview
-                        </button>
-                    )}
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-                        {navStep === 'books' ? (
-                            filteredBooks.map(book => (
-                                <div
-                                    key={book.id}
-                                    id={`book-item-${book.id}`}
-                                    className={`flex items-stretch rounded-lg border bg-card overflow-hidden transition-colors h-[50px] ${initialBook?.id === book.id
-                                        ? 'border-primary ring-1 ring-primary shadow-sm'
-                                        : 'border-border hover:border-primary/50'
-                                        }`}
-                                >
-                                    <button
-                                        onClick={() => handleBookSelect(book)}
-                                        className="flex-1 px-3 text-sm font-medium text-left hover:bg-secondary/10 transition-colors truncate flex items-center"
-                                        title={book.name}
-                                    >
-                                        {book.name}
-                                    </button>
-                                    <div className="w-[1px] bg-border" />
-                                    <button
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            onNavigate(book.id, 1);
-                                            handleClose();
-                                        }}
-                                        className="w-[40px] flex items-center justify-center text-xs font-bold text-muted-foreground hover:text-primary hover:bg-secondary/10 transition-colors"
-                                        title={`Go to ${book.name} Chapter 1`}
-                                    >
-                                        1
-                                    </button>
-                                </div>
-                            ))
-                        ) : (
-                            <div className="col-span-full grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 gap-2">
-                                {Array.from({ length: selectedNavBook?.numberOfChapters || 0 }, (_, i) => i + 1).map(chap => (
-                                    <button
-                                        key={chap}
-                                        onClick={() => handleChapterSelect(chap)}
-                                        className="p-2 text-sm font-bold bg-primary/10 hover:bg-primary/20 rounded-lg transition-colors text-center min-h-[40px] flex items-center justify-center"
-                                    >
-                                        {chap}
-                                    </button>
-                                ))}
-                            </div>
+                {activeTab === 'books' && (
+                    <div className="overflow-y-auto p-4 flex flex-col gap-3">
+                        {navStep === 'chapters' && (
+                            <button
+                                onClick={() => setNavStep('books')}
+                                className="w-full p-3 mb-2 bg-secondary/10 hover:bg-secondary/20 text-foreground font-medium rounded-xl transition-colors flex items-center justify-center gap-2"
+                            >
+                                <ChevronLeft className="w-4 h-4" /> Back to Books
+                            </button>
                         )}
+                        {navStep === 'chapters' && selectedNavBook && onNavigateToBookOverview && (
+                            <button
+                                onClick={() => {
+                                    onNavigateToBookOverview(selectedNavBook.id);
+                                    handleClose();
+                                }}
+                                className="w-full p-3 mb-2 bg-primary/5 hover:bg-primary/10 text-primary font-semibold rounded-xl transition-colors flex items-center justify-center gap-2"
+                            >
+                                <BookOpen className="w-4 h-4" />
+                                View {selectedNavBook.name} Overview
+                            </button>
+                        )}
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                            {navStep === 'books' ? (
+                                filteredBooks.map(book => (
+                                    <div
+                                        key={book.id}
+                                        id={`book-item-${book.id}`}
+                                        className={`flex items-stretch rounded-lg border bg-card overflow-hidden transition-colors h-[50px] ${initialBook?.id === book.id
+                                            ? 'border-primary ring-1 ring-primary shadow-sm'
+                                            : 'border-border hover:border-primary/50'
+                                            }`}
+                                    >
+                                        <button
+                                            onClick={() => handleBookSelect(book)}
+                                            className="flex-1 px-3 text-sm font-medium text-left hover:bg-secondary/10 transition-colors truncate flex items-center"
+                                            title={book.name}
+                                        >
+                                            {book.name}
+                                        </button>
+                                        <div className="w-[1px] bg-border" />
+                                        <button
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                onNavigate(book.id, 1);
+                                                handleClose();
+                                            }}
+                                            className="w-[40px] flex items-center justify-center text-xs font-bold text-muted-foreground hover:text-primary hover:bg-secondary/10 transition-colors"
+                                            title={`Go to ${book.name} Chapter 1`}
+                                        >
+                                            1
+                                        </button>
+                                    </div>
+                                ))
+                            ) : (
+                                <div className="col-span-full grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 gap-2">
+                                    {Array.from({ length: selectedNavBook?.numberOfChapters || 0 }, (_, i) => i + 1).map(chap => (
+                                        <button
+                                            key={chap}
+                                            onClick={() => handleChapterSelect(chap)}
+                                            className="p-2 text-sm font-bold bg-primary/10 hover:bg-primary/20 rounded-lg transition-colors text-center min-h-[40px] flex items-center justify-center"
+                                        >
+                                            {chap}
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
                     </div>
-                </div>
+                )}
+
+                {activeTab === 'mnemonics' && (
+                    <div className="overflow-y-auto p-4 flex flex-col gap-8">
+                        {/* Old Testament Section */}
+                        <div className="space-y-4">
+                            <div className="bg-primary/5 rounded-xl p-4 border border-primary/10">
+                                <h4 className="text-xs font-bold uppercase tracking-wider text-primary mb-2">Old Testament</h4>
+                                <p className="text-lg font-medium text-foreground/90 leading-relaxed">
+                                    {getTestamentMnemonic('OT')}
+                                </p>
+                            </div>
+
+                            <div className="space-y-2">
+                                <h4 className="text-sm font-bold text-muted-foreground uppercase tracking-wider px-1">Old Testament Books</h4>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    {filteredBooks.filter(b => b.order < 40).map(book => {
+                                        const mnemonic = getBookMnemonicText(book.id);
+                                        return (
+                                            <div
+                                                key={book.id}
+                                                className="flex items-stretch rounded-lg border border-border bg-card overflow-hidden hover:border-primary/50 transition-colors min-h-[70px]"
+                                            >
+                                                <button
+                                                    onClick={() => {
+                                                        handleBookSelect(book);
+                                                        setActiveTab('books');
+                                                    }}
+                                                    className="flex-1 px-4 py-3 text-left hover:bg-secondary/10 transition-colors flex flex-col justify-center gap-1"
+                                                >
+                                                    <span className="font-bold text-sm">{book.name}</span>
+                                                    {mnemonic && (
+                                                        <span className="text-xs text-muted-foreground leading-snug line-clamp-2">
+                                                            <span className="font-bold text-primary">{mnemonic.charAt(0)}</span>
+                                                            {mnemonic.slice(1)}
+                                                        </span>
+                                                    )}
+                                                </button>
+                                                <div className="w-[1px] bg-border" />
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        onNavigate(book.id, 1);
+                                                        handleClose();
+                                                    }}
+                                                    className="w-[50px] flex items-center justify-center text-sm font-bold text-muted-foreground hover:text-primary hover:bg-secondary/10 transition-colors bg-secondary/5"
+                                                    title={`Go to ${book.name} Chapter 1`}
+                                                >
+                                                    1
+                                                </button>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* New Testament Section */}
+                        <div className="space-y-4">
+                            <div className="bg-primary/5 rounded-xl p-4 border border-primary/10">
+                                <h4 className="text-xs font-bold uppercase tracking-wider text-primary mb-2">New Testament</h4>
+                                <p className="text-lg font-medium text-foreground/90 leading-relaxed">
+                                    {getTestamentMnemonic('NT')}
+                                </p>
+                            </div>
+
+                            <div className="space-y-2">
+                                <h4 className="text-sm font-bold text-muted-foreground uppercase tracking-wider px-1">New Testament Books</h4>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    {filteredBooks.filter(b => b.order >= 40).map(book => {
+                                        const mnemonic = getBookMnemonicText(book.id);
+                                        return (
+                                            <div
+                                                key={book.id}
+                                                className="flex items-stretch rounded-lg border border-border bg-card overflow-hidden hover:border-primary/50 transition-colors min-h-[70px]"
+                                            >
+                                                <button
+                                                    onClick={() => {
+                                                        handleBookSelect(book);
+                                                        setActiveTab('books');
+                                                    }}
+                                                    className="flex-1 px-4 py-3 text-left hover:bg-secondary/10 transition-colors flex flex-col justify-center gap-1"
+                                                >
+                                                    <span className="font-bold text-sm">{book.name}</span>
+                                                    {mnemonic && (
+                                                        <span className="text-xs text-muted-foreground leading-snug line-clamp-2">
+                                                            <span className="font-bold text-primary">{mnemonic.charAt(0)}</span>
+                                                            {mnemonic.slice(1)}
+                                                        </span>
+                                                    )}
+                                                </button>
+                                                <div className="w-[1px] bg-border" />
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        onNavigate(book.id, 1);
+                                                        handleClose();
+                                                    }}
+                                                    className="w-[50px] flex items-center justify-center text-sm font-bold text-muted-foreground hover:text-primary hover:bg-secondary/10 transition-colors bg-secondary/5"
+                                                    title={`Go to ${book.name} Chapter 1`}
+                                                >
+                                                    1
+                                                </button>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );
