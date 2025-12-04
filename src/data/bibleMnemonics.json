@@ -3712,10 +3712,10 @@
             }
         },
         "OBA": {
-            "mnemonic": "RETRIBUTION PROPHESIED",
+            "mnemonic": "",
             "chapters": {
                 "1": {
-                    "mnemonic": "",
+                    "mnemonic": "RETRIBUTION PROPHESIED",
                     "verses": {
                         "1": {
                             "mnemonic": ""
