@@ -98,7 +98,7 @@ export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigat
 
     return (
         <div className="fixed inset-0 z-[70] bg-background/80 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in">
-            <div className="bg-card border border-border rounded-xl shadow-2xl w-full max-w-4xl flex flex-col max-h-[85vh]">
+            <div className="bg-card border border-border rounded-xl shadow-2xl w-full max-w-4xl flex flex-col max-h-[85vh] overflow-hidden">
                 <div className="p-4 border-b border-border flex items-center justify-between shrink-0">
                     <div className="flex items-center gap-2 bg-secondary/10 p-1 rounded-lg">
                         <button

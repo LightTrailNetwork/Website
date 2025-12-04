@@ -218,21 +218,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                     ) : (
                         <div className="p-4 space-y-4 animate-in slide-in-from-right duration-200">
 
-                            {/* MSB Toggle */}
-                            {selectedTranslation === 'BSB' && (
-                                <div className="flex items-center justify-between p-3 bg-secondary/5 rounded-lg border border-border">
-                                    <div className="flex flex-col">
-                                        <span className="text-sm font-medium">Compare with MSB</span>
-                                        <span className="text-[10px] text-muted-foreground">Show MSB alongside BSB</span>
-                                    </div>
-                                    <button
-                                        onClick={() => setShowMsb(!showMsb)}
-                                        className={`w-11 h-6 rounded-full transition-colors relative ${showMsb ? 'bg-primary' : 'bg-gray-300 dark:bg-gray-600'}`}
-                                    >
-                                        <div className={`w-4 h-4 bg-white rounded-full absolute top-1 transition-transform ${showMsb ? 'left-6' : 'left-1'}`} />
-                                    </button>
-                                </div>
-                            )}
+
 
                             {/* Search & Filter */}
                             <div className="space-y-3 sticky top-0 bg-card z-10 pb-2">

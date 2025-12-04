@@ -130,7 +130,7 @@ export function getBookMnemonicText(bookId: string): string | null {
     // Check if it has exactly one chapter or if we should just default to chapter 1
     const chapterKeys = Object.keys(bookData.chapters);
     if (chapterKeys.length === 1 && chapterKeys[0] === '1') {
-        return bookData.chapters['1']?.mnemonic;
+        return bookData.chapters['1']?.mnemonic ?? null;
     }
 
     return null;
