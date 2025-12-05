@@ -254,24 +254,26 @@ export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigat
                 {activeTab === 'books' && (
                     <div className="overflow-y-auto p-4 flex flex-col gap-3">
                         {navStep === 'chapters' && (
-                            <button
-                                onClick={() => setNavStep('books')}
-                                className="w-full p-3 mb-2 bg-secondary/10 hover:bg-secondary/20 text-foreground font-medium rounded-xl transition-colors flex items-center justify-center gap-2"
-                            >
-                                <ChevronLeft className="w-4 h-4" /> Back to Books
-                            </button>
-                        )}
-                        {navStep === 'chapters' && selectedNavBook && onNavigateToBookOverview && (
-                            <button
-                                onClick={() => {
-                                    onNavigateToBookOverview(selectedNavBook.id);
-                                    handleClose();
-                                }}
-                                className="w-full p-3 mb-2 bg-primary/5 hover:bg-primary/10 text-primary font-semibold rounded-xl transition-colors flex items-center justify-center gap-2"
-                            >
-                                <BookOpen className="w-4 h-4" />
-                                View {selectedNavBook.name} Overview
-                            </button>
+                            <div className="flex items-center justify-between mb-2 gap-2">
+                                <button
+                                    onClick={() => setNavStep('books')}
+                                    className="flex-1 p-2 bg-secondary/10 hover:bg-secondary/20 text-foreground text-sm font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
+                                >
+                                    <ChevronLeft className="w-4 h-4" /> Back
+                                </button>
+                                {selectedNavBook && onNavigateToBookOverview && (
+                                    <button
+                                        onClick={() => {
+                                            onNavigateToBookOverview(selectedNavBook.id);
+                                            handleClose();
+                                        }}
+                                        className="flex-1 p-2 bg-primary/5 hover:bg-primary/10 text-primary text-sm font-semibold rounded-lg transition-colors flex items-center justify-center gap-2"
+                                    >
+                                        <BookOpen className="w-4 h-4" />
+                                        Overview
+                                    </button>
+                                )}
+                            </div>
                         )}
                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
                             {navStep === 'books' ? (
@@ -285,9 +287,12 @@ export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigat
                                             }`}
                                     >
                                         <button
-                                            onClick={() => handleBookSelect(book)}
+                                            onClick={() => {
+                                                onNavigate(book.id, 1);
+                                                handleClose();
+                                            }}
                                             className="flex-1 px-3 text-sm font-medium text-left hover:bg-secondary/10 transition-colors truncate flex items-center"
-                                            title={book.name}
+                                            title={`Go to ${book.name} Chapter 1`}
                                         >
                                             {book.name}
                                         </button>
@@ -295,13 +300,17 @@ export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigat
                                         <button
                                             onClick={(e) => {
                                                 e.stopPropagation();
-                                                onNavigate(book.id, 1);
-                                                handleClose();
+                                                if (book.numberOfChapters === 1) {
+                                                    onNavigate(book.id, 1);
+                                                    handleClose();
+                                                } else {
+                                                    handleBookSelect(book);
+                                                }
                                             }}
                                             className="w-[40px] flex items-center justify-center text-xs font-bold text-muted-foreground hover:text-primary hover:bg-secondary/10 transition-colors"
-                                            title={`Go to ${book.name} Chapter 1`}
+                                            title={book.numberOfChapters === 1 ? `Go to ${book.name}` : `Select Chapter`}
                                         >
-                                            1
+                                            {book.numberOfChapters}
                                         </button>
                                     </div>
                                 ))

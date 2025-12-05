@@ -96,10 +96,22 @@ function BibleHome() {
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm animate-in fade-in duration-200" onClick={() => setSelectedBookForChapters(null)}>
                     <div className="bg-card border border-border rounded-xl shadow-lg max-w-2xl w-full max-h-[80vh] overflow-hidden flex flex-col animate-in zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
                         <div className="p-4 border-b border-border flex justify-between items-center bg-secondary/5">
-                            <h3 className="text-xl font-bold flex items-center gap-2">
-                                <Book className="w-5 h-5 text-primary" />
-                                {selectedBookForChapters.name}
-                            </h3>
+                            <div className="flex items-center gap-4">
+                                <h3 className="text-xl font-bold flex items-center gap-2">
+                                    <Book className="w-5 h-5 text-primary" />
+                                    {selectedBookForChapters.name}
+                                </h3>
+                                <button
+                                    onClick={() => {
+                                        navigate(`/bible/read/${selectedBookForChapters.name.replace(/\s+/g, '')}`);
+                                        setSelectedBookForChapters(null);
+                                    }}
+                                    className="text-xs flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors font-medium"
+                                >
+                                    <BookOpen className="w-3.5 h-3.5" />
+                                    Overview
+                                </button>
+                            </div>
                             <button
                                 onClick={() => setSelectedBookForChapters(null)}
                                 className="p-1 hover:bg-secondary/20 rounded-full transition-colors"
@@ -230,11 +242,15 @@ function BibleHome() {
                                             <button
                                                 onClick={(e) => {
                                                     e.stopPropagation();
-                                                    setSelectedBookForChapters(book);
+                                                    if (book.numberOfChapters === 1) {
+                                                        navigate(`/bible/read/${book.name.replace(/\s+/g, '')}/1`);
+                                                    } else {
+                                                        setSelectedBookForChapters(book);
+                                                    }
                                                 }}
                                                 className="text-xs text-muted-foreground hover:text-primary hover:underline decoration-primary/50 underline-offset-2 transition-all relative z-10"
                                             >
-                                                {book.numberOfChapters} Chapters
+                                                {book.numberOfChapters} {book.numberOfChapters === 1 ? 'Chapter' : 'Chapters'}
                                             </button>
                                         </div>
 
