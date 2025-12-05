@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { BookOpen, Info } from "lucide-react";
+import { BookOpen, Info, ZoomIn, ZoomOut, RotateCcw } from "lucide-react";
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import PyramidSVG from "../components/PyramidSVG";
 import PassageList from "../components/PassageList";
 import passagesData from "../data/pyramidPassages.json";
@@ -36,13 +37,50 @@ export default function Tradition() {
               <BookOpen className="w-5 h-5 text-primary" />
               The Passage Pyramid
             </h2>
-            <div className="bg-gradient-to-br from-primary/5 to-secondary/5 rounded-xl p-4">
-              <PyramidSVG
-                selectedLetter={selectedLetter}
-                hoveredLetter={hoveredLetter}
-                onLetterClick={handleLetterClick}
-                onLetterHover={handleLetterHover}
-              />
+            <div className="bg-gradient-to-br from-primary/5 to-secondary/5 rounded-xl p-4 relative overflow-hidden group">
+              <TransformWrapper
+                initialScale={1}
+                minScale={0.5}
+                maxScale={4}
+                centerOnInit={true}
+                wheel={{ step: 0.1 }}
+              >
+                {({ zoomIn, zoomOut, resetTransform }) => (
+                  <>
+                    <div className="absolute top-4 right-4 flex flex-col gap-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                      <button
+                        onClick={() => zoomIn()}
+                        className="p-2 bg-background/80 backdrop-blur-sm border border-border rounded-lg shadow-sm hover:bg-accent hover:text-accent-foreground transition-colors"
+                        title="Zoom In"
+                      >
+                        <ZoomIn className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => zoomOut()}
+                        className="p-2 bg-background/80 backdrop-blur-sm border border-border rounded-lg shadow-sm hover:bg-accent hover:text-accent-foreground transition-colors"
+                        title="Zoom Out"
+                      >
+                        <ZoomOut className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => resetTransform()}
+                        className="p-2 bg-background/80 backdrop-blur-sm border border-border rounded-lg shadow-sm hover:bg-accent hover:text-accent-foreground transition-colors"
+                        title="Reset View"
+                      >
+                        <RotateCcw className="w-4 h-4" />
+                      </button>
+                    </div>
+                    <TransformComponent wrapperClass="!w-full !h-full" contentClass="!w-full !h-full flex items-center justify-center">
+                      <PyramidSVG
+                        selectedLetter={selectedLetter}
+                        hoveredLetter={hoveredLetter}
+                        onLetterClick={handleLetterClick}
+                        onLetterHover={handleLetterHover}
+                      />
+                    </TransformComponent>
+                  </>
+                )}
+              </TransformWrapper>
             </div>
           </div>
 
