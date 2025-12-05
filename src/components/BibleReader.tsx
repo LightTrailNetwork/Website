@@ -604,10 +604,10 @@ export default function BibleReader() {
             if (element) {
                 element.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 // Highlight effect
-                element.classList.add('bg-primary/20');
-                setTimeout(() => element.classList.remove('bg-primary/20'), 2000);
+                element.classList.add('bg-primary/20', 'ring-2', 'ring-primary', 'transition-all', 'duration-500');
+                setTimeout(() => element.classList.remove('bg-primary/20', 'ring-2', 'ring-primary'), 2000);
             }
-        }, 300);
+        }, 500);
     };
 
     const openProfile = async (profileId: string) => {
