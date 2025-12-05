@@ -247,13 +247,19 @@ export default function PyramidSVG({
     ];
   };
 
+  interface TinyPyramid {
+    vertices: [Point, Point, Point];
+    letters: [string, string, string];
+    letterPositions: [Point, Point, Point];
+  }
+
   // Helper to create 3 tiny pyramids within a larger pyramid with margin
   const createTinyPyramidsInParent = (
     parentA: Point,
     parentB: Point,
     parentC: Point,
     letters: string[]
-  ) => {
+  ): TinyPyramid[] => {
     const centroidX = (parentA.x + parentB.x + parentC.x) / 3;
     const centroidY = (parentA.y + parentB.y + parentC.y) / 3;
 
@@ -280,9 +286,9 @@ export default function PyramidSVG({
       y: (shrunkB.y + shrunkC.y) / 2,
     };
 
-    const topTri = [shrunkA, midAB, midAC];
-    const leftTri = [midAB, shrunkB, midBC];
-    const rightTri = [midAC, midBC, shrunkC];
+    const topTri: [Point, Point, Point] = [shrunkA, midAB, midAC];
+    const leftTri: [Point, Point, Point] = [midAB, shrunkB, midBC];
+    const rightTri: [Point, Point, Point] = [midAC, midBC, shrunkC];
 
     return [topTri, leftTri, rightTri].map((tri, idx) => {
       const [p0, p1, p2] = tri;
@@ -305,7 +311,7 @@ export default function PyramidSVG({
       }
 
       // Apply offset to all vertices
-      const offsetVertices = [
+      const offsetVertices: [Point, Point, Point] = [
         { x: p0.x + offsetX, y: p0.y + offsetY },
         { x: p1.x + offsetX, y: p1.y + offsetY },
         { x: p2.x + offsetX, y: p2.y + offsetY },
@@ -316,7 +322,7 @@ export default function PyramidSVG({
         x: (offsetVertices[0].x + offsetVertices[1].x + offsetVertices[2].x) / 3,
         y: (offsetVertices[0].y + offsetVertices[1].y + offsetVertices[2].y) / 3,
       };
-      const letterPositions = [
+      const letterPositions: [Point, Point, Point] = [
         { x: center.x, y: offsetVertices[0].y + (center.y - offsetVertices[0].y) * 0.6 }, // Top letter, moved down from vertex
         {
           x: offsetVertices[1].x + (center.x - offsetVertices[1].x) * 0.6,

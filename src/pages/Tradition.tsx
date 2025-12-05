@@ -21,7 +21,7 @@ export default function Tradition() {
       {/* Introduction Section */}
       <div className="text-center space-y-4">
         <div className="max-w-3xl mx-auto">
-          <p className="text-lg text-muted-foreground leading-relaxed font-light">
+          <p className="text-lg text-muted-foreground leading-relaxed font-light whitespace-pre-line">
             {passagesData.headline}
           </p>
         </div>
