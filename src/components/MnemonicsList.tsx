@@ -154,101 +154,119 @@ export default function MnemonicsList({ books, onNavigate, onChapterSelect, acti
     };
 
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Old Testament */}
-            <div className="space-y-6">
-                <div className="bg-primary/5 rounded-xl p-6 border border-primary/10">
-                    <h3 className="text-sm font-bold uppercase tracking-wider text-primary mb-3">Old Testament</h3>
-                    <p className="text-xl font-medium text-foreground/90 leading-relaxed">
-                        {getTestamentMnemonic('OT')}
-                    </p>
-                </div>
-
-                <div className="flex justify-end">
-                    <button
-                        onClick={() => toggleAllSections(OT_GROUPS, !areAllSectionsCollapsed(OT_GROUPS))}
-                        className="text-xs flex items-center gap-1 text-primary hover:text-primary/80 transition-colors font-medium"
-                    >
-                        {areAllSectionsCollapsed(OT_GROUPS) ? (
-                            <>Expand All <ChevronsDown className="w-3 h-3" /></>
-                        ) : (
-                            <>Collapse All <ChevronsUp className="w-3 h-3" /></>
-                        )}
-                    </button>
-                </div>
-
-                {OT_GROUPS.map(group => {
-                    const isCollapsed = collapsedSections[group.name];
-                    return (
-                        <div key={group.name} className="space-y-3">
-                            <button
-                                onClick={() => toggleSection(group.name)}
-                                className="w-full flex items-center gap-3 group select-none p-2 hover:bg-secondary/10 rounded-lg transition-colors"
-                            >
-                                <div className="p-1 rounded-md bg-secondary/20 text-primary">
-                                    {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                                </div>
-                                <h4 className="text-sm font-bold text-primary uppercase tracking-wider">{group.name}</h4>
-                                <div className="h-[1px] flex-1 bg-border/50" />
-                                <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest">{group.label}</span>
-                            </button>
-
-                            {!isCollapsed && (
-                                <div className="pl-2 animate-in slide-in-from-top-2 duration-200">
-                                    {books.filter(b => b.order >= group.start && b.order <= group.end).map(renderBookRow)}
-                                </div>
-                            )}
-                        </div>
-                    );
-                })}
+        <div className="relative">
+            {/* Sticky Navigation */}
+            <div className="sticky top-0 z-20 pb-4 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 flex justify-center gap-3 border-b border-border/40 mb-6 pt-2">
+                <button
+                    onClick={() => document.getElementById('ot-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+                    className="px-4 py-1.5 rounded-full text-xs font-bold bg-secondary/10 hover:bg-secondary/20 text-primary transition-colors border border-primary/20"
+                >
+                    Old Testament
+                </button>
+                <button
+                    onClick={() => document.getElementById('nt-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+                    className="px-4 py-1.5 rounded-full text-xs font-bold bg-secondary/10 hover:bg-secondary/20 text-primary transition-colors border border-primary/20"
+                >
+                    New Testament
+                </button>
             </div>
 
-            {/* New Testament */}
-            <div className="space-y-6">
-                <div className="bg-primary/5 rounded-xl p-6 border border-primary/10">
-                    <h3 className="text-sm font-bold uppercase tracking-wider text-primary mb-3">New Testament</h3>
-                    <p className="text-xl font-medium text-foreground/90 leading-relaxed">
-                        {getTestamentMnemonic('NT')}
-                    </p>
-                </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* Old Testament */}
+                <div id="ot-section" className="space-y-6 scroll-mt-24">
+                    <div className="bg-primary/5 rounded-xl p-6 border border-primary/10">
+                        <h3 className="text-sm font-bold uppercase tracking-wider text-primary mb-3">Old Testament</h3>
+                        <p className="text-xl font-medium text-foreground/90 leading-relaxed">
+                            {getTestamentMnemonic('OT')}
+                        </p>
+                    </div>
 
-                <div className="flex justify-end">
-                    <button
-                        onClick={() => toggleAllSections(NT_GROUPS, !areAllSectionsCollapsed(NT_GROUPS))}
-                        className="text-xs flex items-center gap-1 text-primary hover:text-primary/80 transition-colors font-medium"
-                    >
-                        {areAllSectionsCollapsed(NT_GROUPS) ? (
-                            <>Expand All <ChevronsDown className="w-3 h-3" /></>
-                        ) : (
-                            <>Collapse All <ChevronsUp className="w-3 h-3" /></>
-                        )}
-                    </button>
-                </div>
-
-                {NT_GROUPS.map(group => {
-                    const isCollapsed = collapsedSections[group.name];
-                    return (
-                        <div key={group.name} className="space-y-3">
-                            <button
-                                onClick={() => toggleSection(group.name)}
-                                className="w-full flex items-center gap-3 group select-none p-2 hover:bg-secondary/10 rounded-lg transition-colors"
-                            >
-                                <div className="p-1 rounded-md bg-secondary/20 text-primary">
-                                    {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                                </div>
-                                <h4 className="text-sm font-bold text-primary uppercase tracking-wider">{group.name}</h4>
-                                <div className="h-[1px] flex-1 bg-border/50" />
-                                <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest">{group.label}</span>
-                            </button>
-
-                            {!isCollapsed && (
-                                <div className="pl-2 animate-in slide-in-from-top-2 duration-200">
-                                    {books.filter(b => b.order >= group.start && b.order <= group.end).map(renderBookRow)}
-                                </div>
+                    <div className="flex justify-end">
+                        <button
+                            onClick={() => toggleAllSections(OT_GROUPS, !areAllSectionsCollapsed(OT_GROUPS))}
+                            className="text-xs flex items-center gap-1 text-primary hover:text-primary/80 transition-colors font-medium"
+                        >
+                            {areAllSectionsCollapsed(OT_GROUPS) ? (
+                                <>Expand All <ChevronsDown className="w-3 h-3" /></>
+                            ) : (
+                                <>Collapse All <ChevronsUp className="w-3 h-3" /></>
                             )}
-                        </div>
-                    );
-                })}
+                        </button>
+                    </div>
+
+                    {OT_GROUPS.map(group => {
+                        const isCollapsed = collapsedSections[group.name];
+                        return (
+                            <div key={group.name} className="space-y-3">
+                                <button
+                                    onClick={() => toggleSection(group.name)}
+                                    className="w-full flex items-center gap-3 group select-none p-2 hover:bg-secondary/10 rounded-lg transition-colors"
+                                >
+                                    <div className="p-1 rounded-md bg-secondary/20 text-primary">
+                                        {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                                    </div>
+                                    <h4 className="text-sm font-bold text-primary uppercase tracking-wider">{group.name}</h4>
+                                    <div className="h-[1px] flex-1 bg-border/50" />
+                                    <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest">{group.label}</span>
+                                </button>
+
+                                {!isCollapsed && (
+                                    <div className="pl-2 animate-in slide-in-from-top-2 duration-200">
+                                        {books.filter(b => b.order >= group.start && b.order <= group.end).map(renderBookRow)}
+                                    </div>
+                                )}
+                            </div>
+                        );
+                    })}
+                </div>
+
+                {/* New Testament */}
+                <div id="nt-section" className="space-y-6 scroll-mt-24">
+                    <div className="bg-primary/5 rounded-xl p-6 border border-primary/10">
+                        <h3 className="text-sm font-bold uppercase tracking-wider text-primary mb-3">New Testament</h3>
+                        <p className="text-xl font-medium text-foreground/90 leading-relaxed">
+                            {getTestamentMnemonic('NT')}
+                        </p>
+                    </div>
+
+                    <div className="flex justify-end">
+                        <button
+                            onClick={() => toggleAllSections(NT_GROUPS, !areAllSectionsCollapsed(NT_GROUPS))}
+                            className="text-xs flex items-center gap-1 text-primary hover:text-primary/80 transition-colors font-medium"
+                        >
+                            {areAllSectionsCollapsed(NT_GROUPS) ? (
+                                <>Expand All <ChevronsDown className="w-3 h-3" /></>
+                            ) : (
+                                <>Collapse All <ChevronsUp className="w-3 h-3" /></>
+                            )}
+                        </button>
+                    </div>
+
+                    {NT_GROUPS.map(group => {
+                        const isCollapsed = collapsedSections[group.name];
+                        return (
+                            <div key={group.name} className="space-y-3">
+                                <button
+                                    onClick={() => toggleSection(group.name)}
+                                    className="w-full flex items-center gap-3 group select-none p-2 hover:bg-secondary/10 rounded-lg transition-colors"
+                                >
+                                    <div className="p-1 rounded-md bg-secondary/20 text-primary">
+                                        {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                                    </div>
+                                    <h4 className="text-sm font-bold text-primary uppercase tracking-wider">{group.name}</h4>
+                                    <div className="h-[1px] flex-1 bg-border/50" />
+                                    <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest">{group.label}</span>
+                                </button>
+
+                                {!isCollapsed && (
+                                    <div className="pl-2 animate-in slide-in-from-top-2 duration-200">
+                                        {books.filter(b => b.order >= group.start && b.order <= group.end).map(renderBookRow)}
+                                    </div>
+                                )}
+                            </div>
+                        );
+                    })}
+                </div>
             </div>
         </div>
     );
