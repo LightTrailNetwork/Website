@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { BookOpen, Brain, ChevronRight, Search, Book, ChevronDown, ChevronsDown, ChevronsUp, X } from 'lucide-react';
+import { BookOpen, Brain, ChevronRight, Search, Book, X } from 'lucide-react';
 import { Link, Routes, Route, useNavigate } from 'react-router-dom';
 import BibleReader from '../components/BibleReader';
 import BibleBookSummary from '../components/BibleBookSummary';
@@ -8,7 +8,7 @@ import HierarchicalMemory from '../components/HierarchicalMemory';
 import { GraceView, CrownPathView, John316View, GatherAroundView } from '../components/MemoryTools';
 import { getBooks } from '../data/bibleApi';
 import type { BibleBook } from '../data/bibleApi';
-import { getTestamentMnemonic, getBookMnemonicText } from '../utils/mnemonicUtils';
+import MnemonicsList from '../components/MnemonicsList';
 
 function BibleHome() {
     const navigate = useNavigate();
@@ -16,7 +16,6 @@ function BibleHome() {
     const [activeTab, setActiveTab] = useState<'books' | 'mnemonics' | 'tools'>('books');
     const [bookSearchQuery, setBookSearchQuery] = useState('');
     const [bookFilter, setBookFilter] = useState<'ALL' | 'OT' | 'NT' | 'ALPHA'>('ALL');
-    const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({});
     const [selectedBookForChapters, setSelectedBookForChapters] = useState<BibleBook | null>(null);
 
     // Fetch books on mount
@@ -49,37 +48,6 @@ function BibleHome() {
         }
         return filtered;
     }, [books, bookFilter, bookSearchQuery]);
-
-    // Mnemonic Groups
-    const otGroups = [
-        { name: "FIRST", start: 1, end: 5, label: "The Law" },
-        { name: "IS THE STORY OF", start: 6, end: 17, label: "History" },
-        { name: "TRUTH", start: 18, end: 22, label: "Poetry & Wisdom" },
-        { name: "ABOUT", start: 23, end: 27, label: "Major Prophets" },
-        { name: "EVERYONE'S SIN", start: 28, end: 39, label: "Minor Prophets" }
-    ];
-
-    const ntGroups = [
-        { name: "JESUS", start: 40, end: 44, label: "Gospels & Acts" },
-        { name: "SENT HIS SPIRIT", start: 45, end: 57, label: "Paul's Epistles" },
-        { name: "TO ALL OF US", start: 58, end: 66, label: "General Epistles & Revelation" }
-    ];
-
-    const toggleSection = (name: string) => {
-        setCollapsedSections(prev => ({ ...prev, [name]: !prev[name] }));
-    };
-
-    const toggleAll = (groups: { name: string }[], collapse: boolean) => {
-        const newState = { ...collapsedSections };
-        groups.forEach(g => {
-            newState[g.name] = collapse;
-        });
-        setCollapsedSections(newState);
-    };
-
-    const areAllCollapsed = (groups: { name: string }[]) => {
-        return groups.every(g => collapsedSections[g.name]);
-    };
 
     return (
         <div className="max-w-7xl mx-auto space-y-8 animate-fade-in pb-20 px-4 sm:px-6">
@@ -265,148 +233,18 @@ function BibleHome() {
 
                     {/* Mnemonics Tab Content */}
                     {activeTab === 'mnemonics' && (
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-in fade-in slide-in-from-bottom-2 duration-300">
-                            {/* Old Testament */}
-                            <div className="bg-card border border-border rounded-xl p-6 shadow-sm space-y-6 h-fit">
-                                <div className="bg-primary/5 rounded-xl p-6 border border-primary/10">
-                                    <h3 className="text-sm font-bold uppercase tracking-wider text-primary mb-3">Old Testament</h3>
-                                    <p className="text-xl font-medium text-foreground/90 leading-relaxed">
-                                        {getTestamentMnemonic('OT')}
-                                    </p>
-                                </div>
-
-                                <div className="flex justify-end">
-                                    <button
-                                        onClick={() => toggleAll(otGroups, !areAllCollapsed(otGroups))}
-                                        className="text-xs flex items-center gap-1 text-primary hover:text-primary/80 transition-colors font-medium"
-                                    >
-                                        {areAllCollapsed(otGroups) ? (
-                                            <>Expand All <ChevronsDown className="w-3 h-3" /></>
-                                        ) : (
-                                            <>Collapse All <ChevronsUp className="w-3 h-3" /></>
-                                        )}
-                                    </button>
-                                </div>
-
-                                <div className="space-y-4">
-                                    {otGroups.map(group => {
-                                        const isCollapsed = collapsedSections[group.name];
-                                        return (
-                                            <div key={group.name} className="space-y-3">
-                                                <button
-                                                    onClick={() => toggleSection(group.name)}
-                                                    className="w-full flex items-center gap-3 group select-none p-2 hover:bg-secondary/10 rounded-lg transition-colors"
-                                                >
-                                                    <div className="p-1 rounded-md bg-secondary/20 text-primary">
-                                                        {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                                                    </div>
-                                                    <h4 className="text-sm font-bold text-primary uppercase tracking-wider">{group.name}</h4>
-                                                    <div className="h-[1px] flex-1 bg-border/50" />
-                                                    <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest">{group.label}</span>
-                                                </button>
-
-                                                {!isCollapsed && (
-                                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 animate-in slide-in-from-top-2 duration-200 pl-2">
-                                                        {filteredBooks.filter(b => b.order >= group.start && b.order <= group.end).map(book => {
-                                                            const mnemonic = getBookMnemonicText(book.id);
-                                                            return (
-                                                                <div
-                                                                    key={book.id}
-                                                                    className="flex items-stretch rounded-lg border border-border bg-card overflow-hidden hover:border-primary/50 transition-colors min-h-[80px]"
-                                                                >
-                                                                    <button
-                                                                        onClick={() => navigate(`/bible/read/${book.name.replace(/\s+/g, '')}/1`)}
-                                                                        className="flex-1 px-4 py-3 text-left hover:bg-secondary/5 transition-colors flex flex-col justify-center gap-1"
-                                                                    >
-                                                                        <span className="font-bold text-sm">{book.name}</span>
-                                                                        {mnemonic && (
-                                                                            <span className="text-xs text-muted-foreground leading-snug line-clamp-2">
-                                                                                <span className="font-bold text-primary">{mnemonic.charAt(0)}</span>
-                                                                                {mnemonic.slice(1)}
-                                                                            </span>
-                                                                        )}
-                                                                    </button>
-                                                                </div>
-                                                            );
-                                                        })}
-                                                    </div>
-                                                )}
-                                            </div>
-                                        );
-                                    })}
-                                </div>
-                            </div>
-
-                            {/* New Testament */}
-                            <div className="bg-card border border-border rounded-xl p-6 shadow-sm space-y-6 h-fit">
-                                <div className="bg-primary/5 rounded-xl p-6 border border-primary/10">
-                                    <h3 className="text-sm font-bold uppercase tracking-wider text-primary mb-3">New Testament</h3>
-                                    <p className="text-xl font-medium text-foreground/90 leading-relaxed">
-                                        {getTestamentMnemonic('NT')}
-                                    </p>
-                                </div>
-
-                                <div className="flex justify-end">
-                                    <button
-                                        onClick={() => toggleAll(ntGroups, !areAllCollapsed(ntGroups))}
-                                        className="text-xs flex items-center gap-1 text-primary hover:text-primary/80 transition-colors font-medium"
-                                    >
-                                        {areAllCollapsed(ntGroups) ? (
-                                            <>Expand All <ChevronsDown className="w-3 h-3" /></>
-                                        ) : (
-                                            <>Collapse All <ChevronsUp className="w-3 h-3" /></>
-                                        )}
-                                    </button>
-                                </div>
-
-                                <div className="space-y-4">
-                                    {ntGroups.map(group => {
-                                        const isCollapsed = collapsedSections[group.name];
-                                        return (
-                                            <div key={group.name} className="space-y-3">
-                                                <button
-                                                    onClick={() => toggleSection(group.name)}
-                                                    className="w-full flex items-center gap-3 group select-none p-2 hover:bg-secondary/10 rounded-lg transition-colors"
-                                                >
-                                                    <div className="p-1 rounded-md bg-secondary/20 text-primary">
-                                                        {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                                                    </div>
-                                                    <h4 className="text-sm font-bold text-primary uppercase tracking-wider">{group.name}</h4>
-                                                    <div className="h-[1px] flex-1 bg-border/50" />
-                                                    <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest">{group.label}</span>
-                                                </button>
-
-                                                {!isCollapsed && (
-                                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 animate-in slide-in-from-top-2 duration-200 pl-2">
-                                                        {filteredBooks.filter(b => b.order >= group.start && b.order <= group.end).map(book => {
-                                                            const mnemonic = getBookMnemonicText(book.id);
-                                                            return (
-                                                                <div
-                                                                    key={book.id}
-                                                                    className="flex items-stretch rounded-lg border border-border bg-card overflow-hidden hover:border-primary/50 transition-colors min-h-[80px]"
-                                                                >
-                                                                    <button
-                                                                        onClick={() => navigate(`/bible/read/${book.name.replace(/\s+/g, '')}/1`)}
-                                                                        className="flex-1 px-4 py-3 text-left hover:bg-secondary/5 transition-colors flex flex-col justify-center gap-1"
-                                                                    >
-                                                                        <span className="font-bold text-sm">{book.name}</span>
-                                                                        {mnemonic && (
-                                                                            <span className="text-xs text-muted-foreground leading-snug line-clamp-2">
-                                                                                <span className="font-bold text-primary">{mnemonic.charAt(0)}</span>
-                                                                                {mnemonic.slice(1)}
-                                                                            </span>
-                                                                        )}
-                                                                    </button>
-                                                                </div>
-                                                            );
-                                                        })}
-                                                    </div>
-                                                )}
-                                            </div>
-                                        );
-                                    })}
-                                </div>
-                            </div>
+                        <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
+                            <MnemonicsList
+                                books={filteredBooks}
+                                onNavigate={(bookId, chap, verse) => {
+                                    const book = books.find(b => b.id === bookId);
+                                    if (book) {
+                                        const url = `/bible/read/${book.name.replace(/\s+/g, '')}/${chap}${verse ? `/${verse}` : ''}`;
+                                        navigate(url);
+                                    }
+                                }}
+                                onChapterSelect={(book) => setSelectedBookForChapters(book)}
+                            />
                         </div>
                     )}
 

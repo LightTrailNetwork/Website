@@ -135,3 +135,13 @@ export function getBookMnemonicText(bookId: string): string | null {
 
     return null;
 }
+
+export function getChapterVerses(bookId: string, chapter: number): Record<string, string | { mnemonic: string }> | null {
+    const bookData = data.books[bookId.toUpperCase()];
+    if (!bookData) return null;
+
+    const chapterData = bookData.chapters[chapter.toString()];
+    if (!chapterData) return null;
+
+    return chapterData.verses;
+}
