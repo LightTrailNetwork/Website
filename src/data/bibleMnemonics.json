@@ -3913,6 +3913,7 @@
         },
         "HAG": {
             "mnemonic": "SO",
+            "mnemonicHint": "(... says the LORD)",
             "chapters": {
                 "1": {
                     "mnemonic": "",
