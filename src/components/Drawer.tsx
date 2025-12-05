@@ -36,7 +36,7 @@ export default function Drawer({ isOpen, onClose }: DrawerProps) {
         {/* Header */}
         <div className="p-6 border-b border-border">
           <div className="flex items-center justify-between mb-2">
-            <h2 className="text-lg font-semibold text-foreground">LightTrail Network</h2>
+            <h2 className="text-lg font-semibold text-foreground">Light Trail Network</h2>
             <button
               onClick={onClose}
               className="text-muted-foreground hover:text-foreground transition-colors"
@@ -44,7 +44,7 @@ export default function Drawer({ isOpen, onClose }: DrawerProps) {
               <X className="w-6 h-6" />
             </button>
           </div>
-          <p className="text-sm text-muted-foreground">Navigate the triad</p>
+          <p className="text-sm text-muted-foreground">Navigate the trail</p>
         </div>
 
         {/* Menu Items */}

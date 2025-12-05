@@ -803,11 +803,11 @@ export default function BibleReader() {
                     // Handle MSB Only Verses
                     if (item.isMsbOnly && item.type === 'verse') {
                         return (
-                            <div key={index} className="my-4 p-4 bg-amber-50 dark:bg-amber-950/20 rounded-lg border-l-4 border-amber-500">
+                            <div key={index} className="my-4 p-4 bg-amber-50 dark:bg-gray-900/50 rounded-lg border-l-4 border-amber-500 dark:border-amber-500">
                                 <span className="font-bold text-xs uppercase tracking-wider block mb-2 text-amber-600 dark:text-amber-500 flex items-center gap-2">
                                     <span className="bg-amber-100 dark:bg-amber-900/50 px-1.5 py-0.5 rounded">MSB ONLY VERSE</span>
                                 </span>
-                                <p className="text-muted-foreground italic">
+                                <p className="text-muted-foreground dark:text-gray-200 italic">
                                     <sup className="text-xs font-bold mr-1 select-none">{item.number}</sup>
                                     {item.content.map((c, i) => {
                                         if (typeof c === 'string') return <span key={i}>{c}</span>;
@@ -925,7 +925,7 @@ export default function BibleReader() {
                                                         return (
                                                             <span
                                                                 key={i}
-                                                                className={`${t.wordsOfJesus ? "text-red-700 dark:text-red-400" : ""} ${t.status === 'removed' ? 'font-bold bg-yellow-100/50 dark:bg-yellow-900/30 rounded-sm px-0.5' : ''}`}
+                                                                className={`${t.wordsOfJesus ? "text-red-700 dark:text-red-400" : ""} ${t.status === 'removed' ? 'font-bold bg-yellow-100/50 dark:bg-transparent dark:text-red-400 dark:decoration-red-400/50 dark:line-through decoration-2 rounded-sm px-0.5' : ''}`}
                                                             >
                                                                 {t.text}
                                                             </span>
@@ -933,7 +933,7 @@ export default function BibleReader() {
                                                     })}
                                                 </span>
 
-                                                <div className="mt-2 mb-4 p-3 bg-amber-50 dark:bg-amber-950/20 rounded-lg border-l-2 border-amber-500 text-sm text-muted-foreground">
+                                                <div className="mt-2 mb-4 p-3 bg-amber-50 dark:bg-gray-900/50 rounded-lg border-l-2 border-amber-500 dark:border-amber-500 text-sm text-muted-foreground dark:text-gray-200">
                                                     <span className="font-bold text-xs uppercase tracking-wider block mb-1 text-amber-600 dark:text-amber-500 flex items-center gap-2">
                                                         <span>MSB Variation</span>
                                                     </span>
@@ -942,7 +942,7 @@ export default function BibleReader() {
                                                         return (
                                                             <span
                                                                 key={i}
-                                                                className={`${t.wordsOfJesus ? "text-red-700 dark:text-red-400" : ""} ${t.status === 'added' ? 'font-bold bg-amber-200/50 dark:bg-amber-800/30 text-foreground rounded-sm px-0.5' : ''}`}
+                                                                className={`${t.wordsOfJesus ? "text-red-700 dark:text-red-400" : ""} ${t.status === 'added' ? 'font-bold bg-amber-200/50 dark:bg-transparent text-foreground dark:text-amber-400 rounded-sm px-0.5' : ''}`}
                                                             >
                                                                 {t.text}
                                                             </span>
