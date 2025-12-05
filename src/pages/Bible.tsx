@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { BookOpen, Brain, ChevronRight, Search, Book, ChevronDown, ChevronsDown, ChevronsUp, X } from 'lucide-react';
 import { Link, Routes, Route, useNavigate } from 'react-router-dom';
 import BibleReader from '../components/BibleReader';
@@ -13,7 +13,7 @@ import { getTestamentMnemonic, getBookMnemonicText } from '../utils/mnemonicUtil
 function BibleHome() {
     const navigate = useNavigate();
     const [books, setBooks] = useState<BibleBook[]>([]);
-    const [activeTab, setActiveTab] = useState<'books' | 'mnemonics'>('books');
+    const [activeTab, setActiveTab] = useState<'books' | 'mnemonics' | 'tools'>('books');
     const [bookSearchQuery, setBookSearchQuery] = useState('');
     const [bookFilter, setBookFilter] = useState<'ALL' | 'OT' | 'NT' | 'ALPHA'>('ALL');
     const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({});
@@ -86,18 +86,18 @@ function BibleHome() {
             <div className="text-center space-y-4 py-8">
                 <h1 className="text-4xl font-bold text-foreground tracking-tight">Bible & Memory Hub</h1>
                 <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                    "Thy word is a lamp unto my feet, and a light unto my path."
+                    "Your word is a lamp to my feet and a light to my path."
                 </p>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                {/* Main Content Area */}
-                <div className="lg:col-span-8 space-y-6">
-                    {/* Tabs */}
-                    <div className="flex items-center gap-2 bg-card border border-border p-1 rounded-xl w-fit">
+            <div className="space-y-6">
+                {/* Tabs Navigation */}
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-card border border-border p-2 rounded-xl">
+                    {/* Bible Group */}
+                    <div className="flex items-center gap-2 w-full sm:w-auto">
                         <button
                             onClick={() => setActiveTab('books')}
-                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${activeTab === 'books'
+                            className={`flex-1 sm:flex-none px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-2 ${activeTab === 'books'
                                 ? 'bg-primary text-primary-foreground shadow-sm'
                                 : 'text-muted-foreground hover:text-foreground hover:bg-secondary/50'
                                 }`}
@@ -107,19 +107,39 @@ function BibleHome() {
                         </button>
                         <button
                             onClick={() => setActiveTab('mnemonics')}
-                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${activeTab === 'mnemonics'
+                            className={`flex-1 sm:flex-none px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-2 ${activeTab === 'mnemonics'
                                 ? 'bg-primary text-primary-foreground shadow-sm'
                                 : 'text-muted-foreground hover:text-foreground hover:bg-secondary/50'
                                 }`}
                         >
                             <Brain className="w-4 h-4" />
-                            Mnemonics
+                            Bible Mnemonics
                         </button>
                     </div>
 
+                    {/* Separator for Mobile */}
+                    <div className="w-full h-[1px] bg-border sm:hidden" />
+
+                    {/* Memory Tools Group */}
+                    <div className="flex items-center gap-2 w-full sm:w-auto">
+                        <button
+                            onClick={() => setActiveTab('tools')}
+                            className={`flex-1 sm:flex-none px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-2 ${activeTab === 'tools'
+                                ? 'bg-secondary text-secondary-foreground shadow-sm ring-1 ring-border'
+                                : 'text-muted-foreground hover:text-foreground hover:bg-secondary/50'
+                                }`}
+                        >
+                            <Brain className="w-4 h-4" />
+                            Memory Tool Dashboard
+                        </button>
+                    </div>
+                </div>
+
+                {/* Content Area */}
+                <div className="min-h-[500px]">
                     {/* Books Tab Content */}
                     {activeTab === 'books' && (
-                        <div className="bg-card border border-border rounded-xl p-6 shadow-sm space-y-6">
+                        <div className="bg-card border border-border rounded-xl p-6 shadow-sm space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
                             {/* Search and Filters */}
                             <div className="flex flex-col sm:flex-row gap-4 justify-between items-center">
                                 <div className="relative w-full sm:max-w-xs">
@@ -161,7 +181,7 @@ function BibleHome() {
                             </div>
 
                             {/* Books Grid */}
-                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
                                 {filteredBooks.map(book => (
                                     <div
                                         key={book.id}
@@ -175,7 +195,6 @@ function BibleHome() {
                                             <span className="text-xs text-muted-foreground">{book.numberOfChapters} Chapters</span>
                                         </button>
 
-                                        {/* Quick Chapter Hover (Optional - could be complex for mobile, keeping simple for now) */}
                                         <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
                                             <ChevronRight className="w-4 h-4 text-muted-foreground" />
                                         </div>
@@ -187,9 +206,9 @@ function BibleHome() {
 
                     {/* Mnemonics Tab Content */}
                     {activeTab === 'mnemonics' && (
-                        <div className="space-y-8">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-in fade-in slide-in-from-bottom-2 duration-300">
                             {/* Old Testament */}
-                            <div className="bg-card border border-border rounded-xl p-6 shadow-sm space-y-6">
+                            <div className="bg-card border border-border rounded-xl p-6 shadow-sm space-y-6 h-fit">
                                 <div className="bg-primary/5 rounded-xl p-6 border border-primary/10">
                                     <h3 className="text-sm font-bold uppercase tracking-wider text-primary mb-3">Old Testament</h3>
                                     <p className="text-xl font-medium text-foreground/90 leading-relaxed">
@@ -260,7 +279,7 @@ function BibleHome() {
                             </div>
 
                             {/* New Testament */}
-                            <div className="bg-card border border-border rounded-xl p-6 shadow-sm space-y-6">
+                            <div className="bg-card border border-border rounded-xl p-6 shadow-sm space-y-6 h-fit">
                                 <div className="bg-primary/5 rounded-xl p-6 border border-primary/10">
                                     <h3 className="text-sm font-bold uppercase tracking-wider text-primary mb-3">New Testament</h3>
                                     <p className="text-xl font-medium text-foreground/90 leading-relaxed">
@@ -331,67 +350,67 @@ function BibleHome() {
                             </div>
                         </div>
                     )}
-                </div>
 
-                {/* Sidebar: Memorization Tools */}
-                <div className="lg:col-span-4 space-y-8">
-                    <div className="bg-card border border-border rounded-xl p-6 shadow-sm sticky top-24">
-                        <div className="flex items-center gap-3 mb-6">
-                            <div className="p-2 bg-primary/10 rounded-lg">
-                                <Brain className="w-6 h-6 text-primary" />
-                            </div>
-                            <div>
-                                <h2 className="text-xl font-bold text-foreground">Memorization</h2>
-                                <p className="text-xs text-muted-foreground">Tools to hide the Word in your heart</p>
-                            </div>
-                        </div>
-
-                        <div className="space-y-3">
+                    {/* Memory Tools Tab Content */}
+                    {activeTab === 'tools' && (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
                             <Link
                                 to="/bible/memory"
-                                className="block group relative overflow-hidden rounded-lg border border-border bg-secondary/5 hover:bg-secondary/10 transition-all p-4"
+                                className="group relative overflow-hidden rounded-xl border border-border bg-card p-6 hover:border-primary/50 hover:shadow-md transition-all"
                             >
-                                <div className="flex justify-between items-center">
-                                    <span className="font-medium group-hover:text-primary transition-colors">Dashboard</span>
-                                    <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:translate-x-1 transition-transform" />
+                                <div className="flex items-start justify-between mb-4">
+                                    <div className="p-3 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors">
+                                        <Brain className="w-6 h-6 text-primary" />
+                                    </div>
+                                    <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:translate-x-1 transition-transform" />
                                 </div>
-                                <p className="text-xs text-muted-foreground mt-1">Overview of all memory tools</p>
+                                <h3 className="text-lg font-bold text-foreground mb-2 group-hover:text-primary transition-colors">Memory Dashboard</h3>
+                                <p className="text-sm text-muted-foreground">Overview of all your memory progress and tools in one place.</p>
                             </Link>
 
                             <Link
                                 to="/bible/memory/hierarchical"
-                                className="block group relative overflow-hidden rounded-lg border border-border bg-secondary/5 hover:bg-secondary/10 transition-all p-4"
+                                className="group relative overflow-hidden rounded-xl border border-border bg-card p-6 hover:border-primary/50 hover:shadow-md transition-all"
                             >
-                                <div className="flex justify-between items-center">
-                                    <span className="font-medium group-hover:text-primary transition-colors">Hierarchical Memory</span>
-                                    <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:translate-x-1 transition-transform" />
+                                <div className="flex items-start justify-between mb-4">
+                                    <div className="p-3 bg-secondary/20 rounded-lg group-hover:bg-secondary/30 transition-colors">
+                                        <BookOpen className="w-6 h-6 text-foreground" />
+                                    </div>
+                                    <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:translate-x-1 transition-transform" />
                                 </div>
-                                <p className="text-xs text-muted-foreground mt-1">Structure complex passages</p>
+                                <h3 className="text-lg font-bold text-foreground mb-2 group-hover:text-primary transition-colors">Hierarchical Memory</h3>
+                                <p className="text-sm text-muted-foreground">Break down complex passages into structured, manageable chunks.</p>
                             </Link>
 
                             <Link
                                 to="/bible/memory/crown-path"
-                                className="block group relative overflow-hidden rounded-lg border border-border bg-secondary/5 hover:bg-secondary/10 transition-all p-4"
+                                className="group relative overflow-hidden rounded-xl border border-border bg-card p-6 hover:border-primary/50 hover:shadow-md transition-all"
                             >
-                                <div className="flex justify-between items-center">
-                                    <span className="font-medium group-hover:text-primary transition-colors">CROWN PATH</span>
-                                    <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:translate-x-1 transition-transform" />
+                                <div className="flex items-start justify-between mb-4">
+                                    <div className="p-3 bg-amber-500/10 rounded-lg group-hover:bg-amber-500/20 transition-colors">
+                                        <Brain className="w-6 h-6 text-amber-600 dark:text-amber-400" />
+                                    </div>
+                                    <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:translate-x-1 transition-transform" />
                                 </div>
-                                <p className="text-xs text-muted-foreground mt-1">Visual memory journey</p>
+                                <h3 className="text-lg font-bold text-foreground mb-2 group-hover:text-primary transition-colors">CROWN PATH</h3>
+                                <p className="text-sm text-muted-foreground">A visual memory journey technique for retaining scripture locations.</p>
                             </Link>
 
                             <Link
                                 to="/bible/memory/grace"
-                                className="block group relative overflow-hidden rounded-lg border border-border bg-secondary/5 hover:bg-secondary/10 transition-all p-4"
+                                className="group relative overflow-hidden rounded-xl border border-border bg-card p-6 hover:border-primary/50 hover:shadow-md transition-all"
                             >
-                                <div className="flex justify-between items-center">
-                                    <span className="font-medium group-hover:text-primary transition-colors">GRACE Method</span>
-                                    <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:translate-x-1 transition-transform" />
+                                <div className="flex items-start justify-between mb-4">
+                                    <div className="p-3 bg-emerald-500/10 rounded-lg group-hover:bg-emerald-500/20 transition-colors">
+                                        <Brain className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
+                                    </div>
+                                    <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:translate-x-1 transition-transform" />
                                 </div>
-                                <p className="text-xs text-muted-foreground mt-1">Systematic repetition</p>
+                                <h3 className="text-lg font-bold text-foreground mb-2 group-hover:text-primary transition-colors">GRACE Method</h3>
+                                <p className="text-sm text-muted-foreground">Systematic repetition and engagement to deepen your memory.</p>
                             </Link>
                         </div>
-                    </div>
+                    )}
                 </div>
             </div>
         </div>
