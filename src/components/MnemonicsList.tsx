@@ -160,7 +160,7 @@ export default function MnemonicsList({ books, onNavigate, onChapterSelect, acti
                 <div className="bg-primary/5 rounded-xl p-6 border border-primary/10">
                     <h3 className="text-sm font-bold uppercase tracking-wider text-primary mb-3">Old Testament</h3>
                     <p className="text-xl font-medium text-foreground/90 leading-relaxed">
-                        {renderMnemonicWithAccent(getTestamentMnemonic('OT'))}
+                        {getTestamentMnemonic('OT')}
                     </p>
                 </div>
 
@@ -208,7 +208,7 @@ export default function MnemonicsList({ books, onNavigate, onChapterSelect, acti
                 <div className="bg-primary/5 rounded-xl p-6 border border-primary/10">
                     <h3 className="text-sm font-bold uppercase tracking-wider text-primary mb-3">New Testament</h3>
                     <p className="text-xl font-medium text-foreground/90 leading-relaxed">
-                        {renderMnemonicWithAccent(getTestamentMnemonic('NT'))}
+                        {getTestamentMnemonic('NT')}
                     </p>
                 </div>
 
