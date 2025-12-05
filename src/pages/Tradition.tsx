@@ -40,9 +40,14 @@ export default function Tradition() {
       {/* Introduction Section */}
       <div className="text-center space-y-4">
         <div className="max-w-3xl mx-auto">
-          <p className="text-lg text-muted-foreground leading-relaxed font-light whitespace-pre-line">
-            {passagesData.headline}
-          </p>
+          <p
+            className="text-lg text-muted-foreground leading-relaxed font-light whitespace-pre-line"
+            dangerouslySetInnerHTML={{
+              __html: passagesData.headline
+                .replace(/\*\*(.*?)\*\*/g, '<span class="font-bold text-primary">$1</span>')
+                .replace(/\*(.*?)\*/g, '<span class="italic">$1</span>')
+            }}
+          />
         </div>
       </div>
 
