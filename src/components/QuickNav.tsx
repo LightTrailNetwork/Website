@@ -21,6 +21,14 @@ export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigat
     const [activeTab, setActiveTab] = useState<'books' | 'mnemonics'>('books');
     const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({});
     const inputRef = useRef<HTMLInputElement>(null);
+    const chapterListRef = useRef<HTMLDivElement>(null);
+
+    const handleWheel = (e: React.WheelEvent) => {
+        if (chapterListRef.current) {
+            // Scroll horizontally based on vertical wheel movement
+            chapterListRef.current.scrollLeft += e.deltaY;
+        }
+    };
 
     const otGroups = [
         { name: "FIRST", start: 1, end: 5, label: "The Law" },
@@ -207,7 +215,11 @@ export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigat
                                         <div className="flex-1 flex items-center gap-3 overflow-hidden animate-fade-in">
                                             <span className="font-bold whitespace-nowrap">{selectedNavBook.name}</span>
                                             <div className="h-4 w-[1px] bg-border shrink-0" />
-                                            <div className="flex-1 overflow-x-auto flex items-center gap-1 pb-1 scrollbar-hide mask-linear-fade">
+                                            <div
+                                                ref={chapterListRef}
+                                                onWheel={handleWheel}
+                                                className="flex-1 overflow-x-auto flex items-center gap-1 pb-1 scrollbar-hide mask-linear-fade"
+                                            >
                                                 {Array.from({ length: selectedNavBook.numberOfChapters }, (_, i) => i + 1).map(chap => (
                                                     <button
                                                         key={chap}
