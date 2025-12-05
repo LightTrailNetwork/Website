@@ -2106,8 +2106,27 @@
                     "verses": {}
                 },
                 "23": {
-                    "mnemonic": "",
-                    "verses": {}
+                    "mnemonic": "SEARCH",
+                    "verses": {
+                        "1": {
+                            "mnemonic": "Shepherd"
+                        },
+                        "2": {
+                            "mnemonic": "Earth"
+                        },
+                        "3": {
+                            "mnemonic": "Along"
+                        },
+                        "4": {
+                            "mnemonic": "Rod"
+                        },
+                        "5": {
+                            "mnemonic": "Cup"
+                        },
+                        "6": {
+                            "mnemonic": "House"
+                        }
+                    }
                 },
                 "24": {
                     "mnemonic": "",
