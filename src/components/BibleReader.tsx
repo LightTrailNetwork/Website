@@ -1684,7 +1684,7 @@ export default function BibleReader() {
                                                                             );
                                                                         })()}
                                                                         <div className="flex items-center gap-2">
-                                                                            {ref.score && (
+                                                                            {ref.score !== undefined && ref.score !== null && (
                                                                                 <span
                                                                                     className="text-[10px] text-muted-foreground bg-secondary/20 px-1.5 py-0.5 rounded inline-block cursor-help"
                                                                                     title="Relevance Score"
