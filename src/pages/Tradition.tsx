@@ -7,7 +7,25 @@ import passagesData from "../data/pyramidPassages.json";
 
 export default function Tradition() {
   const [hoveredLetter, setHoveredLetter] = useState<string | null>(null);
+
+  // Helper to find passage data by key
+  const findPassageByKey = (key: string) => {
+    // Check outer passages
+    const outer = passagesData.outerPassages.passages.find((p) => p.key === key);
+    if (outer) return outer;
+
+    // Check inner passages
+    for (const section of passagesData.innerPassages.sections) {
+      for (const subsection of section.subsections) {
+        const inner = subsection.passages.find((p) => p.key === key);
+        if (inner) return inner;
+      }
+    }
+    return null;
+  };
+
   const [selectedLetter, setSelectedLetter] = useState("AIM (Key)");
+  const selectedPassage = findPassageByKey(selectedLetter);
 
   const handleLetterClick = (letter: string) => {
     setSelectedLetter(letter);
@@ -82,6 +100,33 @@ export default function Tradition() {
                 )}
               </TransformWrapper>
             </div>
+
+            {/* Verse Preview Card */}
+            {selectedPassage && (
+              <div className="mt-4 bg-card border border-border rounded-xl p-6 shadow-sm animate-in fade-in slide-in-from-top-2 duration-300">
+                <div className="flex items-start gap-4">
+                  <div className={`flex-shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold whitespace-nowrap ${selectedPassage.key.replace(" (Key)", "").length > 8
+                    ? "text-xs"
+                    : selectedPassage.key.replace(" (Key)", "").length > 7
+                      ? "text-sm"
+                      : "text-lg"
+                    }`}>
+                    {selectedPassage.key.replace(" (Key)", "")}
+                  </div>
+                  <div className="space-y-2">
+                    <p
+                      className="text-lg text-foreground leading-relaxed font-serif"
+                      dangerouslySetInnerHTML={{
+                        __html: selectedPassage.text.replace(/\*\*(.*?)\*\*/g, '<span class="text-primary font-bold">$1</span>').replace(/\*(.*?)\*/g, '<span class="italic">$1</span>')
+                      }}
+                    />
+                    <p className="text-sm text-muted-foreground font-medium">
+                      {selectedPassage.reference}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Instructions */}
@@ -110,10 +155,10 @@ export default function Tradition() {
             />
           </div>
         </div>
-      </div>
+      </div >
 
       {/* Mobile: Passage List Below Pyramid */}
-      <div className="lg:hidden space-y-4">
+      < div className="lg:hidden space-y-4" >
         <h2 className="text-xl font-semibold text-foreground text-center">
           Scripture Passages
         </h2>
@@ -125,7 +170,7 @@ export default function Tradition() {
             onLetterHover={handleLetterHover}
           />
         </div>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 }
