@@ -870,7 +870,7 @@ export default function BibleReader() {
                                                 onMouseEnter={(e) => handleRefMouseEnter(e, item.number, verseRefs)}
                                                 onMouseLeave={handleRefMouseLeave}
                                                 className="ml-0.5 text-primary/60 hover:text-primary transition-colors"
-                                                title="View Cross References"
+
                                             >
                                                 <LinkIcon className="w-2.5 h-2.5" />
                                             </button>
