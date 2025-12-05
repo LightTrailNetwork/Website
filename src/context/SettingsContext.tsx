@@ -11,6 +11,8 @@ interface SettingsContextType {
     setShowMnemonics: (enabled: boolean) => void;
     showVerseMnemonics: boolean;
     setShowVerseMnemonics: (enabled: boolean) => void;
+    theme: 'light' | 'dark';
+    setTheme: (theme: 'light' | 'dark') => void;
 }
 
 const SettingsContext = createContext<SettingsContextType | undefined>(undefined);
@@ -37,6 +39,12 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
         return localStorage.getItem('bible_show_verse_mnemonics') === 'true';
     });
 
+    const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light' || savedTheme === 'dark') return savedTheme;
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    });
+
     // Persist changes
     useEffect(() => {
         localStorage.setItem('bible_translation', selectedTranslation);
@@ -58,6 +66,15 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
         localStorage.setItem('bible_show_verse_mnemonics', String(showVerseMnemonics));
     }, [showVerseMnemonics]);
 
+    useEffect(() => {
+        localStorage.setItem('theme', theme);
+        if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    }, [theme]);
+
     return (
         <SettingsContext.Provider value={{
             selectedTranslation,
@@ -69,7 +86,9 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
             showMnemonics,
             setShowMnemonics,
             showVerseMnemonics,
-            setShowVerseMnemonics
+            setShowVerseMnemonics,
+            theme,
+            setTheme
         }}>
             {children}
         </SettingsContext.Provider>

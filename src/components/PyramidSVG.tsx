@@ -64,7 +64,7 @@ const ClickableLetter: React.FC<ClickableLetterProps> = ({
           "ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial",
         fontSize: isHighlighted ? fontSize * 1.3 : fontSize,
         fontWeight: isHighlighted ? 900 : 700,
-        fill: isHighlighted ? "#dc2626" : textColor,
+        fill: isHighlighted ? "hsl(var(--destructive))" : textColor,
         cursor: "pointer",
         transition: "all 0.2s",
       }}
@@ -125,7 +125,7 @@ const SubPyramidVertex: React.FC<SubPyramidVertexProps> = ({
           "ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial",
         fontSize: isHighlighted ? fontSize * 1.4 : fontSize,
         fontWeight: isHighlighted ? 900 : 700,
-        fill: isHighlighted ? "#dc2626" : textColor,
+        fill: isHighlighted ? "hsl(var(--destructive))" : textColor,
         cursor: "pointer",
         transition: "all 0.2s",
       }}
@@ -174,10 +174,10 @@ export default function PyramidSVG({
   hoveredLetter,
   onLetterClick,
   onLetterHover,
-  stroke = "#2563eb",
-  innerStroke = "#64748b",
-  textColor = "#0f172a",
-  accent = "#2563eb",
+  stroke = "hsl(var(--primary))",
+  innerStroke = "hsl(var(--muted-foreground))",
+  textColor = "hsl(var(--foreground))",
+  accent = "hsl(var(--primary))",
 }: PyramidSVGProps) {
   // Helper function to scroll within the passage list container only
   const scrollToPassage = (passageKey: string) => {
@@ -387,7 +387,7 @@ export default function PyramidSVG({
   const subFontSize = svgSize * 0.02 * 1.2;
   const tinyFontSize = svgSize * 0.018;
 
-  const tinyTextColor = "#94a3b8";
+  const tinyTextColor = "hsl(var(--muted-foreground))";
 
   return (
     <div className="w-full flex justify-center">
@@ -409,8 +409,8 @@ export default function PyramidSVG({
               x2="0%"
               y2="100%"
             >
-              <stop offset="0%" stopColor="#eff6ff" stopOpacity="0.4" />
-              <stop offset="100%" stopColor="#dbeafe" stopOpacity="0.2" />
+              <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.1" />
+              <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0.05" />
             </linearGradient>
             <linearGradient
               id="innerPyramidGradient"
@@ -419,8 +419,8 @@ export default function PyramidSVG({
               x2="0%"
               y2="100%"
             >
-              <stop offset="0%" stopColor="#fef3c7" stopOpacity="0.3" />
-              <stop offset="100%" stopColor="#fde68a" stopOpacity="0.15" />
+              <stop offset="0%" stopColor="hsl(var(--accent))" stopOpacity="0.2" />
+              <stop offset="100%" stopColor="hsl(var(--accent))" stopOpacity="0.1" />
             </linearGradient>
           </defs>
 
@@ -494,19 +494,19 @@ export default function PyramidSVG({
           <SubPyramidLabel
             center={topCenter}
             label="GOD"
-            textColor={"#2563eb"}
+            textColor={"hsl(var(--primary))"}
             fontSize={subFontSizeWord}
           />
           <SubPyramidLabel
             center={leftCenter}
             label="MAN"
-            textColor={"#2563eb"}
+            textColor={"hsl(var(--primary))"}
             fontSize={subFontSizeWord}
           />
           <SubPyramidLabel
             center={rightCenter}
             label="WAY"
-            textColor={"#2563eb"}
+            textColor={"hsl(var(--primary))"}
             fontSize={subFontSizeWord}
           />
 
@@ -797,7 +797,7 @@ export default function PyramidSVG({
                   ? baseFontSize * 2.5
                   : baseFontSize * 2,
               fontWeight: 900,
-              fill: "#2563eb",
+              fill: "hsl(var(--primary))",
               opacity: 0.1,
               userSelect: "none",
               cursor: "pointer",

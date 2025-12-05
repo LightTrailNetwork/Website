@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { X, Link as LinkIcon, Settings, Info, ChevronRight, ChevronLeft, Globe, Search, Filter, BookOpen } from 'lucide-react';
+import { X, Link as LinkIcon, Settings, Info, ChevronRight, ChevronLeft, Globe, Search, Filter, BookOpen, Palette, Moon, Sun } from 'lucide-react';
 import { useSettings } from '../context/SettingsContext';
 import { getTranslations, type BibleTranslation } from '../data/bibleApi';
 
@@ -12,13 +12,13 @@ interface SettingsModalProps {
 export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
     const navigate = useNavigate();
     const location = useLocation();
-    const { selectedTranslation, setSelectedTranslation, showMsb, setShowMsb, readerMode, setReaderMode, showMnemonics, setShowMnemonics, showVerseMnemonics, setShowVerseMnemonics } = useSettings();
+    const { selectedTranslation, setSelectedTranslation, showMsb, setShowMsb, readerMode, setReaderMode, showMnemonics, setShowMnemonics, showVerseMnemonics, setShowVerseMnemonics, theme, setTheme } = useSettings();
 
     // Translation State
     const [translations, setTranslations] = useState<BibleTranslation[]>([]);
     const [translationSearch, setTranslationSearch] = useState('');
     const [languageFilter, setLanguageFilter] = useState<string>('English');
-    const [currentView, setCurrentView] = useState<'main' | 'translation' | 'reader'>('main');
+    const [currentView, setCurrentView] = useState<'main' | 'translation' | 'reader' | 'appearance'>('main');
 
     const isBiblePage = location.pathname.startsWith('/bible/read');
 
@@ -75,7 +75,8 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                         )}
                         <h2 className="text-lg font-bold">
                             {currentView === 'main' ? 'Settings & More' :
-                                currentView === 'translation' ? 'Bible Translation' : 'Reader Settings'}
+                                currentView === 'translation' ? 'Bible Translation' :
+                                    currentView === 'reader' ? 'Reader Settings' : 'Appearance'}
                         </h2>
                     </div>
                     <button onClick={onClose} className="p-2 hover:bg-accent/10 rounded-full transition-colors">
@@ -115,6 +116,21 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                                 <div className="flex-1">
                                     <h3 className="font-medium text-foreground">Bible Translation</h3>
                                     <p className="text-xs text-muted-foreground">Current: {translations.find(t => t.id === selectedTranslation)?.shortName || selectedTranslation}</p>
+                                </div>
+                                <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
+                            </button>
+
+                            {/* Appearance Entry Point */}
+                            <button
+                                onClick={() => setCurrentView('appearance')}
+                                className="w-full flex items-center p-4 hover:bg-accent/5 rounded-lg transition-colors group text-left"
+                            >
+                                <div className="p-2 bg-primary/10 rounded-lg mr-4 group-hover:bg-primary/20 transition-colors">
+                                    <Palette className="w-5 h-5 text-primary" />
+                                </div>
+                                <div className="flex-1">
+                                    <h3 className="font-medium text-foreground">Appearance</h3>
+                                    <p className="text-xs text-muted-foreground">Dark mode & display settings</p>
                                 </div>
                                 <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
                             </button>
@@ -214,6 +230,27 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                                     </button>
                                 </div>
                             )}
+                        </div>
+                    ) : currentView === 'appearance' ? (
+                        <div className="p-4 space-y-4 animate-in slide-in-from-right duration-200">
+                            {/* Dark Mode Toggle */}
+                            <div className="flex items-center justify-between p-4 bg-secondary/5 rounded-lg border border-border gap-4">
+                                <div className="flex flex-col gap-1">
+                                    <span className="font-medium flex items-center gap-2">
+                                        {theme === 'dark' ? <Moon className="w-4 h-4 text-primary" /> : <Sun className="w-4 h-4 text-primary" />}
+                                        Dark Mode
+                                    </span>
+                                    <span className="text-xs text-muted-foreground">
+                                        Switch between light and dark themes.
+                                    </span>
+                                </div>
+                                <button
+                                    onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                                    className={`w-12 h-7 rounded-full transition-colors relative flex-shrink-0 ${theme === 'dark' ? 'bg-primary' : 'bg-gray-300 dark:bg-gray-600'}`}
+                                >
+                                    <div className={`w-5 h-5 bg-white rounded-full absolute top-1 transition-transform shadow-sm ${theme === 'dark' ? 'left-6' : 'left-1'}`} />
+                                </button>
+                            </div>
                         </div>
                     ) : (
                         <div className="p-4 space-y-4 animate-in slide-in-from-right duration-200">
