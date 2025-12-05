@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { BookOpen, Loader2, AlertCircle, Grid, ChevronLeft, MessageSquare, Search } from 'lucide-react';
 import { getBooks, getCommentaries, getCommentaryChapter } from '../data/bibleApi';
 import type { BibleBook, Commentary } from '../data/bibleApi';
-import Breadcrumbs from './Breadcrumbs';
+
 import QuickNav from './QuickNav';
 
 // Helper to format raw introduction text
@@ -121,12 +121,7 @@ export default function BibleBookSummary() {
     return (
         <div className="max-w-4xl mx-auto px-4 pb-20 animate-fade-in">
             <div className="flex items-center justify-between mb-4">
-                <Breadcrumbs
-                    items={[
-                        { label: 'Bible', to: '/bible' },
-                        { label: book.name }
-                    ]}
-                />
+
                 <button
                     onClick={() => setShowQuickNav(true)}
                     className="flex items-center gap-2 text-sm font-medium text-primary hover:underline"

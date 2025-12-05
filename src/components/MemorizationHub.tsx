@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Brain, Layers, Crown, Quote, Hash } from 'lucide-react';
-import Breadcrumbs from './Breadcrumbs';
+
 
 export default function MemorizationHub() {
     const summaryTools = [
@@ -66,12 +66,7 @@ export default function MemorizationHub() {
 
     return (
         <div className="max-w-4xl mx-auto space-y-8 animate-fade-in px-4">
-            <Breadcrumbs
-                items={[
-                    { label: 'Bible', to: '/bible' },
-                    { label: 'Memorization Tools' }
-                ]}
-            />
+
 
             <div className="text-center space-y-4">
                 <h1 className="text-3xl font-bold text-foreground">Memorization Tools</h1>

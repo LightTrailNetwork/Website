@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Book, FileText, Loader2 } from 'lucide-react';
 import { useParams, useNavigate } from 'react-router-dom';
 import mnemonicsData from '../data/bibleMnemonics.json';
-import Breadcrumbs from './Breadcrumbs';
+
 import { getBooks, getChapter, type BibleBook, type BibleChapter } from '../data/bibleApi';
 import { formatPassageText } from '../utils/bibleUtils';
 import { useSettings } from '../context/SettingsContext';
@@ -182,27 +182,7 @@ export default function HierarchicalMemory() {
         }).join(' ');
     };
 
-    // Breadcrumb Logic
-    const breadcrumbItems: { label: string; to?: string }[] = [
-        { label: 'Bible', to: '/bible' },
-        { label: 'Memorization Tools', to: '/bible/memory' },
-    ];
 
-    if (!selectedBookKey) {
-        breadcrumbItems.push({ label: 'Hierarchical', to: '#' });
-    } else {
-        breadcrumbItems.push({ label: 'Hierarchical', to: '/bible/memory/hierarchical' });
-
-        if (selectedChapter) {
-            breadcrumbItems.push({
-                label: selectedBookName || selectedBookKey || 'Book',
-                to: `/bible/memory/hierarchical/${selectedBookObj?.name.replace(/\s+/g, '') || bookId}`
-            });
-            breadcrumbItems.push({ label: `Chapter ${selectedChapter}` });
-        } else {
-            breadcrumbItems.push({ label: selectedBookName || selectedBookKey || 'Book' });
-        }
-    }
 
     if (loading) {
         return (
@@ -217,11 +197,7 @@ export default function HierarchicalMemory() {
             {/* Header */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
                 <div className="flex-1 min-w-0 overflow-x-auto">
-                    <Breadcrumbs
-                        items={breadcrumbItems}
-                        showBackButton={true}
-                        className="mb-0"
-                    />
+
                 </div>
 
                 {/* Translation Indicator */}

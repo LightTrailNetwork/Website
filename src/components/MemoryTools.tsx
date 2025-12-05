@@ -1,17 +1,11 @@
 import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
-import Breadcrumbs from './Breadcrumbs';
+
 
 export function GraceView() {
     return (
         <div className="max-w-4xl mx-auto space-y-8 animate-fade-in px-4">
-            <Breadcrumbs
-                items={[
-                    { label: 'Bible', to: '/bible' },
-                    { label: 'Memorization Tools', to: '/bible/memory' },
-                    { label: 'GRACE' }
-                ]}
-            />
+
 
             <div className="bg-card border border-border rounded-xl p-8 text-center space-y-6 shadow-lg">
                 <h1 className="text-4xl font-bold text-blue-500">GRACE</h1>
@@ -50,13 +44,7 @@ export function GraceView() {
 export function CrownPathView() {
     return (
         <div className="max-w-4xl mx-auto space-y-8 animate-fade-in px-4">
-            <Breadcrumbs
-                items={[
-                    { label: 'Bible', to: '/bible' },
-                    { label: 'Memorization Tools', to: '/bible/memory' },
-                    { label: 'CROWN PATH' }
-                ]}
-            />
+
 
             <div className="bg-card border border-border rounded-xl p-8 text-center space-y-6 shadow-lg">
                 <h1 className="text-4xl font-bold text-yellow-500">CROWN PATH</h1>
@@ -87,13 +75,7 @@ export function CrownPathView() {
 export function John316View() {
     return (
         <div className="max-w-4xl mx-auto space-y-8 animate-fade-in px-4">
-            <Breadcrumbs
-                items={[
-                    { label: 'Bible', to: '/bible' },
-                    { label: 'Memorization Tools', to: '/bible/memory' },
-                    { label: 'John 3:16' }
-                ]}
-            />
+
 
             <div className="bg-card border border-border rounded-xl p-8 text-center space-y-6 shadow-lg">
                 <h1 className="text-4xl font-bold text-red-500">John 3:16</h1>
@@ -109,13 +91,7 @@ export function John316View() {
 export function GatherAroundView() {
     return (
         <div className="max-w-4xl mx-auto space-y-8 animate-fade-in px-4">
-            <Breadcrumbs
-                items={[
-                    { label: 'Bible', to: '/bible' },
-                    { label: 'Memorization Tools', to: '/bible/memory' },
-                    { label: 'GATHER AROUND' }
-                ]}
-            />
+
 
             <div className="bg-card border border-border rounded-xl p-8 text-center space-y-6 shadow-lg">
                 <h1 className="text-4xl font-bold text-purple-500">GATHER AROUND...</h1>

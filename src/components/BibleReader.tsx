@@ -4,7 +4,7 @@ import { useParams, useNavigate, useLocation, useNavigationType, Link } from 're
 import { ChevronLeft, ChevronRight, ChevronDown, ChevronUp, BookOpen, Loader2, AlertCircle, MessageSquare, Grid, Globe, X, Search, Filter, Eye, Link as LinkIcon, Columns, ArrowLeft, ArrowRight, History } from 'lucide-react';
 import { getChapter, getBooks, getTranslations, getCommentaries, getCommentaryChapter, getProfiles, getProfile, getDatasetChapter } from '../data/bibleApi';
 import type { BibleChapter, ChapterContent, BibleBook, BibleTranslation, Commentary, CommentaryChapter, Profile, ProfileContent, ChapterFootnote, DatasetBookChapter } from '../data/bibleApi';
-import Breadcrumbs from './Breadcrumbs';
+
 import QuickNav from './QuickNav';
 import { diffVerses, type DiffToken } from '../utils/diffUtils';
 import { formatPassageText, shouldInsertSpace, formatChapterContent } from '../utils/bibleUtils';
@@ -1284,16 +1284,7 @@ export default function BibleReader() {
                     onTouchMove={onTouchMove}
                     onTouchEnd={onTouchEnd}
                 >
-                    <div className="hidden sm:block px-4 sm:px-0">
-                        <Breadcrumbs
-                            items={[
-                                { label: 'Bible', to: '/bible' },
-                                { label: bsbChapter.book.name, to: `/bible/read/${bsbChapter.book.name.replace(/\s+/g, '')}` },
-                                { label: `Chapter ${bsbChapter.chapter.number}` }
-                            ]}
-                            className="mb-1"
-                        />
-                    </div>
+
                     {/* Navigation Header */}
                     <div id="bible-nav-header" className={`sticky z-10 bg-background/80 backdrop-blur-md border-b border-border mb-0 sm:mb-6 shadow-sm flex flex-col transition-all duration-300 sm:rounded-b-xl -mx-4 sm:mx-0 px-0 sm:px-0 ${showMnemonics ? 'py-0 sm:py-0' : ''} ${scrollDirection === 'down' && !isAtTop ? 'top-0' : 'top-16'}`}>
                         {/* Book Mnemonic */}
