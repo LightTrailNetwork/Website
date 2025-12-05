@@ -77,4 +77,22 @@
   body {
     @apply bg-background text-foreground font-sans antialiased;
   }
+
+  /* Modern Scrollbar Styles */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-secondary/30;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-muted-foreground/30 rounded-full border-2 border-transparent bg-clip-content hover:bg-muted-foreground/50 transition-colors;
+  }
+
+  ::-webkit-scrollbar-corner {
+    @apply bg-transparent;
+  }
 }
