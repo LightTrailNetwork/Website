@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
-import { Search, ChevronLeft, X, BookOpen, Book, Brain } from 'lucide-react';
+import { Search, ChevronLeft, X, BookOpen, Book, Brain, ChevronDown, ChevronRight, ChevronsDown, ChevronsUp } from 'lucide-react';
 import type { BibleBook } from '../data/bibleApi';
 import { getTestamentMnemonic, getBookMnemonicText } from '../utils/mnemonicUtils';
 
@@ -19,7 +19,38 @@ export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigat
     const [bookSearchQuery, setBookSearchQuery] = useState('');
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [activeTab, setActiveTab] = useState<'books' | 'mnemonics'>('books');
+    const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({});
     const inputRef = useRef<HTMLInputElement>(null);
+
+    const otGroups = [
+        { name: "FIRST", start: 1, end: 5, label: "The Law" },
+        { name: "IS THE STORY OF", start: 6, end: 17, label: "History" },
+        { name: "TRUTH", start: 18, end: 22, label: "Poetry & Wisdom" },
+        { name: "ABOUT", start: 23, end: 27, label: "Major Prophets" },
+        { name: "EVERYONE'S SIN", start: 28, end: 39, label: "Minor Prophets" }
+    ];
+
+    const ntGroups = [
+        { name: "JESUS", start: 40, end: 44, label: "Gospels & Acts" },
+        { name: "SENT HIS SPIRIT", start: 45, end: 57, label: "Paul's Epistles" },
+        { name: "TO ALL OF US", start: 58, end: 66, label: "General Epistles & Revelation" }
+    ];
+
+    const toggleSection = (name: string) => {
+        setCollapsedSections(prev => ({ ...prev, [name]: !prev[name] }));
+    };
+
+    const toggleAll = (groups: { name: string }[], collapse: boolean) => {
+        const newState = { ...collapsedSections };
+        groups.forEach(g => {
+            newState[g.name] = collapse;
+        });
+        setCollapsedSections(newState);
+    };
+
+    const areAllCollapsed = (groups: { name: string }[]) => {
+        return groups.every(g => collapsedSections[g.name]);
+    };
 
     useEffect(() => {
         if (isOpen) {
@@ -319,66 +350,85 @@ export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigat
                                     </p>
                                 </div>
 
+                                <div className="flex justify-end">
+                                    <button
+                                        onClick={() => toggleAll(otGroups, !areAllCollapsed(otGroups))}
+                                        className="text-xs flex items-center gap-1 text-primary hover:text-primary/80 transition-colors font-medium"
+                                    >
+                                        {areAllCollapsed(otGroups) ? (
+                                            <>Expand All <ChevronsDown className="w-3 h-3" /></>
+                                        ) : (
+                                            <>Collapse All <ChevronsUp className="w-3 h-3" /></>
+                                        )}
+                                    </button>
+                                </div>
+
                                 {/* OT Groups */}
-                                {[
-                                    { name: "FIRST", start: 1, end: 5, label: "The Law" },
-                                    { name: "IS THE STORY OF", start: 6, end: 17, label: "History" },
-                                    { name: "TRUTH", start: 18, end: 22, label: "Poetry & Wisdom" },
-                                    { name: "ABOUT", start: 23, end: 27, label: "Major Prophets" },
-                                    { name: "EVERYONE'S SIN", start: 28, end: 39, label: "Minor Prophets" }
-                                ].map(group => (
-                                    <div key={group.name} className="space-y-3">
-                                        <div className="flex items-center gap-2">
-                                            <h4 className="text-sm font-bold text-primary uppercase tracking-wider px-1">{group.name}</h4>
-                                            <div className="h-[1px] flex-1 bg-border/50" />
-                                            <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest text-right">{group.label}</span>
+                                {otGroups.map(group => {
+                                    const isCollapsed = collapsedSections[group.name];
+                                    return (
+                                        <div key={group.name} className="space-y-3">
+                                            <button
+                                                onClick={() => toggleSection(group.name)}
+                                                className="w-full flex items-center gap-2 group select-none"
+                                            >
+                                                <div className="p-1 rounded-md group-hover:bg-secondary/10 transition-colors text-primary">
+                                                    {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                                                </div>
+                                                <h4 className="text-sm font-bold text-primary uppercase tracking-wider px-1">{group.name}</h4>
+                                                <div className="h-[1px] flex-1 bg-border/50" />
+                                                <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest text-right">{group.label}</span>
+                                            </button>
+
+                                            {!isCollapsed && (
+                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 animate-in slide-in-from-top-2 duration-200">
+                                                    {filteredBooks.filter(b => b.order >= group.start && b.order <= group.end).map(book => {
+                                                        const mnemonic = getBookMnemonicText(book.id);
+                                                        const isActive = initialBook?.id === book.id;
+                                                        return (
+                                                            <div
+                                                                key={book.id}
+                                                                id={`mnemonic-book-${book.id}`}
+                                                                className={`flex items-stretch rounded-lg border bg-card overflow-hidden transition-colors min-h-[70px] ${isActive
+                                                                    ? 'border-primary ring-1 ring-primary shadow-sm'
+                                                                    : 'border-border hover:border-primary/50'
+                                                                    }`}
+                                                            >
+                                                                <button
+                                                                    onClick={() => {
+                                                                        handleBookSelect(book);
+                                                                        setActiveTab('books');
+                                                                    }}
+                                                                    className="flex-1 px-4 py-3 text-left hover:bg-secondary/10 transition-colors flex flex-col justify-center gap-1"
+                                                                >
+                                                                    <span className="font-bold text-sm">{book.name}</span>
+                                                                    {mnemonic && (
+                                                                        <span className="text-xs text-muted-foreground leading-snug line-clamp-2">
+                                                                            <span className="font-bold text-primary">{mnemonic.charAt(0)}</span>
+                                                                            {mnemonic.slice(1)}
+                                                                        </span>
+                                                                    )}
+                                                                </button>
+                                                                <div className="w-[1px] bg-border" />
+                                                                <button
+                                                                    onClick={(e) => {
+                                                                        e.stopPropagation();
+                                                                        onNavigate(book.id, 1);
+                                                                        handleClose();
+                                                                    }}
+                                                                    className="w-[50px] flex items-center justify-center text-sm font-bold text-muted-foreground hover:text-primary hover:bg-secondary/10 transition-colors bg-secondary/5"
+                                                                    title={`Go to ${book.name} Chapter 1`}
+                                                                >
+                                                                    1
+                                                                </button>
+                                                            </div>
+                                                        );
+                                                    })}
+                                                </div>
+                                            )}
                                         </div>
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                            {filteredBooks.filter(b => b.order >= group.start && b.order <= group.end).map(book => {
-                                                const mnemonic = getBookMnemonicText(book.id);
-                                                const isActive = initialBook?.id === book.id;
-                                                return (
-                                                    <div
-                                                        key={book.id}
-                                                        id={`mnemonic-book-${book.id}`}
-                                                        className={`flex items-stretch rounded-lg border bg-card overflow-hidden transition-colors min-h-[70px] ${isActive
-                                                            ? 'border-primary ring-1 ring-primary shadow-sm'
-                                                            : 'border-border hover:border-primary/50'
-                                                            }`}
-                                                    >
-                                                        <button
-                                                            onClick={() => {
-                                                                handleBookSelect(book);
-                                                                setActiveTab('books');
-                                                            }}
-                                                            className="flex-1 px-4 py-3 text-left hover:bg-secondary/10 transition-colors flex flex-col justify-center gap-1"
-                                                        >
-                                                            <span className="font-bold text-sm">{book.name}</span>
-                                                            {mnemonic && (
-                                                                <span className="text-xs text-muted-foreground leading-snug line-clamp-2">
-                                                                    <span className="font-bold text-primary">{mnemonic.charAt(0)}</span>
-                                                                    {mnemonic.slice(1)}
-                                                                </span>
-                                                            )}
-                                                        </button>
-                                                        <div className="w-[1px] bg-border" />
-                                                        <button
-                                                            onClick={(e) => {
-                                                                e.stopPropagation();
-                                                                onNavigate(book.id, 1);
-                                                                handleClose();
-                                                            }}
-                                                            className="w-[50px] flex items-center justify-center text-sm font-bold text-muted-foreground hover:text-primary hover:bg-secondary/10 transition-colors bg-secondary/5"
-                                                            title={`Go to ${book.name} Chapter 1`}
-                                                        >
-                                                            1
-                                                        </button>
-                                                    </div>
-                                                );
-                                            })}
-                                        </div>
-                                    </div>
-                                ))}
+                                    );
+                                })}
                             </div>
 
                             {/* New Testament Section */}
@@ -390,64 +440,85 @@ export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigat
                                     </p>
                                 </div>
 
+                                <div className="flex justify-end">
+                                    <button
+                                        onClick={() => toggleAll(ntGroups, !areAllCollapsed(ntGroups))}
+                                        className="text-xs flex items-center gap-1 text-primary hover:text-primary/80 transition-colors font-medium"
+                                    >
+                                        {areAllCollapsed(ntGroups) ? (
+                                            <>Expand All <ChevronsDown className="w-3 h-3" /></>
+                                        ) : (
+                                            <>Collapse All <ChevronsUp className="w-3 h-3" /></>
+                                        )}
+                                    </button>
+                                </div>
+
                                 {/* NT Groups */}
-                                {[
-                                    { name: "JESUS", start: 40, end: 44, label: "Gospels & Acts" },
-                                    { name: "SENT HIS SPIRIT", start: 45, end: 57, label: "Paul's Epistles" },
-                                    { name: "TO ALL OF US", start: 58, end: 66, label: "General Epistles & Revelation" }
-                                ].map(group => (
-                                    <div key={group.name} className="space-y-3">
-                                        <div className="flex items-center gap-2">
-                                            <h4 className="text-sm font-bold text-primary uppercase tracking-wider px-1">{group.name}</h4>
-                                            <div className="h-[1px] flex-1 bg-border/50" />
-                                            <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest text-right">{group.label}</span>
+                                {ntGroups.map(group => {
+                                    const isCollapsed = collapsedSections[group.name];
+                                    return (
+                                        <div key={group.name} className="space-y-3">
+                                            <button
+                                                onClick={() => toggleSection(group.name)}
+                                                className="w-full flex items-center gap-2 group select-none"
+                                            >
+                                                <div className="p-1 rounded-md group-hover:bg-secondary/10 transition-colors text-primary">
+                                                    {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                                                </div>
+                                                <h4 className="text-sm font-bold text-primary uppercase tracking-wider px-1">{group.name}</h4>
+                                                <div className="h-[1px] flex-1 bg-border/50" />
+                                                <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest text-right">{group.label}</span>
+                                            </button>
+
+                                            {!isCollapsed && (
+                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 animate-in slide-in-from-top-2 duration-200">
+                                                    {filteredBooks.filter(b => b.order >= group.start && b.order <= group.end).map(book => {
+                                                        const mnemonic = getBookMnemonicText(book.id);
+                                                        const isActive = initialBook?.id === book.id;
+                                                        return (
+                                                            <div
+                                                                key={book.id}
+                                                                id={`mnemonic-book-${book.id}`}
+                                                                className={`flex items-stretch rounded-lg border bg-card overflow-hidden transition-colors min-h-[70px] ${isActive
+                                                                    ? 'border-primary ring-1 ring-primary shadow-sm'
+                                                                    : 'border-border hover:border-primary/50'
+                                                                    }`}
+                                                            >
+                                                                <button
+                                                                    onClick={() => {
+                                                                        handleBookSelect(book);
+                                                                        setActiveTab('books');
+                                                                    }}
+                                                                    className="flex-1 px-4 py-3 text-left hover:bg-secondary/10 transition-colors flex flex-col justify-center gap-1"
+                                                                >
+                                                                    <span className="font-bold text-sm">{book.name}</span>
+                                                                    {mnemonic && (
+                                                                        <span className="text-xs text-muted-foreground leading-snug line-clamp-2">
+                                                                            <span className="font-bold text-primary">{mnemonic.charAt(0)}</span>
+                                                                            {mnemonic.slice(1)}
+                                                                        </span>
+                                                                    )}
+                                                                </button>
+                                                                <div className="w-[1px] bg-border" />
+                                                                <button
+                                                                    onClick={(e) => {
+                                                                        e.stopPropagation();
+                                                                        onNavigate(book.id, 1);
+                                                                        handleClose();
+                                                                    }}
+                                                                    className="w-[50px] flex items-center justify-center text-sm font-bold text-muted-foreground hover:text-primary hover:bg-secondary/10 transition-colors bg-secondary/5"
+                                                                    title={`Go to ${book.name} Chapter 1`}
+                                                                >
+                                                                    1
+                                                                </button>
+                                                            </div>
+                                                        );
+                                                    })}
+                                                </div>
+                                            )}
                                         </div>
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                            {filteredBooks.filter(b => b.order >= group.start && b.order <= group.end).map(book => {
-                                                const mnemonic = getBookMnemonicText(book.id);
-                                                const isActive = initialBook?.id === book.id;
-                                                return (
-                                                    <div
-                                                        key={book.id}
-                                                        id={`mnemonic-book-${book.id}`}
-                                                        className={`flex items-stretch rounded-lg border bg-card overflow-hidden transition-colors min-h-[70px] ${isActive
-                                                            ? 'border-primary ring-1 ring-primary shadow-sm'
-                                                            : 'border-border hover:border-primary/50'
-                                                            }`}
-                                                    >
-                                                        <button
-                                                            onClick={() => {
-                                                                handleBookSelect(book);
-                                                                setActiveTab('books');
-                                                            }}
-                                                            className="flex-1 px-4 py-3 text-left hover:bg-secondary/10 transition-colors flex flex-col justify-center gap-1"
-                                                        >
-                                                            <span className="font-bold text-sm">{book.name}</span>
-                                                            {mnemonic && (
-                                                                <span className="text-xs text-muted-foreground leading-snug line-clamp-2">
-                                                                    <span className="font-bold text-primary">{mnemonic.charAt(0)}</span>
-                                                                    {mnemonic.slice(1)}
-                                                                </span>
-                                                            )}
-                                                        </button>
-                                                        <div className="w-[1px] bg-border" />
-                                                        <button
-                                                            onClick={(e) => {
-                                                                e.stopPropagation();
-                                                                onNavigate(book.id, 1);
-                                                                handleClose();
-                                                            }}
-                                                            className="w-[50px] flex items-center justify-center text-sm font-bold text-muted-foreground hover:text-primary hover:bg-secondary/10 transition-colors bg-secondary/5"
-                                                            title={`Go to ${book.name} Chapter 1`}
-                                                        >
-                                                            1
-                                                        </button>
-                                                    </div>
-                                                );
-                                            })}
-                                        </div>
-                                    </div>
-                                ))}
+                                    );
+                                })}
                             </div>
                         </div>
                     </div>

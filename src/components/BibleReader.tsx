@@ -1453,33 +1453,37 @@ export default function BibleReader() {
                             (() => {
                                 const cMnemonic = getChapterMnemonic(resolvedBookId, parseInt(chapter));
                                 if (!cMnemonic) return null;
+
+                                // Get verse mnemonic if active
+                                const vMnemonic = activeVerse ? getVerseMnemonic(resolvedBookId, parseInt(chapter), activeVerse) : null;
+                                const highlightIdx = activeVerse ? getMnemonicHighlightIndex(cMnemonic, activeVerse) : -1;
+
                                 return (
-                                    <div
-                                        className="w-full bg-background/95 backdrop-blur border-t border-border/50 px-8 py-1 flex overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']"
-                                        onTouchStart={(e) => e.stopPropagation()}
-                                        onTouchMove={(e) => e.stopPropagation()}
-                                        onTouchEnd={(e) => e.stopPropagation()}
-                                    >
-                                        <p className="text-[10px] italic text-muted-foreground/70 text-center whitespace-nowrap min-w-max px-4 mx-auto">
-                                            {(() => {
-                                                const highlightIdx = activeVerse ? getMnemonicHighlightIndex(cMnemonic, activeVerse) : -1;
-                                                if (highlightIdx === -1) return cMnemonic;
-
-                                                // Get verse mnemonic if active
-                                                const vMnemonic = activeVerse ? getVerseMnemonic(resolvedBookId, parseInt(chapter), activeVerse) : null;
-
-                                                return cMnemonic.split('').map((char, i) => (
+                                    <div className="relative z-10">
+                                        <div
+                                            className="w-full bg-background/95 backdrop-blur border-t border-border/50 px-8 py-1 flex overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']"
+                                            onTouchStart={(e) => e.stopPropagation()}
+                                            onTouchMove={(e) => e.stopPropagation()}
+                                            onTouchEnd={(e) => e.stopPropagation()}
+                                        >
+                                            <p className="text-[10px] italic text-muted-foreground/70 text-center whitespace-nowrap min-w-max px-4 mx-auto">
+                                                {cMnemonic.split('').map((char, i) => (
                                                     <span key={i} className={`relative inline-flex flex-col items-center ${i === highlightIdx ? "text-primary font-bold scale-110" : ""}`}>
                                                         {char === ' ' ? '\u00A0' : char}
-                                                        {i === highlightIdx && vMnemonic && (
-                                                            <span className="absolute top-full mt-0.5 left-1/2 -translate-x-1/2 text-[8px] leading-none font-normal normal-case text-primary bg-primary/10 px-1 py-0.5 rounded whitespace-nowrap z-20 pointer-events-none">
-                                                                {vMnemonic}
-                                                            </span>
-                                                        )}
                                                     </span>
-                                                ));
-                                            })()}
-                                        </p>
+                                                ))}
+                                            </p>
+                                        </div>
+
+                                        {/* Verse Mnemonic Row - Absolute positioned below */}
+                                        {vMnemonic && (
+                                            <div className="absolute top-full left-0 right-0 flex justify-center pointer-events-none mt-1">
+                                                <span className="text-[10px] font-mono text-muted-foreground/90 bg-background/95 backdrop-blur-sm px-2 py-0.5 rounded-full border border-border/50 shadow-sm whitespace-normal text-center max-w-[90%]">
+                                                    <span className="text-primary font-bold">{vMnemonic.charAt(0)}</span>
+                                                    {vMnemonic.slice(1)}
+                                                </span>
+                                            </div>
+                                        )}
                                     </div>
                                 );
                             })()
