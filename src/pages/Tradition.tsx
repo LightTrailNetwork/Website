@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BookOpen, Info, ZoomIn, ZoomOut, RotateCcw } from "lucide-react";
+import { BookOpen, Info, ZoomIn, ZoomOut, RotateCcw, Scroll } from "lucide-react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import PyramidSVG from "../components/PyramidSVG";
 import PassageList from "../components/PassageList";
@@ -34,12 +34,15 @@ export default function Tradition() {
   const handleLetterHover = (letter: string | null) => {
     setHoveredLetter(letter);
   };
-
   return (
     <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
       {/* Introduction Section */}
       <div className="text-center space-y-4">
         <div className="max-w-3xl mx-auto">
+          <h2 className="text-xl font-semibold text-foreground text-center mb-4 flex items-center justify-center gap-2">
+            <Scroll className="w-5 h-5 text-primary" />
+            The Tradition
+          </h2>
           <p
             className="text-lg text-muted-foreground leading-relaxed font-light whitespace-pre-line"
             dangerouslySetInnerHTML={{
@@ -160,10 +163,10 @@ export default function Tradition() {
             />
           </div>
         </div>
-      </div >
+      </div>
 
       {/* Mobile: Passage List Below Pyramid */}
-      < div className="lg:hidden space-y-4" >
+      <div className="lg:hidden space-y-4">
         <h2 className="text-xl font-semibold text-foreground text-center">
           Scripture Passages
         </h2>
@@ -175,7 +178,7 @@ export default function Tradition() {
             onLetterHover={handleLetterHover}
           />
         </div>
-      </div >
-    </div >
+      </div>
+    </div>
   );
 }
