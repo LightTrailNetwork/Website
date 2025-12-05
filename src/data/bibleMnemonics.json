@@ -1,11 +1,11 @@
-{
+﻿{
     "meta": {
         "version": "1.0",
         "description": "Hierarchical mnemonics for Bible memorization"
     },
     "testaments": {
         "OT": {
-            "mnemonic": "FIRST IS THE STORY OF TRUTH ABOUT EVERYONE'S SIN"
+            "mnemonic": "FIRST IS THE STORY OF TRUTH ABOUT EVERYONE\u0027S SIN"
         },
         "NT": {
             "mnemonic": "JESUS SENT HIS SPIRIT TO ALL OF US"
@@ -218,7 +218,7 @@
             }
         },
         "EXO": {
-            "mnemonic": "ISRAEL IS RESCUED FROM EGYPT AND GIVEN GOD'S LAWS",
+            "mnemonic": "ISRAEL IS RESCUED FROM EGYPT AND GIVEN GOD\u0027S LAWS",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -645,7 +645,7 @@
             }
         },
         "DEU": {
-            "mnemonic": "THE SECOND READING OF GOD'S LAWS VIA MOSES",
+            "mnemonic": "THE SECOND READING OF GOD\u0027S LAWS VIA MOSES",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -997,7 +997,7 @@
             }
         },
         "1SA": {
-            "mnemonic": "HOW GOD CHOSE ISRAEL'S FIRST TWO KINGS",
+            "mnemonic": "HOW GOD CHOSE ISRAEL\u0027S FIRST TWO KINGS",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -1425,7 +1425,7 @@
             }
         },
         "1CH": {
-            "mnemonic": "OVERVIEW OF ISRAEL AND DAVID'S RULE",
+            "mnemonic": "OVERVIEW OF ISRAEL AND DAVID\u0027S RULE",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -2839,7 +2839,7 @@
             }
         },
         "ISA": {
-            "mnemonic": "ANNOUNCES GOD'S JUDGMENT AND SALVATION THROUGH THE SUFFERING SERVANT MESSIAH",
+            "mnemonic": "ANNOUNCES GOD\u0027S JUDGMENT AND SALVATION THROUGH THE SUFFERING SERVANT MESSIAH",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -4370,82 +4370,82 @@
                     "mnemonic": "SON ASCENDS; NEW DISCIPLE NAMED",
                     "verses": {
                         "1": {
-                            "mnemonic": "Summary of the Book of Luke"
+                            "mnemonic": "Stated former book about Jesus"
                         },
                         "2": {
-                            "mnemonic": "Orders to Apostles"
+                            "mnemonic": "Orders given to apostles"
                         },
                         "3": {
-                            "mnemonic": "New life proven"
+                            "mnemonic": "New proofs of resurrection life"
                         },
                         "4": {
-                            "mnemonic": "Await the gift here in Jerusalem"
+                            "mnemonic": "Await the Father\u0027s promise"
                         },
                         "5": {
-                            "mnemonic": "Spirit baptism soon"
+                            "mnemonic": "Spirit baptism coming soon"
                         },
                         "6": {
-                            "mnemonic": "Coming kingdom now?"
+                            "mnemonic": "Christ\u0027s kingdom question asked"
                         },
                         "7": {
-                            "mnemonic": "Exact times hidden"
+                            "mnemonic": "Exact times known only by Father"
                         },
                         "8": {
-                            "mnemonic": "National witnesses when Spirit power comes"
+                            "mnemonic": "Nations to witness power"
                         },
                         "9": {
-                            "mnemonic": "Departed in a cloud"
+                            "mnemonic": "Disciples watch Him ascend"
                         },
                         "10": {
-                            "mnemonic": "Suddenly angels appear"
+                            "mnemonic": "Sky gazers warned by angels"
                         },
                         "11": {
-                            "mnemonic": "Next arrival like His departure"
+                            "mnemonic": "Next He returns same way"
                         },
                         "12": {
-                            "mnemonic": "Enter Jerusalem after leaving Mt of Olives"
+                            "mnemonic": "Entered Jerusalem from Olivet"
                         },
                         "13": {
-                            "mnemonic": "Went to upper room, all apostles"
+                            "mnemonic": "Waiting in upper room"
                         },
                         "14": {
-                            "mnemonic": "Devoted together in prayer"
+                            "mnemonic": "Devoted in prayer with women"
                         },
                         "15": {
-                            "mnemonic": "Initial speech from Peter"
+                            "mnemonic": "In those days Peter stood"
                         },
                         "16": {
-                            "mnemonic": "Scripture had to be fulfilled"
+                            "mnemonic": "Scripture fulfilled concerning Judas"
                         },
                         "17": {
-                            "mnemonic": "Counted with us"
+                            "mnemonic": "Counted among us in ministry"
                         },
                         "18": {
-                            "mnemonic": "Intestines of Judas spilled"
+                            "mnemonic": "Iniquity\u0027s wage bought field"
                         },
                         "19": {
-                            "mnemonic": "People called it field of blood"
+                            "mnemonic": "Place called Akeldama known"
                         },
                         "20": {
-                            "mnemonic": "Let another take his place"
+                            "mnemonic": "Let habitation be desolate"
                         },
                         "21": {
-                            "mnemonic": "Experienced companion"
+                            "mnemonic": "Experienced disciple required"
                         },
                         "22": {
-                            "mnemonic": "Needed witness"
+                            "mnemonic": "Named as witness of resurrection"
                         },
                         "23": {
-                            "mnemonic": "Alternate candidates"
+                            "mnemonic": "Appointed two candidates"
                         },
                         "24": {
-                            "mnemonic": "Master knows hearts"
+                            "mnemonic": "Master chosen revealed by prayer"
                         },
                         "25": {
-                            "mnemonic": "Exited ministry (Judas)"
+                            "mnemonic": "Enforce apostolic ministry"
                         },
                         "26": {
-                            "mnemonic": "Designated Matthias by casting lots"
+                            "mnemonic": "Dice/Lots cast for Matthias"
                         }
                     }
                 },
@@ -4453,145 +4453,145 @@
                     "mnemonic": "PENTECOST TONGUES FALL AS PETER PREACHES CHRIST AS LORD",
                     "verses": {
                         "1": {
-                            "mnemonic": "Pentecost believers together"
+                            "mnemonic": "Pentecost day arrived"
                         },
                         "2": {
-                            "mnemonic": "Expectant disciples assembled"
+                            "mnemonic": "Entire house filled with sound"
                         },
                         "3": {
-                            "mnemonic": "Noise from heaven rushes"
+                            "mnemonic": "Noises of wind and fire"
                         },
                         "4": {
-                            "mnemonic": "Tongues like fire appear"
+                            "mnemonic": "Tongues of Spirit utterance"
                         },
                         "5": {
-                            "mnemonic": "Each is filled Spirit"
+                            "mnemonic": "Each nation represented there"
                         },
                         "6": {
-                            "mnemonic": "Crowd hears many languages"
+                            "mnemonic": "Crowd heard own languages"
                         },
                         "7": {
-                            "mnemonic": "Observers are bewildered"
+                            "mnemonic": "Observers were amazed"
                         },
                         "8": {
-                            "mnemonic": "Some ask what means"
+                            "mnemonic": "Some asked how this is"
                         },
                         "9": {
-                            "mnemonic": "Those mocking claim drunkenness"
+                            "mnemonic": "Tribes from everywhere hear"
                         },
                         "10": {
-                            "mnemonic": "Then Peter stands preaching"
+                            "mnemonic": "They hear God\u0027s works"
                         },
                         "11": {
-                            "mnemonic": "Opens message to Israel"
+                            "mnemonic": "Others mocked new wine"
                         },
                         "12": {
-                            "mnemonic": "Narrates foretold prophecy"
+                            "mnemonic": "No, Peter stands to speak"
                         },
                         "13": {
-                            "mnemonic": "God declares last days"
+                            "mnemonic": "Give ear to my words"
                         },
                         "14": {
-                            "mnemonic": "Universal Spirit outpouring promised"
+                            "mnemonic": "Understood not to be drunk"
                         },
                         "15": {
-                            "mnemonic": "Everyone who calls saved"
+                            "mnemonic": "Explained by prophet Joel"
                         },
                         "16": {
-                            "mnemonic": "Signs above and below"
+                            "mnemonic": "Spirit poured on all flesh"
                         },
                         "17": {
-                            "mnemonic": "Final great day coming"
+                            "mnemonic": "Flesh will prophesy"
                         },
                         "18": {
-                            "mnemonic": "Address now men Israel"
+                            "mnemonic": "Also on servants poured"
                         },
                         "19": {
-                            "mnemonic": "Life of Jesus recounted"
+                            "mnemonic": "Lord\u0027s signs in heaven/earth"
                         },
                         "20": {
-                            "mnemonic": "Lawless hands had crucified"
+                            "mnemonic": "Lord\u0027s day coming soon"
                         },
                         "21": {
-                            "mnemonic": "Almighty God raised Him"
+                            "mnemonic": "All calling on Lord saved"
                         },
                         "22": {
-                            "mnemonic": "Scripture about David explained"
+                            "mnemonic": "Signs attested Jesus to you"
                         },
                         "23": {
-                            "mnemonic": "Prophet foresaw resurrection"
+                            "mnemonic": "Plan of God delivered Him"
                         },
                         "24": {
-                            "mnemonic": "Exalted Messiah not abandoned"
+                            "mnemonic": "Ended death\u0027s agony"
                         },
                         "25": {
-                            "mnemonic": "Throne promised to David"
+                            "mnemonic": "Tongue rejoices (David saw)"
                         },
                         "26": {
-                            "mnemonic": "Eyes see fulfilled promise"
+                            "mnemonic": "Exalted One saw no decay"
                         },
                         "27": {
-                            "mnemonic": "Resurrection witnesses testify"
+                            "mnemonic": "Resurrection spoken by David"
                         },
                         "28": {
-                            "mnemonic": "Poured out Spirit from Jesus"
+                            "mnemonic": "Peter interprets the psalm"
                         },
                         "29": {
-                            "mnemonic": "Reassures this not drunkenness"
+                            "mnemonic": "Remains of David in tomb"
                         },
                         "30": {
-                            "mnemonic": "Explains Jesus made Lord"
+                            "mnemonic": "Enthroned descendant promised"
                         },
                         "31": {
-                            "mnemonic": "All house of Israel urged"
+                            "mnemonic": "Anticipated Christ\u0027s rising"
                         },
                         "32": {
-                            "mnemonic": "Cut to heart deeply"
+                            "mnemonic": "Christ raised; we witnessed"
                         },
                         "33": {
-                            "mnemonic": "Hearers ask what to do"
+                            "mnemonic": "Holy Spirit poured out now"
                         },
                         "34": {
-                            "mnemonic": "Exhorts them repent, be baptized"
+                            "mnemonic": "Exalted Lord at right hand"
                         },
                         "35": {
-                            "mnemonic": "Spirit gift promised to many"
+                            "mnemonic": "Sit until enemies footstool"
                         },
                         "36": {
-                            "mnemonic": "Children and far-off included"
+                            "mnemonic": "Crucified Jesus is Lord"
                         },
                         "37": {
-                            "mnemonic": "He keeps warning, pleading"
+                            "mnemonic": "Hearts cut; what do we do?"
                         },
                         "38": {
-                            "mnemonic": "Rescued ones separate themselves"
+                            "mnemonic": "Repent and be baptized all"
                         },
                         "39": {
-                            "mnemonic": "Immersed now in teaching"
+                            "mnemonic": "Inherit promise for children"
                         },
                         "40": {
-                            "mnemonic": "Shared all things together"
+                            "mnemonic": "Save yourselves from generation"
                         },
                         "41": {
-                            "mnemonic": "Temple worship continues daily"
+                            "mnemonic": "Three thousand accepted word"
                         },
                         "42": {
-                            "mnemonic": "At home they break bread"
+                            "mnemonic": "Apostles\u0027 teaching devoted"
                         },
                         "43": {
-                            "mnemonic": "Sincere gladness and praise"
+                            "mnemonic": "Signs and wonders done"
                         },
                         "44": {
-                            "mnemonic": "Liking from all the people"
+                            "mnemonic": "Life shared in common"
                         },
                         "45": {
-                            "mnemonic": "Ongoing favor in city"
+                            "mnemonic": "Offerings given to needy"
                         },
                         "46": {
-                            "mnemonic": "Regularly new believers added"
+                            "mnemonic": "Rallied daily in temple"
                         },
                         "47": {
-                            "mnemonic": "Daily numbers of saved grow"
+                            "mnemonic": "Daily Lord added saved"
                         }
                     }
                 },
@@ -4599,43 +4599,43 @@
                     "mnemonic": "INVALID HEALED; PETER PREACHES",
                     "verses": {
                         "1": {
-                            "mnemonic": "In prayer hour Peter ascends"
+                            "mnemonic": "Into temple Peter/John go"
                         },
                         "2": {
-                            "mnemonic": "Needy lame man is carried"
+                            "mnemonic": "Needy lame man carried"
                         },
                         "3": {
                             "mnemonic": "Veteran beggar asks alms"
                         },
                         "4": {
-                            "mnemonic": "Apostles fix their gaze"
+                            "mnemonic": "Apostles look at him"
                         },
                         "5": {
-                            "mnemonic": "Lame man expects to receive"
+                            "mnemonic": "Lame man expects gift"
                         },
                         "6": {
-                            "mnemonic": "In Jesus name gift given"
+                            "mnemonic": "In Jesus name walk"
                         },
                         "7": {
-                            "mnemonic": "Disabled feet are strengthened"
+                            "mnemonic": "Disabled feet made strong"
                         },
                         "8": {
-                            "mnemonic": "He leaps, walks, praises"
+                            "mnemonic": "He leaps and praises"
                         },
                         "9": {
-                            "mnemonic": "Everyone sees healed man"
+                            "mnemonic": "Everyone sees him walking"
                         },
                         "10": {
-                            "mnemonic": "All recognize former beggar"
+                            "mnemonic": "Awerstruck people recognize him"
                         },
                         "11": {
-                            "mnemonic": "Large crowd filled with wonder"
+                            "mnemonic": "Links to Peter/John porch"
                         },
                         "12": {
-                            "mnemonic": "Explanation begins from Peter"
+                            "mnemonic": "Explanation: Why marvel at us?"
                         },
                         "13": {
-                            "mnemonic": "Delivered up God’s Servant"
+                            "mnemonic": "Delivered Jesus glorified"
                         },
                         "14": {
                             "mnemonic": "People denied Holy One"
@@ -4644,37 +4644,37 @@
                             "mnemonic": "Executed Author of life"
                         },
                         "16": {
-                            "mnemonic": "Through Jesus name made strong"
+                            "mnemonic": "Through faith name heals"
                         },
                         "17": {
-                            "mnemonic": "Everyone acted in ignorance"
+                            "mnemonic": "Errors done in ignorance"
                         },
                         "18": {
-                            "mnemonic": "Required sufferings now fulfilled"
+                            "mnemonic": "Required suffering fulfilled"
                         },
                         "19": {
-                            "mnemonic": "Penitent hearts must turn"
+                            "mnemonic": "Penitent hearts turn back"
                         },
                         "20": {
-                            "mnemonic": "Restoring times when Christ sent"
+                            "mnemonic": "Refreshing times from Lord"
                         },
                         "21": {
-                            "mnemonic": "Every prophet spoke beforehand"
+                            "mnemonic": "Earth restores all things"
                         },
                         "22": {
-                            "mnemonic": "All must heed raised Prophet"
+                            "mnemonic": "All heed Moses\u0027 prophet"
                         },
                         "23": {
-                            "mnemonic": "Consequences for rejecting Him"
+                            "mnemonic": "Cut off if not hear"
                         },
                         "24": {
-                            "mnemonic": "Hebrew prophets announced these days"
+                            "mnemonic": "Hebrew prophets foretold"
                         },
                         "25": {
-                            "mnemonic": "Every family blessed through seed"
+                            "mnemonic": "Earth\u0027s families blessed"
                         },
                         "26": {
-                            "mnemonic": "Sent Servant turns from wickedness"
+                            "mnemonic": "SENT Servant to bless you"
                         }
                     }
                 },
@@ -4682,115 +4682,115 @@
                     "mnemonic": "RESURRECTION TALK SPARKS TRIAL; SHARING ALL",
                     "verses": {
                         "1": {
-                            "mnemonic": "Religious leaders confront them"
+                            "mnemonic": "Religious leaders came"
                         },
                         "2": {
-                            "mnemonic": "Exasperated by resurrection teaching"
+                            "mnemonic": "Exasperated by teaching"
                         },
                         "3": {
-                            "mnemonic": "Seize apostles and jail overnight"
+                            "mnemonic": "Seized them until morning"
                         },
                         "4": {
-                            "mnemonic": "Uncounted thousands now believe"
+                            "mnemonic": "Uncounted thousands believed"
                         },
                         "5": {
-                            "mnemonic": "Rulers elders scribes assemble"
+                            "mnemonic": "Rulers met next day"
                         },
                         "6": {
-                            "mnemonic": "Relatives of high priest present"
+                            "mnemonic": "Relatives of high priest"
                         },
                         "7": {
-                            "mnemonic": "Enquire by what power or name"
+                            "mnemonic": "Examine: By what power?"
                         },
                         "8": {
-                            "mnemonic": "Courage-filled Peter addresses council"
+                            "mnemonic": "Courageous Peter answers"
                         },
                         "9": {
-                            "mnemonic": "Trial framed as good deed questioned"
+                            "mnemonic": "Trial for good deed?"
                         },
                         "10": {
-                            "mnemonic": "In Jesus name cripple stands whole"
+                            "mnemonic": "In Jesus name he stands"
                         },
                         "11": {
-                            "mnemonic": "Old stone prophecy is applied"
+                            "mnemonic": "Old stone builders rejected"
                         },
                         "12": {
-                            "mnemonic": "No other name brings salvation"
+                            "mnemonic": "No other name saves"
                         },
                         "13": {
-                            "mnemonic": "They marvel at bold untrained men"
+                            "mnemonic": "They marvel at boldness"
                         },
                         "14": {
-                            "mnemonic": "Astonished by healed man beside"
+                            "mnemonic": "Astonished seeing healed man"
                         },
                         "15": {
-                            "mnemonic": "Leaders send apostles outside"
+                            "mnemonic": "Leaders confer privately"
                         },
                         "16": {
-                            "mnemonic": "Keep debating undeniable miracle"
+                            "mnemonic": "Keep miracle secret?"
                         },
                         "17": {
-                            "mnemonic": "Stop this spreading by strict warning"
+                            "mnemonic": "Stop the name spreading"
                         },
                         "18": {
-                            "mnemonic": "Prohibit speaking in Jesus name"
+                            "mnemonic": "Prohibit speaking Jesus"
                         },
                         "19": {
-                            "mnemonic": "Apostles insist God must be obeyed"
+                            "mnemonic": "Apostles judge God right"
                         },
                         "20": {
-                            "mnemonic": "Resolve to speak what they witnessed"
+                            "mnemonic": "Report what we saw"
                         },
                         "21": {
-                            "mnemonic": "Keep threatening but find no basis"
+                            "mnemonic": "Keep threatening then release"
                         },
                         "22": {
-                            "mnemonic": "Sign done on man over forty"
+                            "mnemonic": "Sign on man forty years"
                         },
                         "23": {
-                            "mnemonic": "Then released they join their friends"
+                            "mnemonic": "Told friends what happened"
                         },
                         "24": {
-                            "mnemonic": "Report everything chief priests said"
+                            "mnemonic": "Raised voices to Creator"
                         },
                         "25": {
-                            "mnemonic": "Inspired Scripture about raging nations"
+                            "mnemonic": "Inspired David spoke"
                         },
                         "26": {
-                            "mnemonic": "Against the Lord and His Anointed"
+                            "mnemonic": "Against Lord and Anointed"
                         },
                         "27": {
-                            "mnemonic": "Leaders Herod Pilate Gentiles Israel unite"
+                            "mnemonic": "Leaders gathered against Jesus"
                         },
                         "28": {
-                            "mnemonic": "Sovereign plan predestined their actions"
+                            "mnemonic": "Sovereign will done"
                         },
                         "29": {
-                            "mnemonic": "Hearts now ask for holy boldness"
+                            "mnemonic": "Hear threats, give boldness"
                         },
                         "30": {
-                            "mnemonic": "As God heals with signs and wonders"
+                            "mnemonic": "Allow signs and wonders"
                         },
                         "31": {
-                            "mnemonic": "Room is shaken all Spirit-filled"
+                            "mnemonic": "Room shook, Spirit filled"
                         },
                         "32": {
-                            "mnemonic": "In one heart they share everything"
+                            "mnemonic": "In one heart shared"
                         },
                         "33": {
-                            "mnemonic": "New power testifies to resurrection"
+                            "mnemonic": "New power testified"
                         },
                         "34": {
-                            "mnemonic": "Generosity removes need among them"
+                            "mnemonic": "Gifts removed need"
                         },
                         "35": {
-                            "mnemonic": "All proceeds laid at apostles' feet"
+                            "mnemonic": "Apostles distributed funds"
                         },
                         "36": {
-                            "mnemonic": "Levite Joseph nicknamed Barnabas appears"
+                            "mnemonic": "Levite Barnabas encouraged"
                         },
                         "37": {
-                            "mnemonic": "Land sold and money laid down"
+                            "mnemonic": "Land sold, money brought"
                         }
                     }
                 },
@@ -4798,130 +4798,130 @@
                     "mnemonic": "INSTANT DEATH FOR LIARS; APOSTLES FLOGGED, REJOICE!",
                     "verses": {
                         "1": {
-                            "mnemonic": "Inwardly deceitful Ananias sells land"
+                            "mnemonic": "Inwardly deceitful Ananias"
                         },
                         "2": {
-                            "mnemonic": "Not all proceeds are honestly offered"
+                            "mnemonic": "Not all price kept"
                         },
                         "3": {
-                            "mnemonic": "Satan fills his heart to lie to Spirit"
+                            "mnemonic": "Satan filled heart"
                         },
                         "4": {
-                            "mnemonic": "To God not men has he lied"
+                            "mnemonic": "To God you lied"
                         },
                         "5": {
-                            "mnemonic": "Ananias falls dead and great fear comes"
+                            "mnemonic": "Ananias fell down dead"
                         },
                         "6": {
-                            "mnemonic": "Now young men wrap and bury him"
+                            "mnemonic": "Now young men buried"
                         },
                         "7": {
-                            "mnemonic": "Three hours later Sapphira comes unaware"
+                            "mnemonic": "Three hours later wife"
                         },
                         "8": {
-                            "mnemonic": "Demanded price, she repeats the deception"
+                            "mnemonic": "Did you sell for this?"
                         },
                         "9": {
-                            "mnemonic": "Exposed, she hears judgment at the door"
+                            "mnemonic": "Exposed conspiracy against Spirit"
                         },
                         "10": {
-                            "mnemonic": "At once she falls dead beside him"
+                            "mnemonic": "At once she died"
                         },
                         "11": {
-                            "mnemonic": "Terror seizes whole church and hearers"
+                            "mnemonic": "Terror on whole church"
                         },
                         "12": {
-                            "mnemonic": "Hands of apostles bring many signs"
+                            "mnemonic": "Hands of apostles healed"
                         },
                         "13": {
-                            "mnemonic": "Fearing to join yet favoring them highly"
+                            "mnemonic": "Fearing, none joined loosely"
                         },
                         "14": {
-                            "mnemonic": "Ongoing multitudes of believers added"
+                            "mnemonic": "Ongoing multitudes added"
                         },
                         "15": {
-                            "mnemonic": "Roads lined with sick seeking Peter's shadow"
+                            "mnemonic": "Roads had sick on beds"
                         },
                         "16": {
-                            "mnemonic": "Local towns bring sick and all are healed"
+                            "mnemonic": "Local towns brought sick"
                         },
                         "17": {
-                            "mnemonic": "Incensed high priest and Sadducees grow jealous"
+                            "mnemonic": "Incensed Sadducees rose up"
                         },
                         "18": {
-                            "mnemonic": "Apostles are arrested and put in prison"
+                            "mnemonic": "Apostles put in prison"
                         },
                         "19": {
-                            "mnemonic": "Released at night by an angel"
+                            "mnemonic": "Released by angel night"
                         },
                         "20": {
-                            "mnemonic": "Sent to speak all this life in temple"
+                            "mnemonic": "Stand speak life words"
                         },
                         "21": {
-                            "mnemonic": "At daybreak they teach while council convenes"
+                            "mnemonic": "At dawn taught in temple"
                         },
                         "22": {
-                            "mnemonic": "Prison found empty by returning officers"
+                            "mnemonic": "Prison found empty"
                         },
                         "23": {
-                            "mnemonic": "Observed locked doors yet no prisoners inside"
+                            "mnemonic": "Officers saw locked doors"
                         },
                         "24": {
-                            "mnemonic": "Scratching their heads, leaders are perplexed"
+                            "mnemonic": "S puzzled where they were"
                         },
                         "25": {
-                            "mnemonic": "Told that apostles are teaching in temple"
+                            "mnemonic": "Teaching people in temple"
                         },
                         "26": {
-                            "mnemonic": "Led out without violence for fear of crowd"
+                            "mnemonic": "Led without force"
                         },
                         "27": {
-                            "mnemonic": "Examined before council by high priest"
+                            "mnemonic": "Examined by high priest"
                         },
                         "28": {
-                            "mnemonic": "Strict charge recalled; city filled with their teaching"
+                            "mnemonic": "Strict orders ignored"
                         },
                         "29": {
-                            "mnemonic": "Firmly they insist on obeying God not men"
+                            "mnemonic": "Follow God not men"
                         },
                         "30": {
-                            "mnemonic": "Lifted by God, Jesus whom they killed on a tree"
+                            "mnemonic": "Lifted up Jesus you killed"
                         },
                         "31": {
-                            "mnemonic": "Ongoing exaltation as Prince and Savior offering repentance"
+                            "mnemonic": "Offer repentance as Prince"
                         },
                         "32": {
-                            "mnemonic": "Given Spirit also witnesses with them"
+                            "mnemonic": "Given Spirit witnesses"
                         },
                         "33": {
-                            "mnemonic": "Grieved and enraged, council wants them killed"
+                            "mnemonic": "Gashed hearts, wanted death"
                         },
                         "34": {
-                            "mnemonic": "Esteemed Pharisee Gamaliel stands and intervenes"
+                            "mnemonic": "Esteemed Gamaliel stood"
                         },
                         "35": {
-                            "mnemonic": "Deliberately warns them to be careful"
+                            "mnemonic": "Do nothing rashly"
                         },
                         "36": {
-                            "mnemonic": "Recounts the failed uprising led by Theudas"
+                            "mnemonic": "Remember Theudas failed"
                         },
                         "37": {
-                            "mnemonic": "Exposes similar revolt of Judas the Galilean"
+                            "mnemonic": "Example of Judas failed"
                         },
                         "38": {
-                            "mnemonic": "Judges that human plans will fail on their own"
+                            "mnemonic": "Just leave them alone"
                         },
                         "39": {
-                            "mnemonic": "Opposing them might mean fighting against God"
+                            "mnemonic": "Or fight against God"
                         },
                         "40": {
-                            "mnemonic": "Inflicting flogging, they forbid Jesus' name then release"
+                            "mnemonic": "Inquisition beat them"
                         },
                         "41": {
-                            "mnemonic": "Counting it joy to suffer shame for Christ"
+                            "mnemonic": "Counted worthy of shame"
                         },
                         "42": {
-                            "mnemonic": "Every day they keep preaching Jesus as the Christ"
+                            "mnemonic": "Every day preached Christ"
                         }
                     }
                 },
@@ -4929,234 +4929,234 @@
                     "mnemonic": "THEY GRAB STEPHEN",
                     "verses": {
                         "1": {
-                            "mnemonic": "Table service dispute arises"
+                            "mnemonic": "Table dispute Hellenists"
                         },
                         "2": {
-                            "mnemonic": "Helpers needed so apostles prioritize word"
+                            "mnemonic": "Helpers needed for serving"
                         },
                         "3": {
-                            "mnemonic": "Elders tell church choose seven Spirit-filled men"
+                            "mnemonic": "Elders select seven men"
                         },
                         "4": {
-                            "mnemonic": "Yield apostles to prayer and ministry"
+                            "mnemonic": "Yield to prayer/word"
                         },
                         "5": {
-                            "mnemonic": "Group selects Stephen and six others"
+                            "mnemonic": "Group chose Stephen et al"
                         },
                         "6": {
-                            "mnemonic": "Ritual laying on hands commissions them"
+                            "mnemonic": "Ritual laying on hands"
                         },
                         "7": {
-                            "mnemonic": "Apostolic message spreads; priests believe"
+                            "mnemonic": "Apostolic word spread"
                         },
                         "8": {
-                            "mnemonic": "Brilliant wonders done by Stephen"
+                            "mnemonic": "Brilliant wonders Stephen"
                         },
                         "9": {
-                            "mnemonic": "Synagogue members argue with Stephen"
+                            "mnemonic": "Synagogue Freedmen argued"
                         },
                         "10": {
-                            "mnemonic": "They cannot resist his Spirit-given wisdom"
+                            "mnemonic": "They couldn\u0027t resist Spirit"
                         },
                         "11": {
-                            "mnemonic": "Evidence fabricated by secret instigators"
+                            "mnemonic": "Evidence suborned blasphemy"
                         },
                         "12": {
-                            "mnemonic": "People leaders scribes seize Stephen"
+                            "mnemonic": "People stirred, seized him"
                         },
                         "13": {
-                            "mnemonic": "Hostile witnesses accuse him against temple and law"
+                            "mnemonic": "Hostile witnesses lying"
                         },
                         "14": {
-                            "mnemonic": "Explain he said Jesus changes customs"
+                            "mnemonic": "Explain he changes customs"
                         },
                         "15": {
-                            "mnemonic": "Noticed his face looking like an angel"
+                            "mnemonic": "Noticed face like angel"
                         }
                     }
                 },
                 "7": {
-                    "mnemonic": "BOLDLY RECOUNTING ISRAEL'S HISTORY, STEPHEN IS STONED TO DEATH NEAR SAUL",
+                    "mnemonic": "BOLDLY RECOUNTING ISRAEL\u0027S HISTORY, STEPHEN IS STONED TO DEATH NEAR SAUL",
                     "verses": {
                         "1": {
-                            "mnemonic": "Bringing case before high priest"
+                            "mnemonic": "Bringing case: Are these things so?"
                         },
                         "2": {
-                            "mnemonic": "Opening with God appearing to Abraham"
+                            "mnemonic": "Opening: Glory God appeared Abraham"
                         },
                         "3": {
-                            "mnemonic": "Leaves his homeland by faith"
+                            "mnemonic": "Leave your country"
                         },
                         "4": {
-                            "mnemonic": "Directed to new land God shows"
+                            "mnemonic": "Dwelt in Haran then here"
                         },
                         "5": {
-                            "mnemonic": "Landed there yet no inheritance"
+                            "mnemonic": "Landed no inheritance yet"
                         },
                         "6": {
-                            "mnemonic": "Yet promise given to his offspring"
+                            "mnemonic": "Years of bondage four hundred"
                         },
                         "7": {
-                            "mnemonic": "Rescue foretold after slavery"
+                            "mnemonic": "Rescue nation they serve"
                         },
                         "8": {
-                            "mnemonic": "Entered covenant of circumcision"
+                            "mnemonic": "Entered covenant circumcision"
                         },
                         "9": {
-                            "mnemonic": "Children of Jacob envy Joseph"
+                            "mnemonic": "Children patriarchs envied Joseph"
                         },
                         "10": {
-                            "mnemonic": "Oppressed him by selling to Egypt"
+                            "mnemonic": "Overcame troubles in Egypt"
                         },
                         "11": {
-                            "mnemonic": "Unrelenting famine strikes region"
+                            "mnemonic": "Unrelenting famine came"
                         },
                         "12": {
-                            "mnemonic": "News of grain brings first visit"
+                            "mnemonic": "News of grain Jacob heard"
                         },
                         "13": {
-                            "mnemonic": "True identity revealed on second"
+                            "mnemonic": "True identity shown second time"
                         },
                         "14": {
-                            "mnemonic": "Israel invited to dwell in Egypt"
+                            "mnemonic": "Invited seventy-five souls"
                         },
                         "15": {
-                            "mnemonic": "Numbered ancestors buried in tomb"
+                            "mnemonic": "Numbered Jacob died Egypt"
                         },
                         "16": {
-                            "mnemonic": "Growing people multiply in Egypt"
+                            "mnemonic": "Grandfathers buried Shechem"
                         },
                         "17": {
-                            "mnemonic": "In time another king arises"
+                            "mnemonic": "In time promise drew near"
                         },
                         "18": {
-                            "mnemonic": "Shrewd ruler oppresses our race"
+                            "mnemonic": "Sovereign king knew not Joseph"
                         },
                         "19": {
-                            "mnemonic": "Required to expose their babies"
+                            "mnemonic": "Race dealt authentically ill"
                         },
                         "20": {
-                            "mnemonic": "A child Moses is born"
+                            "mnemonic": "Apostle Moses born fair"
                         },
                         "21": {
-                            "mnemonic": "Egyptian household raises him"
+                            "mnemonic": "Egyptian daughter took him"
                         },
                         "22": {
-                            "mnemonic": "Learned in all wisdom of Egypt"
+                            "mnemonic": "Learned Egyptian wisdom"
                         },
                         "23": {
-                            "mnemonic": "Sets heart to visit his brothers"
+                            "mnemonic": "Sets heart visit brothers"
                         },
                         "24": {
-                            "mnemonic": "Helps by striking oppressor"
+                            "mnemonic": "Helped oppressed struck Egyptian"
                         },
                         "25": {
-                            "mnemonic": "Israelite rejects his leadership"
+                            "mnemonic": "Israelites didn\u0027t understand"
                         },
                         "26": {
-                            "mnemonic": "Says who made you ruler"
+                            "mnemonic": "Strove to make peace"
                         },
                         "27": {
-                            "mnemonic": "Terrified Moses flees to Midian"
+                            "mnemonic": "Terrified man pushed him"
                         },
                         "28": {
-                            "mnemonic": "Out in exile he fathers sons"
+                            "mnemonic": "Order: Will you kill me?"
                         },
                         "29": {
-                            "mnemonic": "Revelation comes by burning bush"
+                            "mnemonic": "Runaway Moses Midian"
                         },
                         "30": {
-                            "mnemonic": "You stand now on holy ground"
+                            "mnemonic": "Year forty angel bush"
                         },
                         "31": {
-                            "mnemonic": "Seeing Israel's misery God descends"
+                            "mnemonic": "Sight amazed Moses"
                         },
                         "32": {
-                            "mnemonic": "To send Moses back as ruler"
+                            "mnemonic": "Trembling at God\u0027s voice"
                         },
                         "33": {
-                            "mnemonic": "Exodus signs and wonders follow"
+                            "mnemonic": "Eject sandals holy ground"
                         },
                         "34": {
-                            "mnemonic": "People led through sea and wilderness"
+                            "mnemonic": "People\u0027s groans heard"
                         },
                         "35": {
-                            "mnemonic": "He is with them at Sinai"
+                            "mnemonic": "Hand of angel sent deliverer"
                         },
                         "36": {
-                            "mnemonic": "Entrusted with living oracles"
+                            "mnemonic": "Exodus signs Red Sea"
                         },
                         "37": {
-                            "mnemonic": "Nevertheless our fathers resist"
+                            "mnemonic": "Named Prophet like me"
                         },
                         "38": {
-                            "mnemonic": "In their hearts turn to Egypt"
+                            "mnemonic": "In congregation Sinai"
                         },
                         "39": {
-                            "mnemonic": "Saying make us gods to follow"
+                            "mnemonic": "Sires refused to obey"
                         },
                         "40": {
-                            "mnemonic": "Shaping calf and rejoicing in idols"
+                            "mnemonic": "Shape us gods to go"
                         },
                         "41": {
-                            "mnemonic": "Turned God gives them up"
+                            "mnemonic": "Turned calf sacrifice"
                         },
                         "42": {
-                            "mnemonic": "Offerings made to false deities"
+                            "mnemonic": "Offerings to host heaven?"
                         },
                         "43": {
-                            "mnemonic": "Nations of exile are appointed"
+                            "mnemonic": "Nations beyond Babylon"
                         },
                         "44": {
-                            "mnemonic": "Earthly tabernacle travels with them"
+                            "mnemonic": "Evidence tent witness"
                         },
                         "45": {
-                            "mnemonic": "David desires a house for God"
+                            "mnemonic": "David brought it in"
                         },
                         "46": {
-                            "mnemonic": "Temple raised later by Solomon"
+                            "mnemonic": "Tabernacle for Jacob\u0027s God"
                         },
                         "47": {
-                            "mnemonic": "Only Most High not housed by hands"
+                            "mnemonic": "Only Solomon built house"
                         },
                         "48": {
-                            "mnemonic": "Declared heaven His throne"
+                            "mnemonic": "Does empty temples contain?"
                         },
                         "49": {
-                            "mnemonic": "Ears and hearts always resist Spirit"
+                            "mnemonic": "EARTH IS FOOTSTOOL"
                         },
                         "50": {
-                            "mnemonic": "As your fathers did so you"
+                            "mnemonic": "All these hands made?"
                         },
                         "51": {
-                            "mnemonic": "They persecuted every prophet"
+                            "mnemonic": "Torpid stiff-necked people"
                         },
                         "52": {
-                            "mnemonic": "Heaven-sent Righteous One betrayed"
+                            "mnemonic": "Hounded prophets betrayed Just One"
                         },
                         "53": {
-                            "mnemonic": "Not keeping law you received"
+                            "mnemonic": "Not kept law received"
                         },
                         "54": {
-                            "mnemonic": "Enraged they gnash their teeth"
+                            "mnemonic": "Enraged gnashed teeth"
                         },
                         "55": {
-                            "mnemonic": "As Stephen sees glory of God"
+                            "mnemonic": "Approved Jesus standing right hand"
                         },
                         "56": {
-                            "mnemonic": "Reveals Son of Man standing"
+                            "mnemonic": "Running heavens opened seen"
                         },
                         "57": {
-                            "mnemonic": "Shouting loudly they rush him"
+                            "mnemonic": "Stopped ears rushed him"
                         },
                         "58": {
-                            "mnemonic": "After casting him outside city"
+                            "mnemonic": "Acting witnesses coats Saul"
                         },
                         "59": {
-                            "mnemonic": "Under stones he prays for enemies"
+                            "mnemonic": "Under stones Stephen prayed"
                         },
                         "60": {
-                            "mnemonic": "Lays asleep as witnesses watch"
+                            "mnemonic": "Lord forgive, fell asleep"
                         }
                     }
                 },
@@ -5164,124 +5164,124 @@
                     "mnemonic": "OUTWARD PRESSURE; PHILIP BAPTIZES AN ETHIOPIAN",
                     "verses": {
                         "1": {
-                            "mnemonic": "Ongoing persecution scatters Jerusalem church"
+                            "mnemonic": "Ongoing persecution scattered church"
                         },
                         "2": {
-                            "mnemonic": "Upright men bury Stephen mournfully"
+                            "mnemonic": "Upright men buried Stephen"
                         },
                         "3": {
-                            "mnemonic": "Tearing homes apart, Saul seizes believers"
+                            "mnemonic": "Tearing church Saul destroyed"
                         },
                         "4": {
-                            "mnemonic": "Word proclaimed wherever they are scattered"
+                            "mnemonic": "Word preached everywhere"
                         },
                         "5": {
-                            "mnemonic": "Arriving in Samaria, Philip proclaims Christ"
+                            "mnemonic": "Arriving Philip Samaria"
                         },
                         "6": {
-                            "mnemonic": "Responsive crowds heed signs and wonders"
+                            "mnemonic": "Responsive crowds heeded"
                         },
                         "7": {
-                            "mnemonic": "Demons flee and disabled are healed"
+                            "mnemonic": "Demons fled, lame healed"
                         },
                         "8": {
-                            "mnemonic": "People of that city rejoice greatly"
+                            "mnemonic": "Place rejoiced greatly"
                         },
                         "9": {
-                            "mnemonic": "Renowned magician Simon amazes Samaria"
+                            "mnemonic": "Renowned Simon sorcerer"
                         },
                         "10": {
-                            "mnemonic": "Esteemed as the Great Power of God"
+                            "mnemonic": "Esteemed Great Power"
                         },
                         "11": {
-                            "mnemonic": "Spellbound people follow his sorcery"
+                            "mnemonic": "Sorceries amazed long time"
                         },
                         "12": {
-                            "mnemonic": "Samarians now believe and are baptized"
+                            "mnemonic": "Samaritans believed Philip"
                         },
                         "13": {
-                            "mnemonic": "Upon believing, Simon stays with Philip"
+                            "mnemonic": "Upon believing Simon baptized"
                         },
                         "14": {
-                            "mnemonic": "Report reaches Jerusalem about Samaria"
+                            "mnemonic": "Report apostles sent Peter/John"
                         },
                         "15": {
-                            "mnemonic": "Elders Peter and John are sent"
+                            "mnemonic": "Elders prayed for Spirit"
                         },
                         "16": {
-                            "mnemonic": "Previously only baptized in Jesus' name"
+                            "mnemonic": "Previously only baptized Jesus name"
                         },
                         "17": {
-                            "mnemonic": "Hands laid so they receive Spirit"
+                            "mnemonic": "Hands laid received Spirit"
                         },
                         "18": {
-                            "mnemonic": "Impressed, Simon offers them money"
+                            "mnemonic": "Impressed Simon offered money"
                         },
                         "19": {
-                            "mnemonic": "Longs for same power to impart Spirit"
+                            "mnemonic": "Let me have power"
                         },
                         "20": {
-                            "mnemonic": "Indignant Peter condemns his silver"
+                            "mnemonic": "Silver perish with you"
                         },
                         "21": {
-                            "mnemonic": "Part or share denied; heart not right"
+                            "mnemonic": "Part nor lot in matter"
                         },
                         "22": {
-                            "mnemonic": "Bid to repent from this wickedness"
+                            "mnemonic": "Beseech God forgiveness"
                         },
                         "23": {
-                            "mnemonic": "Aware he is in bitter bondage"
+                            "mnemonic": "Also gall bitterness seen"
                         },
                         "24": {
-                            "mnemonic": "Pleading, Simon asks them to pray"
+                            "mnemonic": "Pray for me Simon said"
                         },
                         "25": {
-                            "mnemonic": "Testifying, they preach through Samaritan villages"
+                            "mnemonic": "Testified and returned Jerusalem"
                         },
                         "26": {
-                            "mnemonic": "Instruction from angel sends Philip south"
+                            "mnemonic": "Instruction angel go south"
                         },
                         "27": {
-                            "mnemonic": "Zealous Ethiopian official travels from worship"
+                            "mnemonic": "Zealous Ethiopian eunuch"
                         },
                         "28": {
-                            "mnemonic": "Engrossed, he reads the prophet Isaiah"
+                            "mnemonic": "Esaias reading in chariot"
                         },
                         "29": {
-                            "mnemonic": "Spirit tells Philip to approach chariot"
+                            "mnemonic": "Spirit said join chariot"
                         },
                         "30": {
-                            "mnemonic": "Asking, Philip inquires about his understanding"
+                            "mnemonic": "Asked understand reading?"
                         },
                         "31": {
-                            "mnemonic": "Needing guidance, eunuch invites Philip up"
+                            "mnemonic": "Need guide he said"
                         },
                         "32": {
-                            "mnemonic": "Excerpt describes lamb led to slaughter"
+                            "mnemonic": "Excerpt: sheep to slaughter"
                         },
                         "33": {
-                            "mnemonic": "Trampled in humiliation, justice denied Him"
+                            "mnemonic": "Taken judgment humiliation"
                         },
                         "34": {
-                            "mnemonic": "Humbly eunuch asks who prophet describes"
+                            "mnemonic": "Humbly asked of whom?"
                         },
                         "35": {
-                            "mnemonic": "Interpreting scripture, Philip proclaims Jesus"
+                            "mnemonic": "Initiated Jesus from scripture"
                         },
                         "36": {
-                            "mnemonic": "On seeing water, eunuch requests baptism"
+                            "mnemonic": "O look water baptism?"
                         },
                         "37": {
-                            "mnemonic": "Professes wholehearted faith in Jesus"
+                            "mnemonic": "Profess belief Son of God"
                         },
                         "38": {
-                            "mnemonic": "Immersed in water, he is baptized"
+                            "mnemonic": "Immersed both in water"
                         },
                         "39": {
-                            "mnemonic": "Afterwards Spirit snatches Philip away"
+                            "mnemonic": "Away Spirit caught Philip"
                         },
                         "40": {
-                            "mnemonic": "Now Philip preaches from Azotus to Caesarea"
+                            "mnemonic": "Now Azotus to Caesarea"
                         }
                     }
                 },
@@ -5289,133 +5289,133 @@
                     "mnemonic": "ROAD TO DAMASCUS; PETER RAISES TABITHA FROM THE DEAD",
                     "verses": {
                         "1": {
-                            "mnemonic": "Raging threats from Saul"
+                            "mnemonic": "Raging threats against disciples"
                         },
                         "2": {
-                            "mnemonic": "Orders requested to arrest believers"
+                            "mnemonic": "Orders letters Damascus"
                         },
                         "3": {
-                            "mnemonic": "Approaching Damascus, a light flashes"
+                            "mnemonic": "Approached light flashed"
                         },
                         "4": {
-                            "mnemonic": "Down he falls at a heavenly voice"
+                            "mnemonic": "Down fell voice heard"
                         },
                         "5": {
-                            "mnemonic": "The Lord Jesus reveals Himself"
+                            "mnemonic": "The Lord spoke: I am Jesus"
                         },
                         "6": {
-                            "mnemonic": "Obediently he is led toward instructions"
+                            "mnemonic": "Order: Go into city"
                         },
                         "7": {
-                            "mnemonic": "Dumbstruck companions hear but see nothing"
+                            "mnemonic": "Dumbfounded men stood speechless"
                         },
                         "8": {
-                            "mnemonic": "A blind Saul is led into Damascus"
+                            "mnemonic": "Arose blind led Damascus"
                         },
                         "9": {
-                            "mnemonic": "Meanwhile three days pass without sight or food"
+                            "mnemonic": "Mused three days fasting"
                         },
                         "10": {
-                            "mnemonic": "Ananias receives a vision from the Lord"
+                            "mnemonic": "Ananias vision of Lord"
                         },
                         "11": {
-                            "mnemonic": "Street called Straight holds the waiting Saul"
+                            "mnemonic": "Street Straight seek Saul"
                         },
                         "12": {
-                            "mnemonic": "Coming visitor is shown to Saul in vision"
+                            "mnemonic": "Coming Ananias vision seen"
                         },
                         "13": {
-                            "mnemonic": "Uncertainty from Ananias about this persecutor"
+                            "mnemonic": "Unsure Lord he persecutes"
                         },
                         "14": {
-                            "mnemonic": "Sanctioned by priests to seize the saints"
+                            "mnemonic": "Sanctioned to bind saints"
                         },
                         "15": {
-                            "mnemonic": "Personally chosen as instrument to the nations"
+                            "mnemonic": "Chosen vessel to Gentiles"
                         },
                         "16": {
-                            "mnemonic": "Expected sufferings foretold for Saul"
+                            "mnemonic": "Painful things must suffer"
                         },
                         "17": {
-                            "mnemonic": "Touching him, Ananias calls him brother"
+                            "mnemonic": "Entered house Brother Saul"
                         },
                         "18": {
-                            "mnemonic": "Eyes are opened and he is baptized"
+                            "mnemonic": "The scales fell baptized"
                         },
                         "19": {
-                            "mnemonic": "Recovered strength while staying with disciples"
+                            "mnemonic": "Eaten food strengthened"
                         },
                         "20": {
-                            "mnemonic": "Rapidly he proclaims Jesus as Son of God"
+                            "mnemonic": "Right away preached Christ"
                         },
                         "21": {
-                            "mnemonic": "Amazed hearers recall his former violence"
+                            "mnemonic": "Raved: Is this destroyer?"
                         },
                         "22": {
-                            "mnemonic": "Increasingly he confounds the Jews in Damascus"
+                            "mnemonic": "Amazed Jews proving Christ"
                         },
                         "23": {
-                            "mnemonic": "Secret plot forms to kill Saul"
+                            "mnemonic": "Intended to kill him"
                         },
                         "24": {
-                            "mnemonic": "Exposed conspiracy keeps watch at the gates"
+                            "mnemonic": "Scheme known gates watched"
                         },
                         "25": {
-                            "mnemonic": "Suspended in a basket, Saul escapes by night"
+                            "mnemonic": "Escaped over wall basket"
                         },
                         "26": {
-                            "mnemonic": "Terrified disciples doubt Saul’s conversion"
+                            "mnemonic": "Saul in Jerusalem feared"
                         },
                         "27": {
-                            "mnemonic": "Advocate Barnabas presents Saul to apostles"
+                            "mnemonic": "Took Barnabas to apostles"
                         },
                         "28": {
-                            "mnemonic": "Boldly he speaks in the name of Jesus"
+                            "mnemonic": "Access coming and going"
                         },
                         "29": {
-                            "mnemonic": "Intense debates provoke another death plot"
+                            "mnemonic": "Boldly spoke Grecians killed"
                         },
                         "30": {
-                            "mnemonic": "Transported away to Tarsus for safety"
+                            "mnemonic": "Into Tarsus sent away"
                         },
                         "31": {
-                            "mnemonic": "Healthy church grows in peace and Spirit"
+                            "mnemonic": "Then churches had rest"
                         },
                         "32": {
-                            "mnemonic": "Apostle Peter travels to visit the saints"
+                            "mnemonic": "Here Peter visited Lydda"
                         },
                         "33": {
-                            "mnemonic": "Flat on his bed lies Aeneas, paralyzed"
+                            "mnemonic": "Aeneas bedridden eight years"
                         },
                         "34": {
-                            "mnemonic": "Rise commanded; Aeneas immediately healed"
+                            "mnemonic": "Five words: Jesus Christ heals thee"
                         },
                         "35": {
-                            "mnemonic": "Over Lydda and Sharon many turn to the Lord"
+                            "mnemonic": "Residents Sharon turned Lord"
                         },
                         "36": {
-                            "mnemonic": "Merciful disciple Tabitha serves the needy in Joppa"
+                            "mnemonic": "Over Joppa Dorcas lived"
                         },
                         "37": {
-                            "mnemonic": "Then she falls sick and is laid out dead"
+                            "mnemonic": "Made sick died washed"
                         },
                         "38": {
-                            "mnemonic": "Hastily two men hurry to fetch Peter"
+                            "mnemonic": "Two men sent for Peter"
                         },
                         "39": {
-                            "mnemonic": "Evidence of her kindness is displayed by widows"
+                            "mnemonic": "Here widows weeping coats"
                         },
                         "40": {
-                            "mnemonic": "Doors closed as Peter prays and calls her to arise"
+                            "mnemonic": "Empty room Tabitha arise"
                         },
                         "41": {
-                            "mnemonic": "Eyes open and she sits upright alive"
+                            "mnemonic": "Dorcas presented alive"
                         },
                         "42": {
-                            "mnemonic": "Amazing news spreads and many believe in the Lord"
+                            "mnemonic": "Events known many believed"
                         },
                         "43": {
-                            "mnemonic": "Dwelling in Joppa, Peter stays with Simon the tanner"
+                            "mnemonic": "Abode Simon tanner days"
                         }
                     }
                 },
@@ -5423,148 +5423,148 @@
                     "mnemonic": "NON-JEWS RECEIVE THE HOLY SPIRIT WHILE PETER IS PREACHING",
                     "verses": {
                         "1": {
-                            "mnemonic": "Non-Jewish centurion Cornelius introduced"
+                            "mnemonic": "Non-Jewish Centurion Cornelius"
                         },
                         "2": {
-                            "mnemonic": "Orders given to devout household"
+                            "mnemonic": "Observed God with house"
                         },
                         "3": {
-                            "mnemonic": "Noted as God-fearing and generous"
+                            "mnemonic": "Ninth hour vision angel"
                         },
                         "4": {
-                            "mnemonic": "Justice-seeking angel appears in vision"
+                            "mnemonic": "Just then prayers heard"
                         },
                         "5": {
-                            "mnemonic": "Explains that God has heard his prayers"
+                            "mnemonic": "Entreat Peter from Joppa"
                         },
                         "6": {
-                            "mnemonic": "Words instruct him to send to Joppa"
+                            "mnemonic": "With Simon tanner seaside"
                         },
                         "7": {
-                            "mnemonic": "Servants and soldier dispatched to Peter"
+                            "mnemonic": "Servants sent to Joppa"
                         },
                         "8": {
-                            "mnemonic": "Roof-top Peter goes up to pray"
+                            "mnemonic": "Rehearsed matter sent them"
                         },
                         "9": {
-                            "mnemonic": "Extremely hungry, he falls into trance"
+                            "mnemonic": "Entered housetop to pray"
                         },
                         "10": {
-                            "mnemonic": "Canvas-like sheet descends from heaven"
+                            "mnemonic": "Cooked food trance fell"
                         },
                         "11": {
-                            "mnemonic": "Entered are all kinds of animals"
+                            "mnemonic": "Earth saw vessel sheet"
                         },
                         "12": {
-                            "mnemonic": "Instruction comes to kill and eat"
+                            "mnemonic": "In it all beasts"
                         },
                         "13": {
-                            "mnemonic": "Voice forbids calling them unclean"
+                            "mnemonic": "Voice: Rise Peter kill"
                         },
                         "14": {
-                            "mnemonic": "Event happens three times then sheet taken"
+                            "mnemonic": "Eat not unclean Lord"
                         },
                         "15": {
-                            "mnemonic": "Thinking deeply, Peter wonders its meaning"
+                            "mnemonic": "The cleansed call not common"
                         },
                         "16": {
-                            "mnemonic": "House guests from Cornelius arrive below"
+                            "mnemonic": "Happened thrice vessel up"
                         },
                         "17": {
-                            "mnemonic": "Explained by Spirit that Peter must go"
+                            "mnemonic": "Enquiry men arrived gate"
                         },
                         "18": {
-                            "mnemonic": "Hears that three men are seeking him"
+                            "mnemonic": "HOuse called for Peter"
                         },
                         "19": {
-                            "mnemonic": "Offers lodging and next day travels"
+                            "mnemonic": "On vision Spirit speaks"
                         },
                         "20": {
-                            "mnemonic": "Large gathering awaits him in Caesarea"
+                            "mnemonic": "Look three men seek"
                         },
                         "21": {
-                            "mnemonic": "Yielding himself, Cornelius falls at his feet"
+                            "mnemonic": "You seek me why?"
                         },
                         "22": {
-                            "mnemonic": "Stops him, saying I myself am a man"
+                            "mnemonic": "Sent from just Cornelius"
                         },
                         "23": {
-                            "mnemonic": "People assembled to hear the message"
+                            "mnemonic": "Peter lodged them went"
                         },
                         "24": {
-                            "mnemonic": "Informing them God shows no favoritism"
+                            "mnemonic": "Into Caesarea kinsmen wait"
                         },
                         "25": {
-                            "mnemonic": "Reaching all nations, good news is preached"
+                            "mnemonic": "Reverence Cornelius fell down"
                         },
                         "26": {
-                            "mnemonic": "Israel knows how word spread from Galilee"
+                            "mnemonic": "I am man stand up"
                         },
                         "27": {
-                            "mnemonic": "Testifying that God anointed Jesus with Spirit"
+                            "mnemonic": "Talked with him entered"
                         },
                         "28": {
-                            "mnemonic": "Went about doing good and healing"
+                            "mnemonic": "With unlawful men associate"
                         },
                         "29": {
-                            "mnemonic": "Him they killed by hanging on a tree"
+                            "mnemonic": "Here I came asking"
                         },
                         "30": {
-                            "mnemonic": "In three days God raised Him up"
+                            "mnemonic": "I fasted four days"
                         },
                         "31": {
-                            "mnemonic": "Later He appeared to chosen witnesses"
+                            "mnemonic": "Looked on prayer heard"
                         },
                         "32": {
-                            "mnemonic": "Everyone is commanded to preach this"
+                            "mnemonic": "Entreat Simon to come"
                         },
                         "33": {
-                            "mnemonic": "Proclaiming He will judge living and dead"
+                            "mnemonic": "Present before God hear"
                         },
                         "34": {
-                            "mnemonic": "Every prophet testifies of forgiveness"
+                            "mnemonic": "Equal: God no respecter"
                         },
                         "35": {
-                            "mnemonic": "Through His name all who believe receive remission"
+                            "mnemonic": "That fears Him accepted"
                         },
                         "36": {
-                            "mnemonic": "Empowered listeners receive the Holy Spirit"
+                            "mnemonic": "Endeavoring peace by Jesus"
                         },
                         "37": {
-                            "mnemonic": "Right then the Spirit falls on hearers"
+                            "mnemonic": "Report published in Judea"
                         },
                         "38": {
-                            "mnemonic": "In astonishment Jewish believers are amazed"
+                            "mnemonic": "In power Jesus healed"
                         },
                         "39": {
-                            "mnemonic": "Spirit-gift tongues and praise are heard"
+                            "mnemonic": "Slew on tree witnesses"
                         },
                         "40": {
-                            "mnemonic": "Peter asks if anyone can withhold water"
+                            "mnemonic": "Power raised Him third day"
                         },
                         "41": {
-                            "mnemonic": "Recognizes they received Spirit just as we"
+                            "mnemonic": "Resurrected ate with us"
                         },
                         "42": {
-                            "mnemonic": "Everyone is commanded to be baptized in Jesus name"
+                            "mnemonic": "Every soul judged by Him"
                         },
                         "43": {
-                            "mnemonic": "Asked him to remain with them some days"
+                            "mnemonic": "All prophets witness remission"
                         },
                         "44": {
-                            "mnemonic": "Confirming God accepts these Gentile believers"
+                            "mnemonic": "Came Holy Ghost fell"
                         },
                         "45": {
-                            "mnemonic": "Holy excitement spreads among the brethren"
+                            "mnemonic": "Holy Ghost on Gentiles"
                         },
                         "46": {
-                            "mnemonic": "In every heart joy rises"
+                            "mnemonic": "In tongues magnified God"
                         },
                         "47": {
-                            "mnemonic": "New Gentile disciples rejoice in salvation"
+                            "mnemonic": "No water forbid baptism?"
                         },
                         "48": {
-                            "mnemonic": "Grateful praise ascends to God"
+                            "mnemonic": "Gave command baptize Lord"
                         }
                     }
                 },
@@ -5572,94 +5572,94 @@
                     "mnemonic": "CHRISTIAN CHURCH BEGINS AT ANTIOCH",
                     "verses": {
                         "1": {
-                            "mnemonic": "Criticism rises about Gentiles"
+                            "mnemonic": "Christ received by Gentiles"
                         },
                         "2": {
-                            "mnemonic": "Hearing Peter ate with uncircumcised"
+                            "mnemonic": "Here contention circumcision party"
                         },
                         "3": {
-                            "mnemonic": "Responders accuse him of visiting them"
+                            "mnemonic": "Reproached eating with uncircumcised"
                         },
                         "4": {
-                            "mnemonic": "In order Peter explains his vision"
+                            "mnemonic": "In order Peter explained"
                         },
                         "5": {
-                            "mnemonic": "Sheet from heaven seen in Joppa trance"
+                            "mnemonic": "Saw vision Joppa sheet"
                         },
                         "6": {
-                            "mnemonic": "Told three times not to call unclean"
+                            "mnemonic": "Thought on beasts saw"
                         },
                         "7": {
-                            "mnemonic": "In that moment three men arrived"
+                            "mnemonic": "I heard voice kill"
                         },
                         "8": {
-                            "mnemonic": "Accompanied by six brothers he went"
+                            "mnemonic": "Answered nothing common Lord"
                         },
                         "9": {
-                            "mnemonic": "Narrates Spirit falling on them like us"
+                            "mnemonic": "Not call common cleansed"
                         },
                         "10": {
-                            "mnemonic": "Christ's promise about Spirit remembered"
+                            "mnemonic": "Came three times drawn"
                         },
                         "11": {
-                            "mnemonic": "Hindering God would be impossible"
+                            "mnemonic": "Here three men arrived"
                         },
                         "12": {
-                            "mnemonic": "Upon hearing this they fall silent"
+                            "mnemonic": "Upper room six brethren"
                         },
                         "13": {
-                            "mnemonic": "Recognize God grants Gentiles repentance"
+                            "mnemonic": "Report angel send Joppa"
                         },
                         "14": {
-                            "mnemonic": "Christians scattered preach in Phoenicia Cyprus"
+                            "mnemonic": "Call Simon save house"
                         },
                         "15": {
-                            "mnemonic": "Hellenists in Antioch hear Lord Jesus"
+                            "mnemonic": "Holy Ghost fell beginning"
                         },
                         "16": {
-                            "mnemonic": "Believing crowds turn to the Lord"
+                            "mnemonic": "Baptized with Holy Ghost"
                         },
                         "17": {
-                            "mnemonic": "Elders in Jerusalem send Barnabas"
+                            "mnemonic": "Equal gift God gave"
                         },
                         "18": {
-                            "mnemonic": "Grace of God seen and he rejoices"
+                            "mnemonic": "Glorified God Gentiles life"
                         },
                         "19": {
-                            "mnemonic": "Instructs all to remain true to Lord"
+                            "mnemonic": "In Phenice preaching Jews"
                         },
                         "20": {
-                            "mnemonic": "Numerous people are added to the Lord"
+                            "mnemonic": "Native Cyrenians spake Greeks"
                         },
                         "21": {
-                            "mnemonic": "Saul sought by Barnabas in Tarsus"
+                            "mnemonic": "Signs hand Lord believed"
                         },
                         "22": {
-                            "mnemonic": "At Antioch they teach together one year"
+                            "mnemonic": "All ears church Barnabas"
                         },
                         "23": {
-                            "mnemonic": "There disciples first called Christians"
+                            "mnemonic": "There gladness cleave Lord"
                         },
                         "24": {
-                            "mnemonic": "Arriving prophets come down from Jerusalem"
+                            "mnemonic": "A good man Spirit"
                         },
                         "25": {
-                            "mnemonic": "Named Agabus foretells a great famine"
+                            "mnemonic": "Now Tarsus seek Saul"
                         },
                         "26": {
-                            "mnemonic": "Then disciples decide to send relief"
+                            "mnemonic": "Taught people called Christians"
                         },
                         "27": {
-                            "mnemonic": "In proportion each contributes support"
+                            "mnemonic": "In these days prophets"
                         },
                         "28": {
-                            "mnemonic": "Offering sent to Judean elders"
+                            "mnemonic": "One Agabus signified famine"
                         },
                         "29": {
-                            "mnemonic": "Carried by Barnabas and Saul"
+                            "mnemonic": "Contribution send brethren Judea"
                         },
                         "30": {
-                            "mnemonic": "Help reaches brothers in Jerusalem"
+                            "mnemonic": "Hands Barnabas Saul elders"
                         }
                     }
                 },
@@ -5667,79 +5667,79 @@
                     "mnemonic": "HEROD KILLS JAMES; PETER SAVED",
                     "verses": {
                         "1": {
-                            "mnemonic": "Herod begins persecuting the church"
+                            "mnemonic": "Herod stretched hands vex"
                         },
                         "2": {
-                            "mnemonic": "Executes James the brother of John"
+                            "mnemonic": "Executed James sword brother"
                         },
                         "3": {
-                            "mnemonic": "Recognizes Jewish pleasure and seizes Peter"
+                            "mnemonic": "Reasoned pleased Jews Peter"
                         },
                         "4": {
-                            "mnemonic": "Orders him guarded awaiting public trial"
+                            "mnemonic": "Observe Passover quarteruions prison"
                         },
                         "5": {
-                            "mnemonic": "Devoted church offers earnest prayer"
+                            "mnemonic": "Detained Peter church prays"
                         },
                         "6": {
-                            "mnemonic": "Kept in chains between two soldiers"
+                            "mnemonic": "Keeping soldiers sleeping chains"
                         },
                         "7": {
-                            "mnemonic": "In cell an angel appears suddenly"
+                            "mnemonic": "In light angel smote"
                         },
                         "8": {
-                            "mnemonic": "Light shines; chains fall off"
+                            "mnemonic": "Lock sandals cast garment"
                         },
                         "9": {
-                            "mnemonic": "Led by angel to dress and follow"
+                            "mnemonic": "Led out thought vision"
                         },
                         "10": {
-                            "mnemonic": "Steps past guards; gate opens itself"
+                            "mnemonic": "Street reached iron gate"
                         },
                         "11": {
-                            "mnemonic": "Just then Peter realizes the Lord rescued him"
+                            "mnemonic": "Just Lord delivered me"
                         },
                         "12": {
-                            "mnemonic": "Arrives at Mary’s house where many pray"
+                            "mnemonic": "At house Mary knocking"
                         },
                         "13": {
-                            "mnemonic": "Maid Rhoda hears Peter at the door"
+                            "mnemonic": "Maiden Rhoda hearkened gate"
                         },
                         "14": {
-                            "mnemonic": "Ecstatic, she runs without opening"
+                            "mnemonic": "Ecstatic opened not gate"
                         },
                         "15": {
-                            "mnemonic": "Skeptical believers say it is his angel"
+                            "mnemonic": "Said mad his angel"
                         },
                         "16": {
-                            "mnemonic": "Peter keeps knocking; they are amazed"
+                            "mnemonic": "Peter continued knocking opened"
                         },
                         "17": {
-                            "mnemonic": "Explains his rescue and departs elsewhere"
+                            "mnemonic": "Explained escape went place"
                         },
                         "18": {
-                            "mnemonic": "Turmoil among soldiers at daybreak"
+                            "mnemonic": "Turmoil soldiers where Peter"
                         },
                         "19": {
-                            "mnemonic": "Examined guards executed; Herod goes to Caesarea"
+                            "mnemonic": "Examined keepers killed them"
                         },
                         "20": {
-                            "mnemonic": "Resentful toward Tyre and Sidon yet hears them"
+                            "mnemonic": "Reconciled Tyre Sidon Blastus"
                         },
                         "21": {
-                            "mnemonic": "Seated in royal robes he gives an address"
+                            "mnemonic": "Set day Herod oration"
                         },
                         "22": {
-                            "mnemonic": "Acclaim of people calls him a god"
+                            "mnemonic": "Acclaimed god not man"
                         },
                         "23": {
-                            "mnemonic": "Visited by angel, he is struck down"
+                            "mnemonic": "Visited worms angel smote"
                         },
                         "24": {
-                            "mnemonic": "Ever more the word of God spreads"
+                            "mnemonic": "Extra word God grew"
                         },
                         "25": {
-                            "mnemonic": "Duty finished, Barnabas and Saul depart with John Mark"
+                            "mnemonic": "Done ministry returned John"
                         }
                     }
                 },
@@ -5747,160 +5747,160 @@
                     "mnemonic": "UPSETTING TOP JEWS, PAUL AND BARNABAS PREACH IN THE SYNAGOGUES",
                     "verses": {
                         "1": {
-                            "mnemonic": "United prophets and teachers at Antioch minister"
+                            "mnemonic": "United prophets teachers Antioch"
                         },
                         "2": {
-                            "mnemonic": "Praying and fasting, they hear the Spirit speak"
+                            "mnemonic": "Praying Spirit Separate Me"
                         },
                         "3": {
-                            "mnemonic": "Setting apart Barnabas and Saul for the work"
+                            "mnemonic": "Sent them laid hands"
                         },
                         "4": {
-                            "mnemonic": "Escorted by the Spirit, they sail from Seleucia"
+                            "mnemonic": "Entering Seleucia sailed Cyprus"
                         },
                         "5": {
-                            "mnemonic": "Teaching the word in Salamis with John assisting"
+                            "mnemonic": "Town Salamis John minister"
                         },
                         "6": {
-                            "mnemonic": "Through the whole island they travel to Paphos"
+                            "mnemonic": "Through isle Paphos sorcerer"
                         },
                         "7": {
-                            "mnemonic": "In Paphos they encounter magician Bar-Jesus"
+                            "mnemonic": "In deputy Sergius Paulus"
                         },
                         "8": {
-                            "mnemonic": "Near the proconsul Sergius Paulus this conflict arises"
+                            "mnemonic": "Name Elymas withstood them"
                         },
                         "9": {
-                            "mnemonic": "Glaring at Elymas, Paul is filled with the Spirit"
+                            "mnemonic": "Glared Paul filled Spirit"
                         },
                         "10": {
-                            "mnemonic": "Threat pronounced of temporary blindness on the deceiver"
+                            "mnemonic": "Then said Enemy righteousness"
                         },
                         "11": {
-                            "mnemonic": "Over him falls mist and darkness immediately"
+                            "mnemonic": "O blind mist fell"
                         },
                         "12": {
-                            "mnemonic": "Proconsul believes, astonished at the Lord’s teaching"
+                            "mnemonic": "Proconsul believed doctrine Lord"
                         },
                         "13": {
-                            "mnemonic": "Journey continues from Paphos to Perga in Pamphylia"
+                            "mnemonic": "John departed Perga Pamphyla"
                         },
                         "14": {
-                            "mnemonic": "Entering the synagogue at Pisidian Antioch they sit"
+                            "mnemonic": "Entered synagogue Pisidia sat"
                         },
                         "15": {
-                            "mnemonic": "Words of the Law and Prophets are read"
+                            "mnemonic": "Word exhortation rulers sent"
                         },
                         "16": {
-                            "mnemonic": "Standing, Paul addresses Israel and God-fearers"
+                            "mnemonic": "Signaled hand Men Israel"
                         },
                         "17": {
-                            "mnemonic": "Powerful God chose the fathers and exalted the people"
+                            "mnemonic": "People chosen Egypt arm"
                         },
                         "18": {
-                            "mnemonic": "After Egypt He led them out with mighty arm"
+                            "mnemonic": "About forty years wilderness"
                         },
                         "19": {
-                            "mnemonic": "Under His patience forty years in wilderness"
+                            "mnemonic": "Under destroy nations divided"
                         },
                         "20": {
-                            "mnemonic": "Land of Canaan given after nations destroyed"
+                            "mnemonic": "Length judges Samuel prophet"
                         },
                         "21": {
-                            "mnemonic": "Asked for judges until the prophet Samuel"
+                            "mnemonic": "Asked king Saul given"
                         },
                         "22": {
-                            "mnemonic": "Next they requested a king and received Saul"
+                            "mnemonic": "Named David heart king"
                         },
                         "23": {
-                            "mnemonic": "David raised up, a man after God’s own heart"
+                            "mnemonic": "Descendant Jesus Savior raised"
                         },
                         "24": {
-                            "mnemonic": "Bringing from his seed the Savior Jesus as promised"
+                            "mnemonic": "Before coming John baptism"
                         },
                         "25": {
-                            "mnemonic": "Already John had preached repentance before His coming"
+                            "mnemonic": "Am not he shoes"
                         },
                         "26": {
-                            "mnemonic": "Refusing Messiah John said he was not the One"
+                            "mnemonic": "Reason salvation sent you"
                         },
                         "27": {
-                            "mnemonic": "News of this salvation now sent to them"
+                            "mnemonic": "Not knew voices prophets"
                         },
                         "28": {
-                            "mnemonic": "Authorities in Jerusalem fulfilled the prophets by condemning Him"
+                            "mnemonic": "Asked Pilate slay him"
                         },
                         "29": {
-                            "mnemonic": "Body was taken down from the tree and laid in a tomb"
+                            "mnemonic": "Buried in sepulchre tree"
                         },
                         "30": {
-                            "mnemonic": "Almighty God raised Him again from the dead"
+                            "mnemonic": "Almighty God raised dead"
                         },
                         "31": {
-                            "mnemonic": "Seen many days by witnesses who now preach"
+                            "mnemonic": "Seen many days witnesses"
                         },
                         "32": {
-                            "mnemonic": "Promised good news is that God fulfilled it to their children"
+                            "mnemonic": "Promise fathers glad tidings"
                         },
                         "33": {
-                            "mnemonic": "Raised Jesus as written in the second psalm"
+                            "mnemonic": "Resurrected Jesus Psalm Two"
                         },
                         "34": {
-                            "mnemonic": "Expressly God promises no return to decay"
+                            "mnemonic": "Evermore no corruption mercies"
                         },
                         "35": {
-                            "mnemonic": "Another psalm says His Holy One will not see corruption"
+                            "mnemonic": "Another psalm no corruption"
                         },
                         "36": {
-                            "mnemonic": "Corruption befell David after serving his generation"
+                            "mnemonic": "Corruption saw David slept"
                         },
                         "37": {
-                            "mnemonic": "However the One God raised did not see decay"
+                            "mnemonic": "Him God raised no"
                         },
                         "38": {
-                            "mnemonic": "In this man is proclaimed forgiveness of sins"
+                            "mnemonic": "In this man forgiveness"
                         },
                         "39": {
-                            "mnemonic": "Now by Him everyone who believes is justified"
+                            "mnemonic": "Now justified law could"
                         },
                         "40": {
-                            "mnemonic": "Take care lest the prophetic warning fall on you"
+                            "mnemonic": "Take heed prophets come"
                         },
                         "41": {
-                            "mnemonic": "Habakkuk’s words about scoffers are applied to them"
+                            "mnemonic": "Heed despisers wonder perish"
                         },
                         "42": {
-                            "mnemonic": "Earnestly the people beg to hear these words again"
+                            "mnemonic": "Entreated preach next sabbath"
                         },
                         "43": {
-                            "mnemonic": "Some Jews and proselytes follow and are urged to continue in grace"
+                            "mnemonic": "Synagogue broken grace God"
                         },
                         "44": {
-                            "mnemonic": "Yet on the next Sabbath nearly the whole city gathers"
+                            "mnemonic": "Yielded city hear word"
                         },
                         "45": {
-                            "mnemonic": "Now the jealous Jews contradict and blaspheme"
+                            "mnemonic": "Nasty envy contradicted Paul"
                         },
                         "46": {
-                            "mnemonic": "Announcing boldly, Paul and Barnabas turn to Gentiles"
+                            "mnemonic": "Announced turn Gentiles lo"
                         },
                         "47": {
-                            "mnemonic": "Given as a light to the nations according to prophecy"
+                            "mnemonic": "Gave light Gentiles salvation"
                         },
                         "48": {
-                            "mnemonic": "Overjoyed, the Gentiles honor the word of the Lord"
+                            "mnemonic": "Ordained eternal life believed"
                         },
                         "49": {
-                            "mnemonic": "Glad news of the Lord spreads through the whole region"
+                            "mnemonic": "Greatly region word published"
                         },
                         "50": {
-                            "mnemonic": "Under pressure, leading people stir up persecution"
+                            "mnemonic": "Urged women raised persecution"
                         },
                         "51": {
-                            "mnemonic": "Exiting the district, they shake dust from their feet"
+                            "mnemonic": "Exited shook dust Iconium"
                         },
                         "52": {
-                            "mnemonic": "Spirit brings joy as disciples are filled with the Holy Spirit"
+                            "mnemonic": "Spirit filled disciples joy"
                         }
                     }
                 },
@@ -5908,216 +5908,216 @@
                     "mnemonic": "RAISING A CRIPPLED MAN TO HIS FEET",
                     "verses": {
                         "1": {
-                            "mnemonic": "Reaching Iconium they speak in the synagogue"
+                            "mnemonic": "Reaching Iconium synagogue believed"
                         },
                         "2": {
-                            "mnemonic": "Agitating Jews stir up and embitter Gentiles"
+                            "mnemonic": "Agitated Gentiles against brethren"
                         },
                         "3": {
-                            "mnemonic": "In that city they stay long speaking boldly"
+                            "mnemonic": "In Lord speaking boldly"
                         },
                         "4": {
-                            "mnemonic": "Sides form as the people are divided over them"
+                            "mnemonic": "Sidings multitude divided apostles"
                         },
                         "5": {
-                            "mnemonic": "Intended assault to mistreat and stone the apostles"
+                            "mnemonic": "Intending stone abuse them"
                         },
                         "6": {
-                            "mnemonic": "Noticing the plot they flee to Lystra and Derbe"
+                            "mnemonic": "Noticed fled Lystra Derbe"
                         },
                         "7": {
-                            "mnemonic": "Gospel continues to be preached in those regions"
+                            "mnemonic": "Gospel preached there region"
                         },
                         "8": {
-                            "mnemonic": "At Lystra sits a man lame from birth"
+                            "mnemonic": "A cripple Lystra feet"
                         },
                         "9": {
-                            "mnemonic": "Carefully he listens to Paul speaking"
+                            "mnemonic": "Crippled heard Paul faith"
                         },
                         "10": {
-                            "mnemonic": "Raised by a loud command he leaps and walks"
+                            "mnemonic": "Right up stand leapt"
                         },
                         "11": {
-                            "mnemonic": "Impressed crowds cry that the gods have come down"
+                            "mnemonic": "In Lycaonian gods down"
                         },
                         "12": {
-                            "mnemonic": "People call Barnabas Zeus and Paul Hermes"
+                            "mnemonic": "Paul Mercurius Barnabas Jupiter"
                         },
                         "13": {
-                            "mnemonic": "Priest of Zeus brings oxen and garlands to sacrifice"
+                            "mnemonic": "Priest oxen garlands gates"
                         },
                         "14": {
-                            "mnemonic": "Learning this the apostles tear garments and rush out"
+                            "mnemonic": "Listen rent clothes ran"
                         },
                         "15": {
-                            "mnemonic": "Exhorting them to turn from vain idols to the living Creator"
+                            "mnemonic": "Error men passions God"
                         },
                         "16": {
-                            "mnemonic": "During past generations God let nations walk their own ways"
+                            "mnemonic": "Dealing nations own ways"
                         },
                         "17": {
-                            "mnemonic": "Mercifully He gave rain seasons food and glad hearts"
+                            "mnemonic": "Merciful rain fruitful seasons"
                         },
                         "18": {
-                            "mnemonic": "All their words scarcely restrain the crowds from sacrifice"
+                            "mnemonic": "All scarce restrained sacrifice"
                         },
                         "19": {
-                            "mnemonic": "Now hostile Jews arrive and persuade the crowds to stone Paul"
+                            "mnemonic": "Now Jews stoned Paul"
                         },
                         "20": {
-                            "mnemonic": "Then disciples gather and he rises to enter the city"
+                            "mnemonic": "Then rose up Derbe"
                         },
                         "21": {
-                            "mnemonic": "Onward from Derbe they return to Lystra Iconium and Antioch"
+                            "mnemonic": "On returned Lystra Antioch"
                         },
                         "22": {
-                            "mnemonic": "Helping the disciples they strengthen souls to remain in the faith"
+                            "mnemonic": "Hardships kingdom God souls"
                         },
                         "23": {
-                            "mnemonic": "In every church they appoint elders with prayer and fasting"
+                            "mnemonic": "In every church elders"
                         },
                         "24": {
-                            "mnemonic": "So passing through Pisidia they come into Pamphylia"
+                            "mnemonic": "South Pisidia to Pamphylia"
                         },
                         "25": {
-                            "mnemonic": "From Perga they preach the word and go down to Attalia"
+                            "mnemonic": "First Perga then Attalia"
                         },
                         "26": {
-                            "mnemonic": "Embarking from there they sail back to Antioch of commissioning"
+                            "mnemonic": "Ended Antioch work fulfilled"
                         },
                         "27": {
-                            "mnemonic": "Explaining all God has done they tell of the opened door of faith"
+                            "mnemonic": "Explaining door faith Gentiles"
                         },
                         "28": {
-                            "mnemonic": "There they stay a long time with the disciples"
+                            "mnemonic": "Time long abode disciples"
                         }
                     }
                 },
                 "15": {
-                    "mnemonic": "CIRCUMCISION DEBATE INVOLVES PAUL AND BARNABAS",
+                    "mnemonic": "CHURCH DECISION AND DIVISION; PAUL WITH BARNABAS",
                     "verses": {
                         "1": {
-                            "mnemonic": "Certain men demand circumcision for salvation"
+                            "mnemonic": "Certain men came down"
                         },
                         "2": {
-                            "mnemonic": "Intense dispute sends Paul and Barnabas"
+                            "mnemonic": "Huge dispute arose"
                         },
                         "3": {
-                            "mnemonic": "Reporting Gentile conversion while traveling north"
+                            "mnemonic": "Up to Jerusalem sent"
                         },
                         "4": {
-                            "mnemonic": "Church in Jerusalem welcomes their report"
+                            "mnemonic": "Reported miracles to all"
                         },
                         "5": {
-                            "mnemonic": "Urgent Pharisee believers insist on law"
+                            "mnemonic": "Church received them well"
                         },
                         "6": {
-                            "mnemonic": "Meeting of apostles and elders convenes"
+                            "mnemonic": "High demand by Pharisees"
                         },
                         "7": {
-                            "mnemonic": "Contentious debate ends as Peter rises"
+                            "mnemonic": "Discussion of apostles/elders"
                         },
                         "8": {
-                            "mnemonic": "Insight from God giving Spirit to Gentiles"
+                            "mnemonic": "Ends with Peter speaking"
                         },
                         "9": {
-                            "mnemonic": "Separating no longer between us and them"
+                            "mnemonic": "Choice God made early"
                         },
                         "10": {
-                            "mnemonic": "Imposing a yoke would test God"
+                            "mnemonic": "Indeed gave Holy Spirit"
                         },
                         "11": {
-                            "mnemonic": "Only through Jesus' grace are we saved"
+                            "mnemonic": "Saved by grace alone"
                         },
                         "12": {
-                            "mnemonic": "Now the whole assembly falls silent"
+                            "mnemonic": "It is tempting God"
                         },
                         "13": {
-                            "mnemonic": "Discussion shifts as James answers"
+                            "mnemonic": "Our fathers couldn\u0027t bear"
                         },
                         "14": {
-                            "mnemonic": "Explains Simeon’s account of first Gentile converts"
+                            "mnemonic": "No difference made"
                         },
                         "15": {
-                            "mnemonic": "Biblical prophets agree with this"
+                            "mnemonic": "All silence for Barnabas/Paul"
                         },
                         "16": {
-                            "mnemonic": "Afterward God will rebuild David’s fallen tent"
+                            "mnemonic": "Narrated signs and wonders"
                         },
                         "17": {
-                            "mnemonic": "That the rest of humanity may seek Him"
+                            "mnemonic": "Declared by James: Listen"
                         },
                         "18": {
-                            "mnemonic": "Everything God planned is known from ages"
+                            "mnemonic": "David\u0027s tent rebuilt"
                         },
                         "19": {
-                            "mnemonic": "In my judgment we should not trouble Gentiles"
+                            "mnemonic": "Israel and Gentiles seek"
                         },
                         "20": {
-                            "mnemonic": "Non-Jews must abstain from idols immorality blood"
+                            "mnemonic": "Verified by ancient prophecies"
                         },
                         "21": {
-                            "mnemonic": "Venerable Moses is read every Sabbath"
+                            "mnemonic": "I judge we shouldn\u0027t trouble"
                         },
                         "22": {
-                            "mnemonic": "Ordained messengers Judas and Silas chosen"
+                            "mnemonic": "Send letter to abstain"
                         },
                         "23": {
-                            "mnemonic": "Letter sent to Antioch Syria Cilicia"
+                            "mnemonic": "Idols, blood, sexual sin"
                         },
                         "24": {
-                            "mnemonic": "Voices from us did not authorize the troublemakers"
+                            "mnemonic": "Old generations preach Moses"
                         },
                         "25": {
-                            "mnemonic": "Eagerly we send beloved Barnabas and Paul"
+                            "mnemonic": "Named Judas and Silas"
                         },
                         "26": {
-                            "mnemonic": "Servants who risked their lives for Jesus"
+                            "mnemonic": "People risked lives"
                         },
                         "27": {
-                            "mnemonic": "Personally we send Judas and Silas to confirm"
+                            "mnemonic": "Also Judas sent"
                         },
                         "28": {
-                            "mnemonic": "Agreed with the Holy Spirit to impose no extra burdens"
+                            "mnemonic": "Unburdened by Spirit"
                         },
                         "29": {
-                            "mnemonic": "Urged to avoid idols blood strangled and sexual sin"
+                            "mnemonic": "Law of abstinence"
                         },
                         "30": {
-                            "mnemonic": "Letter delivered to rejoicing Antioch church"
+                            "mnemonic": "Went to Antioch"
                         },
                         "31": {
-                            "mnemonic": "All are encouraged by its message"
+                            "mnemonic": "Inspired by reading"
                         },
                         "32": {
-                            "mnemonic": "Notably Judas and Silas strengthen the believers"
+                            "mnemonic": "Two prophets confirmed"
                         },
                         "33": {
-                            "mnemonic": "Dismissed in peace back to Jerusalem"
+                            "mnemonic": "Home they were sent"
                         },
                         "34": {
-                            "mnemonic": "But Silas chooses to remain there"
+                            "mnemonic": "But Silas remained"
                         },
                         "35": {
-                            "mnemonic": "Antioch ministry continues with Paul and Barnabas"
+                            "mnemonic": "Antioch teaching continued"
                         },
                         "36": {
-                            "mnemonic": "Return visit proposed to check every church"
+                            "mnemonic": "Revisit the brethren"
                         },
                         "37": {
-                            "mnemonic": "Normally Barnabas wants to bring John Mark"
+                            "mnemonic": "Notable Barnabas insisted"
                         },
                         "38": {
-                            "mnemonic": "Against this Paul objects to taking deserter"
+                            "mnemonic": "Against taking Mark"
                         },
                         "39": {
-                            "mnemonic": "Bitter disagreement leads them to separate"
+                            "mnemonic": "Bitter dispute arose"
                         },
                         "40": {
-                            "mnemonic": "Appointed by brothers, Paul departs with Silas"
+                            "mnemonic": "Approved by brothers"
                         },
                         "41": {
-                            "mnemonic": "Strengthening churches throughout Syria and Cilicia"
+                            "mnemonic": "Strengthening the churches"
                         }
                     }
                 },
@@ -6146,103 +6146,103 @@
                             "mnemonic": "Onward toward Bithynia yet Spirit stops"
                         },
                         "8": {
-                            "mnemonic": "Unable to enter they reach Troas"
+                            "mnemonic": "Landed at Troas"
                         },
                         "9": {
-                            "mnemonic": "Summoned by Macedonian man for help"
+                            "mnemonic": "Dream of Macedonian man"
                         },
                         "10": {
-                            "mnemonic": "Eagerly they conclude God is calling"
+                            "mnemonic": "Sought to go immediately"
                         },
                         "11": {
-                            "mnemonic": "Out from Troas they sail westward"
+                            "mnemonic": "Out from Troas they sail"
                         },
                         "12": {
-                            "mnemonic": "From there they arrive at Philippi"
+                            "mnemonic": "First city Philippi reached"
                         },
                         "13": {
-                            "mnemonic": "Looking for prayer they meet women"
+                            "mnemonic": "Looking for prayer riverside"
                         },
                         "14": {
-                            "mnemonic": "Yonder Lydia purple dealer believes"
+                            "mnemonic": "Yonder Lydia purple dealer"
                         },
                         "15": {
-                            "mnemonic": "Drenched in baptism her household joins"
+                            "mnemonic": "Drenched in baptism with house"
                         },
                         "16": {
-                            "mnemonic": "Ingoing to prayer slave girl appears"
+                            "mnemonic": "Ingoing to prayer slave girl"
                         },
                         "17": {
-                            "mnemonic": "Announcing them servants of Most High"
+                            "mnemonic": "Announcing them servants of God"
                         },
                         "18": {
-                            "mnemonic": "Annoyed Paul commands spirit away"
+                            "mnemonic": "Annoyed Paul commands spirit"
                         },
                         "19": {
-                            "mnemonic": "No profit left owners seize them"
+                            "mnemonic": "No profit left owners seize"
                         },
                         "20": {
-                            "mnemonic": "Dragged before magistrates as disturbers"
+                            "mnemonic": "Dragged before magistrates"
                         },
                         "21": {
-                            "mnemonic": "Jewish customs accused of opposing Rome"
+                            "mnemonic": "Jewish customs accused"
                         },
                         "22": {
-                            "mnemonic": "Attacked and beaten with many rods"
+                            "mnemonic": "Attacked and beaten rods"
                         },
                         "23": {
-                            "mnemonic": "Imprisoned under strict guarding orders"
+                            "mnemonic": "Imprisoned under strict guard"
                         },
                         "24": {
-                            "mnemonic": "Locked in inner cell with stocks"
+                            "mnemonic": "Locked in inner cell stocks"
                         },
                         "25": {
-                            "mnemonic": "Even at midnight they sing hymns"
+                            "mnemonic": "Even at midnight they sing"
                         },
                         "26": {
-                            "mnemonic": "Rumbling earthquake opens doors and chains"
+                            "mnemonic": "Rumbling earthquake opens all"
                         },
                         "27": {
-                            "mnemonic": "Realizing doors open jailer despairs"
+                            "mnemonic": "Realizing doors open jailer"
                         },
                         "28": {
-                            "mnemonic": "Eagerly Paul shouts Do not harm yourself"
+                            "mnemonic": "Eagerly Paul shouts Stop"
                         },
                         "29": {
-                            "mnemonic": "Jailer trembling falls before them"
+                            "mnemonic": "Jailer trembling falls down"
                         },
                         "30": {
                             "mnemonic": "Out he asks What must I do"
                         },
                         "31": {
-                            "mnemonic": "In believing on Jesus comes salvation"
+                            "mnemonic": "In believing on Jesus saved"
                         },
                         "32": {
-                            "mnemonic": "Christ’s word spoken to all household"
+                            "mnemonic": "Christ\u0027s word spoken to all"
                         },
                         "33": {
-                            "mnemonic": "Eager jailer washes wounds and is baptized"
+                            "mnemonic": "Eager jailer washes wounds"
                         },
                         "34": {
-                            "mnemonic": "Invites them home rejoicing in belief"
+                            "mnemonic": "Invites them home rejoicing"
                         },
                         "35": {
-                            "mnemonic": "Next morning magistrates order release"
+                            "mnemonic": "Next morning magistrates release"
                         },
                         "36": {
-                            "mnemonic": "From the jailer comes news of freedom"
+                            "mnemonic": "From the jailer comes news"
                         },
                         "37": {
-                            "mnemonic": "As Romans they demand public apology"
+                            "mnemonic": "As Romans they demand apology"
                         },
                         "38": {
-                            "mnemonic": "Informed magistrates grow afraid of wrongdoing"
+                            "mnemonic": "Informed magistrates grow afraid"
                         },
                         "39": {
-                            "mnemonic": "They try to appease and urge departure"
+                            "mnemonic": "They try to appease and urge"
                         },
                         "40": {
-                            "mnemonic": "Home with Lydia they encourage believers"
+                            "mnemonic": "Home with Lydia encouraged"
                         }
                     }
                 },
@@ -6250,106 +6250,106 @@
                     "mnemonic": "BEREANS BELIEVE AND PAUL TALKS IN ATHENS",
                     "verses": {
                         "1": {
-                            "mnemonic": "Beside Amphipolis and Apollonia they reach Thessalonica"
+                            "mnemonic": "Beside Amphipolis/Apollonia reached"
                         },
                         "2": {
-                            "mnemonic": "Each Sabbath Paul reasons in the synagogue"
+                            "mnemonic": "Each Sabbath Paul reasoned"
                         },
                         "3": {
-                            "mnemonic": "Revealing from Scripture that Christ must suffer and rise"
+                            "mnemonic": "Revealing Christ must suffer"
                         },
                         "4": {
-                            "mnemonic": "Expectant Jews and Greeks believe, including leading women"
+                            "mnemonic": "Elect Jews and Greeks believed"
                         },
                         "5": {
-                            "mnemonic": "Angry Jews stir up a mob and attack Jason's house"
+                            "mnemonic": "Angry Jews stir up mob"
                         },
                         "6": {
-                            "mnemonic": "Not finding them, they drag Jason before the city rulers"
+                            "mnemonic": "Not finding them drag Jason"
                         },
                         "7": {
-                            "mnemonic": "Saying they preach another king, Jesus, against Caesar"
+                            "mnemonic": "Saying they preach Jesus King"
                         },
                         "8": {
-                            "mnemonic": "Both people and rulers are troubled by these accusations"
+                            "mnemonic": "Both people and rulers troubled"
                         },
                         "9": {
-                            "mnemonic": "Enforced security taken from Jason before releasing them"
+                            "mnemonic": "Enforced security taken Jason"
                         },
                         "10": {
-                            "mnemonic": "Led away by night, Paul and Silas go to Berea"
+                            "mnemonic": "Led away by night to Berea"
                         },
                         "11": {
-                            "mnemonic": "In Berea they meet noble hearers who search Scriptures daily"
+                            "mnemonic": "In Berea noble hearers search"
                         },
                         "12": {
-                            "mnemonic": "Eager examination leads many Jews and Greeks to believe"
+                            "mnemonic": "Eager examination leads belief"
                         },
                         "13": {
-                            "mnemonic": "Vengeful Thessalonian Jews arrive and agitate the crowds"
+                            "mnemonic": "Vengeful Thessalonians arrive"
                         },
                         "14": {
-                            "mnemonic": "Escorted away, Paul departs while Silas and Timothy stay"
+                            "mnemonic": "Escorted away Paul departs"
                         },
                         "15": {
-                            "mnemonic": "Athens becomes Paul’s next stop as escorts leave him there"
+                            "mnemonic": "Athens becomes next stop"
                         },
                         "16": {
-                            "mnemonic": "Noticing the city full of idols, his spirit is provoked"
+                            "mnemonic": "Noticing city full of idols"
                         },
                         "17": {
-                            "mnemonic": "Daily he reasons in synagogue and marketplace with hearers"
+                            "mnemonic": "Daily he reasons in market"
                         },
                         "18": {
-                            "mnemonic": "Philosophers debate him about Jesus and the resurrection"
+                            "mnemonic": "Philosophers debate him"
                         },
                         "19": {
-                            "mnemonic": "Arrested attention brings him to the Areopagus council"
+                            "mnemonic": "Arrested attention Areopagus"
                         },
                         "20": {
-                            "mnemonic": "Unfamiliar teaching makes them ask what these things mean"
+                            "mnemonic": "Unfamiliar teaching asked"
                         },
                         "21": {
-                            "mnemonic": "Lovers of novelty spend time hearing some new thing"
+                            "mnemonic": "Lovers of novelty hear new"
                         },
                         "22": {
-                            "mnemonic": "Taking his stand on Mars Hill, Paul addresses Athenians"
+                            "mnemonic": "Taking stand Mars Hill"
                         },
                         "23": {
-                            "mnemonic": "Altar to an unknown god becomes his starting point"
+                            "mnemonic": "Altar to Unknown God"
                         },
                         "24": {
-                            "mnemonic": "Lord of heaven and earth made all and needs no temple"
+                            "mnemonic": "Lord made all needs nothing"
                         },
                         "25": {
-                            "mnemonic": "Keeper of life and breath, God needs nothing from us"
+                            "mnemonic": "Keeper of life and breath"
                         },
                         "26": {
-                            "mnemonic": "Single origin of nations and their boundaries is declared"
+                            "mnemonic": "Single origin of nations"
                         },
                         "27": {
-                            "mnemonic": "In hope they should seek God who is not far from any"
+                            "mnemonic": "In hope they seek God"
                         },
                         "28": {
-                            "mnemonic": "Noting poets, he says in Him we live and are His offspring"
+                            "mnemonic": "Noting poets: His offspring"
                         },
                         "29": {
-                            "mnemonic": "As God’s offspring we must not reduce Him to crafted idols"
+                            "mnemonic": "As offspring no idols"
                         },
                         "30": {
-                            "mnemonic": "Times of ignorance overlooked; now God commands all to repent"
+                            "mnemonic": "Times ignorance overlooked"
                         },
                         "31": {
-                            "mnemonic": "He has set a day to judge the world by the risen Man"
+                            "mnemonic": "He set day to judge"
                         },
                         "32": {
-                            "mnemonic": "Encountering resurrection talk, some mock and others postpone"
+                            "mnemonic": "Encountering resurrection mock"
                         },
                         "33": {
-                            "mnemonic": "No longer speaking, Paul departs from their midst"
+                            "mnemonic": "No longer speaking departed"
                         },
                         "34": {
-                            "mnemonic": "Some join him and believe, including Dionysius and Damaris"
+                            "mnemonic": "Some join him and believe"
                         }
                     }
                 },
@@ -6357,332 +6357,335 @@
                     "mnemonic": "EPHESUS AND CORINTH RECEIVE PAUL",
                     "verses": {
                         "1": {
-                            "mnemonic": "Exits Athens and travels to Corinth"
+                            "mnemonic": "Exits Athens to Corinth"
                         },
                         "2": {
-                            "mnemonic": "Partners with Aquila and Priscilla tentmakers"
+                            "mnemonic": "Partners with Aquila/Priscilla"
                         },
                         "3": {
-                            "mnemonic": "He lives and works together with them"
+                            "mnemonic": "He lives and works tents"
                         },
                         "4": {
-                            "mnemonic": "Each Sabbath he reasons in the synagogue"
+                            "mnemonic": "Each Sabbath reasoned"
                         },
                         "5": {
-                            "mnemonic": "Silas and Timothy arrive and he testifies Jesus"
+                            "mnemonic": "Silas/Timothy arrive testified"
                         },
                         "6": {
-                            "mnemonic": "Under opposition he declares he will go to Gentiles"
+                            "mnemonic": "Under opposition goes Gentiles"
                         },
                         "7": {
-                            "mnemonic": "Steps into Titius Justus house beside the synagogue"
+                            "mnemonic": "Steps into Justus house"
                         },
                         "8": {
-                            "mnemonic": "Authority Crispus believes and many Corinthians are baptized"
+                            "mnemonic": "Authority Crispus believes"
                         },
                         "9": {
-                            "mnemonic": "Night vision encourages Paul not to fear"
+                            "mnemonic": "Night vision: Fear not"
                         },
                         "10": {
-                            "mnemonic": "Divine promise of protection and many people"
+                            "mnemonic": "Divine protection promised"
                         },
                         "11": {
-                            "mnemonic": "Continues teaching there for a year and six months"
+                            "mnemonic": "Continues teaching 18 months"
                         },
                         "12": {
-                            "mnemonic": "Opposed again when Jews haul him before Gallio"
+                            "mnemonic": "Opposed by Jews Gallio"
                         },
                         "13": {
-                            "mnemonic": "Religious charge claims he teaches contrary to the law"
+                            "mnemonic": "Religious charge law"
                         },
                         "14": {
-                            "mnemonic": "Intentionally Gallio refuses to hear the case"
+                            "mnemonic": "Intentionally Gallio refuses"
                         },
                         "15": {
-                            "mnemonic": "Names and words of their law he leaves to them"
+                            "mnemonic": "Names words law yours"
                         },
                         "16": {
-                            "mnemonic": "Throws them out of the tribunal"
+                            "mnemonic": "Throws them out tribunal"
                         },
                         "17": {
-                            "mnemonic": "Hostile crowd beats Sosthenes while Gallio ignores it"
+                            "mnemonic": "Hostile crowd beats Sosthenes"
                         },
                         "18": {
-                            "mnemonic": "Remains a while then sails for Syria with the couple"
+                            "mnemonic": "Remains then sails Syria"
                         },
                         "19": {
-                            "mnemonic": "Enters Ephesus and reasons with Jews in the synagogue"
+                            "mnemonic": "Enters Ephesus synagogue"
                         },
                         "20": {
-                            "mnemonic": "Crowd invites him to stay longer but he declines"
+                            "mnemonic": "Crowd asks stay longer"
                         },
                         "21": {
-                            "mnemonic": "Entrusts future return to Gods will and departs"
+                            "mnemonic": "Entrusts return God\u0027s will"
                         },
                         "22": {
-                            "mnemonic": "In Caesarea he greets the church then goes to Antioch"
+                            "mnemonic": "In Caesarea greets church"
                         },
                         "23": {
-                            "mnemonic": "Visits Galatia and Phrygia strengthening all disciples"
+                            "mnemonic": "Visits Galatia strengthening"
                         },
                         "24": {
-                            "mnemonic": "Eloquent Apollos from Alexandria arrives at Ephesus"
+                            "mnemonic": "Eloquent Apollos Ephesus"
                         },
                         "25": {
-                            "mnemonic": "Passionately he teaches Jesus yet knows only Johns baptism"
+                            "mnemonic": "Passionately teaches Jesus"
                         },
                         "26": {
-                            "mnemonic": "Aquila and Priscilla explain Gods way more accurately"
+                            "mnemonic": "Aquila/Priscilla explain way"
                         },
                         "27": {
-                            "mnemonic": "Urged to go to Achaia he is warmly welcomed and helps believers"
+                            "mnemonic": "Urged go Achaia helps"
                         },
                         "28": {
-                            "mnemonic": "Loudly he refutes Jews from Scripture proving Jesus is the Christ"
+                            "mnemonic": "Loudly refutes Jews Christ"
                         }
                     }
                 },
                 "19": {
-                    "mnemonic": "ARTEMIS ARTISTS' ANGRY ASSEMBLY AGAINST THE WAY",
+                    "mnemonic": "ARTEMIS ARTISTS\u0027 ANGRY ASSEMBLY AGAINST THE PLAN",
                     "verses": {
                         "1": {
-                            "mnemonic": "Arriving at Ephesus Paul finds disciples"
+                            "mnemonic": "Arriving Ephesus found disciples"
                         },
                         "2": {
-                            "mnemonic": "Realizes they know only John’s baptism"
+                            "mnemonic": "Received Holy Ghost?"
                         },
                         "3": {
-                            "mnemonic": "Teaches them about faith in Jesus"
+                            "mnemonic": "To what baptism then?"
                         },
                         "4": {
-                            "mnemonic": "Expectant disciples are baptized in His name"
+                            "mnemonic": "Explained John\u0027s baptism"
                         },
                         "5": {
-                            "mnemonic": "Marked by hands laid, Spirit comes on them"
+                            "mnemonic": "Men baptized Jesus name"
                         },
                         "6": {
-                            "mnemonic": "Instantly they speak in tongues and prophesy"
+                            "mnemonic": "Imposed hands Spirit came"
                         },
                         "7": {
-                            "mnemonic": "Strength totals about twelve men"
+                            "mnemonic": "Sum of men twelve"
                         },
                         "8": {
-                            "mnemonic": "Again Paul speaks boldly in the synagogue"
+                            "mnemonic": "And he went synagogue"
                         },
                         "9": {
-                            "mnemonic": "Resisting hearts become stubborn and slander the Way"
+                            "mnemonic": "Resisting words separated"
                         },
                         "10": {
-                            "mnemonic": "Transferring to Tyrannus hall he teaches daily"
+                            "mnemonic": "Two years all Asia heard"
                         },
                         "11": {
-                            "mnemonic": "In all Asia both Jews and Greeks hear"
+                            "mnemonic": "In special miracles God"
                         },
                         "12": {
-                            "mnemonic": "Supernatural miracles God does through Paul"
+                            "mnemonic": "Sick cured by handkerchiefs"
                         },
                         "13": {
-                            "mnemonic": "Taken cloths and aprons bring healing and deliverance"
+                            "mnemonic": "Then vagabond Jews tried"
                         },
                         "14": {
-                            "mnemonic": "Some itinerant exorcists invoke Jesus’ name"
+                            "mnemonic": "Sceva\u0027s seven sons did so"
                         },
                         "15": {
-                            "mnemonic": "Attempting to copy Paul, seven sons confront a spirit"
+                            "mnemonic": "Answered evil spirit: Jesus I know"
                         },
                         "16": {
-                            "mnemonic": "Named by demon who knows Jesus and Paul"
+                            "mnemonic": "Naked and wounded fled"
                         },
                         "17": {
-                            "mnemonic": "Gripped men are overpowered and flee naked"
+                            "mnemonic": "Greeks and Jews feared"
                         },
                         "18": {
-                            "mnemonic": "Residents of Ephesus fear and honor Jesus’ name"
+                            "mnemonic": "Reported deeds believers"
                         },
                         "19": {
-                            "mnemonic": "Yielding believers confess and expose their deeds"
+                            "mnemonic": "Yielded books burned them"
                         },
                         "20": {
-                            "mnemonic": "Arcane scrolls are burned in great number"
+                            "mnemonic": "And word of God grew"
                         },
                         "21": {
-                            "mnemonic": "Sum of their value is very great"
+                            "mnemonic": "Spirit purposed Jerusalem"
                         },
                         "22": {
-                            "mnemonic": "So the word of the Lord grows mightily"
+                            "mnemonic": "Sent Timothy and Erastus"
                         },
                         "23": {
-                            "mnemonic": "Envisions future travel to Jerusalem then Rome"
+                            "mnemonic": "Event about that way"
                         },
                         "24": {
-                            "mnemonic": "Ministry continues in Asia while he sends helpers"
+                            "mnemonic": "Maker of shrines Demetrius"
                         },
                         "25": {
-                            "mnemonic": "Business of silver shrines declines for Demetrius"
+                            "mnemonic": "Brought workmen together"
                         },
                         "26": {
-                            "mnemonic": "Loudly he rallies fellow craftsmen about Artemis"
+                            "mnemonic": "Look what Paul has done"
                         },
                         "27": {
-                            "mnemonic": "Yelling that Paul discredits their goddess and trade"
+                            "mnemonic": "Your trade in danger"
                         },
                         "28": {
-                            "mnemonic": "All the city is filled with confusion"
+                            "mnemonic": "All cried Great is Artemis"
                         },
                         "29": {
-                            "mnemonic": "Grabbing Gaius and Aristarchus they rush to the theater"
+                            "mnemonic": "Gaius and Aristarchus caught"
                         },
                         "30": {
-                            "mnemonic": "Aspiring to speak, Paul is held back by disciples"
+                            "mnemonic": "Aimed to go in Paul"
                         },
                         "31": {
-                            "mnemonic": "Influential Asiarch friends warn him not to enter"
+                            "mnemonic": "Incited not to enter"
                         },
                         "32": {
-                            "mnemonic": "No one agrees why the assembly is gathered"
+                            "mnemonic": "Some cried one thing"
                         },
                         "33": {
-                            "mnemonic": "Some push Alexander forward to make a defense"
+                            "mnemonic": "The Jews put Alexander"
                         },
                         "34": {
-                            "mnemonic": "Then they shout him down as a Jew"
+                            "mnemonic": "Two hours cried Great Artemis"
                         },
                         "35": {
-                            "mnemonic": "Town clerk quiets the crowd and commends Ephesus"
+                            "mnemonic": "He appeased the people"
                         },
                         "36": {
-                            "mnemonic": "He reminds them no one can deny Artemis’ greatness"
+                            "mnemonic": "Everyone knows image fell"
                         },
                         "37": {
-                            "mnemonic": "Exhorts them not to act rashly against these men"
+                            "mnemonic": "People here not robbers"
                         },
                         "38": {
-                            "mnemonic": "Warns that courts and proconsuls exist for complaints"
+                            "mnemonic": "Law is open for Deputes"
                         },
                         "39": {
-                            "mnemonic": "Affirms lawful assemblies but condemns the present riot"
+                            "mnemonic": "Any other matter determined"
                         },
                         "40": {
-                            "mnemonic": "Yielding to his counsel the assembly finally disperses"
+                            "mnemonic": "Non-cause for this uproar"
+                        },
+                        "41": {
+                            "mnemonic": "Now he dismissed assembly"
                         }
                     }
                 },
                 "20": {
-                    "mnemonic": "REVIVAL OF YOUNG MAN AND PAUL'S FINAL FAREWELL",
+                    "mnemonic": "REVIVAL OF YOUNG MAN AND PAUL\u0027S FINAL FAREWELL",
                     "verses": {
                         "1": {
-                            "mnemonic": "Riot subsides and Paul departs"
+                            "mnemonic": "Riot subsides Paul departs"
                         },
                         "2": {
-                            "mnemonic": "Encouraging believers through Macedonia"
+                            "mnemonic": "Encouraging believers Macedonia"
                         },
                         "3": {
-                            "mnemonic": "Vicious plot in Greece changes route"
+                            "mnemonic": "Vicious plot Greece changes"
                         },
                         "4": {
-                            "mnemonic": "Included companions from various cities"
+                            "mnemonic": "Included companions cities"
                         },
                         "5": {
-                            "mnemonic": "Vanguard group goes ahead to Troas"
+                            "mnemonic": "Vanguard group Troas"
                         },
                         "6": {
-                            "mnemonic": "After Passover they sail to Troas"
+                            "mnemonic": "After Passover sail Troas"
                         },
                         "7": {
-                            "mnemonic": "Lord’s Day gathering with long preaching"
+                            "mnemonic": "Lord's Day lengthy preaching"
                         },
                         "8": {
-                            "mnemonic": "Oil lamps shine in upper room"
+                            "mnemonic": "Oil lamps upper room"
                         },
                         "9": {
-                            "mnemonic": "Fatigued Eutychus falls from window"
+                            "mnemonic": "Fatigued Eutychus falls"
                         },
                         "10": {
-                            "mnemonic": "Yet Paul embraces him and declares life"
+                            "mnemonic": "Yet Paul embraces him"
                         },
                         "11": {
-                            "mnemonic": "Once returned upstairs they break bread"
+                            "mnemonic": "Once returned broke bread"
                         },
                         "12": {
-                            "mnemonic": "Uplifted the young man comforts all"
+                            "mnemonic": "Uplifted young man alive"
                         },
                         "13": {
-                            "mnemonic": "Navigating by ship others go to Assos"
+                            "mnemonic": "Navigating ship Assos"
                         },
                         "14": {
-                            "mnemonic": "Going aboard they sail to Mitylene"
+                            "mnemonic": "Going aboard Mitylene"
                         },
                         "15": {
-                            "mnemonic": "Moving past Chios Samos to Miletus"
+                            "mnemonic": "Moving past Chios Samos"
                         },
                         "16": {
-                            "mnemonic": "Avoiding Ephesus he hastens toward Jerusalem"
+                            "mnemonic": "Avoiding Ephesus hasten"
                         },
                         "17": {
-                            "mnemonic": "News summons Ephesian elders to Miletus"
+                            "mnemonic": "News summons elders"
                         },
                         "18": {
-                            "mnemonic": "Always they knew his humble service"
+                            "mnemonic": "Always knew humble service"
                         },
                         "19": {
-                            "mnemonic": "Never shrinking amid plots and tears"
+                            "mnemonic": "Needing tears trials"
                         },
                         "20": {
-                            "mnemonic": "Declaring all that was profitable publicly"
+                            "mnemonic": "Declaring profitable thing"
                         },
                         "21": {
-                            "mnemonic": "Preaching repentance and faith to all"
+                            "mnemonic": "Preaching repentance faith"
                         },
                         "22": {
-                            "mnemonic": "Already bound in spirit for Jerusalem"
+                            "mnemonic": "Already bound Jerusalem"
                         },
                         "23": {
-                            "mnemonic": "Uncertain except chains await him there"
+                            "mnemonic": "Uncertain except chains"
                         },
                         "24": {
-                            "mnemonic": "Life not precious; mission to finish"
+                            "mnemonic": "Life not precious mission"
                         },
                         "25": {
-                            "mnemonic": "Solemnly he says they will see him no more"
+                            "mnemonic": "Solemnly see no more"
                         },
                         "26": {
-                            "mnemonic": "Free from blood of all men"
+                            "mnemonic": "Free from blood all"
                         },
                         "27": {
-                            "mnemonic": "In full he declared God’s whole counsel"
+                            "mnemonic": "In full declared God"
                         },
                         "28": {
-                            "mnemonic": "Nurture yourselves and flock as overseers"
+                            "mnemonic": "Nurture flock overseers"
                         },
                         "29": {
-                            "mnemonic": "After his departure savage wolves will enter"
+                            "mnemonic": "After departure wolves"
                         },
                         "30": {
-                            "mnemonic": "Leaders among you will speak perverse things"
+                            "mnemonic": "Leaders speak perverse"
                         },
                         "31": {
-                            "mnemonic": "For three years he warned with tears"
+                            "mnemonic": "For three years warned"
                         },
                         "32": {
-                            "mnemonic": "Again he commends them to God’s grace"
+                            "mnemonic": "And now commend God"
                         },
                         "33": {
-                            "mnemonic": "Refusing silver gold or fine clothing"
+                            "mnemonic": "Refusing silver gold"
                         },
                         "34": {
-                            "mnemonic": "Evidence shows his hands supplied his needs"
+                            "mnemonic": "Evidence hands supplied"
                         },
                         "35": {
-                            "mnemonic": "Working hard he taught giving is blessed"
+                            "mnemonic": "Working hard taught giving"
                         },
                         "36": {
-                            "mnemonic": "Entering prayer he kneels with them all"
+                            "mnemonic": "Entering prayer kneels"
                         },
                         "37": {
-                            "mnemonic": "Loud weeping and embraces surround Paul"
+                            "mnemonic": "Loud weeping embraces"
                         },
                         "38": {
-                            "mnemonic": "Led to the ship they grieve his departure"
+                            "mnemonic": "Led ship grieve face"
                         }
                     }
                 },
@@ -6690,124 +6693,124 @@
                     "mnemonic": "SOLDIERS ARREST PAUL DURING A RIOT IN JERUSALEM",
                     "verses": {
                         "1": {
-                            "mnemonic": "Sailing from Miletus toward Cos"
+                            "mnemonic": "Sailing Miletus Cos"
                         },
                         "2": {
-                            "mnemonic": "Onward by ship toward Phoenicia"
+                            "mnemonic": "Onward ship Phoenicia"
                         },
                         "3": {
-                            "mnemonic": "Leaving Cyprus they sight Syria and Tyre"
+                            "mnemonic": "Leaving Cyprus Tyre"
                         },
                         "4": {
-                            "mnemonic": "Disciples in Tyre warn Paul by the Spirit"
+                            "mnemonic": "Disciples warn Paul"
                         },
                         "5": {
-                            "mnemonic": "Including families, they kneel and pray on the shore"
+                            "mnemonic": "Including families pray"
                         },
                         "6": {
-                            "mnemonic": "Embarking again they part and board the ship"
+                            "mnemonic": "Embarking again part"
                         },
                         "7": {
-                            "mnemonic": "Reaching Ptolemais they greet the brothers"
+                            "mnemonic": "Reaching Ptolemais greet"
                         },
                         "8": {
-                            "mnemonic": "Staying in Caesarea with Philip the evangelist"
+                            "mnemonic": "Staying Caesarea Philip"
                         },
                         "9": {
-                            "mnemonic": "Apostle Philip has four prophesying daughters"
+                            "mnemonic": "Apostle\u0027s daughters prophesy"
                         },
                         "10": {
-                            "mnemonic": "Revelation prophet Agabus comes down from Judea"
+                            "mnemonic": "Revelation Agabus comes"
                         },
                         "11": {
-                            "mnemonic": "Ropes of Paul’s belt bind Agabus’ own hands and feet"
+                            "mnemonic": "Ropes bind Agabus"
                         },
                         "12": {
-                            "mnemonic": "Earnestly the believers beg Paul not to go up"
+                            "mnemonic": "Earnestly beg not go"
                         },
                         "13": {
-                            "mnemonic": "Steadfast, Paul declares he is ready to die in Jerusalem"
+                            "mnemonic": "Steadfast Paul ready die"
                         },
                         "14": {
-                            "mnemonic": "Trusting the Lord they say His will be done"
+                            "mnemonic": "Trusting Lord will done"
                         },
                         "15": {
-                            "mnemonic": "Packing their baggage they set out for Jerusalem"
+                            "mnemonic": "Packing baggage set out"
                         },
                         "16": {
-                            "mnemonic": "Accompanied by disciples bringing Mnason as host"
+                            "mnemonic": "Accompanied by Mnason"
                         },
                         "17": {
-                            "mnemonic": "Upon arrival the brothers welcome them gladly"
+                            "mnemonic": "Upon arrival welcome"
                         },
                         "18": {
-                            "mnemonic": "Leaders James and elders receive Paul the next day"
+                            "mnemonic": "Leaders James receive"
                         },
                         "19": {
-                            "mnemonic": "Detailed report tells what God did among Gentiles"
+                            "mnemonic": "Detailed report God did"
                         },
                         "20": {
-                            "mnemonic": "Uncounted Jewish believers are zealous for the law"
+                            "mnemonic": "Uncounted Jews zealous"
                         },
                         "21": {
-                            "mnemonic": "Rumors say Paul teaches Jews to forsake Moses"
+                            "mnemonic": "Rumors forsake Moses"
                         },
                         "22": {
-                            "mnemonic": "Inevitable gathering will hear that he has arrived"
+                            "mnemonic": "Inevitable gathering hear"
                         },
                         "23": {
-                            "mnemonic": "Now the elders advise him to join four men in a vow"
+                            "mnemonic": "Now advised four men"
                         },
                         "24": {
-                            "mnemonic": "Guided to purify with them and pay their expenses"
+                            "mnemonic": "Guided purify pay expenses"
                         },
                         "25": {
-                            "mnemonic": "Again they affirm the simple decree for Gentile believers"
+                            "mnemonic": "Again affirm Gentile decree"
                         },
                         "26": {
-                            "mnemonic": "Ritual purification leads Paul and the men into the temple"
+                            "mnemonic": "Ritual purification temple"
                         },
                         "27": {
-                            "mnemonic": "Inciting Jews from Asia seize Paul inside the courts"
+                            "mnemonic": "Inciting Jews seize Paul"
                         },
                         "28": {
-                            "mnemonic": "Outcry accuses him of attacking people law and this place"
+                            "mnemonic": "Outcry accuses attacking"
                         },
                         "29": {
-                            "mnemonic": "Trophimus the Ephesian is assumed brought into the temple"
+                            "mnemonic": "Trophimus assumed temple"
                         },
                         "30": {
-                            "mnemonic": "In uproar the whole city rushes and drags Paul out"
+                            "mnemonic": "In uproar drag Paul"
                         },
                         "31": {
-                            "mnemonic": "News of the riot reaches the Roman commander"
+                            "mnemonic": "News riot commander"
                         },
                         "32": {
-                            "mnemonic": "Joined by soldiers he runs down and stops the beating"
+                            "mnemonic": "Joined soldiers stops beating"
                         },
                         "33": {
-                            "mnemonic": "Enchained with two chains Paul is questioned by the tribune"
+                            "mnemonic": "Enchained two chains"
                         },
                         "34": {
-                            "mnemonic": "Roaring crowd shouts conflicting accusations around him"
+                            "mnemonic": "Roaring crowd conflicting"
                         },
                         "35": {
-                            "mnemonic": "Up the stairs soldiers carry Paul from the violence"
+                            "mnemonic": "Up stairs carried soldiers"
                         },
                         "36": {
-                            "mnemonic": "Shouting the mob keeps crying Away with him"
+                            "mnemonic": "Shouting Away with him"
                         },
                         "37": {
-                            "mnemonic": "As he nears the barracks Paul asks to speak"
+                            "mnemonic": "As nears barracks asks"
                         },
                         "38": {
-                            "mnemonic": "Leader first supposes he is the Egyptian rebel"
+                            "mnemonic": "Leader supposes Egyptian"
                         },
                         "39": {
-                            "mnemonic": "Explaining he is a Jew of Tarsus Paul requests to address them"
+                            "mnemonic": "Explaining Jew Tarsus"
                         },
                         "40": {
-                            "mnemonic": "Motioning from the steps he speaks to the silent crowd"
+                            "mnemonic": "Motioning speaks Hebrew"
                         }
                     }
                 },
@@ -6842,7 +6845,7 @@
                             "mnemonic": "Near companions see light but miss the voice"
                         },
                         "10": {
-                            "mnemonic": "Guided to Damascus to learn God’s will"
+                            "mnemonic": "Guided to Damascus to learn God's will"
                         },
                         "11": {
                             "mnemonic": "Blinded by glory he is led by hand"
@@ -6872,7 +6875,7 @@
                             "mnemonic": "Explains his former violence against believers"
                         },
                         "20": {
-                            "mnemonic": "Taking part when Stephen’s blood was shed"
+                            "mnemonic": "Taking part when Stephen's blood was shed"
                         },
                         "21": {
                             "mnemonic": "Entrusted now to be sent far to Gentiles"
@@ -6988,7 +6991,7 @@
                             "mnemonic": "In Caesarea the governor receives him"
                         },
                         "27": {
-                            "mnemonic": "Scroll with Lysias’s letter is delivered"
+                            "mnemonic": "Scroll with Lysias's letter is delivered"
                         },
                         "28": {
                             "mnemonic": "Explaining charges and Roman protection"
@@ -6997,10 +7000,10 @@
                             "mnemonic": "States accusers must come to present case"
                         },
                         "30": {
-                            "mnemonic": "Commanded to be kept in Herod’s praetorium"
+                            "mnemonic": "Commanded to be kept in Herod's praetorium"
                         },
                         "31": {
-                            "mnemonic": "Ordered to await accusers’ arrival there"
+                            "mnemonic": "Ordered to await accusers' arrival there"
                         },
                         "32": {
                             "mnemonic": "Roman custody now guards Paul securely"
@@ -7103,7 +7106,7 @@
                     }
                 },
                 "25": {
-                    "mnemonic": "NEW GOVERNOR HEARS PAUL'S APPEAL",
+                    "mnemonic": "NEW GOVERNOR HEARS PAUL\u0027S APPEAL",
                     "verses": {
                         "1": {
                             "mnemonic": "New governor Festus arrives in province"
@@ -7136,7 +7139,7 @@
                             "mnemonic": "Offering to please Jews Festus asks about Jerusalem trial"
                         },
                         "11": {
-                            "mnemonic": "Refuses; Paul insists on Caesar’s court alone"
+                            "mnemonic": "Refuses; Paul insists on Caesar's court alone"
                         },
                         "12": {
                             "mnemonic": "Holding to his appeal Festus consults his council"
@@ -7148,7 +7151,7 @@
                             "mnemonic": "After some days Agrippa and Bernice visit Festus"
                         },
                         "15": {
-                            "mnemonic": "Report of Paul’s case is laid before the king"
+                            "mnemonic": "Report of Paul's case is laid before the king"
                         },
                         "16": {
                             "mnemonic": "Says Jerusalem Jews demanded he should not live"
@@ -7178,7 +7181,7 @@
                             "mnemonic": "Procession with great pomp brings Agrippa and Bernice"
                         },
                         "25": {
-                            "mnemonic": "Emphasizing Jewish outcry Festus explains the prisoner’s case"
+                            "mnemonic": "Emphasizing Jewish outcry Festus explains the prisoner's case"
                         },
                         "26": {
                             "mnemonic": "Admits he finds nothing worthy of death yet must send him"
@@ -7207,7 +7210,7 @@
                             "mnemonic": "Known as strict Pharisee from the beginning"
                         },
                         "6": {
-                            "mnemonic": "Defending hope of God’s promise to the fathers"
+                            "mnemonic": "Defending hope of God's promise to the fathers"
                         },
                         "7": {
                             "mnemonic": "Entire twelve tribes hope to attain this promise"
@@ -7279,7 +7282,7 @@
                             "mnemonic": "If only all hearers might become as I am except these chains"
                         },
                         "30": {
-                            "mnemonic": "Persons present—the king, governor, Bernice—rise and withdraw"
+                            "mnemonic": "Persons present-the king, governor, Bernice-rise and withdraw"
                         },
                         "31": {
                             "mnemonic": "Privately they agree he has done nothing worthy of death or bonds"
@@ -7347,7 +7350,7 @@
                             "mnemonic": "Tossed violently they lower the gear and are driven along"
                         },
                         "19": {
-                            "mnemonic": "Exhausted, they throw the ship’s tackle overboard with their hands"
+                            "mnemonic": "Exhausted, they throw the ship's tackle overboard with their hands"
                         },
                         "20": {
                             "mnemonic": "Repeated days without sun or stars rob them of hope of rescue"
@@ -7481,7 +7484,7 @@
                             "mnemonic": "Leaders of the Jews are summoned after three days"
                         },
                         "18": {
-                            "mnemonic": "Paul explains charges and his hope in Israel's promise"
+                            "mnemonic": "Paul explains charges and his hope in Israel\u0027s promise"
                         },
                         "19": {
                             "mnemonic": "Reports from Judea about him have not been received"
@@ -7499,28 +7502,28 @@
                             "mnemonic": "Hard-hearted text from Isaiah is quoted about dull hearing"
                         },
                         "24": {
-                            "mnemonic": "Emphatically he says God’s salvation goes to the Gentiles"
+                            "mnemonic": "Ending his message he declares God's salvation is sent to Gentiles"
                         },
                         "25": {
-                            "mnemonic": "Some depart in disagreement after hearing his words"
+                            "mnemonic": "Spoken word concludes that they will listen"
                         },
                         "26": {
-                            "mnemonic": "In his rented house Paul stays two full years"
+                            "mnemonic": "In his own rented house he stays two full years"
                         },
                         "27": {
-                            "mnemonic": "Never turning anyone away he welcomes all who come"
+                            "mnemonic": "No one forbidding him he preaches the kingdom of God"
                         },
                         "28": {
-                            "mnemonic": "Relentlessly he proclaims God’s kingdom"
+                            "mnemonic": "Rome hears the things which concern the Lord Jesus Christ"
                         },
                         "29": {
-                            "mnemonic": "Openly he teaches about the Lord Jesus Christ"
+                            "mnemonic": "Onwards the gospel goes unhindered"
                         },
                         "30": {
-                            "mnemonic": "Muzzle-free, he speaks with all boldness"
+                            "mnemonic": "Mission accomplished Paul teaches with all confidence"
                         },
                         "31": {
-                            "mnemonic": "Entire time he remains unhindered in his preaching"
+                            "mnemonic": "End of the book of Acts"
                         }
                     }
                 }
