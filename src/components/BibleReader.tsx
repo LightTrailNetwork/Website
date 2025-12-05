@@ -1883,9 +1883,7 @@ export default function BibleReader() {
                         <div
                             className="fixed z-[60] bg-popover text-popover-foreground p-4 rounded-lg shadow-xl border border-border max-w-xs animate-in fade-in zoom-in-95 duration-200"
                             style={{
-                                left: window.innerWidth < 640
-                                    ? Math.max(160, Math.min(activeFootnote.x, window.innerWidth - 160))
-                                    : activeFootnote.x,
+                                left: Math.max(160, Math.min(activeFootnote.x, window.innerWidth - 160)),
                                 top: activeFootnote.y > window.innerHeight - 250 ? 'auto' : activeFootnote.y + 20,
                                 bottom: activeFootnote.y > window.innerHeight - 250 ? (window.innerHeight - activeFootnote.y) + 10 : 'auto',
                                 transform: 'translateX(-50%)'
