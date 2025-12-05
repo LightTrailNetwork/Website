@@ -344,9 +344,9 @@ export default function BibleReader() {
         if (element) {
             element.scrollIntoView({ behavior: 'smooth', block: 'center' });
             // Add temporary highlight
-            element.classList.add('bg-yellow-100', 'dark:bg-yellow-900/50', 'transition-colors', 'duration-1000');
+            element.classList.add('bg-yellow-100', 'dark:bg-yellow-500/20', 'transition-colors', 'duration-1000');
             setTimeout(() => {
-                element.classList.remove('bg-yellow-100', 'dark:bg-yellow-900/50');
+                element.classList.remove('bg-yellow-100', 'dark:bg-yellow-500/20');
             }, 2000);
         }
     };
@@ -498,7 +498,7 @@ export default function BibleReader() {
         const match = query.match(/^(\d?\s?[a-zA-Z]+)\s*(\d+)?(?::(\d+)(?:-(\d+))?)?$/);
 
         if (match) {
-            const bookQuery = match[1].trim();
+            const bookQuery = match[1] ? match[1].trim() : '';
             const chapterNum = match[2] ? parseInt(match[2]) : 1;
             const startVerse = match[3] ? parseInt(match[3]) : null;
             const endVerse = match[4] ? parseInt(match[4]) : null;
@@ -840,7 +840,7 @@ export default function BibleReader() {
                             <span
                                 key={index}
                                 id={`verse-${item.number}`}
-                                className={`relative group ${isHighlighted ? "bg-yellow-100 dark:bg-yellow-900/30 transition-colors duration-1000 rounded px-1 -mx-1 box-decoration-clone" : ""}`}
+                                className={`relative group ${isHighlighted ? "bg-yellow-100 dark:bg-yellow-500/20 transition-colors duration-1000 rounded px-1 -mx-1 box-decoration-clone" : ""}`}
                                 onMouseEnter={() => setActiveVerse(item.number)}
                                 onMouseLeave={() => setActiveVerse(null)}
                                 onClick={() => setActiveVerse(item.number)}
