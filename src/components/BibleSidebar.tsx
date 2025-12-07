@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { MessageSquare, X, ChevronUp, ChevronDown, Loader2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import type { BibleChapter, Commentary, CommentaryChapter, DatasetBookChapter, BibleBook } from '../../data/bibleApi';
-import { getSortedReferences } from '../../utils/bibleUtils';
+import { getSortedReferences } from '../utils/bibleUtils';
 
 interface BibleSidebarProps {
     showCommentary: boolean;

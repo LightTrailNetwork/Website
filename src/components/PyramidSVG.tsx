@@ -23,7 +23,8 @@ interface ClickableLetterProps {
   selectedLetter: string;
   hoveredLetter: string | null;
   onLetterClick: (letter: string) => void;
-  onLetterHover: (letter: string | null) => void;
+  onHoverStart: (letter: string) => void;
+  onHoverEnd: () => void;
   textColor: string;
   fontSize: number;
   scrollToPassage: (passageKey: string) => void;
@@ -36,7 +37,8 @@ const ClickableLetter: React.FC<ClickableLetterProps> = ({
   selectedLetter,
   hoveredLetter,
   onLetterClick,
-  onLetterHover,
+  onHoverStart,
+  onHoverEnd,
   textColor,
   fontSize,
   scrollToPassage,
@@ -45,11 +47,6 @@ const ClickableLetter: React.FC<ClickableLetterProps> = ({
 
   const handleClick = () => {
     onLetterClick(passageKey);
-    scrollToPassage(passageKey);
-  };
-
-  const handleMouseEnter = () => {
-    onLetterHover(passageKey);
     scrollToPassage(passageKey);
   };
 
@@ -69,8 +66,8 @@ const ClickableLetter: React.FC<ClickableLetterProps> = ({
         transition: "all 0.2s",
       }}
       onClick={handleClick}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={() => onLetterHover(null)}
+      onMouseEnter={() => onHoverStart(passageKey)}
+      onMouseLeave={onHoverEnd}
     >
       {label}
     </text>
@@ -84,7 +81,8 @@ interface SubPyramidVertexProps {
   selectedLetter: string;
   hoveredLetter: string | null;
   onLetterClick: (letter: string) => void;
-  onLetterHover: (letter: string | null) => void;
+  onHoverStart: (letter: string) => void;
+  onHoverEnd: () => void;
   textColor: string;
   fontSize: number;
   scrollToPassage: (passageKey: string) => void;
@@ -96,8 +94,9 @@ const SubPyramidVertex: React.FC<SubPyramidVertexProps> = ({
   passageKey,
   selectedLetter,
   hoveredLetter,
-  onLetterClick: onLetterClick,
-  onLetterHover: onLetterHover,
+  onLetterClick,
+  onHoverStart,
+  onHoverEnd,
   textColor,
   fontSize,
   scrollToPassage,
@@ -106,11 +105,6 @@ const SubPyramidVertex: React.FC<SubPyramidVertexProps> = ({
 
   const handleClick = () => {
     onLetterClick(passageKey);
-    scrollToPassage(passageKey);
-  };
-
-  const handleMouseEnter = () => {
-    onLetterHover(passageKey);
     scrollToPassage(passageKey);
   };
 
@@ -130,8 +124,8 @@ const SubPyramidVertex: React.FC<SubPyramidVertexProps> = ({
         transition: "all 0.2s",
       }}
       onClick={handleClick}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={() => onLetterHover(null)}
+      onMouseEnter={() => onHoverStart(passageKey)}
+      onMouseLeave={onHoverEnd}
     >
       {label}
     </text>
@@ -213,6 +207,26 @@ export default function PyramidSVG({
       element.scrollIntoView({ behavior: "smooth", block: "center" });
     }
   };
+
+  // Hover delay logic
+  const hoverTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
+
+  const onHoverStart = (letter: string) => {
+    if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
+    hoverTimeoutRef.current = setTimeout(() => {
+      onLetterHover(letter);
+      scrollToPassage(letter);
+    }, 200); // 200ms delay to prevent accidental scrolls
+  };
+
+  const onHoverEnd = () => {
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+      hoverTimeoutRef.current = null;
+    }
+    onLetterHover(null);
+  };
+
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
   const containerSize = isMobile ? 380 : 500;
   const svgSize = containerSize;
@@ -461,7 +475,8 @@ export default function PyramidSVG({
             selectedLetter={selectedLetter}
             hoveredLetter={hoveredLetter}
             onLetterClick={onLetterClick}
-            onLetterHover={onLetterHover}
+            onHoverStart={onHoverStart}
+            onHoverEnd={onHoverEnd}
             textColor={textColor}
             fontSize={baseFontSize}
             scrollToPassage={scrollToPassage}
@@ -473,7 +488,8 @@ export default function PyramidSVG({
             selectedLetter={selectedLetter}
             hoveredLetter={hoveredLetter}
             onLetterClick={onLetterClick}
-            onLetterHover={onLetterHover}
+            onHoverStart={onHoverStart}
+            onHoverEnd={onHoverEnd}
             textColor={textColor}
             fontSize={baseFontSize}
             scrollToPassage={scrollToPassage}
@@ -485,7 +501,8 @@ export default function PyramidSVG({
             selectedLetter={selectedLetter}
             hoveredLetter={hoveredLetter}
             onLetterClick={onLetterClick}
-            onLetterHover={onLetterHover}
+            onHoverStart={onHoverStart}
+            onHoverEnd={onHoverEnd}
             textColor={textColor}
             fontSize={baseFontSize}
             scrollToPassage={scrollToPassage}
@@ -519,7 +536,8 @@ export default function PyramidSVG({
             selectedLetter={selectedLetter}
             hoveredLetter={hoveredLetter}
             onLetterClick={onLetterClick}
-            onLetterHover={onLetterHover}
+            onHoverStart={onHoverStart}
+            onHoverEnd={onHoverEnd}
             textColor={textColor}
             fontSize={subFontSize}
             scrollToPassage={scrollToPassage}
@@ -531,7 +549,8 @@ export default function PyramidSVG({
             selectedLetter={selectedLetter}
             hoveredLetter={hoveredLetter}
             onLetterClick={onLetterClick}
-            onLetterHover={onLetterHover}
+            onHoverStart={onHoverStart}
+            onHoverEnd={onHoverEnd}
             textColor={textColor}
             fontSize={subFontSize}
             scrollToPassage={scrollToPassage}
@@ -543,7 +562,8 @@ export default function PyramidSVG({
             selectedLetter={selectedLetter}
             hoveredLetter={hoveredLetter}
             onLetterClick={onLetterClick}
-            onLetterHover={onLetterHover}
+            onHoverStart={onHoverStart}
+            onHoverEnd={onHoverEnd}
             textColor={textColor}
             fontSize={subFontSize}
             scrollToPassage={scrollToPassage}
@@ -557,7 +577,8 @@ export default function PyramidSVG({
             selectedLetter={selectedLetter}
             hoveredLetter={hoveredLetter}
             onLetterClick={onLetterClick}
-            onLetterHover={onLetterHover}
+            onHoverStart={onHoverStart}
+            onHoverEnd={onHoverEnd}
             textColor={textColor}
             fontSize={subFontSize}
             scrollToPassage={scrollToPassage}
@@ -569,7 +590,8 @@ export default function PyramidSVG({
             selectedLetter={selectedLetter}
             hoveredLetter={hoveredLetter}
             onLetterClick={onLetterClick}
-            onLetterHover={onLetterHover}
+            onHoverStart={onHoverStart}
+            onHoverEnd={onHoverEnd}
             textColor={textColor}
             fontSize={subFontSize}
             scrollToPassage={scrollToPassage}
@@ -581,7 +603,8 @@ export default function PyramidSVG({
             selectedLetter={selectedLetter}
             hoveredLetter={hoveredLetter}
             onLetterClick={onLetterClick}
-            onLetterHover={onLetterHover}
+            onHoverStart={onHoverStart}
+            onHoverEnd={onHoverEnd}
             textColor={textColor}
             fontSize={subFontSize}
             scrollToPassage={scrollToPassage}
@@ -595,7 +618,8 @@ export default function PyramidSVG({
             selectedLetter={selectedLetter}
             hoveredLetter={hoveredLetter}
             onLetterClick={onLetterClick}
-            onLetterHover={onLetterHover}
+            onHoverStart={onHoverStart}
+            onHoverEnd={onHoverEnd}
             textColor={textColor}
             fontSize={subFontSize}
             scrollToPassage={scrollToPassage}
@@ -607,7 +631,8 @@ export default function PyramidSVG({
             selectedLetter={selectedLetter}
             hoveredLetter={hoveredLetter}
             onLetterClick={onLetterClick}
-            onLetterHover={onLetterHover}
+            onHoverStart={onHoverStart}
+            onHoverEnd={onHoverEnd}
             textColor={textColor}
             fontSize={subFontSize}
             scrollToPassage={scrollToPassage}
@@ -619,7 +644,8 @@ export default function PyramidSVG({
             selectedLetter={selectedLetter}
             hoveredLetter={hoveredLetter}
             onLetterClick={onLetterClick}
-            onLetterHover={onLetterHover}
+            onHoverStart={onHoverStart}
+            onHoverEnd={onHoverEnd}
             textColor={textColor}
             fontSize={subFontSize}
             scrollToPassage={scrollToPassage}
@@ -646,7 +672,8 @@ export default function PyramidSVG({
                 selectedLetter={selectedLetter}
                 hoveredLetter={hoveredLetter}
                 onLetterClick={onLetterClick}
-                onLetterHover={onLetterHover}
+                onHoverStart={onHoverStart}
+                onHoverEnd={onHoverEnd}
                 textColor={tinyTextColor}
                 fontSize={tinyFontSize}
                 scrollToPassage={scrollToPassage}
@@ -658,7 +685,8 @@ export default function PyramidSVG({
                 selectedLetter={selectedLetter}
                 hoveredLetter={hoveredLetter}
                 onLetterClick={onLetterClick}
-                onLetterHover={onLetterHover}
+                onHoverStart={onHoverStart}
+                onHoverEnd={onHoverEnd}
                 textColor={tinyTextColor}
                 fontSize={tinyFontSize}
                 scrollToPassage={scrollToPassage}
@@ -670,7 +698,8 @@ export default function PyramidSVG({
                 selectedLetter={selectedLetter}
                 hoveredLetter={hoveredLetter}
                 onLetterClick={onLetterClick}
-                onLetterHover={onLetterHover}
+                onHoverStart={onHoverStart}
+                onHoverEnd={onHoverEnd}
                 textColor={tinyTextColor}
                 fontSize={tinyFontSize}
                 scrollToPassage={scrollToPassage}
@@ -699,7 +728,8 @@ export default function PyramidSVG({
                 selectedLetter={selectedLetter}
                 hoveredLetter={hoveredLetter}
                 onLetterClick={onLetterClick}
-                onLetterHover={onLetterHover}
+                onHoverStart={onHoverStart}
+                onHoverEnd={onHoverEnd}
                 textColor={tinyTextColor}
                 fontSize={tinyFontSize}
                 scrollToPassage={scrollToPassage}
@@ -711,7 +741,8 @@ export default function PyramidSVG({
                 selectedLetter={selectedLetter}
                 hoveredLetter={hoveredLetter}
                 onLetterClick={onLetterClick}
-                onLetterHover={onLetterHover}
+                onHoverStart={onHoverStart}
+                onHoverEnd={onHoverEnd}
                 textColor={tinyTextColor}
                 fontSize={tinyFontSize}
                 scrollToPassage={scrollToPassage}
@@ -723,7 +754,8 @@ export default function PyramidSVG({
                 selectedLetter={selectedLetter}
                 hoveredLetter={hoveredLetter}
                 onLetterClick={onLetterClick}
-                onLetterHover={onLetterHover}
+                onHoverStart={onHoverStart}
+                onHoverEnd={onHoverEnd}
                 textColor={tinyTextColor}
                 fontSize={tinyFontSize}
                 scrollToPassage={scrollToPassage}
@@ -752,7 +784,8 @@ export default function PyramidSVG({
                 selectedLetter={selectedLetter}
                 hoveredLetter={hoveredLetter}
                 onLetterClick={onLetterClick}
-                onLetterHover={onLetterHover}
+                onHoverStart={onHoverStart}
+                onHoverEnd={onHoverEnd}
                 textColor={tinyTextColor}
                 fontSize={tinyFontSize}
                 scrollToPassage={scrollToPassage}
@@ -764,7 +797,8 @@ export default function PyramidSVG({
                 selectedLetter={selectedLetter}
                 hoveredLetter={hoveredLetter}
                 onLetterClick={onLetterClick}
-                onLetterHover={onLetterHover}
+                onHoverStart={onHoverStart}
+                onHoverEnd={onHoverEnd}
                 textColor={tinyTextColor}
                 fontSize={tinyFontSize}
                 scrollToPassage={scrollToPassage}
@@ -776,7 +810,8 @@ export default function PyramidSVG({
                 selectedLetter={selectedLetter}
                 hoveredLetter={hoveredLetter}
                 onLetterClick={onLetterClick}
-                onLetterHover={onLetterHover}
+                onHoverStart={onHoverStart}
+                onHoverEnd={onHoverEnd}
                 textColor={tinyTextColor}
                 fontSize={tinyFontSize}
                 scrollToPassage={scrollToPassage}
@@ -798,8 +833,12 @@ export default function PyramidSVG({
                   ? baseFontSize * 2.5
                   : baseFontSize * 2,
               fontWeight: 900,
-              fill: "hsl(var(--primary))",
-              opacity: 0.1,
+              fill: selectedLetter === "AIM (Key)" || hoveredLetter === "AIM (Key)"
+                ? "hsl(var(--destructive))"
+                : "hsl(var(--primary))",
+              opacity: selectedLetter === "AIM (Key)" || hoveredLetter === "AIM (Key)"
+                ? 0.3
+                : 0.1,
               userSelect: "none",
               cursor: "pointer",
             }}
@@ -807,11 +846,8 @@ export default function PyramidSVG({
               onLetterClick("AIM (Key)");
               scrollToPassage("AIM (Key)");
             }}
-            onMouseEnter={() => {
-              onLetterHover("AIM (Key)");
-              scrollToPassage("AIM (Key)");
-            }}
-            onMouseLeave={() => onLetterHover(null)}
+            onMouseEnter={() => onHoverStart("AIM (Key)")}
+            onMouseLeave={onHoverEnd}
           >
             AIM
           </text>

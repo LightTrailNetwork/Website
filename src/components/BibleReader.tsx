@@ -11,7 +11,7 @@ import { formatPassageText, shouldInsertSpace, formatChapterContent } from '../u
 import { useScrollDirection } from '../hooks/useScrollDirection';
 import { useSettings } from '../context/SettingsContext';
 import { getBookMnemonic, getChapterMnemonic, getVerseMnemonic, getMnemonicHighlightIndex } from '../utils/mnemonicUtils';
-import BibleSidebar from './Bible/BibleSidebar';
+import BibleSidebar from './BibleSidebar';
 import { getSortedReferences } from '../utils/bibleUtils';
 
 export default function BibleReader() {
