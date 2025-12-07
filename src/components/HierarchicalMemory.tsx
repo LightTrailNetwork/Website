@@ -10,6 +10,10 @@ import { useSettings } from '../context/SettingsContext';
 // Types for our data structure
 interface MnemonicData {
     meta: { version: string };
+    testaments: {
+        OT: { mnemonic: string };
+        NT: { mnemonic: string };
+    };
     books: Record<string, BookData>;
 }
 
@@ -28,6 +32,22 @@ interface VerseData {
 }
 
 const data = mnemonicsData as unknown as MnemonicData;
+
+// Helper component for consistent mnemonic styling
+const MnemonicText = ({ text, className = "", highlightClass = "text-primary" }: { text: string; className?: string; highlightClass?: string }) => {
+    if (!text) return null;
+    const firstChar = text.charAt(0);
+    const rest = text.slice(1);
+
+    return (
+        <span className={className}>
+            <span className={`${highlightClass} font-bold font-serif text-[1.1em] mr-[1px]`}>
+                {firstChar}
+            </span>
+            {rest}
+        </span>
+    );
+};
 
 export default function HierarchicalMemory() {
     const { bookId, chapterId } = useParams<{ bookId: string; chapterId: string }>();
@@ -184,6 +204,8 @@ export default function HierarchicalMemory() {
 
 
 
+
+
     if (loading) {
         return (
             <div className="flex justify-center items-center min-h-[50vh]">
@@ -196,8 +218,8 @@ export default function HierarchicalMemory() {
         <div className="max-w-4xl mx-auto p-4 pb-20">
             {/* Header */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-                <div className="flex-1 min-w-0 overflow-x-auto">
-
+                <div className="flex-1 min-w-0">
+                    {/* Breadcrumbs or Nav could go here */}
                 </div>
 
                 {/* Translation Indicator */}
@@ -212,26 +234,67 @@ export default function HierarchicalMemory() {
 
             {/* Content */}
             {!selectedBookKey && (
-                <div className="space-y-6 animate-slide-up">
-                    <div className="text-center space-y-4">
-                        <h2 className="text-2xl font-bold">Select a Book</h2>
-                        <p className="text-muted-foreground">Choose a book to see its mnemonic summary.</p>
+                <div className="space-y-8 animate-slide-up">
 
-                        {/* Tabs */}
-                        <div className="flex justify-center gap-2">
-                            {(['ALL', 'OT', 'NT'] as const).map((t) => (
-                                <button
-                                    key={t}
-                                    onClick={() => setFilter(t)}
-                                    className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${filter === t
-                                        ? 'bg-primary text-primary-foreground'
-                                        : 'bg-secondary/10 hover:bg-secondary/20 text-muted-foreground'
-                                        }`}
-                                >
-                                    {t === 'ALL' ? 'All Books' : t === 'OT' ? 'Old Testament' : 'New Testament'}
-                                </button>
-                            ))}
-                        </div>
+                    {/* Testament Selection / Mnemonic View */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {/* Old Testament Card */}
+                        {(filter === 'ALL' || filter === 'OT') && (
+                            <div
+                                onClick={() => setFilter(filter === 'OT' ? 'ALL' : 'OT')}
+                                className={`relative overflow-hidden rounded-xl border transition-all cursor-pointer group ${filter === 'OT' ? 'col-span-full md:col-span-2 border-orange-500/50 bg-orange-500/5 shadow-md' :
+                                    'border-border hover:border-orange-500/30 hover:shadow-sm bg-card'
+                                    }`}
+                            >
+                                <div className="p-6">
+                                    <div className="flex items-center justify-between mb-4">
+                                        <h2 className={`text-2xl font-bold ${filter === 'OT' ? 'text-orange-500' : 'text-foreground'}`}>Old Testament</h2>
+                                        {/* Optional Badge */}
+                                    </div>
+
+                                    <div className="animate-in fade-in slide-in-from-top-2">
+                                        <p className="text-xl md:text-2xl font-serif leading-relaxed text-foreground">
+                                            {data.testaments?.OT?.mnemonic}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* New Testament Card */}
+                        {(filter === 'ALL' || filter === 'NT') && (
+                            <div
+                                onClick={() => setFilter(filter === 'NT' ? 'ALL' : 'NT')}
+                                className={`relative overflow-hidden rounded-xl border transition-all cursor-pointer group ${filter === 'NT' ? 'col-span-full md:col-span-2 border-purple-500/50 bg-purple-500/5 shadow-md' :
+                                    'border-border hover:border-purple-500/30 hover:shadow-sm bg-card'
+                                    }`}
+                            >
+                                <div className="p-6">
+                                    <div className="flex items-center justify-between mb-4">
+                                        <h2 className={`text-2xl font-bold ${filter === 'NT' ? 'text-purple-500' : 'text-foreground'}`}>New Testament</h2>
+                                    </div>
+
+                                    <div className="animate-in fade-in slide-in-from-top-2">
+                                        <p className="text-xl md:text-2xl font-serif leading-relaxed text-foreground">
+                                            {data.testaments?.NT?.mnemonic}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* View Controls */}
+                    <div className="flex items-center justify-between border-b pb-2">
+                        <h3 className="text-lg font-semibold text-muted-foreground">Books</h3>
+                        {filter !== 'ALL' && (
+                            <button
+                                onClick={() => setFilter('ALL')}
+                                className="text-sm text-primary hover:underline"
+                            >
+                                Show All Testaments
+                            </button>
+                        )}
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
@@ -251,7 +314,9 @@ export default function HierarchicalMemory() {
                                         <span className="font-bold text-lg">{book.name}</span>
                                         <Book className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
                                     </div>
-                                    <p className="text-sm text-muted-foreground line-clamp-2">{mnemonicData.mnemonic}</p>
+                                    <p className="text-sm text-muted-foreground line-clamp-2">
+                                        <MnemonicText text={mnemonicData.mnemonic} className="text-muted-foreground" />
+                                    </p>
                                 </button>
                             );
                         })}
@@ -279,7 +344,9 @@ export default function HierarchicalMemory() {
                                         <span className="font-bold">Chapter {chapNum}</span>
                                         <FileText className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
                                     </div>
-                                    <p className="text-sm text-muted-foreground">{chapData.mnemonic}</p>
+                                    <p className="text-sm text-muted-foreground">
+                                        <MnemonicText text={chapData.mnemonic} />
+                                    </p>
                                 </button>
                             ))
                         ) : (
@@ -308,10 +375,7 @@ export default function HierarchicalMemory() {
                                         </div>
                                         <div className="space-y-2 w-full">
                                             <p className="text-foreground font-medium text-lg border-b border-border/50 pb-2 mb-2">
-                                                <span className="text-primary font-bold text-xl mr-0.5">
-                                                    {verseData.mnemonic.charAt(0)}
-                                                </span>
-                                                {verseData.mnemonic.slice(1)}
+                                                <MnemonicText text={verseData.mnemonic} highlightClass="text-primary text-xl" />
                                             </p>
                                             {contentLoading ? (
                                                 <div className="flex items-center gap-2 text-muted-foreground text-sm">
