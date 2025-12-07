@@ -1,3 +1,5 @@
+import { BIBLE_BOOKS } from '../data/bibleBookConstants';
+
 // Map full book names to themselves (normalized) or handle variations if needed.
 // The BibleReader expects full names without spaces for the URL, e.g. "1John".
 // We will normalize the input book name to this format.
@@ -12,19 +14,8 @@ export function getBibleLink(text: string): string | null {
     // The text might be "Go... - Matthew 28:19".
 
     // List of common book names to help the regex identify valid books
-    const bookNames = [
-        'Genesis', 'Exodus', 'Leviticus', 'Numbers', 'Deuteronomy',
-        'Joshua', 'Judges', 'Ruth', '1 Samuel', '2 Samuel', '1 Kings', '2 Kings',
-        '1 Chronicles', '2 Chronicles', 'Ezra', 'Nehemiah', 'Esther', 'Job',
-        'Psalm', 'Psalms', 'Proverbs', 'Ecclesiastes', 'Song of Solomon', 'Isaiah',
-        'Jeremiah', 'Lamentations', 'Ezekiel', 'Daniel', 'Hosea', 'Joel', 'Amos',
-        'Obadiah', 'Jonah', 'Micah', 'Nahum', 'Habakkuk', 'Zephaniah', 'Haggai',
-        'Zechariah', 'Malachi', 'Matthew', 'Mark', 'Luke', 'John', 'Acts',
-        'Romans', '1 Corinthians', '2 Corinthians', 'Galatians', 'Ephesians',
-        'Philippians', 'Colossians', '1 Thessalonians', '2 Thessalonians',
-        '1 Timothy', '2 Timothy', 'Titus', 'Philemon', 'Hebrews', 'James',
-        '1 Peter', '2 Peter', '1 John', '2 John', '3 John', 'Jude', 'Revelation'
-    ];
+    // Derived from our single source of truth (Names + Aliases)
+    const bookNames = Object.values(BIBLE_BOOKS).flatMap(b => [b.name, ...(b.aliases || [])]);
 
     // Construct a regex pattern that matches any of these books
     // We sort by length descending to match "1 John" before "John"
