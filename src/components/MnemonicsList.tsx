@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ChevronDown, ChevronRight, ChevronsDown, ChevronsUp, BookOpen } from 'lucide-react';
 import type { BibleBook } from '../data/bibleApi';
 import { getTestamentMnemonic, getBookMnemonic, getChapterMnemonic, getChapterVerses } from '../utils/mnemonicUtils';
+import { formatPassageText } from '../utils/bibleUtils';
 import { getChapter } from '../data/bibleApi';
 
 interface MnemonicsListProps {
@@ -359,12 +360,7 @@ function VerseList({ bookId, chapter, onNavigate }: { bookId: string, chapter: n
                 if (chapData && chapData.chapter && chapData.chapter.content) {
                     chapData.chapter.content.forEach(item => {
                         if (item.type === 'verse' && item.number) {
-                            const text = item.content.map((c: any) => {
-                                if (typeof c === 'string') return c;
-                                if (c.text) return c.text;
-                                return ' ';
-                            }).join('').trim();
-                            textMap[item.number] = text;
+                            textMap[item.number] = formatPassageText(item.content);
                         }
                     });
                 }
