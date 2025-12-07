@@ -3,6 +3,7 @@ import { ChevronDown, ChevronRight, ChevronsDown, ChevronsUp, BookOpen } from 'l
 import type { BibleBook } from '../data/bibleApi';
 import { getTestamentMnemonic, getBookMnemonic, getChapterMnemonic, getChapterVerses } from '../utils/mnemonicUtils';
 import { formatPassageText } from '../utils/bibleUtils';
+import { useScrollDirection } from '../hooks/useScrollDirection';
 import { getChapter } from '../data/bibleApi';
 
 interface MnemonicsListProps {
@@ -154,10 +155,14 @@ export default function MnemonicsList({ books, onNavigate, onChapterSelect, acti
         );
     };
 
+    // Scroll direction for sticky header positioning
+    const { scrollDirection, isAtTop } = useScrollDirection();
+    const isHeaderHidden = scrollDirection === 'down' && !isAtTop;
+
     return (
         <div className="relative">
             {/* Sticky Navigation */}
-            <div className="sticky top-0 z-20 pb-4 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 flex justify-center gap-3 border-b border-border/40 mb-6 pt-2">
+            <div className={`sticky z-20 pb-4 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 flex justify-center gap-3 border-b border-border/40 mb-6 pt-2 transition-all duration-300 ${isHeaderHidden ? 'top-0' : 'top-16'}`}>
                 <button
                     onClick={() => document.getElementById('ot-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
                     className="px-4 py-1.5 rounded-full text-xs font-bold bg-secondary/10 hover:bg-secondary/20 text-primary transition-colors border border-primary/20"
