@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { X, Link as LinkIcon, Settings, Info, ChevronRight, ChevronLeft, Globe, Search, Filter, BookOpen, Palette, Moon, Sun, User, Save, Download, Upload, Trash2, AlertTriangle, Users, Loader2, QrCode, Scan, Camera, Check, RefreshCw, Shield, Server, Mail, Code2, GitBranch, Database, Wifi, CheckCircle2, XCircle } from 'lucide-react';
+import { X, Link as LinkIcon, Settings, Info, ChevronRight, ChevronLeft, Globe, Search, Filter, BookOpen, Palette, Moon, Sun, User, Save, Download, Upload, Trash2, AlertTriangle, Users, Loader2, QrCode, Scan, Camera, Check, RefreshCw, Shield, Server, Mail, Code2, GitBranch, Database, Wifi, CheckCircle2, XCircle, Type } from 'lucide-react';
 import { useSettings } from '../context/SettingsContext';
 import { useProfile } from '../hooks/useProfile';
 import { useTodayData } from '../hooks/useTodayData';
@@ -18,7 +18,7 @@ interface SettingsModalProps {
 export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
     const navigate = useNavigate();
     const location = useLocation();
-    const { selectedTranslation, setSelectedTranslation, showMsb, setShowMsb, readerMode, setReaderMode, showMnemonics, setShowMnemonics, showVerseMnemonics, setShowVerseMnemonics, theme, setTheme } = useSettings();
+    const { selectedTranslation, setSelectedTranslation, showMsb, setShowMsb, readerMode, setReaderMode, showMnemonics, setShowMnemonics, showVerseMnemonics, setShowVerseMnemonics, theme, setTheme, fontSize, setFontSize } = useSettings();
     const { profile, loading: profileLoading, updateRole, updateDisplayName } = useProfile();
     const { todayData } = useTodayData();
 
@@ -455,6 +455,35 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                                 >
                                     <div className={`w-5 h-5 bg-white rounded-full absolute top-1 transition-transform shadow-sm ${theme === 'dark' ? 'left-6' : 'left-1'}`} />
                                 </button>
+                            </div>
+
+                            <div className="flex flex-col p-4 bg-secondary/5 rounded-lg border border-border gap-4">
+                                <div className="flex flex-col gap-1">
+                                    <span className="font-medium flex items-center gap-2">
+                                        <Type className="w-4 h-4 text-primary" />
+                                        Font Size
+                                    </span>
+                                    <span className="text-xs text-muted-foreground">Adjust the global text size.</span>
+                                </div>
+                                <div className="grid grid-cols-4 gap-2">
+                                    {(['small', 'normal', 'large', 'xl'] as const).map((size) => (
+                                        <button
+                                            key={size}
+                                            onClick={() => setFontSize(size)}
+                                            className={`py-2 px-1 rounded-lg text-sm font-medium transition-all ${fontSize === size
+                                                ? 'bg-primary text-primary-foreground shadow-sm'
+                                                : 'bg-background border border-border hover:border-primary/50'
+                                                }`}
+                                        >
+                                            <span className={
+                                                size === 'small' ? 'text-xs' :
+                                                    size === 'large' ? 'text-lg' :
+                                                        size === 'xl' ? 'text-xl' :
+                                                            'text-base'
+                                            }>Aa</span>
+                                        </button>
+                                    ))}
+                                </div>
                             </div>
                         </div>
                     )}

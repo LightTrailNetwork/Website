@@ -13,6 +13,8 @@ interface SettingsContextType {
     setShowVerseMnemonics: (enabled: boolean) => void;
     theme: 'light' | 'dark';
     setTheme: (theme: 'light' | 'dark') => void;
+    fontSize: 'small' | 'normal' | 'large' | 'xl';
+    setFontSize: (size: 'small' | 'normal' | 'large' | 'xl') => void;
 }
 
 const SettingsContext = createContext<SettingsContextType | undefined>(undefined);
@@ -45,6 +47,10 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
         return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     });
 
+    const [fontSize, setFontSize] = useState<'small' | 'normal' | 'large' | 'xl'>(() => {
+        return (localStorage.getItem('fontSize') as 'small' | 'normal' | 'large' | 'xl') || 'normal';
+    });
+
     // Persist changes
     useEffect(() => {
         localStorage.setItem('bible_translation', selectedTranslation);
@@ -75,6 +81,17 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
         }
     }, [theme]);
 
+    useEffect(() => {
+        localStorage.setItem('fontSize', fontSize);
+        const sizes = {
+            small: '14px',
+            normal: '16px',
+            large: '18px',
+            xl: '20px'
+        };
+        document.documentElement.style.fontSize = sizes[fontSize];
+    }, [fontSize]);
+
     return (
         <SettingsContext.Provider value={{
             selectedTranslation,
@@ -88,7 +105,9 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
             showVerseMnemonics,
             setShowVerseMnemonics,
             theme,
-            setTheme
+            setTheme,
+            fontSize,
+            setFontSize
         }}>
             {children}
         </SettingsContext.Provider>
