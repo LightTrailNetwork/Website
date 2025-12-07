@@ -1,5 +1,4 @@
-
-import type { ChapterContent } from '../data/bibleApi';
+import type { ChapterContent, BibleBook } from '../data/bibleApi';
 
 // Helper to check if we should insert a space between content parts
 export const shouldInsertSpace = (prev: any, curr: any) => {
@@ -90,4 +89,23 @@ export const formatChapterContent = (content: any[], startVerse: number, endVers
     });
 
     return text.trim();
+};
+
+// Helper to sort references by score (desc) then book order (asc)
+export const getSortedReferences = (refs: any[], books: BibleBook[]) => {
+    return [...refs].sort((a, b) => {
+        // 1. Score Descending
+        if ((a.score || 0) !== (b.score || 0)) {
+            return (b.score || 0) - (a.score || 0);
+        }
+        // 2. Book Order Ascending
+        const bookA = books.find(book => book.id === a.book);
+        const bookB = books.find(book => book.id === b.book);
+        if (bookA && bookB) {
+            if (bookA.order !== bookB.order) return bookA.order - bookB.order;
+        }
+        // 3. Chapter/Verse Ascending
+        if (a.chapter !== b.chapter) return a.chapter - b.chapter;
+        return a.verse - b.verse;
+    });
 };

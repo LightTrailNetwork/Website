@@ -11,27 +11,8 @@ import { formatPassageText, shouldInsertSpace, formatChapterContent } from '../u
 import { useScrollDirection } from '../hooks/useScrollDirection';
 import { useSettings } from '../context/SettingsContext';
 import { getBookMnemonic, getChapterMnemonic, getVerseMnemonic, getMnemonicHighlightIndex } from '../utils/mnemonicUtils';
-
-
-
-// Helper to sort references by score (desc) then book order (asc)
-const getSortedReferences = (refs: any[], books: BibleBook[]) => {
-    return [...refs].sort((a, b) => {
-        // 1. Score Descending
-        if ((a.score || 0) !== (b.score || 0)) {
-            return (b.score || 0) - (a.score || 0);
-        }
-        // 2. Book Order Ascending
-        const bookA = books.find(book => book.id === a.book);
-        const bookB = books.find(book => book.id === b.book);
-        if (bookA && bookB) {
-            if (bookA.order !== bookB.order) return bookA.order - bookB.order;
-        }
-        // 3. Chapter/Verse Ascending
-        if (a.chapter !== b.chapter) return a.chapter - b.chapter;
-        return a.verse - b.verse;
-    });
-};
+import BibleSidebar from './Bible/BibleSidebar';
+import { getSortedReferences } from '../utils/bibleUtils';
 
 export default function BibleReader() {
     const { bookId, chapter, verseRange } = useParams<{ bookId: string; chapter: string; verseRange?: string }>();
@@ -1488,246 +1469,26 @@ export default function BibleReader() {
                 </div>
 
                 {/* Commentary Sidebar/Modal */}
-                {
-                    showCommentary && (
-                        <>
-                            {/* Mobile Overlay */}
-                            <div className="lg:hidden fixed inset-0 bg-background/80 backdrop-blur-sm z-40" onClick={() => setShowCommentary(false)} />
-
-                            <div className="fixed z-[60] bg-card border border-border shadow-2xl flex flex-col lg:right-4 lg:top-24 lg:bottom-4 lg:w-[400px] lg:rounded-xl inset-4 rounded-xl lg:inset-auto animate-in slide-in-from-right duration-300">
-                                <div className="flex items-center justify-between mb-6 shrink-0 p-4 pb-0">
-                                    <div>
-                                        <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2 mb-1">
-                                            <MessageSquare className="w-3 h-3" /> Commentary
-                                        </h3>
-                                        <h2 className="text-2xl font-bold text-foreground">
-                                            {bsbChapter.book.name} {bsbChapter.chapter.number}
-                                        </h2>
-                                    </div>
-                                    <button onClick={() => setShowCommentary(false)} className="p-2 hover:bg-accent/10 rounded-full transition-colors -mr-2">
-                                        <X className="w-5 h-5" />
-                                    </button>
-                                </div>
-
-                                <div className="px-4 pb-2">
-
-                                    {/* Commentary Selector */}
-                                    <div className="mb-4 shrink-0">
-                                        <select
-                                            className="w-full bg-secondary/10 border-transparent rounded-lg py-2 px-3 text-sm focus:ring-2 focus:ring-primary focus:bg-background transition-all"
-                                            value={selectedCommentaryId}
-                                            onChange={(e) => setSelectedCommentaryId(e.target.value)}
-                                        >
-                                            {commentaries.map(c => (
-                                                <option key={c.id} value={c.id}>{c.name}</option>
-                                            ))}
-                                        </select>
-                                    </div>
-
-                                    {/* Tabs */}
-                                    <div className="flex border-b border-border mb-2 shrink-0">
-                                        <button
-                                            className={`flex-1 pb-2 text-sm font-medium transition-colors ${commentaryTab === 'intro' ? 'border-b-2 border-primary text-primary' : 'text-muted-foreground hover:text-foreground'}`}
-                                            onClick={() => setCommentaryTab('intro')}
-                                        >
-                                            Book
-                                        </button>
-                                        <button
-                                            className={`flex-1 pb-2 text-sm font-medium transition-colors ${commentaryTab === 'chapter' ? 'border-b-2 border-primary text-primary' : 'text-muted-foreground hover:text-foreground'}`}
-                                            onClick={() => setCommentaryTab('chapter')}
-                                        >
-                                            Chapter
-                                        </button>
-                                        <button
-                                            className={`flex-1 pb-2 text-sm font-medium transition-colors ${commentaryTab === 'footnotes' ? 'border-b-2 border-primary text-primary' : 'text-muted-foreground hover:text-foreground'}`}
-                                            onClick={() => setCommentaryTab('footnotes')}
-                                        >
-                                            Footnotes
-                                        </button>
-                                        <button
-                                            className={`flex-1 pb-2 text-sm font-medium transition-colors ${commentaryTab === 'references' ? 'border-b-2 border-primary text-primary' : 'text-muted-foreground hover:text-foreground'}`}
-                                            onClick={() => setCommentaryTab('references')}
-                                        >
-                                            Refs
-                                        </button>
-                                    </div>
-                                </div>
-
-
-                                {/* Content Areas - Independent Scroll Containers */}
-                                {/* Chapter Tab */}
-                                <div className={`flex-1 overflow-y-auto px-4 pb-4 custom-scrollbar ${commentaryTab === 'chapter' ? '' : 'hidden'}`}>
-                                    {renderCommentaryContent()}
-                                </div>
-
-                                {/* Intro Tab */}
-                                <div className={`flex-1 overflow-y-auto px-4 pb-4 custom-scrollbar ${commentaryTab === 'intro' ? '' : 'hidden'}`}>
-                                    <div className="prose prose-sm dark:prose-invert">
-                                        {commentaryChapter?.book.introduction ? (
-                                            <div dangerouslySetInnerHTML={{ __html: commentaryChapter.book.introduction }} />
-                                        ) : (
-                                            <div className="flex flex-col items-center justify-center h-full text-muted-foreground py-10">
-                                                <p className="italic">No introduction available.</p>
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-
-                                {/* Footnotes Tab */}
-                                <div className={`flex-1 overflow-y-auto px-4 pb-4 custom-scrollbar ${commentaryTab === 'footnotes' ? '' : 'hidden'}`}>
-                                    <div className="space-y-4">
-                                        {bsbChapter?.chapter.footnotes && bsbChapter.chapter.footnotes.length > 0 ? (
-                                            bsbChapter.chapter.footnotes.map((note) => (
-                                                <div key={note.noteId} id={`footnote-${note.noteId}`} className="text-sm p-3 bg-secondary/10 rounded-lg">
-                                                    <div className="flex items-baseline gap-2 mb-1">
-                                                        <span className="font-bold text-primary text-xs bg-primary/10 px-1.5 py-0.5 rounded">
-                                                            {note.caller || '+'}
-                                                        </span>
-                                                        {note.reference && (
-                                                            <span className="text-xs text-muted-foreground uppercase tracking-wider">
-                                                                Verse {note.reference.verse}
-                                                            </span>
-                                                        )}
-                                                    </div>
-                                                    <p className="text-muted-foreground leading-relaxed">
-                                                        {note.text}
-                                                    </p>
-                                                </div>
-                                            ))
-                                        ) : (
-                                            <p className="text-muted-foreground italic text-center py-8">No footnotes for this chapter.</p>
-                                        )}
-                                    </div>
-                                </div>
-
-                                {/* References Tab */}
-                                <div className={`flex-1 overflow-y-auto px-4 pb-4 custom-scrollbar ${commentaryTab === 'references' ? '' : 'hidden'}`}>
-                                    <div className="space-y-6">
-                                        <div className="flex items-center justify-between mb-2">
-                                            <span className="text-xs font-medium text-muted-foreground">
-                                                {crossRefs?.chapter.content.reduce((acc, v) => acc + v.references.length, 0)} References
-                                            </span>
-                                        </div>
-                                        {crossRefs?.chapter.content.filter(v => v.references.length > 0).map(v => {
-                                            const verseRefs = v.references.map(r => ({ ...r, verseNum: v.verse }));
-                                            const allKeys = verseRefs.map(r => `${v.verse}-${r.book}-${r.chapter}-${r.verse}`);
-                                            const anyExpanded = allKeys.some(k => expandedRefTexts[k]);
-
-                                            return (
-                                                <div key={v.verse} id={`sidebar-ref-verse-${v.verse}`} className="border-b border-border/50 pb-4 last:border-0">
-                                                    <div className="font-bold text-sm mb-2 flex items-center justify-between">
-                                                        <button
-                                                            onClick={() => {
-                                                                scrollToVerseInView(v.verse);
-                                                                if (window.innerWidth < 1024) {
-                                                                    setShowCommentary(false); // Close modal only on mobile
-                                                                }
-                                                            }}
-                                                            className="flex items-center gap-2 hover:bg-secondary/10 px-2 py-1 rounded transition-colors group/header"
-                                                        >
-                                                            <span className="bg-primary/10 text-primary px-2 py-0.5 rounded text-xs group-hover/header:bg-primary/20 transition-colors">Verse {v.verse}</span>
-                                                            <span className="text-xs text-muted-foreground font-normal">{v.references.length} References</span>
-                                                        </button>
-                                                        <button
-                                                            onClick={() => toggleVerseRefs(v.verse, v.references)}
-                                                            className="text-[10px] text-primary hover:underline flex items-center gap-1"
-                                                        >
-                                                            {anyExpanded ? (
-                                                                <>Collapse All <ChevronUp className="w-3 h-3" /></>
-                                                            ) : (
-                                                                <>Expand All <ChevronDown className="w-3 h-3" /></>
-                                                            )}
-                                                        </button>
-                                                    </div>
-                                                    <div className="grid grid-cols-1 gap-2">
-                                                        {getSortedReferences(v.references, books).map((ref, i) => {
-                                                            const refKey = `${v.verse}-${ref.book}-${ref.chapter}-${ref.verse}`;
-                                                            const isExpanded = !!expandedRefTexts[refKey];
-                                                            const isLoading = !!loadingRefs[refKey];
-
-                                                            return (
-                                                                <div
-                                                                    key={i}
-                                                                    className="flex flex-col bg-card hover:bg-secondary/10 rounded transition-colors border border-transparent hover:border-border/50 cursor-pointer"
-                                                                    onClick={() => handleToggleRefText(refKey, ref.book, ref.chapter, ref.verse, ref.endVerse)}
-                                                                >
-                                                                    <div className="flex items-center justify-between p-2">
-                                                                        {(() => {
-                                                                            const refBook = books.find(b => b.id === ref.book);
-                                                                            const bookName = refBook ? refBook.name : ref.book;
-                                                                            const bookUrlName = refBook ? refBook.name.replace(/\s+/g, '') : ref.book;
-
-                                                                            return (
-                                                                                <div className="flex-1 min-w-0 mr-2 flex items-center">
-                                                                                    <Link
-                                                                                        to={`/bible/read/${bookUrlName}/${ref.chapter}/${ref.verse}${ref.endVerse ? `-${ref.endVerse}` : ''}`}
-                                                                                        className="text-sm font-medium text-foreground/80 hover:text-primary truncate"
-                                                                                        onClick={(e) => {
-                                                                                            e.stopPropagation(); // Stop propagation to prevent toggle
-                                                                                            if (window.innerWidth < 1024) {
-                                                                                                setShowCommentary(false); // Close modal only on mobile
-                                                                                            }
-                                                                                        }}
-                                                                                    >
-                                                                                        {bookName} {ref.chapter}:{ref.verse}{ref.endVerse ? `-${ref.endVerse}` : ''}
-                                                                                    </Link>
-                                                                                </div>
-                                                                            );
-                                                                        })()}
-                                                                        <div className="flex items-center gap-2">
-                                                                            {ref.score !== undefined && ref.score !== null && (
-                                                                                <span
-                                                                                    className="text-[10px] text-muted-foreground bg-secondary/20 px-1.5 py-0.5 rounded inline-block cursor-help"
-                                                                                    title="Relevance Score"
-                                                                                >
-                                                                                    {ref.score}
-                                                                                </span>
-                                                                            )}
-                                                                            <button
-                                                                                type="button"
-                                                                                className="p-1 hover:bg-secondary/20 rounded text-muted-foreground hover:text-foreground transition-colors"
-                                                                                title={isExpanded ? "Hide Text" : "Show Text"}
-                                                                            >
-                                                                                {isExpanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
-                                                                            </button>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    {/* Expanded Text Preview */}
-                                                                    {isExpanded && (
-                                                                        <div className="px-3 pb-3 pt-0 animate-in slide-in-from-top-1 duration-200 cursor-text" onClick={e => e.stopPropagation()}>
-                                                                            <div className="text-xs text-muted-foreground bg-secondary/5 p-2 rounded border border-border/50">
-                                                                                {isLoading ? (
-                                                                                    <div className="flex items-center gap-2">
-                                                                                        <Loader2 className="w-3 h-3 animate-spin" />
-                                                                                        <span>Loading...</span>
-                                                                                    </div>
-                                                                                ) : (
-                                                                                    <p className="leading-relaxed text-foreground/90 text-sm">
-                                                                                        {expandedRefTexts[refKey]}
-                                                                                    </p>
-                                                                                )}
-                                                                            </div>
-                                                                        </div>
-                                                                    )}
-                                                                </div>
-                                                            );
-                                                        })}
-                                                    </div>
-                                                </div>
-                                            );
-                                        })}
-                                        {(!crossRefs || crossRefs.chapter.content.every(v => v.references.length === 0)) && (
-                                            <div className="text-center py-10 text-muted-foreground">
-                                                <p>No cross-references found for this chapter.</p>
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-                        </>
-                    )
-                }
+                <BibleSidebar
+                    showCommentary={showCommentary}
+                    setShowCommentary={setShowCommentary}
+                    bsbChapter={bsbChapter}
+                    commentaries={commentaries}
+                    selectedCommentaryId={selectedCommentaryId}
+                    setSelectedCommentaryId={setSelectedCommentaryId}
+                    commentaryTab={commentaryTab}
+                    setCommentaryTab={setCommentaryTab}
+                    commentaryChapter={commentaryChapter}
+                    crossRefs={crossRefs}
+                    expandedRefTexts={expandedRefTexts}
+                    loadingRefs={loadingRefs}
+                    toggleVerseRefs={toggleVerseRefs}
+                    handleToggleRefText={handleToggleRefText}
+                    books={books}
+                    scrollToVerseInView={scrollToVerseInView}
+                    sidebarScrollTarget={sidebarScrollTarget}
+                    setSidebarScrollTarget={setSidebarScrollTarget}
+                />
 
 
             </div >
