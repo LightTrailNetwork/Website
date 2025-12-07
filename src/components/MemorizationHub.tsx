@@ -1,109 +1,141 @@
 import { Link } from 'react-router-dom';
-import { Brain, Layers, Crown, Quote, Hash } from 'lucide-react';
+import { Brain, Layers, Crown, Quote, Hash, List, Sparkles, BookOpen } from 'lucide-react';
 
 
 export default function MemorizationHub() {
-    const summaryTools = [
+    const pyramidLevels = [
         {
-            title: "1 Word",
+            level: 1,
+            title: "1 Word Identity",
             subtitle: "GRACE",
-            description: "The entire Bible narrative in one word.",
+            description: "The entire Bible narrative summarized in a single word acronym.",
             icon: Hash,
             color: "text-blue-500",
             bg: "bg-blue-500/10",
-            link: "/bible/memory/grace"
+            link: "/bible/memory/grace",
+            width: "max-w-md"
         },
         {
-            title: "2 Words",
+            level: 2,
+            title: "2 Word Timeline",
             subtitle: "CROWN PATH",
-            description: "9 words covering the major eras and figures.",
+            description: "9 words covering the major eras and figures of the Old and New Testaments.",
             icon: Crown,
             color: "text-yellow-500",
             bg: "bg-yellow-500/10",
-            link: "/bible/memory/crown-path"
+            link: "/bible/memory/crown-path",
+            width: "max-w-lg"
         },
         {
-            title: "Hierarchical",
-            subtitle: "Book > Chapter > Verse",
-            description: "Deep dive with letter-based mnemonics.",
-            icon: Brain,
-            color: "text-green-500",
-            bg: "bg-green-500/10",
-            link: "/bible/memory/hierarchical"
-        }
-    ];
-
-    const passageTools = [
-        {
-            title: "1 Sentence",
+            level: 3,
+            title: "1 Sentence Gospel",
             subtitle: "John 3:16",
-            description: "The gospel in a nutshell.",
+            description: "The heart of the Gospel message in a single verse.",
             icon: Quote,
             color: "text-red-500",
             bg: "bg-red-500/10",
-            link: "/bible/memory/sentence"
+            link: "/bible/memory/sentence",
+            width: "max-w-xl"
         },
         {
-            title: "2 Sentences",
+            level: 4,
+            title: "2 Sentence Framework",
             subtitle: "GATHER AROUND...",
-            description: "Mnemonics for every book group in the Bible.",
+            description: "Mnemonics for every book group in the Old and New Testaments.",
             icon: Layers,
             color: "text-purple-500",
             bg: "bg-purple-500/10",
-            link: "/bible/memory/gather"
+            link: "/bible/memory/gather",
+            width: "max-w-2xl"
         },
-        // Placeholder for future lists like Fruits of the Spirit
         {
-            title: "Lists (Coming Soon)",
-            subtitle: "Fruits of the Spirit, etc.",
-            description: "Memorize key lists from scripture.",
-            icon: Layers,
-            color: "text-gray-500",
-            bg: "bg-gray-500/10",
-            link: "#"
+            level: 5,
+            title: "Hierarchical Mnemonics",
+            subtitle: "Book > Chapter > Verse",
+            description: "Deep dive learning with detailed mnemonics for every chapter.",
+            icon: Brain,
+            color: "text-green-500",
+            bg: "bg-green-500/10",
+            link: "/bible/memory/hierarchical",
+            width: "max-w-3xl"
+        }
+    ];
+
+    const collections = [
+        {
+            title: "Famous Passages",
+            subtitle: "Key Scriptures",
+            description: "Curated list of essential Bible passages to memorize.",
+            icon: Sparkles,
+            color: "text-amber-500",
+            bg: "bg-amber-500/10",
+            link: "/bible/memory/passages" // Placeholder route
+        },
+        {
+            title: "Important Lists",
+            subtitle: "Fruits, Armor, etc.",
+            description: "Memorize key lists like the Fruits of the Spirit, Armor of God, etc.",
+            icon: List,
+            color: "text-indigo-500",
+            bg: "bg-indigo-500/10",
+            link: "/bible/memory/lists" // Placeholder route
         }
     ];
 
     return (
-        <div className="max-w-4xl mx-auto space-y-8 animate-fade-in px-4">
-
-
-            <div className="text-center space-y-4">
-                <h1 className="text-3xl font-bold text-foreground">Memorization Tools</h1>
-                <p className="text-muted-foreground max-w-2xl mx-auto">
-                    Choose a tool to start memorizing the narrative of Scripture or specific passages.
+        <div className="max-w-4xl mx-auto space-y-12 animate-fade-in px-4 pb-20">
+            {/* Header */}
+            <div className="text-center space-y-4 pt-8">
+                <div className="inline-flex items-center justify-center p-3 rounded-full bg-primary/10 mb-4">
+                    <Brain className="w-8 h-8 text-primary" />
+                </div>
+                <h1 className="text-4xl font-bold text-foreground">Bible Memory Pyramid</h1>
+                <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                    A structured approach to internalizing Scripture, starting from the big picture down to the details.
                 </p>
             </div>
 
-            <section className="space-y-6">
-                <h2 className="text-2xl font-bold border-b border-border pb-2">Bible Summaries</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {summaryTools.map((tool) => (
-                        <Link
-                            key={tool.title}
-                            to={tool.link}
-                            className="flex items-start p-6 bg-card border border-border rounded-xl hover:shadow-md transition-all hover:border-primary/50 group"
-                        >
-                            <div className={`p-3 rounded-lg ${tool.bg} mr-4`}>
+            {/* The Pyramid */}
+            <section className="space-y-4 flex flex-col items-center">
+                {pyramidLevels.map((tool) => (
+                    <Link
+                        key={tool.title}
+                        to={tool.link}
+                        className={`w-full ${tool.width} group relative overflow-hidden rounded-xl border border-border bg-card p-6 hover:border-primary/50 hover:shadow-lg transition-all transform hover:-translate-y-1`}
+                    >
+                        {/* Level Badge */}
+                        <div className="absolute top-4 right-4 text-xs font-bold px-2 py-1 rounded-full bg-secondary text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary transition-colors">
+                            Level {tool.level}
+                        </div>
+
+                        <div className="flex items-start gap-4">
+                            <div className={`p-3 rounded-lg ${tool.bg} shrink-0`}>
                                 <tool.icon className={`w-6 h-6 ${tool.color}`} />
                             </div>
                             <div>
-                                <h3 className="font-semibold text-lg group-hover:text-primary transition-colors">
-                                    {tool.title} <span className="text-muted-foreground font-normal">- {tool.subtitle}</span>
+                                <h3 className="font-bold text-lg group-hover:text-primary transition-colors flex items-center gap-2">
+                                    {tool.title}
+                                    <span className="hidden sm:inline-block text-muted-foreground font-medium text-sm px-2">|</span>
+                                    <span className="text-muted-foreground group-hover:text-primary/80 font-medium text-base transition-colors">{tool.subtitle}</span>
                                 </h3>
-                                <p className="text-sm text-muted-foreground mt-1">
+                                <p className="text-sm text-muted-foreground mt-1 leading-relaxed">
                                     {tool.description}
                                 </p>
                             </div>
-                        </Link>
-                    ))}
-                </div>
+                        </div>
+                    </Link>
+                ))}
             </section>
 
-            <section className="space-y-6">
-                <h2 className="text-2xl font-bold border-b border-border pb-2">Passages & Lists</h2>
+            {/* Collections Section */}
+            <section className="space-y-6 pt-8 border-t border-border">
+                <div className="flex items-center gap-2 mb-4">
+                    <BookOpen className="w-5 h-5 text-primary" />
+                    <h2 className="text-2xl font-bold">Collections</h2>
+                </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {passageTools.map((tool) => (
+                    {collections.map((tool) => (
                         <Link
                             key={tool.title}
                             to={tool.link}
@@ -114,9 +146,10 @@ export default function MemorizationHub() {
                             </div>
                             <div>
                                 <h3 className="font-semibold text-lg group-hover:text-primary transition-colors">
-                                    {tool.title} <span className="text-muted-foreground font-normal">- {tool.subtitle}</span>
+                                    {tool.title}
                                 </h3>
-                                <p className="text-sm text-muted-foreground mt-1">
+                                <p className="text-sm text-secondary-foreground font-medium mb-1">{tool.subtitle}</p>
+                                <p className="text-sm text-muted-foreground">
                                     {tool.description}
                                 </p>
                             </div>
