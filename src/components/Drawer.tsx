@@ -11,7 +11,6 @@ export default function Drawer({ isOpen, onClose }: DrawerProps) {
 
   const menuItems = [
     { path: '/', label: 'Today', subtitle: 'Action Items', icon: Home },
-    { path: '/', label: 'Today', subtitle: 'Action Items', icon: Home },
     { path: '/bible/read', label: 'Bible Reader', subtitle: 'Read Scripture', icon: Book },
     { path: '/bible/memory', label: 'Bible Memory', subtitle: 'Memorize Scripture', icon: Brain },
     { path: '/schedule', label: 'Schedule', subtitle: 'Quarterly Plan', icon: LayoutGrid },

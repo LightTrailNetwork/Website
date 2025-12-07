@@ -82,8 +82,15 @@ export default function MemorizationHub() {
         }
     ];
 
+    const scrollToSection = (id: string) => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
+
     return (
-        <div className="max-w-4xl mx-auto space-y-12 animate-fade-in px-4 pb-20">
+        <div className="max-w-4xl mx-auto space-y-8 animate-fade-in px-4 pb-20">
             {/* Header */}
             <div className="text-center space-y-4 pt-8">
                 <div className="inline-flex items-center justify-center p-3 rounded-full bg-primary/10 mb-4">
@@ -93,18 +100,36 @@ export default function MemorizationHub() {
                 <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                     A structured approach to internalizing Scripture, starting from the big picture down to the details.
                 </p>
+
+                {/* Quick Nav */}
+                <div className="flex flex-wrap justify-center gap-2 pt-4">
+                    <button
+                        onClick={() => scrollToSection('pyramid')}
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-colors text-sm font-medium"
+                    >
+                        <Layers className="w-4 h-4" />
+                        The Pyramid
+                    </button>
+                    <button
+                        onClick={() => scrollToSection('collections')}
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-colors text-sm font-medium"
+                    >
+                        <BookOpen className="w-4 h-4" />
+                        Collections
+                    </button>
+                </div>
             </div>
 
             {/* The Pyramid */}
-            <section className="space-y-4 flex flex-col items-center">
+            <section id="pyramid" className="space-y-4 flex flex-col items-center scroll-mt-24">
                 {pyramidLevels.map((tool) => (
                     <Link
                         key={tool.title}
                         to={tool.link}
                         className={`w-full ${tool.width} group relative overflow-hidden rounded-xl border border-border bg-card p-6 hover:border-primary/50 hover:shadow-lg transition-all transform hover:-translate-y-1`}
                     >
-                        {/* Level Badge */}
-                        <div className="absolute top-4 right-4 text-xs font-bold px-2 py-1 rounded-full bg-secondary text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary transition-colors">
+                        {/* Level Badge - Relative on mobile, Absolute on desktop */}
+                        <div className="mb-2 sm:mb-0 sm:absolute sm:top-4 sm:right-4 inline-flex self-start text-xs font-bold px-2 py-1 rounded-full bg-secondary text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary transition-colors">
                             Level {tool.level}
                         </div>
 
@@ -113,10 +138,10 @@ export default function MemorizationHub() {
                                 <tool.icon className={`w-6 h-6 ${tool.color}`} />
                             </div>
                             <div>
-                                <h3 className="font-bold text-lg group-hover:text-primary transition-colors flex items-center gap-2">
+                                <h3 className="font-bold text-lg group-hover:text-primary transition-colors flex items-center gap-2 flex-wrap">
                                     {tool.title}
-                                    <span className="hidden sm:inline-block text-muted-foreground font-medium text-sm px-2">|</span>
-                                    <span className="text-muted-foreground group-hover:text-primary/80 font-medium text-base transition-colors">{tool.subtitle}</span>
+                                    <span className="hidden sm:inline-block text-muted-foreground font-medium text-sm px-0">|</span>
+                                    <span className="text-muted-foreground group-hover:text-primary/80 font-medium text-sm sm:text-base transition-colors w-full sm:w-auto">{tool.subtitle}</span>
                                 </h3>
                                 <p className="text-sm text-muted-foreground mt-1 leading-relaxed">
                                     {tool.description}
@@ -128,7 +153,7 @@ export default function MemorizationHub() {
             </section>
 
             {/* Collections Section */}
-            <section className="space-y-6 pt-8 border-t border-border">
+            <section id="collections" className="space-y-6 pt-8 border-t border-border scroll-mt-24">
                 <div className="flex items-center gap-2 mb-4">
                     <BookOpen className="w-5 h-5 text-primary" />
                     <h2 className="text-2xl font-bold">Collections</h2>
