@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { useParams, useNavigate, useLocation, useNavigationType, Link } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, ChevronDown, ChevronUp, BookOpen, Loader2, AlertCircle, MessageSquare, Grid, Globe, X, Search, Filter, Eye, Link as LinkIcon, Columns, ArrowLeft, ArrowRight, History } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ChevronDown, ChevronUp, BookOpen, Loader2, AlertCircle, MessageSquare, Grid, Globe, X, Search, Filter, Eye, Link as LinkIcon, Columns, ArrowLeft, ArrowRight, History, WifiOff } from 'lucide-react';
 import { getChapter, getBooks, getTranslations, getCommentaries, getCommentaryChapter, getProfiles, getProfile, getDatasetChapter } from '../data/bibleApi';
 import type { BibleChapter, ChapterContent, BibleBook, BibleTranslation, Commentary, CommentaryChapter, Profile, ProfileContent, ChapterFootnote, DatasetBookChapter } from '../data/bibleApi';
 
@@ -32,7 +32,7 @@ export default function BibleReader() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [profileLoading, setProfileLoading] = useState(false);
-    const { selectedTranslation, showMsb, setShowMsb, readerMode, showMnemonics, showVerseMnemonics } = useSettings();
+    const { selectedTranslation, setSelectedTranslation, showMsb, setShowMsb, readerMode, showMnemonics, showVerseMnemonics, isOffline } = useSettings();
 
     // Cross Reference State
     const [crossRefs, setCrossRefs] = useState<DatasetBookChapter | null>(null);
@@ -1128,14 +1128,44 @@ export default function BibleReader() {
         );
     }
     if (error || !bsbChapter) {
+        const isOfflineError = error?.toLowerCase().includes('offline') || error?.toLowerCase().includes('network') || error?.toLowerCase().includes('failed') || isOffline;
+
         return (
-            <div className="flex flex-col items-center justify-center min-h-[50vh] space-y-4 text-center">
-                <AlertCircle className="w-12 h-12 text-destructive" />
-                <h3 className="text-lg font-semibold">Error Loading Chapter</h3>
-                <p className="text-muted-foreground max-w-md">{error}</p>
+            <div className="flex flex-col items-center justify-center min-h-[50vh] space-y-4 text-center px-4">
+                {isOfflineError ? (
+                    <div className="p-4 bg-secondary/10 rounded-full">
+                        <WifiOff className="w-12 h-12 text-muted-foreground" />
+                    </div>
+                ) : (
+                    <AlertCircle className="w-12 h-12 text-destructive" />
+                )}
+
+                <h3 className="text-lg font-semibold">
+                    {isOfflineError ? 'Content Not Available Offline' : 'Error Loading Chapter'}
+                </h3>
+
+                <p className="text-muted-foreground max-w-md">
+                    {isOfflineError
+                        ? `The ${selectedTranslation} translation is not available offline.`
+                        : error}
+                </p>
+
+                {isOfflineError && selectedTranslation !== 'BSB' && (
+                    <button
+                        onClick={() => {
+                            setSelectedTranslation('BSB');
+                            // Force reload or state clear handled by useEffect dependency on selectedTranslation
+                        }}
+                        className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium text-sm flex items-center gap-2"
+                    >
+                        <BookOpen className="w-4 h-4" />
+                        Switch to BSB (Offline Ready)
+                    </button>
+                )}
+
                 <button
                     onClick={() => navigate('/bible')}
-                    className="text-primary hover:underline"
+                    className="text-primary hover:underline mt-2 text-sm"
                 >
                     Return to Bible Home
                 </button>

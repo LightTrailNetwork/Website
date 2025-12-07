@@ -15,6 +15,7 @@ interface SettingsContextType {
     setTheme: (theme: 'light' | 'dark') => void;
     fontSize: 'small' | 'normal' | 'large' | 'xl';
     setFontSize: (size: 'small' | 'normal' | 'large' | 'xl') => void;
+    isOffline: boolean;
 }
 
 const SettingsContext = createContext<SettingsContextType | undefined>(undefined);
@@ -50,6 +51,8 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
     const [fontSize, setFontSize] = useState<'small' | 'normal' | 'large' | 'xl'>(() => {
         return (localStorage.getItem('fontSize') as 'small' | 'normal' | 'large' | 'xl') || 'normal';
     });
+
+    const [isOffline, setIsOffline] = useState(!navigator.onLine);
 
     // Persist changes
     useEffect(() => {
@@ -92,6 +95,20 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
         document.documentElement.style.fontSize = sizes[fontSize];
     }, [fontSize]);
 
+    // Network status listener
+    useEffect(() => {
+        const handleOnline = () => setIsOffline(false);
+        const handleOffline = () => setIsOffline(true);
+
+        window.addEventListener('online', handleOnline);
+        window.addEventListener('offline', handleOffline);
+
+        return () => {
+            window.removeEventListener('online', handleOnline);
+            window.removeEventListener('offline', handleOffline);
+        };
+    }, []);
+
     return (
         <SettingsContext.Provider value={{
             selectedTranslation,
@@ -107,7 +124,8 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
             theme,
             setTheme,
             fontSize,
-            setFontSize
+            setFontSize,
+            isOffline
         }}>
             {children}
         </SettingsContext.Provider>

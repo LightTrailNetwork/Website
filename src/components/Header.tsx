@@ -1,5 +1,6 @@
-import { Menu, Settings } from 'lucide-react';
+import { Menu, Settings, WifiOff } from 'lucide-react';
 import { useScrollDirection } from '../hooks/useScrollDirection';
+import { useSettings } from '../context/SettingsContext';
 
 interface HeaderProps {
   onMenuClick: () => void;
@@ -10,6 +11,7 @@ interface HeaderProps {
 
 export default function Header({ onMenuClick, onSettingsClick, title, subtitle }: HeaderProps) {
   const { scrollDirection, isAtTop } = useScrollDirection();
+  const { isOffline } = useSettings();
   const isHidden = scrollDirection === 'down' && !isAtTop;
 
   return (
@@ -38,6 +40,14 @@ export default function Header({ onMenuClick, onSettingsClick, title, subtitle }
 
           {/* Right side - Settings Button */}
           <div className="flex items-center space-x-2">
+            {isOffline && (
+              <div
+                className="p-2 text-muted-foreground/70"
+                title="You are offline. Showing available local translations."
+              >
+                <WifiOff className="w-5 h-5" />
+              </div>
+            )}
             <button
               onClick={onSettingsClick}
               className="p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent focus:outline-none focus:ring-2 focus:ring-ring transition-colors"
