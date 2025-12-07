@@ -61,6 +61,20 @@ export default function MnemonicsList({ books, onNavigate, onChapterSelect, acti
             newState[g.name] = collapse;
         });
         setCollapsedSections(newState);
+
+        // If collapsing, also collapse all books within these groups
+        if (collapse) {
+            const booksInGroups = books.filter(b =>
+                groups.some(g => b.order >= g.start && b.order <= g.end)
+            );
+            setExpandedBooks(prev => {
+                const next = { ...prev };
+                booksInGroups.forEach(b => {
+                    delete next[b.id];
+                });
+                return next;
+            });
+        }
     };
 
     const areAllSectionsCollapsed = (groups: typeof OT_GROUPS) => {
@@ -284,12 +298,37 @@ function ChapterList({ book, onNavigate }: { book: BibleBook, onNavigate: (bookI
     const chapters = Array.from({ length: book.numberOfChapters }, (_, i) => i + 1);
     const [expandedChapters, setExpandedChapters] = useState<Record<number, boolean>>({});
 
+    const toggleAllChapters = (expand: boolean) => {
+        const newState: Record<number, boolean> = {};
+        if (expand) {
+            chapters.forEach(c => newState[c] = true);
+        }
+        setExpandedChapters(newState);
+    };
+
     const toggleChapter = (chap: number) => {
         setExpandedChapters(prev => ({ ...prev, [chap]: !prev[chap] }));
     };
 
+    const allExpanded = chapters.every(c => expandedChapters[c]);
+
     return (
         <div className="space-y-2 border-l border-border/50 pl-2">
+            <div className="flex justify-end pb-1">
+                <button
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        toggleAllChapters(!allExpanded);
+                    }}
+                    className="text-[10px] flex items-center gap-1 text-muted-foreground hover:text-primary transition-colors"
+                >
+                    {allExpanded ? (
+                        <>Collapse All <ChevronsUp className="w-3 h-3" /></>
+                    ) : (
+                        <>Expand All <ChevronsDown className="w-3 h-3" /></>
+                    )}
+                </button>
+            </div>
             {chapters.map(chap => {
                 const mnemonic = getChapterMnemonic(book.id, chap);
                 const isExpanded = expandedChapters[chap];
@@ -378,6 +417,18 @@ function VerseList({ bookId, chapter, onNavigate }: { bookId: string, chapter: n
         }
     };
 
+    const toggleAllVerses = async (expand: boolean) => {
+        if (expand) {
+            setLoadingText(true);
+            await ensureTextLoaded(); // Ensure text is loaded before expanding
+            const newState: Record<string, boolean> = {};
+            verseKeys.forEach(k => newState[k] = true);
+            setExpandedVerses(newState);
+        } else {
+            setExpandedVerses({});
+        }
+    };
+
     const toggleVerse = (verseKey: string) => {
         const isExpanding = !expandedVerses[verseKey];
         setExpandedVerses(prev => ({ ...prev, [verseKey]: isExpanding }));
@@ -386,8 +437,25 @@ function VerseList({ bookId, chapter, onNavigate }: { bookId: string, chapter: n
         }
     };
 
+    const allExpanded = verseKeys.every(k => expandedVerses[k]);
+
     return (
         <div className="space-y-1 border-l border-border/50 pl-2 mt-1">
+            <div className="flex justify-end pb-1">
+                <button
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        toggleAllVerses(!allExpanded);
+                    }}
+                    className="text-[10px] flex items-center gap-1 text-muted-foreground hover:text-primary transition-colors"
+                >
+                    {allExpanded ? (
+                        <>Collapse All <ChevronsUp className="w-2.5 h-2.5" /></>
+                    ) : (
+                        <>Expand All <ChevronsDown className="w-2.5 h-2.5" /></>
+                    )}
+                </button>
+            </div>
             {verseKeys.map(verseKey => {
                 const verseData = versesData ? versesData[verseKey] : undefined;
                 if (!verseData) return null;

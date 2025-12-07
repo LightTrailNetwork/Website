@@ -180,41 +180,36 @@ export default function PyramidSVG({
   accent = "hsl(var(--primary))",
 }: PyramidSVGProps) {
   // Helper function to scroll within the passage list container only
+  // Helper function to scroll within the passage list container only
   const scrollToPassage = (passageKey: string) => {
     const element = document.getElementById(`passage-${passageKey}`);
     if (!element) return;
 
-    // Better mobile detection - check both window size and if mobile container is visible
-    const viewportWidth = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
-    const mobileContainer = document.getElementById("passage-list-mobile");
     const desktopContainer = document.getElementById("passage-list-desktop");
 
-    // Mobile if viewport < 768px OR mobile container is visible (for mobile simulation on desktop)
-    const isMobile = viewportWidth < 768 || (mobileContainer && getComputedStyle(mobileContainer).display !== 'none');
+    // Check if desktop container is visible (offsetParent is null if active but hidden)
+    const isDesktopVisible = desktopContainer && desktopContainer.offsetParent !== null;
 
-    const container = isMobile ? mobileContainer : desktopContainer;
-
-    if (container && !isMobile && desktopContainer) {
-      // Desktop: scroll within the container
-      const containerRect = container.getBoundingClientRect();
+    if (isDesktopVisible && desktopContainer) {
+      // Desktop: scroll within the container manually to avoid page jumping
+      const containerRect = desktopContainer.getBoundingClientRect();
       const elementRect = element.getBoundingClientRect();
 
-      // Calculate scroll position to center element in container
-      const currentScrollTop = container.scrollTop;
-      const elementTop = elementRect.top - containerRect.top + currentScrollTop;
-      const containerHeight = container.clientHeight;
-      const elementHeight = element.clientHeight;
+      // Calculate relative position within the scroll container
+      const currentScrollTop = desktopContainer.scrollTop;
+      const relativeTop = elementRect.top - containerRect.top;
 
-      const targetScrollTop =
-        elementTop - containerHeight / 2 + elementHeight / 2;
+      // Calculate target to center the element
+      // elementTop absolute in container = relativeTop + currentScrollTop
+      const targetScrollTop = currentScrollTop + relativeTop - (desktopContainer.clientHeight / 2) + (elementRect.height / 2);
 
       // Smooth scroll within the container
-      container.scrollTo({
+      desktopContainer.scrollTo({
         top: Math.max(0, targetScrollTop),
         behavior: "smooth",
       });
     } else {
-      // Mobile: scroll the entire page to the passage
+      // Mobile: scroll the entire page to the passage since there is no scroll container
       element.scrollIntoView({ behavior: "smooth", block: "center" });
     }
   };
