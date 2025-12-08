@@ -1,4 +1,5 @@
 import React from "react";
+import VerseLink from "./study/VerseLink";
 import passagesData from "../data/pyramidPassages.json";
 
 interface PassageListProps {
@@ -44,8 +45,8 @@ export default function PassageList({
               key={i}
               id={`passage-${passage.key}`}
               className={`p-4 rounded-xl border transition-all cursor-pointer ${selectedLetter === passage.key || hoveredLetter === passage.key
-                  ? "bg-primary/10 border-primary shadow-sm transform scale-[1.01]"
-                  : "bg-card border-border hover:bg-accent/50 hover:border-primary/50"
+                ? "bg-primary/10 border-primary shadow-sm transform scale-[1.01]"
+                : "bg-card border-border hover:bg-accent/50 hover:border-primary/50"
                 }`}
               onClick={() => onLetterClick(passage.key)}
               onMouseEnter={() => onLetterHover(passage.key)}
@@ -62,7 +63,17 @@ export default function PassageList({
               />
               {passage.reference && (
                 <div className="text-xs text-muted-foreground mt-2 font-medium">
-                  {passage.reference}
+                  {(() => {
+                    const match = passage.reference.match(/^(.*?)(\s\(.*\))?$/);
+                    const ref = match ? match[1] : passage.reference;
+                    const trans = match ? match[2] : '';
+                    return (
+                      <>
+                        <VerseLink reference={ref} className="font-bold text-primary hover:underline">{ref}</VerseLink>
+                        {trans && <span className="text-muted-foreground/70">{trans}</span>}
+                      </>
+                    );
+                  })()}
                 </div>
               )}
             </div>
@@ -92,9 +103,9 @@ export default function PassageList({
                         key={pIdx}
                         id={`passage-${passage.key}`}
                         className={`p-4 rounded-xl border transition-all cursor-pointer ${selectedLetter === passage.key ||
-                            hoveredLetter === passage.key
-                            ? "bg-primary/10 border-primary shadow-sm transform scale-[1.01]"
-                            : "bg-card border-border hover:bg-accent/50 hover:border-primary/50"
+                          hoveredLetter === passage.key
+                          ? "bg-primary/10 border-primary shadow-sm transform scale-[1.01]"
+                          : "bg-card border-border hover:bg-accent/50 hover:border-primary/50"
                           }`}
                         onClick={() => onLetterClick(passage.key)}
                         onMouseEnter={() => onLetterHover(passage.key)}
@@ -111,7 +122,17 @@ export default function PassageList({
                         />
                         {passage.reference && (
                           <div className="text-xs text-muted-foreground mt-2 font-medium">
-                            {passage.reference}
+                            {(() => {
+                              const match = passage.reference.match(/^(.*?)(\s\(.*\))?$/);
+                              const ref = match ? match[1] : passage.reference;
+                              const trans = match ? match[2] : '';
+                              return (
+                                <>
+                                  <VerseLink reference={ref} className="font-bold text-primary hover:underline">{ref}</VerseLink>
+                                  {trans && <span className="text-muted-foreground/70">{trans}</span>}
+                                </>
+                              );
+                            })()}
                           </div>
                         )}
                       </div>

@@ -3,6 +3,7 @@ import { BookOpen, Info, ZoomIn, ZoomOut, RotateCcw, Scroll } from "lucide-react
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import PyramidSVG from "../components/PyramidSVG";
 import PassageList from "../components/PassageList";
+import VerseLink from "../components/study/VerseLink";
 import passagesData from "../data/pyramidPassages.json";
 
 export default function Tradition() {
@@ -44,7 +45,7 @@ export default function Tradition() {
               <Scroll className="w-5 h-5 text-primary" />
               The Tradition
             </div>
-            <p className="text-xs text-muted-foreground italic mt-1">The foundational creed of the Light Trail Network.</p>
+            <p className="text-xs text-muted-foreground italic mt-1">The foundational creed of the Light Trail Network</p>
           </h2>
           <p
             className="text-lg text-muted-foreground leading-relaxed font-light whitespace-pre-line"
@@ -67,7 +68,7 @@ export default function Tradition() {
                 <BookOpen className="w-5 h-5 text-primary" />
                 The Passage Pyramid
               </div>
-              <p className="text-xs text-muted-foreground italic mt-1">A visual map connecting the Creed and Passages.</p>
+              <p className="text-xs text-muted-foreground italic mt-1">A visual map connecting the Creed and Passages</p>
             </h2>
             <div className="bg-gradient-to-br from-primary/5 to-secondary/5 rounded-xl p-4 relative overflow-hidden group">
               <TransformWrapper
@@ -135,7 +136,17 @@ export default function Tradition() {
                       }}
                     />
                     <p className="text-sm text-muted-foreground font-medium">
-                      {selectedPassage.reference}
+                      {(() => {
+                        const match = selectedPassage.reference.match(/^(.*?)(\s\(.*\))?$/);
+                        const ref = match ? match[1] : selectedPassage.reference;
+                        const trans = match ? match[2] : '';
+                        return (
+                          <>
+                            <VerseLink reference={ref} className="font-bold text-primary hover:underline">{ref}</VerseLink>
+                            {trans && <span className="text-muted-foreground/70">{trans}</span>}
+                          </>
+                        );
+                      })()}
                     </p>
                   </div>
                 </div>
@@ -161,7 +172,7 @@ export default function Tradition() {
             <h2 className="text-xl font-semibold text-foreground flex items-center gap-2">
               Scripture Passages
             </h2>
-            <p className="text-xs text-muted-foreground italic mt-1">The core collection of 40 memory verses.</p>
+            <p className="text-xs text-muted-foreground italic mt-1">The core collection of 40 memory passages</p>
           </div>
           <div id="passage-list-desktop" className="h-[85vh] overflow-y-auto pr-2 space-y-4 scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent">
             <PassageList
@@ -180,7 +191,7 @@ export default function Tradition() {
           <h2 className="text-xl font-semibold text-foreground">
             Scripture Passages
           </h2>
-          <p className="text-xs text-muted-foreground italic mt-1">The core collection of 40 memory verses.</p>
+          <p className="text-xs text-muted-foreground italic mt-1">The core collection of 40 memory passages</p>
         </div>
         <div id="passage-list-mobile" className="space-y-4">
           <PassageList
