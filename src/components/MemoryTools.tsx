@@ -80,11 +80,14 @@ export function John316View() {
 
 
             <div className="bg-card border border-border rounded-xl p-8 text-center space-y-6 shadow-lg">
-                <h1 className="text-4xl font-bold text-red-500">John 3:16</h1>
+                <Link to="/bible/read/John/3/16" className="inline-block hover:opacity-80 transition-opacity group">
+                    <h1 className="text-4xl font-bold text-red-500 mb-2">John 3:16</h1>
+                    <p className="text-sm text-muted-foreground group-hover:text-primary group-hover:underline underline-offset-4 transition-colors">Read in Context</p>
+                </Link>
                 <blockquote className="text-2xl font-serif italic text-foreground leading-relaxed my-8">
-                    "For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life."
+                    "For God so loved the world that He gave His one and only Son, that everyone who believes in Him shall not perish but have eternal life."
                 </blockquote>
-                <p className="text-muted-foreground font-bold">- NIV Translation</p>
+                <p className="text-muted-foreground font-bold">- Berean Standard Bible (BSB)</p>
             </div>
         </div>
     );
