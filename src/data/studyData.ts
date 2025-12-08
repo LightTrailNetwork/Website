@@ -482,6 +482,112 @@ export const PLACES: Place[] = [
             { title: 'David anointed king', ref: '1 Samuel 16' },
             { title: 'Birth of Jesus', ref: 'Luke 2' }
         ]
+    },
+    {
+        id: 'dead-sea',
+        name: 'The Dead Sea',
+        modernLocation: 'Dead Sea, Israel/Jordan',
+        significance: 'Lowest point on earth. A place of judgment and salt.',
+        events: [
+            { title: 'Battle of the Kings', ref: 'Genesis 14' },
+            { title: 'Sodom and Gomorrah', ref: 'Genesis 19' },
+            { title: 'Prophecy of Living Waters', ref: 'Ezekiel 47' }
+        ]
+    },
+    {
+        id: 'jordan-river',
+        name: 'Jordan River',
+        modernLocation: 'Jordan River',
+        significance: 'The border of the Promise. A place of transition and new beginnings.',
+        events: [
+            { title: 'Israel crosses into Canaan', ref: 'Joshua 3' },
+            { title: 'Naaman healed of leprosy', ref: '2 Kings 5' },
+            { title: 'Baptism of Jesus', ref: 'Matthew 3' }
+        ]
+    },
+    {
+        id: 'rome',
+        name: 'Rome',
+        modernLocation: 'Rome, Italy',
+        significance: 'Capital of the Empire. The ends of the earth in Acts.',
+        events: [
+            { title: 'Paul writes Epistle to Romans', ref: 'Romans 1' },
+            { title: 'Paul imprisoned', ref: 'Acts 28' },
+            { title: 'Peter and Paul martyred', ref: '2 Timothy 4' }
+        ]
+    },
+    {
+        id: 'mt-sinai',
+        name: 'Mount Sinai',
+        modernLocation: 'Jabal Musa, Egypt',
+        significance: 'The Mountain of God. Site of the giving of the Law.',
+        events: [
+            { title: 'Burning Bush', ref: 'Exodus 3' },
+            { title: 'Ten Commandments given', ref: 'Exodus 20' },
+            { title: 'Elijah flees Jezebel', ref: '1 Kings 19' }
+        ]
+    },
+    {
+        id: 'antioch',
+        name: 'Antioch',
+        modernLocation: 'Antakya, Turkey',
+        significance: 'Base of operations for Paul\'s missionary journeys.',
+        events: [
+            { title: 'Disciples first called Christians', ref: 'Acts 11:26' },
+            { title: 'Paul and Barnabas sent out', ref: 'Acts 13' },
+            { title: 'Peter rebuked by Paul', ref: 'Galatians 2' }
+        ]
+    },
+    {
+        id: 'ephesus',
+        name: 'Ephesus',
+        modernLocation: 'Selçuk, Turkey',
+        significance: 'Major commercial and religious center in Asia Minor.',
+        events: [
+            { title: 'Riot of the silversmiths', ref: 'Acts 19' },
+            { title: 'Paul writes to Ephesians', ref: 'Ephesians 1' },
+            { title: 'Jesus\' warning in Revelation', ref: 'Revelation 2' }
+        ]
+    },
+    {
+        id: 'damascus',
+        name: 'Damascus',
+        modernLocation: 'Damascus, Syria',
+        significance: 'One of the oldest continuously inhabited cities.',
+        events: [
+            { title: 'Abraham rescues Lot', ref: 'Genesis 14' },
+            { title: 'Saul\'s conversion', ref: 'Acts 9' },
+            { title: 'Paul escapes in a basket', ref: '2 Corinthians 11' }
+        ]
+    },
+    {
+        id: 'nineveh',
+        name: 'Nineveh',
+        modernLocation: 'Mosul, Iraq',
+        significance: 'Capital of Assyria. A great and wicked city.',
+        events: [
+            { title: 'Jonah preaches repentance', ref: 'Jonah 3' },
+            { title: 'Destruction prophesied', ref: 'Nahum 1' }
+        ]
+    },
+    {
+        id: 'ur',
+        name: 'Ur of the Chaldeans',
+        modernLocation: 'Tell el-Muqayyar, Iraq',
+        significance: 'The ancestral home of Abraham.',
+        events: [
+            { title: 'Call of Abraham', ref: 'Genesis 11:31' }
+        ]
+    },
+    {
+        id: 'caesarea-philippi',
+        name: 'Caesarea Philippi',
+        modernLocation: 'Banias, Golan Heights',
+        significance: 'A pagan center where Jesus revealed His identity.',
+        events: [
+            { title: 'Peter\'s confession of Christ', ref: 'Matthew 16' },
+            { title: 'Transfiguration (nearby)', ref: 'Mark 9' }
+        ]
     }
 ];
 
