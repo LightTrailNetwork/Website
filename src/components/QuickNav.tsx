@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { Search, ChevronLeft, X, BookOpen, Book, Brain } from 'lucide-react';
 import type { BibleBook } from '../data/bibleApi';
+import { CHRONOLOGICAL_BOOKS } from '../data/chronologicalBooks';
 import MnemonicsList from './MnemonicsList';
 
 interface QuickNavProps {
@@ -15,7 +16,7 @@ interface QuickNavProps {
 export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigateToBookOverview, initialBook }: QuickNavProps) {
     const [navStep, setNavStep] = useState<'books' | 'chapters'>('books');
     const [selectedNavBook, setSelectedNavBook] = useState<BibleBook | null>(null);
-    const [bookFilter, setBookFilter] = useState<'ALL' | 'OT' | 'NT' | 'ALPHA'>('ALL');
+    const [bookFilter, setBookFilter] = useState<'ALL' | 'OT' | 'NT' | 'ALPHA' | 'CHRONO'>('ALL');
     const [bookSearchQuery, setBookSearchQuery] = useState('');
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [activeTab, setActiveTab] = useState<'books' | 'mnemonics'>('books');
@@ -93,6 +94,12 @@ export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigat
             filtered = filtered.filter(b => b.order >= 40);
         } else if (bookFilter === 'ALPHA') {
             filtered.sort((a, b) => a.name.localeCompare(b.name));
+        } else if (bookFilter === 'CHRONO') {
+            filtered.sort((a, b) => {
+                const chronoA = CHRONOLOGICAL_BOOKS.find(cb => cb.name === a.name)?.order || 999;
+                const chronoB = CHRONOLOGICAL_BOOKS.find(cb => cb.name === b.name)?.order || 999;
+                return chronoA - chronoB;
+            });
         }
         return filtered;
     }, [books, bookFilter, bookSearchQuery]);
@@ -217,7 +224,7 @@ export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigat
 
                         {!isSearchOpen && (
                             <div className="flex flex-wrap gap-2 pb-1 animate-fade-in justify-center">
-                                {(['ALL', 'ALPHA', 'OT', 'NT'] as const).map(filter => (
+                                {(['ALL', 'ALPHA', 'CHRONO', 'OT', 'NT'] as const).map(filter => (
                                     <button
                                         key={filter}
                                         onClick={() => setBookFilter(filter)}
@@ -225,9 +232,10 @@ export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigat
                                             }`}
                                     >
                                         {filter === 'ALPHA' ? 'Alphabetical' :
-                                            filter === 'OT' ? 'Old Testament' :
-                                                filter === 'NT' ? 'New Testament' :
-                                                    'All Books'}
+                                            filter === 'CHRONO' ? 'Chronological' :
+                                                filter === 'OT' ? 'Old Testament' :
+                                                    filter === 'NT' ? 'New Testament' :
+                                                        'All Books'}
                                     </button>
                                 ))}
                             </div>
@@ -261,43 +269,51 @@ export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigat
                         )}
                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
                             {navStep === 'books' ? (
-                                filteredBooks.map(book => (
-                                    <div
-                                        key={book.id}
-                                        id={`book-item-${book.id}`}
-                                        className={`flex items-stretch rounded-lg border bg-card overflow-hidden transition-colors h-[50px] ${initialBook?.id === book.id
-                                            ? 'border-primary ring-1 ring-primary shadow-sm'
-                                            : 'border-border hover:border-primary/50'
-                                            }`}
-                                    >
-                                        <button
-                                            onClick={() => {
-                                                onNavigate(book.id, 1);
-                                                handleClose();
-                                            }}
-                                            className="flex-1 px-3 text-sm font-medium text-left hover:bg-secondary/10 transition-colors truncate flex items-center"
-                                            title={`Go to ${book.name} Chapter 1`}
+                                filteredBooks.map(book => {
+                                    const chronoData = bookFilter === 'CHRONO' ? CHRONOLOGICAL_BOOKS.find(cb => cb.name === book.name) : null;
+                                    return (
+                                        <div
+                                            key={book.id}
+                                            id={`book-item-${book.id}`}
+                                            className={`flex items-stretch rounded-lg border bg-card overflow-hidden transition-colors h-[50px] ${initialBook?.id === book.id
+                                                ? 'border-primary ring-1 ring-primary shadow-sm'
+                                                : 'border-border hover:border-primary/50'
+                                                }`}
                                         >
-                                            {book.name}
-                                        </button>
-                                        <div className="w-[1px] bg-border" />
-                                        <button
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                if (book.numberOfChapters === 1) {
+                                            <button
+                                                onClick={() => {
                                                     onNavigate(book.id, 1);
                                                     handleClose();
-                                                } else {
-                                                    handleBookSelect(book);
-                                                }
-                                            }}
-                                            className="w-[40px] flex items-center justify-center text-xs font-bold text-muted-foreground hover:text-primary hover:bg-secondary/10 transition-colors"
-                                            title={book.numberOfChapters === 1 ? `Go to ${book.name}` : `Select Chapter`}
-                                        >
-                                            {book.numberOfChapters}
-                                        </button>
-                                    </div>
-                                ))
+                                                }}
+                                                className="flex-1 px-3 text-sm text-left hover:bg-secondary/10 transition-colors truncate flex flex-col justify-center gap-0.5"
+                                                title={`Go to ${book.name} Chapter 1`}
+                                            >
+                                                <span className="font-medium truncate w-full">{book.name}</span>
+                                                {chronoData && (
+                                                    <span className="text-[10px] text-muted-foreground truncate w-full leading-none">
+                                                        {chronoData.year}
+                                                    </span>
+                                                )}
+                                            </button>
+                                            <div className="w-[1px] bg-border" />
+                                            <button
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    if (book.numberOfChapters === 1) {
+                                                        onNavigate(book.id, 1);
+                                                        handleClose();
+                                                    } else {
+                                                        handleBookSelect(book);
+                                                    }
+                                                }}
+                                                className="w-[40px] flex items-center justify-center text-xs font-bold text-muted-foreground hover:text-primary hover:bg-secondary/10 transition-colors"
+                                                title={book.numberOfChapters === 1 ? `Go to ${book.name}` : `Select Chapter`}
+                                            >
+                                                {book.numberOfChapters}
+                                            </button>
+                                        </div>
+                                    );
+                                })
                             ) : (
                                 <div className="col-span-full grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 gap-2">
                                     {Array.from({ length: selectedNavBook?.numberOfChapters || 0 }, (_, i) => i + 1).map(chap => (
