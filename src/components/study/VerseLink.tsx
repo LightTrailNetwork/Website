@@ -15,15 +15,26 @@ export default function VerseLink({ book, chapter, verse, reference, children, c
     let targetChapter = chapter;
     let targetVerseRange = verse;
 
-    // specific parser for "1 Samuel 13:14" or "John 3:16"
+    // specific parser for "1 Samuel 13:14" or "John 3:16" or "Genesis 12-50" or "2 Samuel"
     if (reference && !book) {
-        // Simple regex to split Book from Chapter:Verse
-        // Handle "1 Samuel", "Song of Solomon" etc.
-        const match = reference.match(/^((?:\d\s)?[a-zA-Z\s]+)\s(\d+)[:\.]?(\d+(?:-\d+)?)?$/);
-        if (match) {
+        // 1. Try "Book Chapter:Verse" or "Book Chapter" or "Book Chapter-Chapter"
+        // Matches: "1 Samuel 13:14", "Genesis 12", "Genesis 12-50"
+        let match = reference.match(/^((?:\d\s)?[a-zA-Z\s]+)\s(\d+)(?:[:\.](\d+(?:-\d+)?)?|[-–]\d+)?$/);
+
+        if (match && match[1]) {
             targetBook = match[1].trim();
             targetChapter = match[2];
-            targetVerseRange = match[3];
+            targetVerseRange = match[3]; // undefined if "Genesis 12" or "Genesis 12-50"
+        } else {
+            // 2. Try "Book" only (e.g. "2 Samuel", "Genesis")
+            // This is a loose check, might match "The Fall" if passed as reference. 
+            // Better to rely on caller passing valid references, or check against a list of Bible books.
+            // For now, assuming if it looks like a book name, treat as Chapter 1.
+            const simpleBookMatch = reference.match(/^((?:\d\s)?[a-zA-Z\s]+)$/);
+            if (simpleBookMatch) {
+                targetBook = simpleBookMatch[1].trim();
+                targetChapter = '1';
+            }
         }
     }
 

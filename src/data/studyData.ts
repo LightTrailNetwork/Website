@@ -377,7 +377,8 @@ export const PLACES: Place[] = [
             { title: 'Melchizedek meets Abraham', ref: 'Genesis 14:18' },
             { title: 'David conquers the city', ref: '2 Samuel 5' },
             { title: 'Solomon builds the Temple', ref: '1 Kings 6' },
-            { title: 'Jesus crucified', ref: 'John 19' }
+            { title: 'Jesus crucified', ref: 'John 19' },
+            { title: 'Pentecost', ref: 'Acts 2' }
         ]
     },
     {
@@ -403,6 +404,53 @@ export const PLACES: Place[] = [
         ]
     },
     {
+        id: 'egypt',
+        name: 'Egypt',
+        modernLocation: 'Egypt',
+        significance: 'A place of refuge and slavery. Representing the world system.',
+        events: [
+            { title: 'Abraham visits during famine', ref: 'Genesis 12:10' },
+            { title: 'Joseph rises to power', ref: 'Genesis 41' },
+            { title: 'The Exodus', ref: 'Exodus 12' },
+            { title: 'Holy Family flees Herod', ref: 'Matthew 2:13' }
+        ]
+    },
+    {
+        id: 'sea-galilee',
+        name: 'Sea of Galilee',
+        modernLocation: 'Lake Kinneret',
+        significance: 'The setting for much of Jesus\' ministry and miracles.',
+        events: [
+            { title: 'Jesus calls disciples', ref: 'Matthew 4:18' },
+            { title: 'Calming the storm', ref: 'Mark 4:35' },
+            { title: 'Walking on water', ref: 'Matthew 14:22' },
+            { title: 'Breakfast on the beach', ref: 'John 21' }
+        ]
+    },
+    {
+        id: 'wilderness',
+        name: 'The Wilderness',
+        modernLocation: 'Negev / Judean Wilderness',
+        significance: 'A place of testing, preparation, and encounter with God.',
+        events: [
+            { title: 'Hagar sees God', ref: 'Genesis 16' },
+            { title: 'Israel wanders 40 years', ref: 'Numbers 14' },
+            { title: 'David hides from Saul', ref: '1 Samuel 23' },
+            { title: 'Jesus tempted', ref: 'Matthew 4' }
+        ]
+    },
+    {
+        id: 'jericho',
+        name: 'Jericho',
+        modernLocation: 'Jericho, West Bank',
+        significance: 'The city of palms. First city conquered in Canaan.',
+        events: [
+            { title: 'Walls fall down', ref: 'Joshua 6' },
+            { title: 'Jesus heals Bartimaeus', ref: 'Mark 10:46' },
+            { title: 'Zacchaeus matches Jesus', ref: 'Luke 19' }
+        ]
+    },
+    {
         id: 'nazareth',
         name: 'Nazareth',
         modernLocation: 'Nazareth, Israel',
@@ -421,6 +469,18 @@ export const PLACES: Place[] = [
             { title: 'Jesus heals paralyzed man', ref: 'Mark 2' },
             { title: 'Peter\'s mother-in-law healed', ref: 'Matthew 8:14' },
             { title: 'Bread of Life discourse', ref: 'John 6' }
+        ]
+    },
+    {
+        id: 'bethlehem',
+        name: 'Bethlehem',
+        modernLocation: 'Bethlehem, West Bank',
+        significance: 'The City of David. House of Bread.',
+        events: [
+            { title: 'Death of Rachel', ref: 'Genesis 35:19' },
+            { title: 'Ruth and Boaz', ref: 'Ruth 4' },
+            { title: 'David anointed king', ref: '1 Samuel 16' },
+            { title: 'Birth of Jesus', ref: 'Luke 2' }
         ]
     }
 ];
@@ -466,6 +526,54 @@ export const SYMBOLS: ConceptSymbol[] = [
         theme: 'Nature'
     },
     {
+        id: 'bread',
+        name: 'Bread',
+        meaning: 'Sustenance, Life, Fellowship, Word of God.',
+        appearances: [
+            { ref: 'Exodus 16:4', context: 'Manna from heaven' },
+            { ref: 'Matthew 4:4', context: 'Man shall not live by bread alone' },
+            { ref: 'John 6:35', context: 'I am the Bread of Life' },
+            { ref: '1 Corinthians 11:24', context: 'This is my body' }
+        ],
+        theme: 'Nature'
+    },
+    {
+        id: 'shepherd',
+        name: 'Shepherd',
+        meaning: 'Care, Guidance, Protection, Leadership.',
+        appearances: [
+            { ref: 'Psalm 23:1', context: 'The Lord is my Shepherd' },
+            { ref: 'Ezekiel 34:11', context: 'I myself will search for my sheep' },
+            { ref: 'John 10:11', context: 'The Good Shepherd' },
+            { ref: '1 Peter 5:4', context: 'Chief Shepherd' }
+        ],
+        theme: 'Role'
+    },
+    {
+        id: 'rock',
+        name: 'Rock / Stone',
+        meaning: 'Stability, Safety, Foundation, Stumbling Block.',
+        appearances: [
+            { ref: 'Exodus 17:6', context: 'Strike the rock' },
+            { ref: 'Psalm 61:2', context: 'Lead me to the rock that is higher than I' },
+            { ref: 'Matthew 16:18', context: 'On this rock I will build my church' },
+            { ref: '1 Peter 2:6', context: 'Cornerstone' }
+        ],
+        theme: 'Nature'
+    },
+    {
+        id: 'light',
+        name: 'Light',
+        meaning: 'Truth, Purity, Guidance, God\'s Nature.',
+        appearances: [
+            { ref: 'Genesis 1:3', context: 'Let there be light' },
+            { ref: 'Psalm 119:105', context: 'Lamp to my feet' },
+            { ref: 'John 8:12', context: 'I am the Light of the World' },
+            { ref: '1 John 1:5', context: 'God is light' }
+        ],
+        theme: 'Nature'
+    },
+    {
         id: 'three',
         name: 'The Number Three',
         meaning: 'Completeness, The Trinity, Resurrection.',
@@ -502,20 +610,108 @@ export const TYPOLOGY: Typology[] = [
         significance: 'Jesus is the daily sustenance for the believer.'
     },
     {
+        id: 'passover',
+        title: 'The Passover Lamb',
+        otType: { entity: 'Lamb', description: 'Unblemished male lamb, slain, blood applied to doorposts saves from death.', ref: 'Exodus 12' },
+        ntAntitype: { entity: 'Christ', description: 'Christ our Passover is sacrificed for us; His blood saves from wrath.', ref: '1 Corinthians 5:7' },
+        significance: 'Redemption through the blood of a substitute.'
+    },
+    {
         id: 'bronze-serpent',
         title: 'The Bronze Serpent',
         otType: { entity: 'Bronze Serpent', description: 'Lifted up on a pole; those who looked at it lived.', ref: 'Numbers 21' },
         ntAntitype: { entity: 'The Cross', description: 'The Son of Man lifted up; those who believe have eternal life.', ref: 'John 3:14' },
         significance: 'Salvation comes through looking to God\'s provision in faith.'
+    },
+    {
+        id: 'adam',
+        title: 'Adam and Christ',
+        otType: { entity: 'Adam', description: 'The first man; brought sin and death to all his descendants.', ref: 'Genesis 3' },
+        ntAntitype: { entity: 'Last Adam (Christ)', description: 'The second man; brings righteousness and life to all in Him.', ref: 'Romans 5:12-21' },
+        significance: 'Contrast between the fall in the garden and victory in the garden/cross.'
+    },
+    {
+        id: 'melchizedek',
+        title: 'Melchizedek',
+        otType: { entity: 'Melchizedek', description: 'King of Salem and Priest of God Most High; no record of beginnings or end.', ref: 'Genesis 14' },
+        ntAntitype: { entity: 'Jesus', description: 'High Priest forever in the order of Melchizedek, not Aaron.', ref: 'Hebrews 7' },
+        significance: 'A priesthood superior to the Levitical system, based on an indestructible life.'
+    },
+    {
+        id: 'jonah',
+        title: 'Jonah',
+        otType: { entity: 'Jonah', description: 'Three days and nights in the belly of the fish.', ref: 'Jonah 1' },
+        ntAntitype: { entity: 'Jesus', description: 'Three days and nights in the heart of the earth.', ref: 'Matthew 12:40' },
+        significance: 'The sign of resurrection.'
     }
 ];
 
 export const HARMONY: HarmonyEvent[] = [
     {
+        id: 'birth-jesus',
+        title: 'Birth of Jesus',
+        description: 'The nativity of Christ in Bethlehem.',
+        references: { matthew: '1:18-25', luke: '2:1-7' }
+    },
+    {
+        id: 'visit-magi',
+        title: 'Visit of the Magi',
+        description: 'Wise men from the East worship the newborn King.',
+        references: { matthew: '2:1-12' }
+    },
+    {
+        id: 'boy-jesus',
+        title: 'Boy Jesus at the Temple',
+        description: 'Jesus visits the Temple at age twelve.',
+        references: { luke: '2:41-52' }
+    },
+    {
         id: 'baptism',
         title: 'The Baptism of Jesus',
         description: 'Jesus is baptized by John in the Jordan river.',
         references: { matthew: '3:13-17', mark: '1:9-11', luke: '3:21-22', john: '1:29-34' }
+    },
+    {
+        id: 'temptation',
+        title: 'Temptation in the Wilderness',
+        description: 'Jesus fasts for 40 days and overcomes Satan.',
+        references: { matthew: '4:1-11', mark: '1:12-13', luke: '4:1-13' }
+    },
+    {
+        id: 'wedding-cana',
+        title: 'Wedding at Cana',
+        description: 'Jesus turns water into wine (First Miracle).',
+        references: { john: '2:1-11' }
+    },
+    {
+        id: 'nicodemus',
+        title: 'Jesus and Nicodemus',
+        description: 'Teaching on being born again.',
+        references: { john: '3:1-21' }
+    },
+    {
+        id: 'woman-well',
+        title: 'Woman at the Well',
+        description: 'Jesus reveals He is the Living Water in Samaria.',
+        references: { john: '4:1-42' }
+    },
+    {
+        id: 'call-disciples',
+        title: 'Calling of First Disciples',
+        description: 'Simon Peter, Andrew, James, and John follow Jesus.',
+        references: { matthew: '4:18-22', mark: '1:16-20', luke: '5:1-11' }
+    },
+    {
+        id: 'sermon-mount',
+        title: 'Sermon on the Mount',
+        description: 'The Beatitudes and ethical teaching of the Kingdom.',
+        references: { matthew: '5:1-7:29', luke: '6:17-49' }
+    },
+    {
+        id: 'calming-storm',
+        title: 'Calming the Storm',
+        description: 'Jesus has authority over wind and waves.',
+        references: { matthew: '8:23-27', mark: '4:35-41', luke: '8:22-25' }
     },
     {
         id: 'feeding-5000',
@@ -524,10 +720,34 @@ export const HARMONY: HarmonyEvent[] = [
         references: { matthew: '14:13-21', mark: '6:30-44', luke: '9:10-17', john: '6:1-15' }
     },
     {
+        id: 'walking-water',
+        title: 'Walking on Water',
+        description: 'Jesus walks on the Sea of Galilee.',
+        references: { matthew: '14:22-33', mark: '6:45-52', john: '6:16-21' }
+    },
+    {
         id: 'peter-confession',
         title: 'Peter\'s Confession',
-        description: 'Peter declares Jesus to be the Messiah.',
+        description: 'Peter declares Jesus to be the Christ.',
         references: { matthew: '16:13-20', mark: '8:27-30', luke: '9:18-20' }
+    },
+    {
+        id: 'transfiguration',
+        title: 'The Transfiguration',
+        description: 'Jesus\' glory revealed with Moses and Elijah.',
+        references: { matthew: '17:1-13', mark: '9:2-13', luke: '9:28-36' }
+    },
+    {
+        id: 'good-samaritan',
+        title: 'Parable of Good Samaritan',
+        description: '"Who is my neighbor?"',
+        references: { luke: '10:25-37' }
+    },
+    {
+        id: 'lazarus',
+        title: 'Raising of Lazarus',
+        description: 'Jesus raises Lazarus from the dead.',
+        references: { john: '11:1-44' }
     },
     {
         id: 'triumphal-entry',
@@ -536,10 +756,40 @@ export const HARMONY: HarmonyEvent[] = [
         references: { matthew: '21:1-11', mark: '11:1-11', luke: '19:28-44', john: '12:12-19' }
     },
     {
+        id: 'last-supper',
+        title: 'The Last Supper',
+        description: 'Jesus washes feet and institutes the Lord\'s Supper.',
+        references: { matthew: '26:17-30', mark: '14:12-26', luke: '22:7-39', john: '13:1-17:26' }
+    },
+    {
+        id: 'gethsemane',
+        title: 'Gethsemane & Arrest',
+        description: 'Jesus prays in agony and is betrayed by Judas.',
+        references: { matthew: '26:36-56', mark: '14:32-52', luke: '22:39-53', john: '18:1-12' }
+    },
+    {
+        id: 'crucifixion',
+        title: 'The Crucifixion',
+        description: 'Jesus is crucified at Golgotha.',
+        references: { matthew: '27:32-56', mark: '15:21-41', luke: '23:26-49', john: '19:16-37' }
+    },
+    {
         id: 'resurrection',
         title: 'The Resurrection',
         description: 'The empty tomb and angelic announcement.',
         references: { matthew: '28:1-10', mark: '16:1-8', luke: '24:1-12', john: '20:1-10' }
+    },
+    {
+        id: 'great-commission',
+        title: 'The Great Commission',
+        description: 'Go and make disciples of all nations.',
+        references: { matthew: '28:16-20', mark: '16:15-18' }
+    },
+    {
+        id: 'ascension',
+        title: 'The Ascension',
+        description: 'Jesus ascends to heaven.',
+        references: { mark: '16:19-20', luke: '24:50-53' }
     }
 ];
 
@@ -616,81 +866,81 @@ export const ERAS: BiblicalEra[] = [
     {
         id: 'creation',
         title: 'Creation & Fall',
-        dates: 'Creation - 2166 BC',
-        description: 'God creates the world. Mankind falls into sin. The Flood judgments.',
+        dates: 'Undated',
+        description: 'God creates the world, man falls into sin, and the promise of redemption is given.',
         majorFigures: ['Adam', 'Eve', 'Noah'],
         books: ['Genesis 1-11']
     },
     {
         id: 'patriarchs',
         title: 'The Patriarchs',
-        dates: '2166 - 1805 BC',
-        description: 'God chooses a family through whom He will bless the world.',
+        dates: 'c. 2100 - 1800 BC',
+        description: 'God calls Abraham and establishes His covenant with the fathers of Israel.',
         majorFigures: ['Abraham', 'Isaac', 'Jacob', 'Joseph'],
         books: ['Genesis 12-50', 'Job']
     },
     {
         id: 'exodus',
-        title: 'Exodus & Wandering',
-        dates: '1526 - 1406 BC',
-        description: 'Deliverance from Egypt. Giving of the Law. 40 years in the wilderness.',
-        majorFigures: ['Moses', 'Aaron', 'Miriam'],
-        books: ['Exodus', 'Leviticus', 'Numbers', 'Deuteronomy']
+        title: 'Exodus & Conquest',
+        dates: 'c. 1446 - 1375 BC',
+        description: 'Deliverance from Egypt, giving of the Law, and entering the Promised Land.',
+        majorFigures: ['Moses', 'Aaron', 'Joshua', 'Caleb'],
+        books: ['Exodus', 'Leviticus', 'Numbers', 'Deuteronomy', 'Joshua']
     },
     {
-        id: 'conquest',
-        title: 'Conquest & Judges',
-        dates: '1406 - 1050 BC',
-        description: 'Conquering the land. Cycles of apostasy and deliverance.',
-        majorFigures: ['Joshua', 'Deborah', 'Gideon', 'Samson', 'Ruth', 'Samuel'],
-        books: ['Joshua', 'Judges', 'Ruth', '1 Samuel 1-7']
+        id: 'judges',
+        title: 'Period of Judges',
+        dates: 'c. 1375 - 1050 BC',
+        description: 'A cycle of sin, servitude, supplication, and salvation as Israel has no king.',
+        majorFigures: ['Deborah', 'Gideon', 'Samson', 'Samuel', 'Ruth'],
+        books: ['Judges', 'Ruth', '1 Samuel 1-7']
     },
     {
-        id: 'kingdom',
+        id: 'united-kingdom',
         title: 'United Kingdom',
-        dates: '1050 - 930 BC',
-        description: 'Israel united under three great kings. The height of power.',
+        dates: 'c. 1050 - 930 BC',
+        description: 'Israel united under three great kings. The height of power and the Temple.',
         majorFigures: ['Saul', 'David', 'Solomon'],
-        books: ['1 Samuel 8-31', '2 Samuel', '1 Kings 1-11', 'Chronicles', 'Psalms', 'Proverbs', 'Ecclesiastes', 'Song of Solomon']
+        books: ['1 Samuel 8-31', '2 Samuel', '1 Kings 1-11', 'Psalms', 'Proverbs', 'Ecclesiastes', 'Song of Solomon']
     },
     {
-        id: 'divided',
+        id: 'divided-kingdom',
         title: 'Divided Kingdom',
         dates: '930 - 586 BC',
-        description: 'Correction: Kingdom divides into North (Israel) and South (Judah). Prophets warn of judgment.',
-        majorFigures: ['Elijah', 'Elisha', 'Isaiah', 'Jeremiah', 'Hezekiah', 'Josiah'],
-        books: ['1 Kings 12-22', '2 Kings', 'Most Prophets']
+        description: 'The kingdom splits into Israel (North) and Judah (South). Rise of the prophets.',
+        majorFigures: ['Elijah', 'Elisha', 'Hezekiah', 'Josiah', 'Isaiah', 'Jeremiah'],
+        books: ['1 Kings 12-22', '2 Kings', '2 Chronicles', 'Isaiah', 'Jeremiah', 'Hosea', 'Amos', 'Jonah', 'Micah']
     },
     {
         id: 'exile',
-        title: 'Exile',
+        title: 'The Exile',
         dates: '586 - 538 BC',
-        description: 'Judah taken captive to Babylon. The Temple destroyed.',
-        majorFigures: ['Daniel', 'Ezekiel', 'Esther'],
-        books: ['Daniel', 'Ezekiel', 'Lamentations', 'Esther']
+        description: 'Judah is taken captive to Babylon. The temple is destroyed.',
+        majorFigures: ['Daniel', 'Ezekiel', 'Nebuchadnezzar'],
+        books: ['Ezekiel', 'Daniel', 'Lamentations', 'Obadiah']
     },
     {
         id: 'return',
-        title: 'Return & Reconstruction',
+        title: 'Return & Restoration',
         dates: '538 - 400 BC',
-        description: 'Remnant returns. Temple and walls rebuilt.',
-        majorFigures: ['Zerubbabel', 'Ezra', 'Nehemiah', 'Malachi'],
-        books: ['Ezra', 'Nehemiah', 'Haggai', 'Zechariah', 'Malachi']
+        description: 'The exiles return to rebuild the Temple and the walls of Jerusalem.',
+        majorFigures: ['Ezra', 'Nehemiah', 'Zerubbabel', 'Esther', 'Malachi'],
+        books: ['Ezra', 'Nehemiah', 'Esther', 'Haggai', 'Zechariah', 'Malachi']
     },
     {
         id: 'christ',
         title: 'Life of Christ',
-        dates: '4 BC - 33 AD',
-        description: 'The Incarnation, Ministry, Death, and Resurrection of Jesus.',
-        majorFigures: ['Jesus', 'John the Baptist', 'The 12 Disciples'],
+        dates: 'c. 4 BC - AD 30',
+        description: 'The Incarnation, Ministry, Death, and Resurrection of Jesus the Messiah.',
+        majorFigures: ['Jesus', 'Mary', 'Peter', 'John the Baptist'],
         books: ['Matthew', 'Mark', 'Luke', 'John']
     },
     {
         id: 'church',
         title: 'The Early Church',
-        dates: '33 AD - 100 AD',
-        description: 'Spread of the Gospel from Jerusalem to Rome.',
-        majorFigures: ['Peter', 'Paul', 'James', 'John'],
-        books: ['Acts', 'Epistles', 'Revelation']
+        dates: 'AD 30 - 100',
+        description: 'The Holy Spirit is poured out and the Gospel spreads to the nations.',
+        majorFigures: ['Peter', 'Paul', 'Stephen', 'Timothy', 'John'],
+        books: ['Acts', 'Romans', 'Corinthians', 'Galatians', 'Ephesians', 'Philippians', 'Colossians', 'Thessalonians', 'Timothy', 'Titus', 'Philemon', 'Hebrews', 'James', 'Peter', 'John', 'Jude', 'Revelation']
     }
 ];

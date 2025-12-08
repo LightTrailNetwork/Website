@@ -34,22 +34,22 @@ export default function HarmonyView() {
                                 </div>
                                 <div className="col-span-2 text-center">
                                     {event.references.matthew ?
-                                        <VerseLink book="Matthew" reference={`Matthew ${event.references.matthew}`} className="text-sm font-mono" />
+                                        <VerseLink reference={`Matthew ${event.references.matthew}`} className="text-sm font-mono" />
                                         : <span className="text-muted-foreground/30">-</span>}
                                 </div>
                                 <div className="col-span-2 text-center">
                                     {event.references.mark ?
-                                        <VerseLink book="Mark" reference={`Mark ${event.references.mark}`} className="text-sm font-mono" />
+                                        <VerseLink reference={`Mark ${event.references.mark}`} className="text-sm font-mono" />
                                         : <span className="text-muted-foreground/30">-</span>}
                                 </div>
                                 <div className="col-span-2 text-center">
                                     {event.references.luke ?
-                                        <VerseLink book="Luke" reference={`Luke ${event.references.luke}`} className="text-sm font-mono" />
+                                        <VerseLink reference={`Luke ${event.references.luke}`} className="text-sm font-mono" />
                                         : <span className="text-muted-foreground/30">-</span>}
                                 </div>
                                 <div className="col-span-2 text-center">
                                     {event.references.john ?
-                                        <VerseLink book="John" reference={`John ${event.references.john}`} className="text-sm font-mono" />
+                                        <VerseLink reference={`John ${event.references.john}`} className="text-sm font-mono" />
                                         : <span className="text-muted-foreground/30">-</span>}
                                 </div>
                             </div>

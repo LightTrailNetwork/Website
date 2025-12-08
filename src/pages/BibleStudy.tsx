@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
-    BookOpen, Search, Users, MapPin, Lightbulb,
+    BookOpen, Users, MapPin, Lightbulb,
     ArrowRightLeft, GitMerge, Combine, Repeat,
     Hourglass, ListTree, History, Library, ArrowRight
 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+// Removed Search import
 
 interface StudyTool {
     id: string;
@@ -25,7 +26,6 @@ interface StudyCategory {
 
 export default function BibleStudy() {
     const navigate = useNavigate();
-    const [searchQuery, setSearchQuery] = useState('');
 
     const categories: StudyCategory[] = [
         {
@@ -94,21 +94,6 @@ export default function BibleStudy() {
                 <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
                     "Tools to uncover the depth, patterns, and unity of Scripture."
                 </p>
-
-                {/* Search Bar - Placeholder for future functionality */}
-                <div className="max-w-xl mx-auto relative group">
-                    <div className="absolute inset-0 bg-primary/20 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    <div className="relative">
-                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
-                        <input
-                            type="text"
-                            placeholder="Search topics, people, or passages..."
-                            className="w-full pl-12 pr-4 py-4 bg-background border border-border/50 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-lg"
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                        />
-                    </div>
-                </div>
             </div>
 
             {/* Categories Grid */}
