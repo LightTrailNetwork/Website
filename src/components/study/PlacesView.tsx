@@ -7,11 +7,13 @@ import BibleLeafletMap from './BibleLeafletMap';
 export default function PlacesView() {
     const [activeId, setActiveId] = useState<string | null>(null);
 
-    const handleSelect = (id: string) => {
+    const handleSelect = (id: string, shouldScroll = true) => {
         setActiveId(id);
-        const el = document.getElementById(`place-${id}`);
-        if (el) {
-            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if (shouldScroll) {
+            const el = document.getElementById(`place-${id}`);
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
         }
     };
 

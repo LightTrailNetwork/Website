@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
@@ -70,13 +70,25 @@ const LOCATIONS: MapPoint[] = [
 ];
 
 interface BibleLeafletMapProps {
-    onSelectLocation: (locationId: string) => void;
+    onSelectLocation: (locationId: string, shouldScroll?: boolean) => void;
     activeLocationId?: string | null;
 }
 
-function MapMarker({ location, isActive, onSelect }: { location: MapPoint, isActive: boolean, onSelect: (id: string) => void }) {
+function useIsMobile() {
+    const [isMobile, setIsMobile] = useState(false);
+    useEffect(() => {
+        const check = () => setIsMobile(window.innerWidth < 1024);
+        check();
+        window.addEventListener('resize', check);
+        return () => window.removeEventListener('resize', check);
+    }, []);
+    return isMobile;
+}
+
+function MapMarker({ location, isActive, onSelect }: { location: MapPoint, isActive: boolean, onSelect: (id: string, s?: boolean) => void }) {
     const markerRef = useRef<L.Marker>(null);
     const map = useMap();
+    const isMobile = useIsMobile();
 
     useEffect(() => {
         if (isActive && markerRef.current) {
@@ -91,7 +103,10 @@ function MapMarker({ location, isActive, onSelect }: { location: MapPoint, isAct
             position={[location.lat, location.lng]}
             icon={isActive ? activeIcon : defaultIcon}
             eventHandlers={{
-                click: () => onSelect(location.id),
+                click: () => onSelect(location.id, !isMobile),
+                dblclick: () => {
+                    if (isMobile) onSelect(location.id, true);
+                }
             }}
         >
             <Popup>
@@ -103,27 +118,33 @@ function MapMarker({ location, isActive, onSelect }: { location: MapPoint, isAct
 
 export default function BibleLeafletMap({ onSelectLocation, activeLocationId }: BibleLeafletMapProps) {
     return (
-        <div className="w-full h-[600px] rounded-xl overflow-hidden border border-border z-0">
-            <MapContainer
-                center={[31.7683, 35.2137]}
-                zoom={7}
-                scrollWheelZoom={true}
-                className="w-full h-full"
-            >
-                <TileLayer
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-                    url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
-                />
-
-                {LOCATIONS.map(loc => (
-                    <MapMarker
-                        key={loc.id}
-                        location={loc}
-                        isActive={activeLocationId === loc.id}
-                        onSelect={onSelectLocation}
+        <div className="flex flex-col gap-2">
+            <div className="w-full h-[600px] rounded-xl overflow-hidden border border-border z-0">
+                <MapContainer
+                    center={[31.7683, 35.2137]}
+                    zoom={7}
+                    scrollWheelZoom={true}
+                    className="w-full h-full"
+                    doubleClickZoom={false} // Disable global dblclick zoom to handle marker dblclick
+                >
+                    <TileLayer
+                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+                        url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
                     />
-                ))}
-            </MapContainer>
+
+                    {LOCATIONS.map(loc => (
+                        <MapMarker
+                            key={loc.id}
+                            location={loc}
+                            isActive={activeLocationId === loc.id}
+                            onSelect={onSelectLocation}
+                        />
+                    ))}
+                </MapContainer>
+            </div>
+            <p className="block lg:hidden text-xs text-muted-foreground text-center italic mt-2">
+                * Tap marker to view label. Double-tap to view details.
+            </p>
         </div>
     );
 }
