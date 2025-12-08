@@ -341,7 +341,23 @@ export const getProfiles = async (commentaryId: string = 'tyndale'): Promise<Pro
         if (!response.ok) throw new Error('Failed to fetch profiles');
         return await response.json();
     } catch (error) {
-        throw error;
+        console.warn('Profiles fetch failed, returning empty list.');
+        // Return dummy response to prevent app crash
+        return {
+            commentary: {
+                id: commentaryId,
+                name: 'Offline',
+                author: '',
+                year: '',
+                language: 'en',
+                languageEnglishName: 'English',
+                source: '',
+                sourceUrl: '',
+                license: '',
+                licenseUrl: ''
+            },
+            profiles: []
+        };
     }
 };
 

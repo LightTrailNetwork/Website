@@ -216,6 +216,9 @@ export default function BibleReader() {
                 }
             } catch (e) {
                 console.error("Failed to load initial bible data", e);
+                // Ensure we don't spin forever if initialization fails
+                setError("Failed to load Bible data. Please refresh or check connection.");
+                setLoading(false);
             }
         };
         initData();
