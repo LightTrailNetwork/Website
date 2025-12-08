@@ -39,9 +39,12 @@ export default function Tradition() {
       {/* Introduction Section */}
       <div className="text-center space-y-4">
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-xl font-semibold text-foreground text-center mb-4 flex items-center justify-center gap-2">
-            <Scroll className="w-5 h-5 text-primary" />
-            The Tradition
+          <h2 className="text-xl font-semibold text-foreground text-center flex flex-col items-center justify-center gap-1 mb-4">
+            <div className="flex items-center gap-2">
+              <Scroll className="w-5 h-5 text-primary" />
+              The Tradition
+            </div>
+            <p className="text-xs text-muted-foreground italic mt-1">The foundational creed of the Triad Network.</p>
           </h2>
           <p
             className="text-lg text-muted-foreground leading-relaxed font-light whitespace-pre-line"
@@ -59,9 +62,12 @@ export default function Tradition() {
         {/* Left Column - Pyramid */}
         <div className="flex flex-col items-center space-y-6">
           <div className="w-full bg-card border border-border rounded-xl p-6 lg:p-8 shadow-sm">
-            <h2 className="text-xl font-semibold text-foreground text-center mb-6 flex items-center justify-center gap-2">
-              <BookOpen className="w-5 h-5 text-primary" />
-              The Passage Pyramid
+            <h2 className="text-xl font-semibold text-foreground text-center mb-6 flex flex-col items-center justify-center gap-1">
+              <div className="flex items-center gap-2">
+                <BookOpen className="w-5 h-5 text-primary" />
+                The Passage Pyramid
+              </div>
+              <p className="text-xs text-muted-foreground italic mt-1">A visual map connecting the Creed and Passages.</p>
             </h2>
             <div className="bg-gradient-to-br from-primary/5 to-secondary/5 rounded-xl p-4 relative overflow-hidden group">
               <TransformWrapper
@@ -151,9 +157,12 @@ export default function Tradition() {
 
         {/* Right Column - Passage List (Desktop only) */}
         <div className="hidden lg:block space-y-4">
-          <h2 className="text-xl font-semibold text-foreground flex items-center gap-2">
-            Scripture Passages
-          </h2>
+          <div className="mb-4">
+            <h2 className="text-xl font-semibold text-foreground flex items-center gap-2">
+              Scripture Passages
+            </h2>
+            <p className="text-xs text-muted-foreground italic mt-1">The core collection of forty memory verses.</p>
+          </div>
           <div id="passage-list-desktop" className="h-[85vh] overflow-y-auto pr-2 space-y-4 scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent">
             <PassageList
               selectedLetter={selectedLetter}
@@ -167,9 +176,12 @@ export default function Tradition() {
 
       {/* Mobile: Passage List Below Pyramid */}
       <div className="lg:hidden space-y-4">
-        <h2 className="text-xl font-semibold text-foreground text-center">
-          Scripture Passages
-        </h2>
+        <div className="text-center mb-4">
+          <h2 className="text-xl font-semibold text-foreground">
+            Scripture Passages
+          </h2>
+          <p className="text-xs text-muted-foreground italic mt-1">The core collection of forty memory verses.</p>
+        </div>
         <div id="passage-list-mobile" className="space-y-4">
           <PassageList
             selectedLetter={selectedLetter}
