@@ -33,7 +33,7 @@ export default function NamesStudy() {
             </div>
 
             {/* Controls */}
-            <div className="flex flex-col md:flex-row gap-6 justify-between items-center bg-card border border-border rounded-xl p-4 shadow-sm sticky top-20 z-10 backdrop-blur-md bg-opacity-95">
+            <div className="flex flex-col md:flex-row gap-6 justify-between items-center bg-card border border-border rounded-xl p-4 shadow-sm">
                 {/* Tabs */}
                 <div className="flex p-1 bg-secondary/20 rounded-lg">
                     <button

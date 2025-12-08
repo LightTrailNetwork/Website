@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Brain, Layers, Crown, Quote, Hash, List, Sparkles, BookOpen, Wheat } from 'lucide-react';
+import { Brain, Layers, Crown, Quote, Hash, List, Sparkles, BookOpen, Wheat, Users } from 'lucide-react';
 
 
 export default function MemorizationHub() {
@@ -88,6 +88,15 @@ export default function MemorizationHub() {
             color: "text-green-600",
             bg: "bg-green-600/10",
             link: "/bible/memory/parables"
+        },
+        {
+            title: "Biblical Names",
+            subtitle: "Meanings & Origins",
+            description: "Explore the Hebrew meanings of God's names and key biblical figures.",
+            icon: Users,
+            color: "text-cyan-500",
+            bg: "bg-cyan-500/10",
+            link: "/bible/names"
         }
     ];
 

@@ -66,20 +66,13 @@ function BibleHome() {
         <div className="max-w-7xl mx-auto space-y-8 animate-fade-in pb-20 px-4 sm:px-6">
             {/* Header Section */}
             <div className="text-center space-y-4 py-8 relative">
-                <div className="absolute top-8 right-0 hidden sm:flex gap-2">
-                    <Link
-                        to="/bible/names"
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/10 hover:bg-secondary/20 text-sm font-medium transition-colors text-primary"
-                    >
-                        <Users className="w-4 h-4" />
-                        Names Study
-                    </Link>
+                <div className="absolute top-8 right-0 hidden sm:block">
                     <Link
                         to="/bible/memory"
                         className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/10 hover:bg-secondary/20 text-sm font-medium transition-colors text-primary"
                     >
                         <Brain className="w-4 h-4" />
-                        Memory Tools
+                        Memory Dashboard
                     </Link>
                 </div>
                 <h1 className="text-4xl font-bold text-foreground tracking-tight">Scripture Library</h1>
@@ -88,20 +81,13 @@ function BibleHome() {
                 </p>
 
                 {/* Mobile Memory Link */}
-                <div className="sm:hidden flex justify-center gap-2 pt-2">
-                    <Link
-                        to="/bible/names"
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/10 hover:bg-secondary/20 text-sm font-medium transition-colors text-primary"
-                    >
-                        <Users className="w-4 h-4" />
-                        Names
-                    </Link>
+                <div className="sm:hidden flex justify-center pt-2">
                     <Link
                         to="/bible/memory"
                         className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/10 hover:bg-secondary/20 text-sm font-medium transition-colors text-primary"
                     >
                         <Brain className="w-4 h-4" />
-                        Memory
+                        Memory Dashboard
                     </Link>
                 </div>
             </div>
