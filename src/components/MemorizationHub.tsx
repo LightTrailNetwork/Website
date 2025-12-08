@@ -96,20 +96,13 @@ export default function MemorizationHub() {
                 <div className="inline-flex items-center justify-center p-3 rounded-full bg-primary/10 mb-4">
                     <Brain className="w-8 h-8 text-primary" />
                 </div>
-                <h1 className="text-4xl font-bold text-foreground">Bible Memory Pyramid</h1>
+                <h1 className="text-4xl font-bold text-foreground">Bible Memory Tools</h1>
                 <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                    A structured approach to internalizing Scripture, starting from the big picture down to the details.
+                    Tools and collections to help you internalize Scripture, from big picture frameworks to specific verses.
                 </p>
 
                 {/* Quick Nav */}
                 <div className="flex flex-wrap justify-center gap-2 pt-4">
-                    <button
-                        onClick={() => scrollToSection('pyramid')}
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-colors text-sm font-medium"
-                    >
-                        <Layers className="w-4 h-4" />
-                        The Pyramid
-                    </button>
                     <button
                         onClick={() => scrollToSection('collections')}
                         className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-colors text-sm font-medium"
@@ -117,11 +110,54 @@ export default function MemorizationHub() {
                         <BookOpen className="w-4 h-4" />
                         Collections
                     </button>
+                    <button
+                        onClick={() => scrollToSection('pyramid')}
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-colors text-sm font-medium"
+                    >
+                        <Layers className="w-4 h-4" />
+                        The Pyramid
+                    </button>
+
                 </div>
             </div>
 
+            {/* Collections Section */}
+            <section id="collections" className="space-y-6 pt-0 scroll-mt-24">
+                <div className="flex items-center gap-2 mb-4">
+                    <BookOpen className="w-5 h-5 text-primary" />
+                    <h2 className="text-2xl font-bold">Collections</h2>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {collections.map((tool) => (
+                        <Link
+                            key={tool.title}
+                            to={tool.link}
+                            className="flex items-start p-6 bg-card border border-border rounded-xl hover:shadow-md transition-all hover:border-primary/50 group"
+                        >
+                            <div className={`p-3 rounded-lg ${tool.bg} mr-4`}>
+                                <tool.icon className={`w-6 h-6 ${tool.color}`} />
+                            </div>
+                            <div>
+                                <h3 className="font-semibold text-lg group-hover:text-primary transition-colors">
+                                    {tool.title}
+                                </h3>
+                                <p className="text-sm text-secondary-foreground font-medium mb-1">{tool.subtitle}</p>
+                                <p className="text-sm text-muted-foreground">
+                                    {tool.description}
+                                </p>
+                            </div>
+                        </Link>
+                    ))}
+                </div>
+            </section>
+
             {/* The Pyramid */}
-            <section id="pyramid" className="space-y-4 flex flex-col items-center scroll-mt-24">
+            <section id="pyramid" className="space-y-4 pt-8 border-t border-border flex flex-col items-center scroll-mt-24">
+                <div className="flex items-center gap-2 mb-4 self-start w-full">
+                    <Layers className="w-5 h-5 text-primary" />
+                    <h2 className="text-2xl font-bold">The Pyramid</h2>
+                </div>
                 {pyramidLevels.map((tool) => (
                     <Link
                         key={tool.title}
@@ -150,37 +186,6 @@ export default function MemorizationHub() {
                         </div>
                     </Link>
                 ))}
-            </section>
-
-            {/* Collections Section */}
-            <section id="collections" className="space-y-6 pt-8 border-t border-border scroll-mt-24">
-                <div className="flex items-center gap-2 mb-4">
-                    <BookOpen className="w-5 h-5 text-primary" />
-                    <h2 className="text-2xl font-bold">Collections</h2>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {collections.map((tool) => (
-                        <Link
-                            key={tool.title}
-                            to={tool.link}
-                            className="flex items-start p-6 bg-card border border-border rounded-xl hover:shadow-md transition-all hover:border-primary/50 group"
-                        >
-                            <div className={`p-3 rounded-lg ${tool.bg} mr-4`}>
-                                <tool.icon className={`w-6 h-6 ${tool.color}`} />
-                            </div>
-                            <div>
-                                <h3 className="font-semibold text-lg group-hover:text-primary transition-colors">
-                                    {tool.title}
-                                </h3>
-                                <p className="text-sm text-secondary-foreground font-medium mb-1">{tool.subtitle}</p>
-                                <p className="text-sm text-muted-foreground">
-                                    {tool.description}
-                                </p>
-                            </div>
-                        </Link>
-                    ))}
-                </div>
             </section>
         </div>
     );

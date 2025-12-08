@@ -96,9 +96,13 @@ function AppContent() {
       case '/about':
         return { title: 'About & Privacy', subtitle: 'Learn about the app and data handling' };
       default:
-        if (location.pathname.startsWith('/bible')) {
-          return { title: 'Bible & Memory', subtitle: 'Read, Study, and Memorize' };
+        if (location.pathname.startsWith('/bible/memory')) {
+          return { title: 'Bible Memory', subtitle: 'Memorize Scripture' };
         }
+        if (location.pathname.startsWith('/bible/read') || location.pathname === '/bible') {
+          return { title: 'Bible Reader', subtitle: 'Read Scripture' };
+        }
+        return { title: 'Bible & Memory', subtitle: 'Read, Study, and Memorize' };
         return { title: 'Light Trail', subtitle: 'Christian Mentorship App' };
     }
   };
