@@ -13,8 +13,46 @@ export default function HarmonyView() {
                 </p>
             </div>
 
-            <div className="overflow-x-auto">
-                <div className="min-w-[800px] border border-border rounded-xl">
+            {/* Mobile View (Cards) */}
+            <div className="md:hidden space-y-4">
+                {HARMONY.map(event => (
+                    <div key={event.id} className="bg-card border border-border rounded-xl p-5 shadow-sm">
+                        <h3 className="font-bold text-lg text-foreground mb-1">{event.title}</h3>
+                        <p className="text-sm text-muted-foreground mb-4">{event.description}</p>
+
+                        <div className="grid grid-cols-2 gap-x-4 gap-y-3">
+                            {event.references.matthew && (
+                                <div className="flex flex-col">
+                                    <span className="text-[10px] uppercase font-bold text-blue-600 dark:text-blue-400 mb-0.5">Matthew</span>
+                                    <VerseLink reference={`Matthew ${event.references.matthew}`} className="text-sm font-mono sm:text-base" />
+                                </div>
+                            )}
+                            {event.references.mark && (
+                                <div className="flex flex-col">
+                                    <span className="text-[10px] uppercase font-bold text-red-600 dark:text-red-400 mb-0.5">Mark</span>
+                                    <VerseLink reference={`Mark ${event.references.mark}`} className="text-sm font-mono sm:text-base" />
+                                </div>
+                            )}
+                            {event.references.luke && (
+                                <div className="flex flex-col">
+                                    <span className="text-[10px] uppercase font-bold text-green-600 dark:text-green-400 mb-0.5">Luke</span>
+                                    <VerseLink reference={`Luke ${event.references.luke}`} className="text-sm font-mono sm:text-base" />
+                                </div>
+                            )}
+                            {event.references.john && (
+                                <div className="flex flex-col">
+                                    <span className="text-[10px] uppercase font-bold text-yellow-600 dark:text-yellow-400 mb-0.5">John</span>
+                                    <VerseLink reference={`John ${event.references.john}`} className="text-sm font-mono sm:text-base" />
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            {/* Desktop View (Table) */}
+            <div className="hidden md:block overflow-x-auto">
+                <div className="min-w-[800px] border border-border rounded-xl bg-card">
                     {/* Table Header */}
                     <div className="grid grid-cols-12 bg-secondary/10 border-b border-border text-sm font-bold p-4">
                         <div className="col-span-4">Event</div>
