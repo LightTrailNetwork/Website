@@ -180,101 +180,157 @@ export interface DatasetBookChapter {
 // API Logic
 // ---------------------
 
+// ---------------------
+// API Logic
+// ---------------------
+
+import { BIBLE_BOOKS } from './bibleBookConstants';
+
 const BASE_URL = 'https://bible.helloao.org/api';
 const STATIC_BASE_URL = '/staticBibleData';
 
 /**
- * Fetch local/offline data from the public static folder.
- * This effectively acts as the "offline" fetch if the Service Worker has cached these files.
+ * Robust fetch that attempts:
+ * 1. Network fetch
+ * 2. Cache Storage (if cached manually via downloadTranslation)
+ * 3. Static local folder fetch (if running locally or network is fine but not in cache)
  */
-const getLocalData = async <T>(path: string): Promise<T> => {
-    // Attempt to fetch from static assets
-    const response = await fetch(`${STATIC_BASE_URL}/${path}`);
-    if (!response.ok) {
-        throw new Error(`Local data not found: ${path}`);
+const getParams = async <T>(path: string): Promise<T> => {
+    const fullUrl = `${STATIC_BASE_URL}/${path}`;
+
+    // 1. Try Cache Storage explicitly (since we don't have a SW intercepting fetches yet)
+    if ('caches' in window) {
+        try {
+            const cache = await caches.open(CACHE_NAME);
+            const cachedResponse = await cache.match(fullUrl);
+            if (cachedResponse) {
+                // If found in cache, simple and fast
+                return cachedResponse.json();
+            }
+        } catch (e) {
+            console.warn('Cache lookup failed:', e);
+        }
     }
-    return response.json();
+
+    // 2. Try Network Fetch (Static Assets)
+    try {
+        const response = await fetch(fullUrl);
+        if (!response.ok) {
+            throw new Error(`Local data fetch failed: ${path}`);
+        }
+        return response.json();
+    } catch (e) {
+        throw new Error(`Data unavailable offline: ${path}`);
+    }
+};
+
+/**
+ * Replaces old getLocalData. 
+ * Tries network API first, then falls back to local/cached data.
+ */
+const fetchWithOfflineFallback = async <T>(apiPath: string, localPath: string): Promise<T> => {
+    // 1. Try Live API (if online)
+    if (navigator.onLine) {
+        try {
+            const response = await fetch(`${BASE_URL}/${apiPath}`);
+            if (!response.ok) throw new Error('API fetch failed');
+            return await response.json();
+        } catch (e) {
+            console.warn(`API fetch failed for ${apiPath}, falling back to local/cache.`, e);
+        }
+    }
+
+    // 2. Try Local/Cache
+    return getParams<T>(localPath);
 };
 
 export const getBooks = async (translation: string = 'BSB'): Promise<BibleBook[]> => {
     try {
-        if (!navigator.onLine) throw new Error('Offline');
-        const response = await fetch(`${BASE_URL}/${translation}/books.json`);
-        if (!response.ok) throw new Error('Failed to fetch books');
-        const data = await response.json();
+        const data = await fetchWithOfflineFallback<{ books: BibleBook[] }>(
+            `${translation}/books.json`,
+            `${translation}/books.json`
+        );
         return data.books;
     } catch (error) {
-        console.warn(`Fetch failed for books (${translation}), trying local/offline cache...`);
-        try {
-            // e.g. /staticBibleData/BSB/books.json
-            const data = await getLocalData<{ books: BibleBook[] }>(`${translation}/books.json`);
-            return data.books;
-        } catch (localError) {
-            console.error('Local fallback failed:', localError);
-            throw error;
-        }
+        console.warn('All fetch attempts failed for books. Using built-in fallback.');
+
+        // 3. Final Fallback: Static Constants
+        // Map BIBLE_BOOKS constant to BibleBook interface
+        // We only have limited data in constants (verses count), so we polyfill the rest reasonably.
+        const books: BibleBook[] = Object.entries(BIBLE_BOOKS).map(([id, data], index) => ({
+            id: id,
+            name: data.name,
+            commonName: data.name,
+            title: data.name,
+            order: index + 1,
+            numberOfChapters: data.verses.length,
+            firstChapterNumber: 1,
+            lastChapterNumber: data.verses.length,
+            totalNumberOfVerses: data.verses.reduce((a, b) => a + b, 0)
+        }));
+
+        return books;
     }
 };
 
 export const getTranslations = async (): Promise<BibleTranslation[]> => {
     try {
-        if (!navigator.onLine) throw new Error('Offline');
-        const response = await fetch(`${BASE_URL}/available_translations.json`);
-        if (!response.ok) throw new Error('Failed to fetch translations');
-        const data = await response.json();
+        const data = await fetchWithOfflineFallback<{ translations: BibleTranslation[] }>(
+            'available_translations.json',
+            'available_translations.json'
+        );
         return data.translations;
     } catch (error) {
-        try {
-            const data = await getLocalData<{ translations: BibleTranslation[] }>('available_translations.json');
-            return data.translations;
-        } catch (localError) {
-            throw error;
-        }
+        // Fallback for translations if everything fails: return just BSB as a dummy
+        return [{
+            id: 'BSB',
+            name: 'Berean Study Bible',
+            website: 'https://berean.bible',
+            licenseUrl: '',
+            shortName: 'BSB',
+            englishName: 'Berean Study Bible',
+            language: 'en',
+            languageEnglishName: 'English',
+            textDirection: 'ltr',
+            sha256: '',
+            availableFormats: ['json'],
+            listOfBooksApiLink: ''
+        }];
     }
 };
 
 export const getChapter = async (translation: string, bookId: string, chapter: number): Promise<BibleChapter> => {
     try {
-        if (!navigator.onLine) throw new Error('Offline');
-        const response = await fetch(`${BASE_URL}/${translation}/${bookId}/${chapter}.json`);
-        if (!response.ok) throw new Error('Failed to fetch chapter');
-        return await response.json();
+        return await fetchWithOfflineFallback<BibleChapter>(
+            `${translation}/${bookId}/${chapter}.json`,
+            `${translation}/${bookId}/${chapter}.json`
+        );
     } catch (error) {
-        try {
-            // e.g. /staticBibleData/BSB/GEN/1.json
-            const data = await getLocalData<BibleChapter>(`${translation}/${bookId}/${chapter}.json`);
-            return data;
-        } catch (localError) {
-            throw error;
-        }
+        console.error(`Failed to load chapter: ${translation} ${bookId} ${chapter}`, error);
+        throw error;
     }
 };
 
 export const getCommentaries = async (): Promise<Commentary[]> => {
     try {
-        if (!navigator.onLine) throw new Error('Offline');
-        const response = await fetch(`${BASE_URL}/available_commentaries.json`);
-        if (!response.ok) throw new Error('Failed to fetch commentaries');
-        const data = await response.json();
+        const data = await fetchWithOfflineFallback<{ commentaries: Commentary[] }>(
+            'available_commentaries.json',
+            'available_commentaries.json'
+        );
         return data.commentaries;
     } catch (error) {
-        try {
-            const data = await getLocalData<{ commentaries: Commentary[] }>('available_commentaries.json');
-            return data.commentaries;
-        } catch (localError) {
-            return [];
-        }
+        return [];
     }
 };
 
 export const getCommentaryChapter = async (commentaryId: string, bookId: string, chapter: number): Promise<CommentaryChapter> => {
     try {
-        if (!navigator.onLine) throw new Error('Offline');
-        const response = await fetch(`${BASE_URL}/c/${commentaryId}/${bookId}/${chapter}.json`);
-        if (!response.ok) throw new Error('Failed to fetch commentary chapter');
-        return await response.json();
+        return await fetchWithOfflineFallback<CommentaryChapter>(
+            `c/${commentaryId}/${bookId}/${chapter}.json`,
+            // Note: We don't really have local commentaries download logic yet, but if we did:
+            `commentaries/${commentaryId}/${bookId}/${chapter}.json`
+        );
     } catch (error) {
-        // Fallback or error
         throw new Error('Commentary not available offline');
     }
 };
@@ -325,24 +381,47 @@ export const downloadTranslation = async (translationId: string, onProgress?: (c
         throw new Error('Cache API not supported');
     }
 
-    const cache = await caches.open(CACHE_NAME);
-
     // 1. Fetch books list to know what to download
-    const booksUrl = `${STATIC_BASE_URL}/${translationId}/books.json`;
-
-    // Check if books.json exists locally first (it should be in staticBibleData)
-    // We fetch it and put it in cache
+    // We try to get books from the API first to ensure we have the correct structure
     let books: BibleBook[] = [];
+    let booksUrl = `${BASE_URL}/${translationId}/books.json`;
+    let localBooksUrl = `${STATIC_BASE_URL}/${translationId}/books.json`;
+
     try {
-        const resp = await fetch(booksUrl);
-        if (!resp.ok) throw new Error('Translation not found locally');
-        const data = await resp.json();
-        books = data.books;
-        await cache.put(booksUrl, new Response(JSON.stringify(data), { headers: { 'Content-Type': 'application/json' } }));
+        // Try live API first to get authoritative list
+        if (navigator.onLine) {
+            const resp = await fetch(booksUrl);
+            if (resp.ok) {
+                const data = await resp.json();
+                books = data.books;
+
+                // Cache this authoritative list map to the LOCAL structure path so cache lookups find it
+                const cache = await caches.open(CACHE_NAME);
+                await cache.put(localBooksUrl, new Response(JSON.stringify(data), { headers: { 'Content-Type': 'application/json' } }));
+            }
+        }
+
+        // If api failed or offline, try local static file to seed
+        if (books.length === 0) {
+            const resp = await fetch(localBooksUrl);
+            if (resp.ok) {
+                const data = await resp.json();
+                books = data.books;
+                // Cache it
+                const cache = await caches.open(CACHE_NAME);
+                await cache.put(localBooksUrl, resp.clone()); // put clone since we consumed json
+            }
+        }
     } catch (e) {
-        console.error('Failed to start download:', e);
-        throw e;
+        console.warn('Failed to fetch books list for download:', e);
     }
+
+    // Fallback to constants if still nothing (unlikely if we want to download actual text)
+    if (books.length === 0) {
+        throw new Error('Could not retrieve book list to start download.');
+    }
+
+    const cache = await caches.open(CACHE_NAME);
 
     // 2. Iterate books and chapters
     // Calculate total chapters
@@ -350,14 +429,25 @@ export const downloadTranslation = async (translationId: string, onProgress?: (c
     let completed = 0;
 
     // We can run parallel fetches in chunks to speed up
-    // But local dev server might handle simple rate
+    // We prioritize Live API to fill cache if possible, else local static
     const BATCH_SIZE = 5;
 
-    const allOperations: { url: string }[] = [];
+    const allOperations: { url: string, cacheKey: string }[] = [];
     books.forEach(book => {
         for (let c = 1; c <= book.numberOfChapters; c++) {
+            // We want to fetch from Source and put into Cache Key
+            // Ideally source is API. 
+            // BUT, our current architecture relies on `staticBibleData` mirroring. 
+            // If we are "downloading", we assume we are online?
+            // If online, we should probably fetch from API if we trust it, or static if we trust that.
+            // Let's stick to mirroring logic:
+            // Fetch from STATIC_BASE_URL (or API) -> Put into STATIC_BASE_URL key
+
+            // Actually, if we use fetchWithOfflineFallback, it looks for STATIC_BASE_URL in cache.
+            // So we MUST use STATIC_BASE_URL as the request key.
             allOperations.push({
-                url: `${STATIC_BASE_URL}/${translationId}/${book.id}/${c}.json`
+                url: `${STATIC_BASE_URL}/${translationId}/${book.id}/${c}.json`, // Source (local mirror)
+                cacheKey: `${STATIC_BASE_URL}/${translationId}/${book.id}/${c}.json` // Key
             });
         }
     });
@@ -366,10 +456,9 @@ export const downloadTranslation = async (translationId: string, onProgress?: (c
         const batch = allOperations.slice(i, i + BATCH_SIZE);
         await Promise.all(batch.map(async (op) => {
             try {
-                // Fetch and Cache
-                // We prefer fetching from network to populate cache, or from valid source
-                // In this case, we are fetching from our own public/staticBibleData
-                // Ideally, doing cache.add(req) handles fetch+put.
+                // We use cache.add which fetches and puts.
+                // However, cache.add(url) uses the URL as the key.
+                // Since our view logic uses `STATIC_BASE_URL` based paths, we should just add that URL.
                 await cache.add(op.url);
             } catch (err) {
                 console.warn(`Failed to cache ${op.url}`, err);
@@ -378,19 +467,17 @@ export const downloadTranslation = async (translationId: string, onProgress?: (c
         completed += batch.length;
         if (onProgress) onProgress(Math.min(completed, totalChapters), totalChapters, 'Downloading');
     }
-
-    // Note: available_translations.json etc should also be checked/cached if not already
 };
 
-/**
- * Checks if a translation is fully downloaded (naive check or flag?)
- * For now, just a placeholder. Realistically, we can just rely on cache presence or partial.
- */
 export const isTranslationOfflineReady = async (translationId: string): Promise<boolean> => {
-    // Naively check if books.json is in cache
     if (!('caches' in window)) return false;
-    const cache = await caches.open(CACHE_NAME);
-    const booksUrl = `${STATIC_BASE_URL}/${translationId}/books.json`;
-    const match = await cache.match(booksUrl);
-    return !!match;
+    try {
+        const cache = await caches.open(CACHE_NAME);
+        const booksUrl = `${STATIC_BASE_URL}/${translationId}/books.json`;
+        const match = await cache.match(booksUrl);
+        return !!match;
+    } catch (e) {
+        return false;
+    }
 };
+

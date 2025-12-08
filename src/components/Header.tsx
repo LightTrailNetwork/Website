@@ -1,4 +1,5 @@
-import { Menu, Settings, WifiOff, Loader2, CheckCircle } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Menu, Settings, WifiOff, Loader2, CheckCircle, Info } from 'lucide-react';
 import { useScrollDirection } from '../hooks/useScrollDirection';
 import { useSettings } from '../context/SettingsContext';
 
@@ -15,10 +16,23 @@ export default function Header({ onMenuClick, onSettingsClick, title, subtitle }
   const isHidden = scrollDirection === 'down' && !isAtTop;
   const bsbStatus = downloadStatus?.['BSB'];
 
+  const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (activeTooltip) {
+      const timer = setTimeout(() => setActiveTooltip(null), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [activeTooltip]);
+
+  const handleIconClick = (message: string) => {
+    setActiveTooltip(message);
+  };
+
   return (
     <header className={`bg-background/80 backdrop-blur-md border-b border-border sticky top-0 z-50 transition-transform duration-300 ${isHidden ? '-translate-y-full' : 'translate-y-0'}`}>
       <div className="max-w-7xl mx-auto">
-        <div className="flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8 relative">
           {/* Left side - Menu button and title */}
           <div className="flex items-center space-x-4">
             <button
@@ -41,33 +55,43 @@ export default function Header({ onMenuClick, onSettingsClick, title, subtitle }
 
           {/* Right side - Settings Button */}
           <div className="flex items-center space-x-2">
+            {/* activeTooltip Display - Mobile Friendly "Toast" positioned absolute */}
+            {activeTooltip && (
+              <div className="absolute top-16 right-4 sm:right-12 bg-popover text-popover-foreground px-3 py-2 rounded-lg shadow-md border border-border text-xs sm:text-sm z-50 animate-in fade-in slide-in-from-top-2 max-w-[200px] text-center">
+                {activeTooltip}
+              </div>
+            )}
+
             {/* Download Progress */}
             {bsbStatus?.isDownloading && (
-              <div
-                className="p-2 text-primary"
+              <button
+                onClick={() => handleIconClick(`Downloading Bible data: ${bsbStatus.progress}%`)}
+                className="p-2 text-primary hover:bg-accent/50 rounded-full transition-colors"
                 title={`Downloading BSB: ${bsbStatus.progress}%`}
               >
                 <Loader2 className="w-5 h-5 animate-spin" />
-              </div>
+              </button>
             )}
 
             {/* Offline Ready Indicator (Online only) */}
             {bsbStatus?.isReady && !isOffline && (
-              <div
-                className="p-2 text-green-500/70 hover:text-green-600 transition-colors cursor-help"
+              <button
+                onClick={() => handleIconClick("Bible data downloaded. Ready for offline use.")}
+                className="p-2 text-green-500/70 hover:text-green-600 hover:bg-green-500/10 rounded-full transition-colors"
                 title="BSB available offline"
               >
                 <CheckCircle className="w-5 h-5" />
-              </div>
+              </button>
             )}
 
             {isOffline && (
-              <div
-                className="p-2 text-muted-foreground/70"
-                title="You are offline. Showing available local translations."
+              <button
+                onClick={() => handleIconClick("You are offline. specific features may be limited.")}
+                className="p-2 text-muted-foreground/70 hover:text-foreground hover:bg-accent/50 rounded-full transition-colors"
+                title="You are offline"
               >
                 <WifiOff className="w-5 h-5" />
-              </div>
+              </button>
             )}
             <button
               onClick={onSettingsClick}
