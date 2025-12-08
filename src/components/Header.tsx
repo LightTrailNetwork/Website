@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Menu, Settings, WifiOff, Loader2, CheckCircle, Info } from 'lucide-react';
 import { useScrollDirection } from '../hooks/useScrollDirection';
 import { useSettings } from '../context/SettingsContext';
@@ -17,6 +17,20 @@ export default function Header({ onMenuClick, onSettingsClick, title, subtitle }
   const bsbStatus = downloadStatus?.['BSB'];
 
   const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
+  const [showCheckmark, setShowCheckmark] = useState(false);
+  const prevReadyRef = useRef<boolean | undefined>(undefined);
+
+  // Monitor download completion
+  useEffect(() => {
+    // If status changes from not-ready to ready, show checkmark
+    // We check prevReadyRef to avoid showing on initial load if already ready
+    if (prevReadyRef.current === false && bsbStatus?.isReady) {
+      setShowCheckmark(true);
+      const timer = setTimeout(() => setShowCheckmark(false), 5000); // Hide after 5s
+      return () => clearTimeout(timer);
+    }
+    prevReadyRef.current = bsbStatus?.isReady;
+  }, [bsbStatus?.isReady]);
 
   useEffect(() => {
     if (activeTooltip) {
@@ -67,18 +81,18 @@ export default function Header({ onMenuClick, onSettingsClick, title, subtitle }
               <button
                 onClick={() => handleIconClick(`Downloading Bible data: ${bsbStatus.progress}%`)}
                 className="p-2 text-primary hover:bg-accent/50 rounded-full transition-colors"
-                title={`Downloading BSB: ${bsbStatus.progress}%`}
+                title={`Downloading known translations: ${bsbStatus.progress}%`}
               >
                 <Loader2 className="w-5 h-5 animate-spin" />
               </button>
             )}
 
-            {/* Offline Ready Indicator (Online only) */}
-            {bsbStatus?.isReady && !isOffline && (
+            {/* Offline Ready Indicator (Only shows briefly after download) */}
+            {showCheckmark && !isOffline && (
               <button
-                onClick={() => handleIconClick("Bible data downloaded. Ready for offline use.")}
-                className="p-2 text-green-500/70 hover:text-green-600 hover:bg-green-500/10 rounded-full transition-colors"
-                title="BSB available offline"
+                onClick={() => handleIconClick("Download complete! Ready for offline use.")}
+                className="p-2 text-green-500 hover:bg-green-500/10 rounded-full transition-all animate-in zoom-in spin-in-90"
+                title="Download complete"
               >
                 <CheckCircle className="w-5 h-5" />
               </button>

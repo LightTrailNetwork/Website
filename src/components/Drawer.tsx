@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Calendar, Scroll, X, Book, Table, LayoutGrid, Home, Brain, BookOpen } from 'lucide-react';
+import { Calendar, Scroll, X, Book, Table, LayoutGrid, Home, Brain, BookOpen, Loader2, CheckCircle } from 'lucide-react';
+import { useSettings } from '../context/SettingsContext';
 
 interface DrawerProps {
   isOpen: boolean;
@@ -8,6 +9,8 @@ interface DrawerProps {
 
 export default function Drawer({ isOpen, onClose }: DrawerProps) {
   const location = useLocation();
+  const { downloadStatus } = useSettings();
+  const bsbStatus = downloadStatus?.['BSB'];
 
   const menuItems = [
     { path: '/', label: 'Today', subtitle: 'Action Items', icon: Home },
@@ -34,9 +37,9 @@ export default function Drawer({ isOpen, onClose }: DrawerProps) {
       />
 
       {/* Drawer */}
-      <div className="fixed left-0 top-0 h-full w-80 max-w-[85vw] bg-background border-r border-border z-[70] shadow-2xl animate-slide-up sm:animate-none sm:transition-transform">
+      <div className="fixed left-0 top-0 h-full w-80 max-w-[85vw] bg-background border-r border-border z-[70] shadow-2xl animate-slide-up sm:animate-none sm:transition-transform flex flex-col">
         {/* Header */}
-        <div className="p-6 border-b border-border">
+        <div className="p-6 border-b border-border shrink-0">
           <div className="flex items-center justify-between mb-2">
             <h2 className="text-lg font-semibold text-foreground">Light Trail Network</h2>
             <button
@@ -50,7 +53,7 @@ export default function Drawer({ isOpen, onClose }: DrawerProps) {
         </div>
 
         {/* Menu Items */}
-        <nav className="py-6 px-3 space-y-2">
+        <nav className="flex-1 overflow-y-auto py-6 px-3 space-y-2">
           {menuItems.map((item) => {
             const Icon = item.icon;
             const isActive = location.pathname === item.path;
@@ -77,13 +80,27 @@ export default function Drawer({ isOpen, onClose }: DrawerProps) {
         </nav>
 
         {/* Footer */}
-        <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-border bg-muted/50">
-          <p className="text-xs text-muted-foreground text-center">
-            Local-first • No tracking • Offline-ready
-          </p>
-          <p className="text-xs text-muted-foreground/60 text-center mt-1">
-            Version 1.0.0
-          </p>
+        <div className="p-6 border-t border-border bg-muted/50 shrink-0 space-y-4">
+
+          {/* Download Status Indicator */}
+          {bsbStatus?.isDownloading && (
+            <div className="flex items-center gap-3 text-sm text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/30 p-3 rounded-lg border border-blue-200 dark:border-blue-900">
+              <Loader2 className="w-4 h-4 animate-spin shrink-0" />
+              <div className="flex flex-col min-w-0">
+                <span className="font-semibold text-xs uppercase tracking-wider mb-0.5">Updating Library</span>
+                <span className="text-xs opacity-90 truncate">Downloading Translations ({bsbStatus.progress}%)</span>
+              </div>
+            </div>
+          )}
+
+          <div className="text-center">
+            <p className="text-xs text-muted-foreground">
+              Local-first • No tracking • Offline-ready
+            </p>
+            <p className="text-xs text-muted-foreground/60 mt-1">
+              Version 1.0.0
+            </p>
+          </div>
         </div>
       </div>
     </>
