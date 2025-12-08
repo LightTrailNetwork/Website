@@ -12,6 +12,8 @@ import MnemonicsList from '../components/MnemonicsList';
 import MemoryPassages from '../components/MemoryPassages';
 import MemoryLists from '../components/MemoryLists';
 import { ParablesView } from '../components/ParablesView';
+import MnemonicSystemHub from '../components/MnemonicSystemHub';
+import MnemonicDetail from '../components/MnemonicDetail';
 
 function BibleHome() {
     const navigate = useNavigate();
@@ -277,6 +279,8 @@ export default function Bible() {
             <Route path="/memory/passages" element={<MemoryPassages />} />
             <Route path="/memory/lists" element={<MemoryLists />} />
             <Route path="/memory/parables" element={<ParablesView />} />
+            <Route path="/memory/mnemonics" element={<MnemonicSystemHub />} />
+            <Route path="/memory/mnemonics/:id" element={<MnemonicDetail />} />
         </Routes>
     );
 }

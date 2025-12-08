@@ -120,6 +120,13 @@ export default function MemorizationHub() {
                         Collections
                     </button>
                     <button
+                        onClick={() => scrollToSection('mnemonics')}
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-colors text-sm font-medium"
+                    >
+                        <Brain className="w-4 h-4" />
+                        Mnemonics
+                    </button>
+                    <button
                         onClick={() => scrollToSection('pyramid')}
                         className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-colors text-sm font-medium"
                     >
@@ -158,6 +165,34 @@ export default function MemorizationHub() {
                             </div>
                         </Link>
                     ))}
+                </div>
+            </section>
+
+            {/* Systematic Mnemonics Section */}
+            <section id="mnemonics" className="space-y-6 pt-8 scroll-mt-24 border-t border-border">
+                <div className="flex items-center gap-2 mb-4">
+                    <Brain className="w-5 h-5 text-primary" />
+                    <h2 className="text-2xl font-bold">Mnemonics</h2>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <Link
+                        to="/bible/memory/mnemonics"
+                        className="flex items-start p-6 bg-card border border-border rounded-xl hover:shadow-md transition-all hover:border-primary/50 group w-full"
+                    >
+                        <div className="p-3 rounded-lg bg-indigo-500/10 mr-4">
+                            <Brain className="w-6 h-6 text-indigo-500" />
+                        </div>
+                        <div>
+                            <h3 className="font-semibold text-lg group-hover:text-primary transition-colors">
+                                Systematic Mnemonics
+                            </h3>
+                            <p className="text-sm text-secondary-foreground font-medium mb-1">Acrostics & Systems</p>
+                            <p className="text-sm text-muted-foreground">
+                                Advanced memory aids for 11+ essential biblical lists (Armor, Prophecies, etc).
+                            </p>
+                        </div>
+                    </Link>
                 </div>
             </section>
 
