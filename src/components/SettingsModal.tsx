@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { X, Link as LinkIcon, Settings, Info, ChevronRight, ChevronLeft, Globe, Search, Filter, BookOpen, Palette, Moon, Sun, User, Save, Download, Upload, Trash2, AlertTriangle, Users, Loader2, QrCode, Scan, Camera, Check, RefreshCw, Shield, Server, Mail, Code2, GitBranch, Database, Wifi, CheckCircle2, XCircle, Type } from 'lucide-react';
+import { X, Link as LinkIcon, Settings, Info, ChevronRight, ChevronLeft, Globe, Search, Filter, BookOpen, Palette, Moon, Sun, User, Save, Download, Upload, Trash2, AlertTriangle, Users, Loader2, QrCode, Scan, Camera, Check, RefreshCw, Shield, Server, Mail, Code2, GitBranch, Database, Wifi, CheckCircle2, XCircle, Type, CheckCircle } from 'lucide-react';
 import { useSettings } from '../context/SettingsContext';
 import { useProfile } from '../hooks/useProfile';
 import { useTodayData } from '../hooks/useTodayData';
@@ -18,7 +18,25 @@ interface SettingsModalProps {
 export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
     const navigate = useNavigate();
     const location = useLocation();
-    const { selectedTranslation, setSelectedTranslation, showMsb, setShowMsb, readerMode, setReaderMode, showMnemonics, setShowMnemonics, showVerseMnemonics, setShowVerseMnemonics, theme, setTheme, fontSize, setFontSize } = useSettings();
+    const {
+        selectedTranslation,
+        setSelectedTranslation,
+        showMsb,
+        setShowMsb,
+        readerMode,
+        setReaderMode,
+        showMnemonics,
+        setShowMnemonics,
+        showVerseMnemonics,
+        setShowVerseMnemonics,
+        theme,
+        setTheme,
+        fontSize,
+        setFontSize,
+        downloadStatus,
+        triggerDownload,
+        isOffline
+    } = useSettings();
     const { profile, loading: profileLoading, updateRole, updateDisplayName } = useProfile();
     const { todayData } = useTodayData();
 
@@ -516,23 +534,53 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                                 </div>
                             </div>
                             <div className="space-y-1">
-                                {filteredTranslations.map(t => (
-                                    <button
-                                        key={t.id}
-                                        onClick={() => setSelectedTranslation(t.id)}
-                                        className={`w-full text-left p-3 rounded-lg transition-colors flex items-center justify-between group ${selectedTranslation === t.id ? 'bg-primary/10' : 'hover:bg-accent/10'}`}
-                                    >
-                                        <div>
-                                            <div className={`font-bold ${selectedTranslation === t.id ? 'text-primary' : ''}`}>
-                                                {t.name} <span className="text-xs font-normal text-muted-foreground ml-1">({t.shortName})</span>
-                                            </div>
-                                            <div className="text-xs text-muted-foreground group-hover:text-foreground transition-colors">
-                                                {t.languageEnglishName || t.language}
+                                {filteredTranslations.map(t => {
+                                    const status = downloadStatus?.[t.id];
+                                    const isDownloadable = ['BSB'].includes(t.id); // Currently only BSB is hosted locally
+
+                                    return (
+                                        <div key={t.id} className="flex items-center gap-2 w-full p-2 hover:bg-accent/5 rounded-lg transition-colors group">
+                                            <button
+                                                onClick={() => setSelectedTranslation(t.id)}
+                                                className="flex-1 text-left flex items-center justify-between"
+                                            >
+                                                <div>
+                                                    <div className={`font-bold ${selectedTranslation === t.id ? 'text-primary' : ''}`}>
+                                                        {t.name} <span className="text-xs font-normal text-muted-foreground ml-1">({t.shortName})</span>
+                                                    </div>
+                                                    <div className="text-xs text-muted-foreground group-hover:text-foreground transition-colors">
+                                                        {t.languageEnglishName || t.language}
+                                                    </div>
+                                                </div>
+                                                {selectedTranslation === t.id && <div className="w-2 h-2 rounded-full bg-primary mr-2" />}
+                                            </button>
+
+                                            {/* Download/Status Action */}
+                                            <div className="shrink-0">
+                                                {status?.isDownloading ? (
+                                                    <div className="p-2 text-primary" title={`Downloading: ${status.progress}%`}>
+                                                        <Loader2 className="w-4 h-4 animate-spin" />
+                                                    </div>
+                                                ) : status?.isReady ? (
+                                                    <div className="p-2 text-green-500/70" title="Offline Ready">
+                                                        <CheckCircle className="w-4 h-4" />
+                                                    </div>
+                                                ) : isDownloadable && !isOffline ? (
+                                                    <button
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            triggerDownload(t.id);
+                                                        }}
+                                                        className="p-2 text-muted-foreground hover:text-primary transition-colors"
+                                                        title="Download for offline use"
+                                                    >
+                                                        <Download className="w-4 h-4" />
+                                                    </button>
+                                                ) : null}
                                             </div>
                                         </div>
-                                        {selectedTranslation === t.id && <div className="w-2 h-2 rounded-full bg-primary" />}
-                                    </button>
-                                ))}
+                                    );
+                                })}
                             </div>
                         </div>
                     )}

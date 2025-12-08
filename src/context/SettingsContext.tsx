@@ -1,4 +1,15 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
+import { downloadTranslation, isTranslationOfflineReady } from '../data/bibleApi';
+
+interface DownloadStatus {
+    [key: string]: {
+        isDownloading: boolean;
+        progress: number; // 0-100
+        total: number;
+        completed: number;
+        isReady: boolean;
+    };
+}
 
 interface SettingsContextType {
     selectedTranslation: string;
@@ -16,6 +27,8 @@ interface SettingsContextType {
     fontSize: 'small' | 'normal' | 'large' | 'xl';
     setFontSize: (size: 'small' | 'normal' | 'large' | 'xl') => void;
     isOffline: boolean;
+    downloadStatus: DownloadStatus;
+    triggerDownload: (translationId: string) => Promise<void>;
 }
 
 const SettingsContext = createContext<SettingsContextType | undefined>(undefined);
@@ -25,7 +38,7 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
     const [selectedTranslation, setSelectedTranslation] = useState(() => {
         return localStorage.getItem('bible_translation') || 'BSB';
     });
-
+    // ... (rest of states same)
     const [showMsb, setShowMsb] = useState(() => {
         return localStorage.getItem('bible_show_msb') === 'true';
     });
@@ -53,6 +66,97 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
     });
 
     const [isOffline, setIsOffline] = useState(!navigator.onLine);
+
+    // Download Status State
+    const [downloadStatus, setDownloadStatus] = useState<DownloadStatus>({});
+
+    const triggerDownload = async (translationId: string) => {
+        if (downloadStatus[translationId]?.isDownloading) return;
+
+        setDownloadStatus(prev => ({
+            ...prev,
+            [translationId]: {
+                isDownloading: true,
+                progress: 0,
+                completed: 0,
+                total: 0,
+                isReady: false
+            }
+        }));
+
+        try {
+            await downloadTranslation(translationId, (completed, total) => {
+                setDownloadStatus(prev => ({
+                    ...prev,
+                    [translationId]: {
+                        isDownloading: true,
+                        progress: Math.round((completed / total) * 100),
+                        completed,
+                        total,
+                        isReady: false
+                    }
+                }));
+            });
+
+            setDownloadStatus(prev => ({
+                ...prev,
+                [translationId]: {
+                    isDownloading: false,
+                    progress: 100,
+                    completed: prev[translationId]?.total || 0,
+                    total: prev[translationId]?.total || 0,
+                    isReady: true
+                }
+            }));
+        } catch (error) {
+            console.error(`Failed to download ${translationId}:`, error);
+            setDownloadStatus(prev => {
+                const existing = prev[translationId] || { progress: 0, completed: 0, total: 0 };
+                return {
+                    ...prev,
+                    [translationId]: {
+                        isDownloading: false,
+                        progress: existing.progress,
+                        completed: existing.completed,
+                        total: existing.total,
+                        isReady: false
+                    }
+                };
+            });
+        }
+    };
+
+    // Auto-check BSB and download if needed
+    // Using a ref to prevent double-firing strict mode
+    const initCheckDone = useRef(false);
+
+    useEffect(() => {
+        if (initCheckDone.current) return;
+        initCheckDone.current = true;
+
+        const checkBSB = async () => {
+            // Check status
+            const ready = await isTranslationOfflineReady('BSB');
+            setDownloadStatus(prev => ({
+                ...prev,
+                BSB: {
+                    isDownloading: false,
+                    progress: ready ? 100 : 0,
+                    completed: 0,
+                    total: 0,
+                    isReady: ready
+                }
+            }));
+
+            // Auto download ONLY BSB if online and not ready
+            if (!ready && navigator.onLine) {
+                // Delay slightly to prioritize UI render
+                setTimeout(() => triggerDownload('BSB'), 2000);
+            }
+        };
+
+        checkBSB();
+    }, []);
 
     // Persist changes
     useEffect(() => {
@@ -97,7 +201,11 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
 
     // Network status listener
     useEffect(() => {
-        const handleOnline = () => setIsOffline(false);
+        const handleOnline = () => {
+            setIsOffline(false);
+            // Resume download? Simple retry BSB if missing
+            // triggerDownload('BSB'); // Optional: auto-resume
+        };
         const handleOffline = () => setIsOffline(true);
 
         window.addEventListener('online', handleOnline);
@@ -125,7 +233,9 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
             setTheme,
             fontSize,
             setFontSize,
-            isOffline
+            isOffline,
+            downloadStatus,
+            triggerDownload
         }}>
             {children}
         </SettingsContext.Provider>

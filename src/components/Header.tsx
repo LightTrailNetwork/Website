@@ -1,4 +1,4 @@
-import { Menu, Settings, WifiOff } from 'lucide-react';
+import { Menu, Settings, WifiOff, Loader2, CheckCircle } from 'lucide-react';
 import { useScrollDirection } from '../hooks/useScrollDirection';
 import { useSettings } from '../context/SettingsContext';
 
@@ -11,8 +11,9 @@ interface HeaderProps {
 
 export default function Header({ onMenuClick, onSettingsClick, title, subtitle }: HeaderProps) {
   const { scrollDirection, isAtTop } = useScrollDirection();
-  const { isOffline } = useSettings();
+  const { isOffline, downloadStatus } = useSettings();
   const isHidden = scrollDirection === 'down' && !isAtTop;
+  const bsbStatus = downloadStatus?.['BSB'];
 
   return (
     <header className={`bg-background/80 backdrop-blur-md border-b border-border sticky top-0 z-50 transition-transform duration-300 ${isHidden ? '-translate-y-full' : 'translate-y-0'}`}>
@@ -40,6 +41,26 @@ export default function Header({ onMenuClick, onSettingsClick, title, subtitle }
 
           {/* Right side - Settings Button */}
           <div className="flex items-center space-x-2">
+            {/* Download Progress */}
+            {bsbStatus?.isDownloading && (
+              <div
+                className="p-2 text-primary"
+                title={`Downloading BSB: ${bsbStatus.progress}%`}
+              >
+                <Loader2 className="w-5 h-5 animate-spin" />
+              </div>
+            )}
+
+            {/* Offline Ready Indicator (Online only) */}
+            {bsbStatus?.isReady && !isOffline && (
+              <div
+                className="p-2 text-green-500/70 hover:text-green-600 transition-colors cursor-help"
+                title="BSB available offline"
+              >
+                <CheckCircle className="w-5 h-5" />
+              </div>
+            )}
+
             {isOffline && (
               <div
                 className="p-2 text-muted-foreground/70"

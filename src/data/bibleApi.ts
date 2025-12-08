@@ -1,3 +1,9 @@
+
+
+// ---------------------
+// Type Definitions
+// ---------------------
+
 export interface BibleBook {
     id: string;
     name: string;
@@ -52,54 +58,6 @@ export type ChapterContent =
     | { type: 'verse'; number: number; content: (string | { text: string; poem?: number; wordsOfJesus?: boolean } | { noteId: number; caller?: string } | { lineBreak: boolean })[] }
     | { type: 'hebrew_subtitle'; content: any[] };
 
-// ... (interfaces remain same, assume they are preserved above this block or I include them if I replace whole file. I will replace specific function blocks to be safe)
-// Wait, replacing chunks is better to avoid destroying interfaces I don't see in "view_file" if I missed something (I saw whole file though).
-// I will rewrite the implementation of the fetch functions and add the glob at the top.
-
-const BASE_URL = 'https://bible.helloao.org/api';
-
-// Static data map for offline support
-const localBibleData = import.meta.glob('../data/staticBibleData/**/*.json');
-
-/**
- * Helper to fetch local data if available.
- * Path should be relative to src/data/staticBibleData, e.g., 'BSB/GEN/1.json'
- */
-const getLocalData = async (path: string) => {
-    // Construct the full key as permitted by the glob
-    const fullPath = `../data/staticBibleData/${path}`;
-    const loader = localBibleData[fullPath];
-
-    if (!loader) {
-        throw new Error(`Data not available locally: ${path}`);
-    }
-
-    // The glob returns a module with a default export usually, if json.
-    const module = await loader() as any;
-    // JSON imports in Vite usually return the JSON object as default export
-    return module.default || module;
-};
-
-export const getBooks = async (translation: string = 'BSB'): Promise<BibleBook[]> => {
-    try {
-        if (!navigator.onLine) throw new Error('Offline');
-        const response = await fetch(`${BASE_URL}/${translation}/books.json`);
-        if (!response.ok) throw new Error('Failed to fetch books');
-        const data = await response.json();
-        return data.books;
-    } catch (error) {
-        // Try local fallback
-        console.warn(`Fetch failed for books (${translation}), trying local...`);
-        try {
-            const data = await getLocalData(`${translation}/books.json`);
-            return data.books;
-        } catch (localError) {
-            console.error('Local fallback failed:', localError);
-            throw error; // Throw original or new error
-        }
-    }
-};
-
 export interface BibleTranslation {
     id: string;
     name: string;
@@ -115,40 +73,6 @@ export interface BibleTranslation {
     listOfBooksApiLink: string;
 }
 
-export const getTranslations = async (): Promise<BibleTranslation[]> => {
-    try {
-        if (!navigator.onLine) throw new Error('Offline');
-        const response = await fetch(`${BASE_URL}/available_translations.json`);
-        if (!response.ok) throw new Error('Failed to fetch translations');
-        const data = await response.json();
-        return data.translations;
-    } catch (error) {
-        try {
-            const data = await getLocalData('available_translations.json');
-            return data.translations;
-        } catch (localError) {
-            throw error;
-        }
-    }
-};
-
-export const getChapter = async (translation: string, bookId: string, chapter: number): Promise<BibleChapter> => {
-    try {
-        if (!navigator.onLine) throw new Error('Offline');
-        const response = await fetch(`${BASE_URL}/${translation}/${bookId}/${chapter}.json`);
-        if (!response.ok) throw new Error('Failed to fetch chapter');
-        return await response.json();
-    } catch (error) {
-        try {
-            const data = await getLocalData(`${translation}/${bookId}/${chapter}.json`);
-            return data;
-        } catch (localError) {
-            throw error;
-        }
-    }
-};
-
-// Commentary Interfaces
 export interface Commentary {
     id: string;
     name: string;
@@ -181,41 +105,6 @@ export interface CommentaryChapter {
     previousChapterApiLink: string | null;
 }
 
-export const getCommentaries = async (): Promise<Commentary[]> => {
-    try {
-        if (!navigator.onLine) throw new Error('Offline');
-        const response = await fetch(`${BASE_URL}/available_commentaries.json`);
-        if (!response.ok) throw new Error('Failed to fetch commentaries');
-        const data = await response.json();
-        return data.commentaries;
-    } catch (error) {
-        try {
-            const data = await getLocalData('available_commentaries.json');
-            return data.commentaries;
-        } catch (localError) {
-            // Return empty or throw? Standard behavior is throw, let UI handle empty state.
-            // But if we want graceful degradation "subtly", maybe return empty array?
-            // User said "if all commentary text is nota availble or something then it will let the user know that."
-            // So throwing/returning error allowed.
-            return []; // Return empty list for commentaries if offline/missing
-        }
-    }
-};
-
-export const getCommentaryChapter = async (commentaryId: string, bookId: string, chapter: number): Promise<CommentaryChapter> => {
-    try {
-        if (!navigator.onLine) throw new Error('Offline');
-        const response = await fetch(`${BASE_URL}/c/${commentaryId}/${bookId}/${chapter}.json`);
-        if (!response.ok) throw new Error('Failed to fetch commentary chapter');
-        return await response.json();
-    } catch (error) {
-        // We typically don't have local commentary chapters in the staticBibleData/BSB folder (it's BSB translation).
-        // Unless we added commentaries there? The list_dir showed 'available_commentaries.json' but no commentary folders.
-        throw new Error('Commentary not available offline');
-    }
-};
-
-// Profile Interfaces
 export interface ProfileReference {
     book: string;
     chapter: number;
@@ -239,32 +128,9 @@ export interface ProfileResponse {
 export interface ProfileContent {
     id: string;
     name: string;
-    content: ChapterContent[]; // Assuming similar structure to other content
+    content: ChapterContent[];
 }
 
-export const getProfiles = async (commentaryId: string = 'tyndale'): Promise<ProfileResponse> => {
-    try {
-        const response = await fetch(`${BASE_URL}/c/${commentaryId}/profiles.json`);
-        if (!response.ok) throw new Error('Failed to fetch profiles');
-        return await response.json();
-    } catch (error) {
-        console.error('Error fetching profiles:', error);
-        throw error;
-    }
-};
-
-export const getProfile = async (commentaryId: string, profileId: string): Promise<{ profile: ProfileContent }> => {
-    try {
-        const response = await fetch(`${BASE_URL}/c/${commentaryId}/profiles/${profileId}.json`);
-        if (!response.ok) throw new Error('Failed to fetch profile');
-        return await response.json();
-    } catch (error) {
-        console.error('Error fetching profile:', error);
-        throw error;
-    }
-};
-
-// Dataset (Cross-Reference) Interfaces
 export interface Dataset {
     id: string;
     name: string;
@@ -277,7 +143,6 @@ export interface Dataset {
     availableFormats: ('json' | 'usfm')[];
     numberOfBooks: number;
     totalNumberOfChapters: number;
-    totalNumberOfVerses: number;
     totalNumberOfReferences: number;
     languageName?: string;
     languageEnglishName?: string;
@@ -303,7 +168,7 @@ export interface DatasetChapterData {
 
 export interface DatasetBookChapter {
     dataset: Dataset;
-    book: BibleBook; // Reusing BibleBook as it seems compatible or close enough for basic info
+    book: BibleBook;
     thisChapterLink: string;
     nextChapterApiLink: string | null;
     previousChapterApiLink: string | null;
@@ -311,13 +176,221 @@ export interface DatasetBookChapter {
     chapter: DatasetChapterData;
 }
 
+// ---------------------
+// API Logic
+// ---------------------
+
+const BASE_URL = 'https://bible.helloao.org/api';
+const STATIC_BASE_URL = '/staticBibleData';
+
+/**
+ * Fetch local/offline data from the public static folder.
+ * This effectively acts as the "offline" fetch if the Service Worker has cached these files.
+ */
+const getLocalData = async <T>(path: string): Promise<T> => {
+    // Attempt to fetch from static assets
+    const response = await fetch(`${STATIC_BASE_URL}/${path}`);
+    if (!response.ok) {
+        throw new Error(`Local data not found: ${path}`);
+    }
+    return response.json();
+};
+
+export const getBooks = async (translation: string = 'BSB'): Promise<BibleBook[]> => {
+    try {
+        if (!navigator.onLine) throw new Error('Offline');
+        const response = await fetch(`${BASE_URL}/${translation}/books.json`);
+        if (!response.ok) throw new Error('Failed to fetch books');
+        const data = await response.json();
+        return data.books;
+    } catch (error) {
+        console.warn(`Fetch failed for books (${translation}), trying local/offline cache...`);
+        try {
+            // e.g. /staticBibleData/BSB/books.json
+            const data = await getLocalData<{ books: BibleBook[] }>(`${translation}/books.json`);
+            return data.books;
+        } catch (localError) {
+            console.error('Local fallback failed:', localError);
+            throw error;
+        }
+    }
+};
+
+export const getTranslations = async (): Promise<BibleTranslation[]> => {
+    try {
+        if (!navigator.onLine) throw new Error('Offline');
+        const response = await fetch(`${BASE_URL}/available_translations.json`);
+        if (!response.ok) throw new Error('Failed to fetch translations');
+        const data = await response.json();
+        return data.translations;
+    } catch (error) {
+        try {
+            const data = await getLocalData<{ translations: BibleTranslation[] }>('available_translations.json');
+            return data.translations;
+        } catch (localError) {
+            throw error;
+        }
+    }
+};
+
+export const getChapter = async (translation: string, bookId: string, chapter: number): Promise<BibleChapter> => {
+    try {
+        if (!navigator.onLine) throw new Error('Offline');
+        const response = await fetch(`${BASE_URL}/${translation}/${bookId}/${chapter}.json`);
+        if (!response.ok) throw new Error('Failed to fetch chapter');
+        return await response.json();
+    } catch (error) {
+        try {
+            // e.g. /staticBibleData/BSB/GEN/1.json
+            const data = await getLocalData<BibleChapter>(`${translation}/${bookId}/${chapter}.json`);
+            return data;
+        } catch (localError) {
+            throw error;
+        }
+    }
+};
+
+export const getCommentaries = async (): Promise<Commentary[]> => {
+    try {
+        if (!navigator.onLine) throw new Error('Offline');
+        const response = await fetch(`${BASE_URL}/available_commentaries.json`);
+        if (!response.ok) throw new Error('Failed to fetch commentaries');
+        const data = await response.json();
+        return data.commentaries;
+    } catch (error) {
+        try {
+            const data = await getLocalData<{ commentaries: Commentary[] }>('available_commentaries.json');
+            return data.commentaries;
+        } catch (localError) {
+            return [];
+        }
+    }
+};
+
+export const getCommentaryChapter = async (commentaryId: string, bookId: string, chapter: number): Promise<CommentaryChapter> => {
+    try {
+        if (!navigator.onLine) throw new Error('Offline');
+        const response = await fetch(`${BASE_URL}/c/${commentaryId}/${bookId}/${chapter}.json`);
+        if (!response.ok) throw new Error('Failed to fetch commentary chapter');
+        return await response.json();
+    } catch (error) {
+        // Fallback or error
+        throw new Error('Commentary not available offline');
+    }
+};
+
+export const getProfiles = async (commentaryId: string = 'tyndale'): Promise<ProfileResponse> => {
+    try {
+        const response = await fetch(`${BASE_URL}/c/${commentaryId}/profiles.json`);
+        if (!response.ok) throw new Error('Failed to fetch profiles');
+        return await response.json();
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const getProfile = async (commentaryId: string, profileId: string): Promise<{ profile: ProfileContent }> => {
+    try {
+        const response = await fetch(`${BASE_URL}/c/${commentaryId}/profiles/${profileId}.json`);
+        if (!response.ok) throw new Error('Failed to fetch profile');
+        return await response.json();
+    } catch (error) {
+        throw error;
+    }
+};
+
 export const getDatasetChapter = async (datasetId: string, bookId: string, chapter: number): Promise<DatasetBookChapter> => {
     try {
         const response = await fetch(`${BASE_URL}/d/${datasetId}/${bookId}/${chapter}.json`);
         if (!response.ok) throw new Error('Failed to fetch dataset chapter');
         return await response.json();
     } catch (error) {
-        console.error('Error fetching dataset chapter:', error);
         throw error;
     }
+};
+
+// ---------------------
+// Download / Caching Logic
+// ---------------------
+
+export const CACHE_NAME = 'bible-data-v1';
+
+/**
+ * Downloads a translation for offline use by fetching all its chapters and adding them to the cache.
+ * @param translationId e.g. 'BSB'
+ * @param onProgress callback (completed, total)
+ */
+export const downloadTranslation = async (translationId: string, onProgress?: (completed: number, total: number, status: string) => void) => {
+    if (!('caches' in window)) {
+        throw new Error('Cache API not supported');
+    }
+
+    const cache = await caches.open(CACHE_NAME);
+
+    // 1. Fetch books list to know what to download
+    const booksUrl = `${STATIC_BASE_URL}/${translationId}/books.json`;
+
+    // Check if books.json exists locally first (it should be in staticBibleData)
+    // We fetch it and put it in cache
+    let books: BibleBook[] = [];
+    try {
+        const resp = await fetch(booksUrl);
+        if (!resp.ok) throw new Error('Translation not found locally');
+        const data = await resp.json();
+        books = data.books;
+        await cache.put(booksUrl, new Response(JSON.stringify(data), { headers: { 'Content-Type': 'application/json' } }));
+    } catch (e) {
+        console.error('Failed to start download:', e);
+        throw e;
+    }
+
+    // 2. Iterate books and chapters
+    // Calculate total chapters
+    const totalChapters = books.reduce((acc, b) => acc + b.numberOfChapters, 0);
+    let completed = 0;
+
+    // We can run parallel fetches in chunks to speed up
+    // But local dev server might handle simple rate
+    const BATCH_SIZE = 5;
+
+    const allOperations: { url: string }[] = [];
+    books.forEach(book => {
+        for (let c = 1; c <= book.numberOfChapters; c++) {
+            allOperations.push({
+                url: `${STATIC_BASE_URL}/${translationId}/${book.id}/${c}.json`
+            });
+        }
+    });
+
+    for (let i = 0; i < allOperations.length; i += BATCH_SIZE) {
+        const batch = allOperations.slice(i, i + BATCH_SIZE);
+        await Promise.all(batch.map(async (op) => {
+            try {
+                // Fetch and Cache
+                // We prefer fetching from network to populate cache, or from valid source
+                // In this case, we are fetching from our own public/staticBibleData
+                // Ideally, doing cache.add(req) handles fetch+put.
+                await cache.add(op.url);
+            } catch (err) {
+                console.warn(`Failed to cache ${op.url}`, err);
+            }
+        }));
+        completed += batch.length;
+        if (onProgress) onProgress(Math.min(completed, totalChapters), totalChapters, 'Downloading');
+    }
+
+    // Note: available_translations.json etc should also be checked/cached if not already
+};
+
+/**
+ * Checks if a translation is fully downloaded (naive check or flag?)
+ * For now, just a placeholder. Realistically, we can just rely on cache presence or partial.
+ */
+export const isTranslationOfflineReady = async (translationId: string): Promise<boolean> => {
+    // Naively check if books.json is in cache
+    if (!('caches' in window)) return false;
+    const cache = await caches.open(CACHE_NAME);
+    const booksUrl = `${STATIC_BASE_URL}/${translationId}/books.json`;
+    const match = await cache.match(booksUrl);
+    return !!match;
 };
