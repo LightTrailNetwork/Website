@@ -22,6 +22,10 @@ interface SettingsContextType {
     setShowMnemonics: (enabled: boolean) => void;
     showVerseMnemonics: boolean;
     setShowVerseMnemonics: (enabled: boolean) => void;
+    showCrossReferences: boolean;
+    setShowCrossReferences: (enabled: boolean) => void;
+    showFootnotes: boolean;
+    setShowFootnotes: (enabled: boolean) => void;
     theme: 'light' | 'dark';
     setTheme: (theme: 'light' | 'dark') => void;
     fontSize: 'small' | 'normal' | 'large' | 'xl';
@@ -53,6 +57,16 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
 
     const [showVerseMnemonics, setShowVerseMnemonics] = useState(() => {
         return localStorage.getItem('bible_show_verse_mnemonics') === 'true';
+    });
+
+    const [showCrossReferences, setShowCrossReferences] = useState(() => {
+        const saved = localStorage.getItem('bible_show_cross_references');
+        return saved === null ? true : saved === 'true';
+    });
+
+    const [showFootnotes, setShowFootnotes] = useState(() => {
+        const saved = localStorage.getItem('bible_show_footnotes');
+        return saved === null ? true : saved === 'true';
     });
 
     const [theme, setTheme] = useState<'light' | 'dark'>(() => {
@@ -180,6 +194,14 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
     }, [showVerseMnemonics]);
 
     useEffect(() => {
+        localStorage.setItem('bible_show_cross_references', String(showCrossReferences));
+    }, [showCrossReferences]);
+
+    useEffect(() => {
+        localStorage.setItem('bible_show_footnotes', String(showFootnotes));
+    }, [showFootnotes]);
+
+    useEffect(() => {
         localStorage.setItem('theme', theme);
         if (theme === 'dark') {
             document.documentElement.classList.add('dark');
@@ -229,6 +251,10 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
             setShowMnemonics,
             showVerseMnemonics,
             setShowVerseMnemonics,
+            showCrossReferences,
+            setShowCrossReferences,
+            showFootnotes,
+            setShowFootnotes,
             theme,
             setTheme,
             fontSize,

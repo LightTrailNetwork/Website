@@ -29,6 +29,10 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
         setShowMnemonics,
         showVerseMnemonics,
         setShowVerseMnemonics,
+        showCrossReferences,
+        setShowCrossReferences,
+        showFootnotes,
+        setShowFootnotes,
         theme,
         setTheme,
         fontSize,
@@ -437,6 +441,35 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                                         className={`w-12 h-7 rounded-full transition-colors relative flex-shrink-0 ${showVerseMnemonics ? 'bg-primary' : 'bg-gray-300 dark:bg-gray-600'}`}
                                     >
                                         <div className={`w-5 h-5 bg-white rounded-full absolute top-1 transition-transform shadow-sm ${showVerseMnemonics ? 'left-6' : 'left-1'}`} />
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* Study Aids */}
+                            <div className="space-y-3 mt-4">
+                                <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider ml-1">Study Aids</h4>
+                                <div className="flex items-center justify-between p-4 bg-secondary/5 rounded-lg border border-border gap-4">
+                                    <div className="flex flex-col gap-1">
+                                        <span className="font-medium">Cross References</span>
+                                        <span className="text-xs text-muted-foreground">Show cross-reference icons in text.</span>
+                                    </div>
+                                    <button
+                                        onClick={() => setShowCrossReferences(!showCrossReferences)}
+                                        className={`w-12 h-7 rounded-full transition-colors relative flex-shrink-0 ${showCrossReferences ? 'bg-primary' : 'bg-gray-300 dark:bg-gray-600'}`}
+                                    >
+                                        <div className={`w-5 h-5 bg-white rounded-full absolute top-1 transition-transform shadow-sm ${showCrossReferences ? 'left-6' : 'left-1'}`} />
+                                    </button>
+                                </div>
+                                <div className="flex items-center justify-between p-4 bg-secondary/5 rounded-lg border border-border gap-4">
+                                    <div className="flex flex-col gap-1">
+                                        <span className="font-medium">Footnotes</span>
+                                        <span className="text-xs text-muted-foreground">Show footnote markers in text.</span>
+                                    </div>
+                                    <button
+                                        onClick={() => setShowFootnotes(!showFootnotes)}
+                                        className={`w-12 h-7 rounded-full transition-colors relative flex-shrink-0 ${showFootnotes ? 'bg-primary' : 'bg-gray-300 dark:bg-gray-600'}`}
+                                    >
+                                        <div className={`w-5 h-5 bg-white rounded-full absolute top-1 transition-transform shadow-sm ${showFootnotes ? 'left-6' : 'left-1'}`} />
                                     </button>
                                 </div>
                             </div>

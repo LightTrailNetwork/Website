@@ -32,7 +32,18 @@ export default function BibleReader() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [profileLoading, setProfileLoading] = useState(false);
-    const { selectedTranslation, setSelectedTranslation, showMsb, setShowMsb, readerMode, showMnemonics, showVerseMnemonics, isOffline } = useSettings();
+    const {
+        selectedTranslation,
+        setSelectedTranslation,
+        showMsb,
+        setShowMsb,
+        readerMode,
+        showMnemonics,
+        showVerseMnemonics,
+        showCrossReferences,
+        showFootnotes,
+        isOffline
+    } = useSettings();
 
     // Cross Reference State
     const [crossRefs, setCrossRefs] = useState<DatasetBookChapter | null>(null);
@@ -54,7 +65,6 @@ export default function BibleReader() {
     const [showProfileModal, setShowProfileModal] = useState(false);
 
     // Footnotes State
-    const [showFootnotes, setShowFootnotes] = useState(true);
     const [activeFootnote, setActiveFootnote] = useState<{ id: number; x: number; y: number } | null>(null);
     const [hoverTimeout, setHoverTimeout] = useState<NodeJS.Timeout | null>(null);
     const [closeTimeout, setCloseTimeout] = useState<NodeJS.Timeout | null>(null);
@@ -845,7 +855,7 @@ export default function BibleReader() {
                                 {!readerMode && (
                                     <sup className="text-xs font-bold text-muted-foreground mr-1 select-none inline-flex items-center">
                                         {item.number}
-                                        {hasCrossRefs && (
+                                        {hasCrossRefs && showCrossReferences && (
                                             <button
                                                 onClick={(e) => handleRefClick(e, item.number, verseRefs)}
                                                 onMouseEnter={(e) => handleRefMouseEnter(e, item.number, verseRefs)}
