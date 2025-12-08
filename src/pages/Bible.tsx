@@ -9,6 +9,8 @@ import { GraceView, CrownPathView, John316View, GatherAroundView } from '../comp
 import { getBooks } from '../data/bibleApi';
 import type { BibleBook } from '../data/bibleApi';
 import MnemonicsList from '../components/MnemonicsList';
+import MemoryPassages from '../components/MemoryPassages';
+import MemoryLists from '../components/MemoryLists';
 
 function BibleHome() {
     const navigate = useNavigate();
@@ -271,6 +273,8 @@ export default function Bible() {
             <Route path="/memory/crown-path" element={<CrownPathView />} />
             <Route path="/memory/sentence" element={<John316View />} />
             <Route path="/memory/gather" element={<GatherAroundView />} />
+            <Route path="/memory/passages" element={<MemoryPassages />} />
+            <Route path="/memory/lists" element={<MemoryLists />} />
         </Routes>
     );
 }

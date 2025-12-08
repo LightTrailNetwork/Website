@@ -161,6 +161,13 @@ export default function BibleReader() {
 
         // Try to find by name
         const normalizedUrlId = bookId.toLowerCase().replace(/\s+/g, '');
+
+        // Handle "Psalm" singular alias common in user input
+        if (normalizedUrlId === 'psalm') {
+            const psalms = books.find(b => b.id === 'PSA' || b.name === 'Psalms');
+            if (psalms) return psalms.id;
+        }
+
         const nameMatch = books.find(b =>
             b.name.toLowerCase().replace(/\s+/g, '') === normalizedUrlId ||
             b.commonName.toLowerCase().replace(/\s+/g, '') === normalizedUrlId
