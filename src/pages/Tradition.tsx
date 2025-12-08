@@ -161,7 +161,7 @@ export default function Tradition() {
             <h2 className="text-xl font-semibold text-foreground flex items-center gap-2">
               Scripture Passages
             </h2>
-            <p className="text-xs text-muted-foreground italic mt-1">The core collection of forty memory verses.</p>
+            <p className="text-xs text-muted-foreground italic mt-1">The core collection of 40 memory verses.</p>
           </div>
           <div id="passage-list-desktop" className="h-[85vh] overflow-y-auto pr-2 space-y-4 scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent">
             <PassageList
@@ -180,7 +180,7 @@ export default function Tradition() {
           <h2 className="text-xl font-semibold text-foreground">
             Scripture Passages
           </h2>
-          <p className="text-xs text-muted-foreground italic mt-1">The core collection of forty memory verses.</p>
+          <p className="text-xs text-muted-foreground italic mt-1">The core collection of 40 memory verses.</p>
         </div>
         <div id="passage-list-mobile" className="space-y-4">
           <PassageList
