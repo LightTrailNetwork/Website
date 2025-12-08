@@ -12,6 +12,7 @@ import About from './pages/About';
 import Bible from './pages/Bible';
 import Table from './pages/Table';
 import Schedule from './pages/Schedule';
+import BibleStudy from './pages/BibleStudy';
 import { initDB, getProfile, createProfile } from './data/db';
 import { Role } from './data/types';
 import { SettingsProvider } from './context/SettingsContext';
@@ -96,6 +97,9 @@ function AppContent() {
       case '/about':
         return { title: 'About & Privacy', subtitle: 'Learn about the app and data handling' };
       default:
+        if (location.pathname.startsWith('/bible/study')) {
+          return { title: 'Bible Study', subtitle: 'Deep Dive & Group Tools' };
+        }
         if (location.pathname.startsWith('/bible/memory')) {
           return { title: 'Bible Memory', subtitle: 'Memorize Scripture' };
         }
@@ -139,6 +143,7 @@ function AppContent() {
           <Route path="/tradition" element={<Tradition />} />
           <Route path="/table" element={<Table />} />
           <Route path="/schedule" element={<Schedule />} />
+          <Route path="/bible/study" element={<BibleStudy />} />
           <Route path="/bible/*" element={<Bible />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/about" element={<About />} />

@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Calendar, Scroll, X, Book, Table, LayoutGrid, Home, Brain } from 'lucide-react';
+import { Calendar, Scroll, X, Book, Table, LayoutGrid, Home, Brain, BookOpen } from 'lucide-react';
 
 interface DrawerProps {
   isOpen: boolean;
@@ -13,6 +13,7 @@ export default function Drawer({ isOpen, onClose }: DrawerProps) {
     { path: '/', label: 'Today', subtitle: 'Action Items', icon: Home },
     { path: '/bible/read', label: 'Bible Reader', subtitle: 'Read Scripture', icon: Book },
     { path: '/bible/memory', label: 'Bible Memory', subtitle: 'Memorize Scripture', icon: Brain },
+    { path: '/bible/study', label: 'Bible Study', subtitle: 'Deep Dive Tools', icon: BookOpen },
     { path: '/schedule', label: 'Schedule', subtitle: 'Quarterly Plan', icon: LayoutGrid },
     { path: '/table', label: 'Curriculum', subtitle: 'Quarterly Content', icon: Table },
     { path: '/tradition', label: 'Tradition', subtitle: 'Creed & Pyramid', icon: Scroll },
