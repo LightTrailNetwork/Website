@@ -231,11 +231,20 @@ export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigat
                                         className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${bookFilter === filter ? 'bg-primary text-primary-foreground' : 'bg-secondary/10 hover:bg-secondary/20 text-foreground'
                                             }`}
                                     >
-                                        {filter === 'ALPHA' ? 'Alphabetical' :
-                                            filter === 'CHRONO' ? 'Chronological' :
-                                                filter === 'OT' ? 'Old Testament' :
-                                                    filter === 'NT' ? 'New Testament' :
-                                                        'All Books'}
+                                        <span className="sm:hidden">
+                                            {filter === 'ALPHA' ? 'A-Z' :
+                                                filter === 'CHRONO' ? 'Chron' :
+                                                    filter === 'OT' ? 'OT' :
+                                                        filter === 'NT' ? 'NT' :
+                                                            'All'}
+                                        </span>
+                                        <span className="hidden sm:inline">
+                                            {filter === 'ALPHA' ? 'Alphabetical' :
+                                                filter === 'CHRONO' ? 'Chronological' :
+                                                    filter === 'OT' ? 'Old Testament' :
+                                                        filter === 'NT' ? 'New Testament' :
+                                                            'All Books'}
+                                        </span>
                                     </button>
                                 ))}
                             </div>
