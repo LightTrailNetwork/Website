@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { BookOpen, Brain, ChevronRight, Search, Book, X, List } from 'lucide-react';
+import { BookOpen, Brain, ChevronRight, Search, Book, X, List, Clock, Users } from 'lucide-react';
 import { Link, Routes, Route, useNavigate } from 'react-router-dom';
 import BibleReader from '../components/BibleReader';
 import BibleBookSummary from '../components/BibleBookSummary';
@@ -14,13 +14,15 @@ import MemoryLists from '../components/MemoryLists';
 import { ParablesView } from '../components/ParablesView';
 import MnemonicSystemHub from '../components/MnemonicSystemHub';
 import MnemonicDetail from '../components/MnemonicDetail';
+import NamesStudy from '../components/study/NamesStudy';
+import { CHRONOLOGICAL_BOOKS, CHRONOLOGICAL_ERAS } from '../data/chronologicalBooks';
 
 function BibleHome() {
     const navigate = useNavigate();
     const [books, setBooks] = useState<BibleBook[]>([]);
     const [activeTab, setActiveTab] = useState<'chapters' | 'mnemonics'>('chapters');
     const [bookSearchQuery, setBookSearchQuery] = useState('');
-    const [bookFilter, setBookFilter] = useState<'ALL' | 'OT' | 'NT' | 'ALPHA'>('ALL');
+    const [bookFilter, setBookFilter] = useState<'ALL' | 'OT' | 'NT' | 'ALPHA' | 'CHRONO'>('ALL');
     const [selectedBookForChapters, setSelectedBookForChapters] = useState<BibleBook | null>(null);
 
     // Fetch books on mount
@@ -50,6 +52,12 @@ function BibleHome() {
             filtered = filtered.filter(b => b.order >= 40);
         } else if (bookFilter === 'ALPHA') {
             filtered.sort((a, b) => a.name.localeCompare(b.name));
+        } else if (bookFilter === 'CHRONO') {
+            filtered.sort((a, b) => {
+                const chronoA = CHRONOLOGICAL_BOOKS.find(cb => cb.name === a.name)?.order || 999;
+                const chronoB = CHRONOLOGICAL_BOOKS.find(cb => cb.name === b.name)?.order || 999;
+                return chronoA - chronoB;
+            });
         }
         return filtered;
     }, [books, bookFilter, bookSearchQuery]);
@@ -58,13 +66,20 @@ function BibleHome() {
         <div className="max-w-7xl mx-auto space-y-8 animate-fade-in pb-20 px-4 sm:px-6">
             {/* Header Section */}
             <div className="text-center space-y-4 py-8 relative">
-                <div className="absolute top-8 right-0 hidden sm:block">
+                <div className="absolute top-8 right-0 hidden sm:flex gap-2">
+                    <Link
+                        to="/bible/names"
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/10 hover:bg-secondary/20 text-sm font-medium transition-colors text-primary"
+                    >
+                        <Users className="w-4 h-4" />
+                        Names Study
+                    </Link>
                     <Link
                         to="/bible/memory"
                         className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/10 hover:bg-secondary/20 text-sm font-medium transition-colors text-primary"
                     >
                         <Brain className="w-4 h-4" />
-                        Memory Dashboard
+                        Memory Tools
                     </Link>
                 </div>
                 <h1 className="text-4xl font-bold text-foreground tracking-tight">Scripture Library</h1>
@@ -73,13 +88,20 @@ function BibleHome() {
                 </p>
 
                 {/* Mobile Memory Link */}
-                <div className="sm:hidden flex justify-center pt-2">
+                <div className="sm:hidden flex justify-center gap-2 pt-2">
+                    <Link
+                        to="/bible/names"
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/10 hover:bg-secondary/20 text-sm font-medium transition-colors text-primary"
+                    >
+                        <Users className="w-4 h-4" />
+                        Names
+                    </Link>
                     <Link
                         to="/bible/memory"
                         className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/10 hover:bg-secondary/20 text-sm font-medium transition-colors text-primary"
                     >
                         <Brain className="w-4 h-4" />
-                        Memory Dashboard
+                        Memory
                     </Link>
                 </div>
             </div>
@@ -186,7 +208,7 @@ function BibleHome() {
                                 </div>
 
                                 <div className="flex flex-wrap gap-2 justify-center">
-                                    {(['ALL', 'ALPHA', 'OT', 'NT'] as const).map(filter => (
+                                    {(['ALL', 'ALPHA', 'CHRONO', 'OT', 'NT'] as const).map(filter => (
                                         <button
                                             key={filter}
                                             onClick={() => setBookFilter(filter)}
@@ -196,9 +218,10 @@ function BibleHome() {
                                                 }`}
                                         >
                                             {filter === 'ALPHA' ? 'Alphabetical' :
-                                                filter === 'OT' ? 'Old Testament' :
-                                                    filter === 'NT' ? 'New Testament' :
-                                                        'All Books'}
+                                                filter === 'CHRONO' ? 'Chronological' :
+                                                    filter === 'OT' ? 'Old Testament' :
+                                                        filter === 'NT' ? 'New Testament' :
+                                                            'All Books'}
                                         </button>
                                     ))}
                                 </div>
@@ -206,34 +229,49 @@ function BibleHome() {
 
                             {/* Books Grid */}
                             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-                                {filteredBooks.map(book => (
-                                    <div
-                                        key={book.id}
-                                        onClick={() => navigate(`/bible/read/${book.name.replace(/\s+/g, '')}/1`)}
-                                        className="group relative flex flex-col rounded-lg border border-border bg-card hover:border-primary/50 hover:shadow-md transition-all overflow-hidden cursor-pointer"
-                                    >
-                                        <div className="flex-1 p-4 text-left hover:bg-secondary/5 transition-colors">
-                                            <span className="font-bold text-sm block mb-1 group-hover:text-primary transition-colors">{book.name}</span>
-                                            <button
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    if (book.numberOfChapters === 1) {
-                                                        navigate(`/bible/read/${book.name.replace(/\s+/g, '')}/1`);
-                                                    } else {
-                                                        setSelectedBookForChapters(book);
-                                                    }
-                                                }}
-                                                className="text-xs text-muted-foreground hover:text-primary hover:underline decoration-primary/50 underline-offset-2 transition-all relative z-10"
-                                            >
-                                                {book.numberOfChapters} {book.numberOfChapters === 1 ? 'Chapter' : 'Chapters'}
-                                            </button>
-                                        </div>
+                                {filteredBooks.map(book => {
+                                    const chronoData = bookFilter === 'CHRONO' ? CHRONOLOGICAL_BOOKS.find(cb => cb.name === book.name) : null;
 
-                                        <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                                            <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                                    return (
+                                        <div
+                                            key={book.id}
+                                            onClick={() => navigate(`/bible/read/${book.name.replace(/\s+/g, '')}/1`)}
+                                            className="group relative flex flex-col rounded-lg border border-border bg-card hover:border-primary/50 hover:shadow-md transition-all overflow-hidden cursor-pointer"
+                                        >
+                                            <div className="flex-1 p-4 text-left hover:bg-secondary/5 transition-colors">
+                                                <span className="font-bold text-sm block mb-1 group-hover:text-primary transition-colors">{book.name}</span>
+
+                                                {chronoData && (
+                                                    <div className="mb-2">
+                                                        <span className="block text-[10px] text-primary font-bold uppercase tracking-wider">{chronoData.era}</span>
+                                                        <span className="block text-[10px] text-muted-foreground flex items-center gap-1">
+                                                            <Clock className="w-3 h-3" />
+                                                            {chronoData.year}
+                                                        </span>
+                                                    </div>
+                                                )}
+
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        if (book.numberOfChapters === 1) {
+                                                            navigate(`/bible/read/${book.name.replace(/\s+/g, '')}/1`);
+                                                        } else {
+                                                            setSelectedBookForChapters(book);
+                                                        }
+                                                    }}
+                                                    className="text-xs text-muted-foreground hover:text-primary hover:underline decoration-primary/50 underline-offset-2 transition-all relative z-10"
+                                                >
+                                                    {book.numberOfChapters} {book.numberOfChapters === 1 ? 'Chapter' : 'Chapters'}
+                                                </button>
+                                            </div>
+
+                                            <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                                                <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                                            </div>
                                         </div>
-                                    </div>
-                                ))}
+                                    )
+                                })}
                             </div>
                         </div>
                     )}
@@ -281,6 +319,7 @@ export default function Bible() {
             <Route path="/memory/parables" element={<ParablesView />} />
             <Route path="/memory/mnemonics" element={<MnemonicSystemHub />} />
             <Route path="/memory/mnemonics/:id" element={<MnemonicDetail />} />
+            <Route path="/names" element={<NamesStudy />} />
         </Routes>
     );
 }
