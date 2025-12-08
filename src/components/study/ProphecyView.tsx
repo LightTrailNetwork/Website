@@ -1,6 +1,7 @@
 import { ArrowRight, BookOpen, Quote } from 'lucide-react';
 import { PROPHECIES } from '../../data/studyData';
 import { useNavigate } from 'react-router-dom';
+import VerseLink from './VerseLink';
 
 export default function ProphecyView() {
     return (
@@ -9,7 +10,7 @@ export default function ProphecyView() {
             <div className="bg-gradient-to-r from-amber-500/10 to-orange-500/10 rounded-2xl p-8 border border-amber-500/20">
                 <h2 className="text-3xl font-bold text-amber-700 dark:text-amber-500 mb-4">Prophecy & Fulfillment</h2>
                 <p className="text-lg text-muted-foreground leading-relaxed max-w-3xl">
-                    "For no matter how many promises God has made, they are 'Yes' in Christ." - 2 Corinthians 1:20
+                    "For no matter how many promises God has made, they are 'Yes' in Christ." - <VerseLink reference="2 Corinthians 1:20" />
                     <br /><br />
                     Explore the divine thread of promise and realization that runs through the Scriptures, connecting the Old Testament to the New.
                 </p>
@@ -34,7 +35,12 @@ export default function ProphecyView() {
                                     <span className="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400">
                                         The Promise
                                     </span>
-                                    <span className="text-xs font-mono text-muted-foreground">{item.otReference.book} {item.otReference.chapter}:{item.otReference.verse}</span>
+                                    <VerseLink
+                                        book={item.otReference.book}
+                                        chapter={item.otReference.chapter}
+                                        verse={item.otReference.verse}
+                                        className="text-xs font-mono text-muted-foreground"
+                                    />
                                 </div>
                                 <div className="relative pl-6 border-l-2 border-amber-500/20">
                                     <Quote className="absolute -left-2 top-0 w-4 h-4 text-amber-500/40 bg-card" />
@@ -55,7 +61,12 @@ export default function ProphecyView() {
                                     <span className="md:order-2 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400">
                                         The Fulfillment
                                     </span>
-                                    <span className="md:order-1 text-xs font-mono text-muted-foreground">{item.ntFulfillment.book} {item.ntFulfillment.chapter}:{item.ntFulfillment.verse}</span>
+                                    <VerseLink
+                                        book={item.ntFulfillment.book}
+                                        chapter={item.ntFulfillment.chapter}
+                                        verse={item.ntFulfillment.verse}
+                                        className="md:order-1 text-xs font-mono text-muted-foreground"
+                                    />
                                 </div>
                                 <div className="relative pl-6 md:pl-0 md:pr-6 md:border-l-0 md:border-r-2 md:border-emerald-500/20 md:text-right">
                                     <Quote className="absolute -left-2 md:left-auto md:-right-2 top-0 w-4 h-4 text-emerald-500/40 bg-card" />

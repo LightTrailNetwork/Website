@@ -1,5 +1,6 @@
 import { THEMES } from '../../data/studyData';
 import { BookOpen } from 'lucide-react';
+import VerseLink from './VerseLink';
 
 export default function ThemesView() {
     return (
@@ -29,7 +30,7 @@ export default function ThemesView() {
                                 {theme.verses.map((v, i) => (
                                     <div key={i} className="p-3 bg-secondary/5 rounded-lg border border-border/50">
                                         <div className="flex justify-between mb-1">
-                                            <span className="text-blue-600 dark:text-blue-400 font-bold text-sm">{v.ref}</span>
+                                            <VerseLink reference={v.ref} className="text-blue-600 dark:text-blue-400 font-bold text-sm" />
                                             <span className="text-[10px] text-muted-foreground uppercase">{v.note}</span>
                                         </div>
                                         <p className="text-sm">"{v.text}"</p>

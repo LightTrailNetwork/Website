@@ -4,6 +4,13 @@ import ProphecyView from '../components/study/ProphecyView';
 import PeopleView from '../components/study/PeopleView';
 import TimelineView from '../components/study/TimelineView';
 import ThemesView from '../components/study/ThemesView';
+import PlacesView from '../components/study/PlacesView';
+import SymbolsView from '../components/study/SymbolsView';
+import TypologyView from '../components/study/TypologyView';
+import HarmonyView from '../components/study/HarmonyView';
+import PatternsView from '../components/study/PatternsView';
+import OutlinesView from '../components/study/OutlinesView';
+import ErasView from '../components/study/ErasView';
 import GenericStudyView from '../components/study/GenericStudyView';
 
 export default function StudyToolPage() {
@@ -21,22 +28,20 @@ export default function StudyToolPage() {
                 return <TimelineView />;
             case 'themes':
                 return <ThemesView />;
-
-            // Placeholders with specific text
             case 'places':
-                return <GenericStudyView title="Places & Maps" description="Interactive maps and geographic context coming soon." />;
+                return <PlacesView />;
             case 'symbols':
-                return <GenericStudyView title="Motifs & Symbols" description="Tracking recurring imagery like Water, Fire, and Bread." />;
+                return <SymbolsView />;
             case 'typology':
-                return <GenericStudyView title="Typology" description="Deep dives into Old Testament shadows of Christ." />;
+                return <TypologyView />;
             case 'harmony':
-                return <GenericStudyView title="Gospel Harmony" description="Parallel viewing of the four Gospels." />;
+                return <HarmonyView />;
             case 'patterns':
-                return <GenericStudyView title="Structure Patterns" description="Chiasms, literary envelopes, and repeated structures." />;
+                return <PatternsView />;
             case 'outlines':
-                return <GenericStudyView title="Book Outlines" description="Detailed structural outlines of every Bible book." />;
+                return <OutlinesView />;
             case 'eras':
-                return <GenericStudyView title="Biblical Eras" description="The grand epochs of Redemptive History." />;
+                return <ErasView />;
             default:
                 return (
                     <div className="text-center py-20">

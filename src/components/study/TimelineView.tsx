@@ -1,4 +1,5 @@
 import { TIMELINE } from '../../data/studyData';
+import VerseLink from './VerseLink';
 
 export default function TimelineView() {
     return (
@@ -7,7 +8,7 @@ export default function TimelineView() {
             <div className="bg-gradient-to-r from-emerald-500/10 to-teal-500/10 rounded-2xl p-8 border border-emerald-500/20">
                 <h2 className="text-3xl font-bold text-emerald-700 dark:text-emerald-500 mb-4">Historical Timeline</h2>
                 <p className="text-lg text-muted-foreground leading-relaxed max-w-3xl">
-                    "From everlasting to everlasting, you are God." - Psalm 90:2
+                    "From everlasting to everlasting, you are God." - <VerseLink reference="Psalm 90:2" />
                     <br /><br />
                     Trace the flow of redemptive history from Creation to the Early Church. See the context of every event.
                 </p>
@@ -34,9 +35,11 @@ export default function TimelineView() {
 
                             <div className="mt-4 pt-3 border-t border-border/50 flex flex-wrap gap-2">
                                 {event.references.map(ref => (
-                                    <span key={ref} className="px-2 py-0.5 bg-secondary/10 rounded text-[10px] text-foreground font-medium font-mono">
-                                        {ref}
-                                    </span>
+                                    <VerseLink
+                                        key={ref}
+                                        reference={ref}
+                                        className="px-2 py-0.5 bg-secondary/10 rounded text-[10px] text-foreground font-medium font-mono"
+                                    />
                                 ))}
                             </div>
                         </div>

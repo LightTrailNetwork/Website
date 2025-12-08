@@ -36,8 +36,8 @@ export default function BibleStudy() {
             tools: [
                 { id: 'themes', title: 'Biblical Themes', description: 'Trace major concepts like Redemption, Covenant, and Grace.', icon: Lightbulb, path: '/bible/study/themes', status: 'ready' },
                 { id: 'people', title: 'People Profiles', description: 'Deep dives into key figures, their journeys, and significance.', icon: Users, path: '/bible/study/people', status: 'ready' },
-                { id: 'places', title: 'Places & Maps', description: 'Geographic context for the unfolding narrative.', icon: MapPin, path: '/bible/study/places', status: 'planned' },
-                { id: 'objects', title: 'Motifs & Symbols', description: 'Recurring images like Water, Fire, and the Lamb.', icon: BookOpen, path: '/bible/study/symbols', status: 'planned' },
+                { id: 'places', title: 'Places & Maps', description: 'Geographic context for the unfolding narrative.', icon: MapPin, path: '/bible/study/places', status: 'ready' },
+                { id: 'objects', title: 'Motifs & Symbols', description: 'Recurring images like Water, Fire, and the Lamb.', icon: BookOpen, path: '/bible/study/symbols', status: 'ready' },
             ]
         },
         {
@@ -47,9 +47,9 @@ export default function BibleStudy() {
             color: 'amber',
             tools: [
                 { id: 'prophecy', title: 'Prophecy & Fulfillment', description: 'Connecting OT promises with NT realization.', icon: ArrowRightLeft, path: '/bible/study/prophecy', status: 'ready' },
-                { id: 'typology', title: 'Typology', description: 'Shadows of Christ in the Old Testament.', icon: GitMerge, path: '/bible/study/typology', status: 'planned' },
-                { id: 'harmony', title: 'Gospel Harmony', description: 'Parallel accounts of the life of Jesus.', icon: Combine, path: '/bible/study/harmony', status: 'planned' },
-                { id: 'patterns', title: 'Structure Patterns', description: 'Literary structures and repeated motifs.', icon: Repeat, path: '/bible/study/patterns', status: 'planned' },
+                { id: 'typology', title: 'Typology', description: 'Shadows of Christ in the Old Testament.', icon: GitMerge, path: '/bible/study/typology', status: 'ready' },
+                { id: 'harmony', title: 'Gospel Harmony', description: 'Parallel accounts of the life of Jesus.', icon: Combine, path: '/bible/study/harmony', status: 'ready' },
+                { id: 'patterns', title: 'Structure Patterns', description: 'Literary structures and repeated motifs.', icon: Repeat, path: '/bible/study/patterns', status: 'ready' },
             ]
         },
         {
@@ -59,8 +59,8 @@ export default function BibleStudy() {
             color: 'emerald',
             tools: [
                 { id: 'chronology', title: 'Chronological Timeline', description: 'Events in the order they occurred.', icon: History, path: '/bible/study/timeline', status: 'ready' },
-                { id: 'structure', title: 'Book Outlines', description: 'Literary structure and chiasms of each book.', icon: ListTree, path: '/bible/study/outlines', status: 'planned' },
-                { id: 'eras', title: 'Biblical Eras', description: 'The grand epochs of redemptive history.', icon: Hourglass, path: '/bible/study/eras', status: 'planned' },
+                { id: 'structure', title: 'Book Outlines', description: 'Literary structure and chiasms of each book.', icon: ListTree, path: '/bible/study/outlines', status: 'ready' },
+                { id: 'eras', title: 'Biblical Eras', description: 'The grand epochs of redemptive history.', icon: Hourglass, path: '/bible/study/eras', status: 'ready' },
             ]
         }
     ];

@@ -1,5 +1,6 @@
 import { User, Scroll, Calendar, Crosshair, Users } from 'lucide-react';
 import { PROFILES } from '../../data/studyData';
+import VerseLink from './VerseLink';
 
 export default function PeopleView() {
     return (
@@ -8,7 +9,7 @@ export default function PeopleView() {
             <div className="bg-gradient-to-r from-indigo-500/10 to-blue-500/10 rounded-2xl p-8 border border-indigo-500/20">
                 <h2 className="text-3xl font-bold text-indigo-700 dark:text-indigo-500 mb-4">People of the Bible</h2>
                 <p className="text-lg text-muted-foreground leading-relaxed max-w-3xl">
-                    "Therefore, since we are surrounded by such a great cloud of witnesses..." - Hebrews 12:1
+                    "Therefore, since we are surrounded by such a great cloud of witnesses..." - <VerseLink reference="Hebrews 12:1" />
                     <br /><br />
                     Meet the men and women God used to shape history. Explore their lives, their character, and their role in the redemptive story.
                 </p>
@@ -18,7 +19,7 @@ export default function PeopleView() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {PROFILES.map((person) => (
                     <div key={person.id} className="bg-card border border-border rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col">
-                        {/* Card Header */}
+                        {/* ... (card header) ... */}
                         <div className="p-6 border-b border-border bg-gradient-to-br from-background to-secondary/5">
                             <div className="flex justify-between items-start">
                                 <div className="flex items-center gap-4">
@@ -84,7 +85,9 @@ export default function PeopleView() {
                             {person.keyVerses.length > 0 && (
                                 <div className="border-l-2 border-indigo-500/20 pl-4 py-1">
                                     <p className="text-sm italic text-foreground/80">"{person.keyVerses[0].text}"</p>
-                                    <p className="text-xs text-indigo-600 dark:text-indigo-400 mt-1 font-semibold">— {person.keyVerses[0].ref}</p>
+                                    <p className="text-xs text-indigo-600 dark:text-indigo-400 mt-1 font-semibold">
+                                        — <VerseLink reference={person.keyVerses[0].ref} />
+                                    </p>
                                 </div>
                             )}
                         </div>
