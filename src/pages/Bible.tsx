@@ -11,6 +11,7 @@ import type { BibleBook } from '../data/bibleApi';
 import MnemonicsList from '../components/MnemonicsList';
 import MemoryPassages from '../components/MemoryPassages';
 import MemoryLists from '../components/MemoryLists';
+import { ParablesView } from '../components/ParablesView';
 
 function BibleHome() {
     const navigate = useNavigate();
@@ -275,6 +276,7 @@ export default function Bible() {
             <Route path="/memory/gather" element={<GatherAroundView />} />
             <Route path="/memory/passages" element={<MemoryPassages />} />
             <Route path="/memory/lists" element={<MemoryLists />} />
+            <Route path="/memory/parables" element={<ParablesView />} />
         </Routes>
     );
 }

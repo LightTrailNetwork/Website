@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Brain, Layers, Crown, Quote, Hash, List, Sparkles, BookOpen } from 'lucide-react';
+import { Brain, Layers, Crown, Quote, Hash, List, Sparkles, BookOpen, Wheat } from 'lucide-react';
 
 
 export default function MemorizationHub() {
@@ -78,7 +78,16 @@ export default function MemorizationHub() {
             icon: List,
             color: "text-indigo-500",
             bg: "bg-indigo-500/10",
-            link: "/bible/memory/lists" // Placeholder route
+            link: "/bible/memory/lists"
+        },
+        {
+            title: "Jesus' Parables",
+            subtitle: "Kingdom Stories",
+            description: "Deep dive into the meaning and connections of Christ's parables.",
+            icon: Wheat,
+            color: "text-green-600",
+            bg: "bg-green-600/10",
+            link: "/bible/memory/parables"
         }
     ];
 
