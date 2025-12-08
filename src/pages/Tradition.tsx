@@ -44,7 +44,7 @@ export default function Tradition() {
               <Scroll className="w-5 h-5 text-primary" />
               The Tradition
             </div>
-            <p className="text-xs text-muted-foreground italic mt-1">The foundational creed of the Triad Network.</p>
+            <p className="text-xs text-muted-foreground italic mt-1">The foundational creed of the Light Trail Network.</p>
           </h2>
           <p
             className="text-lg text-muted-foreground leading-relaxed font-light whitespace-pre-line"
