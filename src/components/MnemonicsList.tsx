@@ -4,12 +4,14 @@ import type { BibleBook } from '../data/bibleApi';
 import { getTestamentMnemonic, getBookMnemonic, getChapterMnemonic, getChapterVerses } from '../utils/mnemonicUtils';
 import { formatPassageText } from '../utils/bibleUtils';
 import { getChapter } from '../data/bibleApi';
+import { useScrollDirection } from '../hooks/useScrollDirection';
 
 interface MnemonicsListProps {
     books: BibleBook[];
     onNavigate: (bookId: string, chapter: number, verse?: number) => void;
     onChapterSelect?: (book: BibleBook) => void;
     activeBookId?: string | undefined;
+    adjustStickyForHeader?: boolean;
 }
 
 const OT_GROUPS = [
@@ -26,9 +28,101 @@ const NT_GROUPS = [
     { name: "TO ALL OF US", start: 58, end: 66, label: "General Epistles & Revelation" }
 ];
 
-export default function MnemonicsList({ books, onNavigate, onChapterSelect, activeBookId }: MnemonicsListProps) {
+export default function MnemonicsList({ books, onNavigate, onChapterSelect, activeBookId, adjustStickyForHeader = true }: MnemonicsListProps) {
     const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({});
     const [expandedBooks, setExpandedBooks] = useState<Record<string, boolean>>({});
+    const { scrollDirection, isAtTop } = useScrollDirection(); // Use scroll direction hook
+
+    // Logic to match Header.tsx hiding behavior
+    // If scrolling down and not at top, header is hidden (-translate-y-full)
+    // If scrolling up or at top, header is visible (translate-y-0)
+    const isHeaderHidden = scrollDirection === 'down' && !isAtTop;
+
+    // Calculate top position: 
+    // If adjustment is disabled (modal), always top-0.
+    // If enabled: 
+    //   - Header hidden -> top-0
+    //   - Header visible -> top-16
+    const stickyTopClass = !adjustStickyForHeader || isHeaderHidden ? 'top-0' : 'top-16';
+
+    // Auto-scroll and expand active book
+    React.useEffect(() => {
+        if (activeBookId) {
+            // Expand the book
+            setExpandedBooks(prev => ({ ...prev, [activeBookId]: true }));
+
+            // Scroll into view after a small delay to allow expansion rendering
+            setTimeout(() => {
+                const element = document.getElementById(`mnemonic-book-${activeBookId}`);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 100);
+        }
+    }, [activeBookId]);
+
+    // ... existing functions ... (toggleSection, etc - not modifying them, but ensuring context is preserved)
+    // Wait, the ReplacementContent must replace the TARGET content. 
+    // I need to be careful not to delete the restored functions if I include them in TargetContent.
+    // The instructions say "Update specific sticky div class logic".
+    // I will target the Props definition, the signature, and the variable definition.
+
+    // Splitting this into two replacements might be safer if the functions are in between?
+    // In the file view, the functions are AFTER the variable declarations.
+    // Lines 9-38 cover Props, constants, component sig, state, hook, and isHeaderHidden logic.
+    // So I can replace up to line 38, leaving the useEffect and functions alone.
+    // But wait, the TargetContent needs to match exactly.
+
+    // Let's replace from interface definition down to isHeaderHidden, then add stickyTopClass.
+
+    /*
+    interface MnemonicsListProps {
+        books: BibleBook[];
+        onNavigate: (bookId: string, chapter: number, verse?: number) => void;
+        onChapterSelect?: (book: BibleBook) => void;
+        activeBookId?: string | undefined;
+    }
+    
+    ... constants ...
+    
+    export default function MnemonicsList({ books, onNavigate, onChapterSelect, activeBookId }: MnemonicsListProps) {
+        const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({});
+        const [expandedBooks, setExpandedBooks] = useState<Record<string, boolean>>({});
+        const { scrollDirection, isAtTop } = useScrollDirection(); // Use scroll direction hook
+    
+        // Logic to match Header.tsx hiding behavior
+        // If scrolling down and not at top, header is hidden (-translate-y-full)
+        // If scrolling up or at top, header is visible (translate-y-0)
+        const isHeaderHidden = scrollDirection === 'down' && !isAtTop;
+    */
+
+    /* Replacement: */
+    /*
+    interface MnemonicsListProps {
+        books: BibleBook[];
+        onNavigate: (bookId: string, chapter: number, verse?: number) => void;
+        onChapterSelect?: (book: BibleBook) => void;
+        activeBookId?: string | undefined;
+        adjustStickyForHeader?: boolean;
+    }
+    
+    ... constants ...
+    
+    export default function MnemonicsList({ books, onNavigate, onChapterSelect, activeBookId, adjustStickyForHeader = true }: MnemonicsListProps) {
+        const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({});
+        const [expandedBooks, setExpandedBooks] = useState<Record<string, boolean>>({});
+        const { scrollDirection, isAtTop } = useScrollDirection(); // Use scroll direction hook
+    
+        // Logic to match Header.tsx hiding behavior
+        // If scrolling down and not at top, header is hidden (-translate-y-full)
+        // If scrolling up or at top, header is visible (translate-y-0)
+        const isHeaderHidden = scrollDirection === 'down' && !isAtTop;
+        const stickyTopClass = !adjustStickyForHeader || isHeaderHidden ? 'top-0' : 'top-16';
+        
+    */
+    // And then I need to update the JSX usage of top-* classes.
+    // I should do this in 2 chunks or ensure I cover enough context.
+
 
     // Auto-scroll and expand active book
     React.useEffect(() => {
@@ -171,7 +265,10 @@ export default function MnemonicsList({ books, onNavigate, onChapterSelect, acti
     return (
         <div className="relative">
             {/* Sticky Navigation */}
-            <div className="sticky z-20 top-0 pb-4 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 flex justify-center gap-3 border-b border-border/40 mb-6 pt-2 transition-all duration-300">
+            {/* When header is hidden (scrolling down), sticky top is 0. 
+                When header is visible (scrolling up/at top), sticky top needs to be 16 (4rem) to clear the header. 
+                If adjustStickyForHeader is false, it stays at top-0. */}
+            <div className={`sticky z-20 pb-4 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 flex justify-center gap-3 border-b border-border/40 mb-6 pt-2 transition-all duration-300 ${stickyTopClass}`}>
                 <button
                     onClick={() => document.getElementById('ot-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
                     className="px-4 py-1.5 rounded-full text-xs font-bold bg-secondary/10 hover:bg-secondary/20 text-primary transition-colors border border-primary/20"

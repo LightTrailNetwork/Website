@@ -321,6 +321,7 @@ export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigat
                             <MnemonicsList
                                 books={filteredBooks}
                                 activeBookId={initialBook?.id}
+                                adjustStickyForHeader={false}
                                 onNavigate={(bookId, chap, verse) => {
                                     if (verse) {
                                         // If verse is provided, we might need a way to navigate to specific verse.

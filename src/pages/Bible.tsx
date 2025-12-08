@@ -92,7 +92,7 @@ function BibleHome() {
                                 }`}
                         >
                             <Book className="w-4 h-4" />
-                            Chapter List
+                            Book List
                         </button>
                         <button
                             onClick={() => setActiveTab('mnemonics')}
@@ -102,7 +102,7 @@ function BibleHome() {
                                 }`}
                         >
                             <List className="w-4 h-4" />
-                            Chapter Mnemonics
+                            Book Mnemonics
                         </button>
                     </div>
                 </div>
