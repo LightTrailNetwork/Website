@@ -184,7 +184,7 @@ export interface DatasetBookChapter {
 // API Logic
 // ---------------------
 
-import { BIBLE_BOOKS } from './bibleBookConstants';
+import { BIBLE_BOOKS, BIBLE_BOOK_ORDER } from './bibleBookConstants';
 
 const BASE_URL = 'https://bible.helloao.org/api';
 const STATIC_BASE_URL = '/staticBibleData';
@@ -250,24 +250,28 @@ export const getBooks = async (translation: string = 'BSB'): Promise<BibleBook[]
             `${translation}/books.json`,
             `${translation}/books.json`
         );
-        return data.books;
+        if (!data.books || !Array.isArray(data.books)) throw new Error('Invalid books data');
+        // Ensure canonical order
+        return data.books.sort((a, b) => a.order - b.order);
     } catch (error) {
         console.warn('All fetch attempts failed for books. Using built-in fallback.');
 
         // 3. Final Fallback: Static Constants
-        // Map BIBLE_BOOKS constant to BibleBook interface
-        // We only have limited data in constants (verses count), so we polyfill the rest reasonably.
-        const books: BibleBook[] = Object.entries(BIBLE_BOOKS).map(([id, data], index) => ({
-            id: id,
-            name: data.name,
-            commonName: data.name,
-            title: data.name,
-            order: index + 1,
-            numberOfChapters: data.verses.length,
-            firstChapterNumber: 1,
-            lastChapterNumber: data.verses.length,
-            totalNumberOfVerses: data.verses.reduce((a, b) => a + b, 0)
-        }));
+        // Map BIBLE_BOOKS constant to BibleBook interface using explicit order
+        const books: BibleBook[] = BIBLE_BOOK_ORDER.map((id, index) => {
+            const data = BIBLE_BOOKS[id];
+            return {
+                id: id,
+                name: data.name,
+                commonName: data.name,
+                title: data.name,
+                order: index + 1,
+                numberOfChapters: data.verses.length,
+                firstChapterNumber: 1,
+                lastChapterNumber: data.verses.length,
+                totalNumberOfVerses: data.verses.reduce((a, b) => a + b, 0)
+            };
+        });
 
         return books;
     }
