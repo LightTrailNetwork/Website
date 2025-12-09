@@ -208,10 +208,13 @@ export default function PyramidSVG({
     }
   };
 
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+
   // Hover delay logic
   const hoverTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
 
   const onHoverStart = (letter: string) => {
+    if (isMobile) return;
     if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
     hoverTimeoutRef.current = setTimeout(() => {
       onLetterHover(letter);
@@ -227,7 +230,6 @@ export default function PyramidSVG({
     onLetterHover(null);
   };
 
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
   const containerSize = isMobile ? 380 : 500;
   const svgSize = containerSize;
 
