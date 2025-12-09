@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { BookOpen, Brain, ChevronRight, Search, Book, X, List, Clock, Users } from 'lucide-react';
+import { BookOpen, Brain, ChevronRight, Search, Book, X, List, Clock, ChevronLeft } from 'lucide-react';
 import { Link, Routes, Route, useNavigate } from 'react-router-dom';
 import BibleReader from '../components/BibleReader';
 import BibleBookSummary from '../components/BibleBookSummary';
@@ -15,7 +15,8 @@ import { ParablesView } from '../components/ParablesView';
 import MnemonicSystemHub from '../components/MnemonicSystemHub';
 import MnemonicDetail from '../components/MnemonicDetail';
 import NamesStudy from '../components/study/NamesStudy';
-import { CHRONOLOGICAL_BOOKS, CHRONOLOGICAL_ERAS } from '../data/chronologicalBooks';
+import { CHRONOLOGICAL_BOOKS } from '../data/chronologicalBooks';
+import { BIBLE_BOOKS } from '../data/bibleBookConstants';
 
 function BibleHome() {
     const navigate = useNavigate();
@@ -23,7 +24,10 @@ function BibleHome() {
     const [activeTab, setActiveTab] = useState<'chapters' | 'mnemonics'>('chapters');
     const [bookSearchQuery, setBookSearchQuery] = useState('');
     const [bookFilter, setBookFilter] = useState<'ALL' | 'OT' | 'NT' | 'ALPHA' | 'CHRONO'>('ALL');
+
+    // Modal Navigation State
     const [selectedBookForChapters, setSelectedBookForChapters] = useState<BibleBook | null>(null);
+    const [selectedChapterForVerses, setSelectedChapterForVerses] = useState<number | null>(null);
 
     // Fetch books on mount
     useEffect(() => {
@@ -33,6 +37,13 @@ function BibleHome() {
         };
         fetchBooks();
     }, []);
+
+    // Reset secondary state when modal closes or book changes
+    useEffect(() => {
+        if (!selectedBookForChapters) {
+            setSelectedChapterForVerses(null);
+        }
+    }, [selectedBookForChapters]);
 
     // Filtered Books Logic
     const filteredBooks = useMemo(() => {
@@ -61,6 +72,13 @@ function BibleHome() {
         }
         return filtered;
     }, [books, bookFilter, bookSearchQuery]);
+
+    // Helper for Verse Counts
+    const getVerseCount = (bookId: string, chapter: number): number => {
+        const bookData = BIBLE_BOOKS[bookId];
+        if (!bookData) return 999;
+        return bookData.verses[chapter - 1] || 0;
+    };
 
     return (
         <div className="max-w-7xl mx-auto space-y-8 animate-fade-in pb-20 px-4 sm:px-6">
@@ -120,26 +138,46 @@ function BibleHome() {
                     </div>
                 </div>
 
-                {/* Chapter Selection Modal (Only relevant for Chapter List view) */}
+                {/* Chapter/Verse Selection Modal */}
                 {selectedBookForChapters && (
                     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm animate-in fade-in duration-200" onClick={() => setSelectedBookForChapters(null)}>
-                        <div className="bg-card border border-border rounded-xl shadow-lg max-w-2xl w-full max-h-[80vh] overflow-hidden flex flex-col animate-in zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
-                            <div className="p-4 border-b border-border flex justify-between items-center bg-secondary/5">
-                                <div className="flex items-center gap-4">
-                                    <h3 className="text-xl font-bold flex items-center gap-2">
+                        <div className="bg-card border border-border rounded-xl shadow-lg max-w-4xl w-full max-h-[80vh] overflow-hidden flex flex-col animate-in zoom-in-95 duration-200 relative" onClick={e => e.stopPropagation()}>
+
+                            {/* Header */}
+                            <div className="p-4 border-b border-border flex justify-between items-center bg-secondary/5 shrink-0">
+                                <div className="flex items-center gap-3">
+                                    {selectedChapterForVerses ? (
+                                        <button
+                                            onClick={() => setSelectedChapterForVerses(null)}
+                                            className="p-2 hover:bg-accent/10 rounded-full transition-colors"
+                                        >
+                                            <ChevronLeft className="w-5 h-5" />
+                                        </button>
+                                    ) : (
                                         <Book className="w-5 h-5 text-primary" />
-                                        {selectedBookForChapters.name}
+                                    )}
+                                    <h3 className="text-xl font-bold flex items-center gap-2">
+                                        {selectedChapterForVerses ? (
+                                            <>
+                                                <span className="opacity-70">{selectedBookForChapters.name}</span>
+                                                <span>{selectedChapterForVerses}</span>
+                                            </>
+                                        ) : (
+                                            selectedBookForChapters.name
+                                        )}
                                     </h3>
-                                    <button
-                                        onClick={() => {
-                                            navigate(`/bible/read/${selectedBookForChapters.name.replace(/\s+/g, '')}`);
-                                            setSelectedBookForChapters(null);
-                                        }}
-                                        className="text-xs flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors font-medium"
-                                    >
-                                        <BookOpen className="w-3.5 h-3.5" />
-                                        Overview
-                                    </button>
+                                    {!selectedChapterForVerses && (
+                                        <button
+                                            onClick={() => {
+                                                navigate(`/bible/read/${selectedBookForChapters.name.replace(/\s+/g, '')}`);
+                                                setSelectedBookForChapters(null);
+                                            }}
+                                            className="ml-2 text-xs flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors font-medium"
+                                        >
+                                            <BookOpen className="w-3.5 h-3.5" />
+                                            Overview
+                                        </button>
+                                    )}
                                 </div>
                                 <button
                                     onClick={() => setSelectedBookForChapters(null)}
@@ -148,21 +186,57 @@ function BibleHome() {
                                     <X className="w-5 h-5 text-muted-foreground" />
                                 </button>
                             </div>
-                            <div className="p-6 overflow-y-auto">
-                                <div className="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 gap-2">
-                                    {Array.from({ length: selectedBookForChapters.numberOfChapters }, (_, i) => i + 1).map(chapter => (
-                                        <button
-                                            key={chapter}
-                                            onClick={() => {
-                                                navigate(`/bible/read/${selectedBookForChapters.name.replace(/\s+/g, '')}/${chapter}`);
-                                                setSelectedBookForChapters(null);
-                                            }}
-                                            className="aspect-square flex items-center justify-center rounded-lg border border-border hover:border-primary hover:bg-primary/5 hover:text-primary font-medium transition-all text-sm"
-                                        >
-                                            {chapter}
-                                        </button>
-                                    ))}
-                                </div>
+
+                            {/* Content */}
+                            <div className="flex-1 overflow-y-auto p-6 bg-background">
+                                {!selectedChapterForVerses ? (
+                                    /* Chapter Grid with Split Buttons */
+                                    <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-3">
+                                        {Array.from({ length: selectedBookForChapters.numberOfChapters }, (_, i) => i + 1).map(chapter => {
+                                            const verseCount = getVerseCount(selectedBookForChapters.id, chapter);
+                                            return (
+                                                <div key={chapter} className="flex flex-col h-[60px] border border-border rounded-lg overflow-hidden bg-card hover:border-primary/50 transition-colors shadow-sm">
+                                                    <button
+                                                        onClick={() => {
+                                                            navigate(`/bible/read/${selectedBookForChapters.name.replace(/\s+/g, '')}/${chapter}`);
+                                                            setSelectedBookForChapters(null);
+                                                        }}
+                                                        className="flex-1 w-full bg-secondary/5 hover:bg-secondary/15 flex items-center justify-center text-lg font-bold"
+                                                        title={`Go to ${selectedBookForChapters.name} ${chapter}`}
+                                                    >
+                                                        {chapter}
+                                                    </button>
+                                                    <button
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            setSelectedChapterForVerses(chapter);
+                                                        }}
+                                                        className="h-[20px] w-full bg-secondary/20 hover:bg-primary/10 hover:text-primary text-[10px] text-muted-foreground flex items-center justify-center border-t border-border uppercase tracking-wider font-semibold"
+                                                        title={`Select Verse in Chapter ${chapter}`}
+                                                    >
+                                                        {verseCount} vs
+                                                    </button>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                ) : (
+                                    /* Verse Grid */
+                                    <div className="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 lg:grid-cols-12 gap-2 animate-in slide-in-from-right duration-200">
+                                        {Array.from({ length: getVerseCount(selectedBookForChapters.id, selectedChapterForVerses) }, (_, i) => i + 1).map(verse => (
+                                            <button
+                                                key={verse}
+                                                onClick={() => {
+                                                    navigate(`/bible/read/${selectedBookForChapters.name.replace(/\s+/g, '')}/${selectedChapterForVerses}/${verse}`);
+                                                    setSelectedBookForChapters(null);
+                                                }}
+                                                className="p-2 text-sm font-bold bg-primary/10 hover:bg-primary/20 rounded-lg transition-colors min-h-[40px] flex items-center justify-center"
+                                            >
+                                                {verse}
+                                            </button>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -223,6 +297,7 @@ function BibleHome() {
                                             key={book.id}
                                             onClick={() => navigate(`/bible/read/${book.name.replace(/\s+/g, '')}/1`)}
                                             className="group relative flex flex-col rounded-lg border border-border bg-card hover:border-primary/50 hover:shadow-md transition-all overflow-hidden cursor-pointer"
+                                            title={`Go to ${book.name} Chapter 1`}
                                         >
                                             <div className="flex-1 p-4 text-left hover:bg-secondary/5 transition-colors">
                                                 <span className="font-bold text-sm block mb-1 group-hover:text-primary transition-colors">{book.name}</span>
@@ -240,13 +315,10 @@ function BibleHome() {
                                                 <button
                                                     onClick={(e) => {
                                                         e.stopPropagation();
-                                                        if (book.numberOfChapters === 1) {
-                                                            navigate(`/bible/read/${book.name.replace(/\s+/g, '')}/1`);
-                                                        } else {
-                                                            setSelectedBookForChapters(book);
-                                                        }
+                                                        setSelectedBookForChapters(book);
                                                     }}
-                                                    className="text-xs text-muted-foreground hover:text-primary hover:underline decoration-primary/50 underline-offset-2 transition-all relative z-10"
+                                                    className="text-xs text-muted-foreground hover:text-primary hover:underline decoration-primary/50 underline-offset-2 transition-all relative z-10 font-semibold"
+                                                    title="Select Chapter"
                                                 >
                                                     {book.numberOfChapters} {book.numberOfChapters === 1 ? 'Chapter' : 'Chapters'}
                                                 </button>
@@ -309,4 +381,3 @@ export default function Bible() {
         </Routes>
     );
 }
-

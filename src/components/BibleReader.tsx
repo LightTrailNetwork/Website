@@ -1649,9 +1649,13 @@ export default function BibleReader() {
                 isOpen={showQuickNav}
                 onClose={() => setShowQuickNav(false)}
                 books={books}
-                onNavigate={(bookId, chapter) => {
+                onNavigate={(bookId, chapter, verse) => {
                     const bookName = books.find(b => b.id === bookId)?.name.replace(/\s+/g, '') || bookId;
-                    navigate(`/bible/read/${bookName}/${chapter}`);
+                    let url = `/bible/read/${bookName}/${chapter}`;
+                    if (verse) {
+                        url += `/${verse}`;
+                    }
+                    navigate(url);
                 }}
                 onNavigateToBookOverview={(bookId) => {
                     const bookName = books.find(b => b.id === bookId)?.name.replace(/\s+/g, '') || bookId;
