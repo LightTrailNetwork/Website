@@ -93,7 +93,7 @@ function AppContent() {
       case '/tradition':
         return { title: 'Tradition', subtitle: 'Our shared creed and passage pyramid' };
       case '/oldtestament':
-        return { title: 'Old Testament', subtitle: 'Overview of the 39 Books' };
+        return { title: 'Old Testament', subtitle: 'All 39 books seen in a new way' };
       case '/table':
         return { title: 'T.A.B.L.E.', subtitle: 'Quarter Curriculum' };
       case '/settings':
