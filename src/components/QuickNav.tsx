@@ -76,7 +76,7 @@ export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigat
         }
     }, [isOpen, activeTab, initialBook]);
 
-    // Filtered Books
+    // Filtered Books for Grid (Applies Sort)
     const filteredBooks = useMemo(() => {
         let filtered = [...books];
 
@@ -89,7 +89,7 @@ export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigat
         }
 
         if (bookFilter === 'OT') {
-            filtered = filtered.filter(b => b.order < 40); // Assuming standard 66 book order
+            filtered = filtered.filter(b => b.order < 40);
         } else if (bookFilter === 'NT') {
             filtered = filtered.filter(b => b.order >= 40);
         } else if (bookFilter === 'ALPHA') {
@@ -101,6 +101,28 @@ export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigat
                 return chronoA - chronoB;
             });
         }
+        return filtered;
+    }, [books, bookFilter, bookSearchQuery]);
+
+    // Filtered Books for Mnemonics (Preserves Canonical Order)
+    const mnemonicsBooks = useMemo(() => {
+        let filtered = [...books];
+
+        if (bookSearchQuery) {
+            const q = bookSearchQuery.toLowerCase();
+            filtered = filtered.filter(b =>
+                b.name.toLowerCase().includes(q) ||
+                (b.commonName && b.commonName.toLowerCase().includes(q))
+            );
+        }
+
+        if (bookFilter === 'OT') {
+            filtered = filtered.filter(b => b.order < 40);
+        } else if (bookFilter === 'NT') {
+            filtered = filtered.filter(b => b.order >= 40);
+        }
+        // Always preserve canonical order for Mnemonics (ignore ALPHA/CHRONO sort)
+
         return filtered;
     }, [books, bookFilter, bookSearchQuery]);
 
@@ -344,7 +366,7 @@ export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigat
                     <div className="flex flex-col h-full overflow-hidden p-4">
                         <div className="overflow-y-auto h-full">
                             <MnemonicsList
-                                books={filteredBooks}
+                                books={mnemonicsBooks}
                                 activeBookId={initialBook?.id}
                                 adjustStickyForHeader={false}
                                 onNavigate={(bookId, chap, verse) => {
