@@ -40,7 +40,7 @@ export const MNEMONIC_SYSTEMS: MnemonicSystem[] = [
         title: "8 Characteristics of Wisdom",
         subtitle: "James 3:17",
         description: "The divine attributes of wisdom from above.",
-        mnemonicPhrase: "PaPa GO FrOM Good? IMPoSIbble.",
+        mnemonicPhrase: "PeoPle GO FOaM GOlF? IMPoSIbble.",
         translationNote: "ESV",
         items: [
             { letter: "P", title: "Pure", text: "But the wisdom from above is first pure," },
@@ -72,21 +72,22 @@ export const MNEMONIC_SYSTEMS: MnemonicSystem[] = [
         ]
     },
     {
-        id: "roman-road",
-        title: "The Roman Road (9 Steps)",
+        id: "romans-road",
+        title: "The Romans Road",
         subtitle: "Romans",
         description: "The path of salvation through the book of Romans.",
-        mnemonicPhrase: "ROMAN ROAD",
+        mnemonicPhrase: "R.O.M.A.N.S. R.O.A.D.",
         items: [
-            { letter: "R", title: "Rebellion", reference: "Romans 3:23", text: "For all have sinned and fall short of the glory of God.", meaning: "Every human being is guilty before God." },
-            { letter: "O", title: "Outcome is sin", reference: "Romans 6:23a", text: "For the wages of sin is death…", meaning: "Sin earns separation and death." },
-            { letter: "M", title: "Mercy", reference: "Romans 5:8", text: "But God shows his love for us in that while we were still sinners, Christ died for us.", meaning: "God’s love intervenes despite our rebellion." },
-            { letter: "A", title: "Acceptance", reference: "Romans 10:9-10", text: "If you confess with your mouth that Jesus is Lord...", meaning: "Faith and confession open the door to salvation." },
-            { letter: "N", title: "New life", reference: "Romans 6:23b", text: "…but the free gift of God is eternal life in Christ Jesus our Lord.", meaning: "The gift replaces the wage—life for death." },
-            { letter: "R", title: "Respond", reference: "Romans 10:13", text: "Everyone who calls on the name of the Lord will be saved.", meaning: "Anyone can call and be rescued." },
-            { letter: "O", title: "Outcome is peace", reference: "Romans 5:1", text: "Therefore, since we have been justified by faith, we have peace with God...", meaning: "Justification leads to reconciliation." },
-            { letter: "A", title: "Assurance", reference: "Romans 8:1", text: "There is therefore now no condemnation for those who are in Christ Jesus.", meaning: "No more guilt; complete security." },
-            { letter: "D", title: "Destination: glory", reference: "Romans 8:38-39", text: "For I am sure that neither death nor life... will be able to separate us...", meaning: "Eternal love and union with God forever." }
+            { letter: "R", title: "Rebellion of all", reference: "Romans 3:23", text: "For all have sinned and fall short of the glory of God.", meaning: "Every human being is guilty before God." },
+            { letter: "O", title: "Outcome of sin", reference: "Romans 6:23a", text: "For the wages of sin is death…", meaning: "Sin earns separation and death." },
+            { letter: "M", title: "Mercy of God", reference: "Romans 5:8", text: "But God shows his love for us in that while we were still sinners, Christ died for us.", meaning: "God’s love intervenes despite our rebellion." },
+            { letter: "A", title: "Acceptance by faith", reference: "Romans 10:9–10", text: "If you confess with your mouth that Jesus is Lord and believe in your heart that God raised him from the dead, you will be saved.", meaning: "Faith and confession open the door to salvation." },
+            { letter: "N", title: "New life given", reference: "Romans 6:23b", text: "…but the free gift of God is eternal life in Christ Jesus our Lord.", meaning: "The gift replaces the wage—life for death." },
+            { letter: "S", title: "Sacrificial living", reference: "Romans 12:1–2", text: "I appeal to you therefore, brothers, by the mercies of God, to present your bodies as a living sacrifice...", meaning: "Saved people live transformed lives of worship and obedience." },
+            { letter: "R", title: "Respond by calling", reference: "Romans 10:13", text: "Everyone who calls on the name of the Lord will be saved.", meaning: "Anyone can call and be rescued." },
+            { letter: "O", title: "Outcome is peace", reference: "Romans 5:1", text: "Therefore, since we have been justified by faith, we have peace with God through our Lord Jesus Christ.", meaning: "Justification leads to reconciliation." },
+            { letter: "A", title: "Assurance in grace", reference: "Romans 8:1", text: "There is therefore now no condemnation for those who are in Christ Jesus.", meaning: "No more guilt; complete security." },
+            { letter: "D", title: "Destination: glory", reference: "Romans 8:38–39", text: "For I am sure that neither death nor life... will be able to separate us from the love of God...", meaning: "Eternal love and union with God forever." }
         ]
     },
     {
@@ -292,6 +293,161 @@ export const MNEMONIC_SYSTEMS: MnemonicSystem[] = [
             { letter: "R", title: "Repentant Tax Collector", reference: "Luke 18:9", meaning: "Humility justifies.", text: "Beat his breast vs Pharisee's pride." },
             { letter: "V", title: "Vinedressers", reference: "Matt 21:33", meaning: "Don't reject the Son.", text: "Tenants killed the heir." },
             { letter: "E", title: "Earnest Widow", reference: "Luke 18:1", meaning: "Pray and don't give up.", text: "Persistent plea to the judge." }
+        ]
+    },
+    {
+        id: "flesh-temptations",
+        title: "The Five Temptations (FLESH)",
+        subtitle: "Matthew 26:41",
+        description: "Five temptations men must master.",
+        mnemonicPhrase: "F.L.E.S.H.",
+        items: [
+            { letter: "F", title: "Fame / Pride", text: "Humble yourselves before the Lord, and he will exalt you. (James 4:10)", meaning: "Exalt Him, not yourself." },
+            { letter: "L", title: "Lust", text: "Flee from sexual immorality... (1 Cor 6:18–20)", meaning: "Flee, don’t fight. Honor God with your body." },
+            { letter: "E", title: "Envy / Comparison", text: "Let us not become conceited, envying one another. (Gal 5:26)", meaning: "Gratitude kills envy." },
+            { letter: "S", title: "Sloth / Laziness", text: "Whatever you do, work heartily, as for the Lord. (Col 3:23)", meaning: "Work is worship." },
+            { letter: "H", title: "Hunger for Power / Control", text: "Submit yourselves therefore to God. (James 4:7)", meaning: "Control is an illusion; surrender is strength." }
+        ]
+    },
+    {
+        id: "life-pain",
+        title: "LIFE PAIN",
+        subtitle: "Psalm 34:18",
+        description: "Comfort in suffering.",
+        mnemonicPhrase: "LIFE PAIN",
+        items: [
+            { letter: "L", title: "Loss", text: "The LORD is near to the brokenhearted...", reference: "Psalm 34:18" },
+            { letter: "I", title: "Isolation", text: "God settles the solitary in a home...", reference: "Psalm 68:6" },
+            { letter: "F", title: "Fear", text: "Fear not, for I am with you...", reference: "Isaiah 41:10" },
+            { letter: "E", title: "Emptiness", text: "I came that they may have life abundantly.", reference: "John 10:10" },
+            { letter: "P", title: "Pain", text: "God... comforts us in all our affliction.", reference: "2 Cor 1:3–4" },
+            { letter: "A", title: "Addiction", text: "If the Son sets you free, you will be free indeed.", reference: "John 8:36" },
+            { letter: "I", title: "Identity", text: "You are a chosen race...", reference: "1 Peter 2:9" },
+            { letter: "N", title: "Neglect / Need", text: "My God will supply every need of yours...", reference: "Phil 4:19" }
+        ]
+    },
+    {
+        id: "life-gain",
+        title: "LIFE GAIN",
+        subtitle: "1 Corinthians 13",
+        description: "Spiritual blessings.",
+        mnemonicPhrase: "LIFE GAIN",
+        items: [
+            { letter: "L", title: "Love", text: "Love bears all things... love never ends.", reference: "1 Cor 13:7–8" },
+            { letter: "I", title: "Intimacy", text: "Draw near to God...", reference: "James 4:8" },
+            { letter: "F", title: "Faith", text: "We walk by faith, not by sight.", reference: "2 Cor 5:7" },
+            { letter: "E", title: "Encouragement", text: "Encourage one another...", reference: "1 Thess 5:11" },
+            { letter: "G", title: "Grace", text: "My grace is sufficient for you...", reference: "2 Cor 12:9" },
+            { letter: "A", title: "Acceptance", text: "Welcome one another as Christ has welcomed you.", reference: "Rom 15:7" },
+            { letter: "I", title: "Identity (Restored)", text: "If anyone is in Christ, he is a new creation.", reference: "2 Cor 5:17" },
+            { letter: "N", title: "Nourishment", text: "Man shall not live by bread alone...", reference: "Matt 4:4" }
+        ]
+    },
+    {
+        id: "faith-hope-love",
+        title: "Faith, Hope, Love",
+        subtitle: "1 Corinthians 13:13",
+        description: "The three theological virtues.",
+        mnemonicPhrase: "Faith, Hope, Love",
+        items: [
+            { title: "Faith" },
+            { title: "Hope" },
+            { title: "Love (The Greatest)" }
+        ]
+    },
+    {
+        id: "i-am-statements",
+        title: "7 I AM Statements",
+        subtitle: "John",
+        description: "Jesus' declarations of divinity.",
+        mnemonicPhrase: "BILDGS RATL WaT Li TV (Buildings rattle! Watch live TV!)",
+        items: [
+            { letter: "B", title: "Bread of Life", reference: "John 6:35" },
+            { letter: "I", title: "I Am (Before Abraham)", reference: "John 8:58" },
+            { letter: "L", title: "Light of the World", reference: "John 8:12" },
+            { letter: "D", title: "Door", reference: "John 10:9" },
+            { letter: "GS", title: "Good Shepherd", reference: "John 10:11" },
+            { letter: "R", title: "Resurrection and Life", reference: "John 11:25" },
+            { letter: "W", title: "Way, Truth, Life", reference: "John 14:6" },
+            { letter: "TV", title: "True Vine", reference: "John 15:1" }
+        ]
+    },
+    {
+        id: "beatitudes",
+        title: "The Beatitudes",
+        subtitle: "Matthew 5:3-10",
+        description: "Blessings for the kingdom.",
+        mnemonicPhrase: "PoorSH (is) Mour Comfort(able)...",
+        items: [
+            { title: "Poor in spirit" },
+            { title: "Mourn" },
+            { title: "Meek" },
+            { title: "Hunger/Thirst for Righteousness" },
+            { title: "Merciful" },
+            { title: "Pure in heart" },
+            { title: "Peacemakers" },
+            { title: "Persecuted" }
+        ]
+    },
+    {
+        id: "treasure",
+        title: "TREASURE (Wealth & Work)",
+        subtitle: "Bible Stewardship",
+        description: "What the Bible teaches about wealth & work.",
+        mnemonicPhrase: "Trust. Return. Earn. Account. Share. Use. Resist. Establish.",
+        items: [
+            { letter: "T", title: "Trust God’s provision", reference: "Matt 6:24–33" },
+            { letter: "R", title: "Return first and best", reference: "Prov 3:9–10" },
+            { letter: "E", title: "Earn by honest work", reference: "Eph 4:28" },
+            { letter: "A", title: "Account as a steward", reference: "Matt 25:14–30" },
+            { letter: "S", title: "Share generously", reference: "2 Cor 9:6–8" },
+            { letter: "U", title: "Use wealth for eternal purposes", reference: "Luke 16:9" },
+            { letter: "R", title: "Resist greed", reference: "Luke 12:15" },
+            { letter: "E", title: "Establish justice", reference: "Prov 11:1" }
+        ]
+    },
+    {
+        id: "overseer-qualifications",
+        title: "Overseer Qualifications",
+        subtitle: "1 Timothy 3:1-7",
+        description: "Qualifications for church leadership.",
+        mnemonicPhrase: "ARch(ee), HOW (does) SOMe SECONd RHAT Drunkard...",
+        items: [
+            { title: "Above reproach" },
+            { title: "Husband of one wife" },
+            { title: "Sober-minded" },
+            { title: "Self-controlled" },
+            { title: "Respectable" },
+            { title: "Hospitable" },
+            { title: "Able to teach" },
+            { title: "Not a drunkard" },
+            { title: "Not violent" },
+            { title: "Not quarrelsome" },
+            { title: "Not a lover of money" }
+        ]
+    },
+    {
+        id: "fabric-law",
+        title: "The FABRIC of the LAW is the GOSPEL",
+        subtitle: "Meta Mnemonic",
+        description: "Catalog of all mnemonic systems.",
+        mnemonicPhrase: "FABRIC of the LAW is the GOSPEL",
+        items: [
+            { letter: "F", title: "Faith, Hope, Love / Fruits / Flesh" },
+            { letter: "A", title: "Assurance / Attention" },
+            { letter: "B", title: "Bible Story / Beatitudes" },
+            { letter: "R", title: "Romans Road" },
+            { letter: "I", title: "I AM Statements" },
+            { letter: "C", title: "Commandments" },
+            { letter: "L", title: "Ladder / Lord's Prayer / Life Pain/Gain" },
+            { letter: "A", title: "Armor of God" },
+            { letter: "W", title: "Wisdom" },
+            { letter: "G", title: "Gifts / Gospel (John 3:16)" },
+            { letter: "O", title: "Overseer" },
+            { letter: "S", title: "Shepherd" },
+            { letter: "P", title: "Parables / Prophecies / Psalm 91" },
+            { letter: "E", title: "End Times" },
+            { letter: "L", title: "Love / Last Days" }
         ]
     }
 ];
