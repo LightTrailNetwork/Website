@@ -5,6 +5,7 @@ import {
     ArrowRightLeft, GitMerge, Combine, Repeat,
     Hourglass, ListTree, History, Library, ArrowRight
 } from 'lucide-react';
+import VerseLink from '../components/study/VerseLink';
 // Removed Search import
 
 interface StudyTool {
@@ -150,7 +151,9 @@ export default function BibleStudy() {
                 <p className="text-sm font-serif italic max-w-lg mx-auto">
                     "It is the glory of God to conceal a matter; to search out a matter is the glory of kings."
                     <br />
-                    <span className="text-xs text-muted-foreground not-italic mt-1 block">- Proverbs 25:2</span>
+                    <span className="text-xs text-muted-foreground not-italic mt-1 block">
+                        - <VerseLink reference="Proverbs 25:2" />
+                    </span>
                 </p>
             </div>
         </div>

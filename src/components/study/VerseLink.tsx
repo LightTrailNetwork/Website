@@ -15,21 +15,29 @@ export default function VerseLink({ book, chapter, verse, reference, children, c
     let targetChapter = chapter;
     let targetVerseRange = verse;
 
-    // specific parser for "1 Samuel 13:14" or "John 3:16" or "Genesis 12-50" or "2 Samuel"
-    if (reference && !book) {
-        // 1. Try "Book Chapter:Verse" or "Book Chapter" or "Book Chapter-Chapter"
-        // Matches: "1 Samuel 13:14", "Genesis 12", "Genesis 12-50"
-        let match = reference.match(/^((?:\d\s)?[a-zA-Z\s]+)\s(\d+)(?:[:\.](\d+(?:-\d+)?)?|[-–]\d+)?$/);
+    // specific parser
+    if (reference) {
+        // 1. Try "Book Chapter:Verse"
+        const fullMatch = reference.match(/^((?:\d\s)?[a-zA-Z\s]+)\s(\d+)(?:[:\.](\d+(?:-\d+)?)?|[-–]\d+)?/);
 
-        if (match && match[1]) {
-            targetBook = match[1].trim();
-            targetChapter = match[2];
-            targetVerseRange = match[3]; // undefined if "Genesis 12" or "Genesis 12-50"
+        if (fullMatch && fullMatch[1] && isNaN(Number(fullMatch[1]))) {
+            targetBook = fullMatch[1].trim();
+            targetChapter = fullMatch[2];
+            targetVerseRange = fullMatch[3];
+        } else if (book) {
+            // 2. If Book known, try to extract Chapter from "1:1" or "1" or "1-2"
+            // "1:1 - 11:32" -> Chapter 1
+            const chapMatch = reference.match(/^(\d+)/);
+            if (chapMatch) {
+                targetChapter = chapMatch[1];
+                // Try to find verse part if exists, purely for decoration? 
+                // Currently url = /read/Book/Chapter...
+                // Passing complex range "1:1 - 11:32" as verseRange might confuse reader if it expects simple number.
+                // But url construction `/${targetVerseRange}` implies specific verse.
+                // If regex extracts "1", we link to Chapter 1. That's good enough for "1:1 - 11:32".
+            }
         } else {
-            // 2. Try "Book" only (e.g. "2 Samuel", "Genesis")
-            // This is a loose check, might match "The Fall" if passed as reference. 
-            // Better to rely on caller passing valid references, or check against a list of Bible books.
-            // For now, assuming if it looks like a book name, treat as Chapter 1.
+            // 3. Try "Book" only
             const simpleBookMatch = reference.match(/^((?:\d\s)?[a-zA-Z\s]+)$/);
             if (simpleBookMatch) {
                 targetBook = simpleBookMatch[1].trim();
