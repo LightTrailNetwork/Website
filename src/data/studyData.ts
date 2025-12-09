@@ -931,39 +931,541 @@ export const PATTERNS: Pattern[] = [
 ];
 
 export const OUTLINES: BookOutline[] = [
+    // PENTATEUCH
     {
-        id: 'genesis',
-        bookName: 'Genesis',
-        theme: 'Beginnings',
+        id: 'genesis', bookName: 'Genesis', theme: 'Beginnings',
         sections: [
-            { title: 'Primeval History', range: '1:1 - 11:32', subpoints: ['Creation', 'Fall', 'Flood', 'Nations'] },
-            { title: 'Patriarchal History', range: '12:1 - 50:26', subpoints: ['Abraham (12-25)', 'Isaac (21-27)', 'Jacob (25-36)', 'Joseph (37-50)'] }
-        ]
-    }, // Add more book outlines?
-    {
-        id: 'matthew',
-        bookName: 'Matthew',
-        theme: 'Jesus the King',
-        sections: [
-            { title: 'Presentation of the King', range: '1:1 - 4:11' },
-            { title: 'Proclamation of the Kingdom', range: '4:12 - 7:29' },
-            { title: 'Power of the King', range: '8:1 - 10:42' },
-            { title: 'Rejection of the King', range: '11:1 - 16:12' },
-            { title: 'Preparation of Disciples', range: '16:13 - 20:28' },
-            { title: 'Presentation & Rejection', range: '20:29 - 27:66' },
-            { title: 'Resurrection & Commission', range: '28:1 - 28:20' }
+            { title: 'Primeval History', range: '1-11', subpoints: ['Creation', 'Fall', 'Flood', 'Babel'] },
+            { title: 'Patriarchal History', range: '12-50', subpoints: ['Abraham', 'Isaac', 'Jacob', 'Joseph'] }
         ]
     },
     {
-        id: 'romans',
-        bookName: 'Romans',
-        theme: 'The Righteousness of God',
+        id: 'exodus', bookName: 'Exodus', theme: 'Redemption & Deliverance',
         sections: [
-            { title: 'Sin: Righteousness Needed', range: '1:1 - 3:20' },
-            { title: 'Salvation: Righteousness Imputed', range: '3:21 - 5:21' },
-            { title: 'Sanctification: Righteousness Imparted', range: '6:1 - 8:39' },
-            { title: 'Sovereignty: Righteousness Vindicated', range: '9:1 - 11:36' },
-            { title: 'Service: Righteousness Practiced', range: '12:1 - 15:13' }
+            { title: 'Israel in Egypt', range: '1-12', subpoints: ['Slavery', 'Plagues', 'Passover'] },
+            { title: 'Journey to Sinai', range: '13-18', subpoints: ['Red Sea', 'Manna', 'Water'] },
+            { title: 'Revelation at Sinai', range: '19-40', subpoints: ['Law', 'Covenant', 'Tabernacle'] }
+        ]
+    },
+    {
+        id: 'leviticus', bookName: 'Leviticus', theme: 'Holiness',
+        sections: [
+            { title: 'Way to God (Sacrifice)', range: '1-10', subpoints: ['Offerings', 'Priesthood'] },
+            { title: 'Walk with God (Sanctification)', range: '11-27', subpoints: ['Purity', 'Day of Atonement', 'Feasts'] }
+        ]
+    },
+    {
+        id: 'numbers', bookName: 'Numbers', theme: 'Wandering',
+        sections: [
+            { title: 'Preparation at Sinai', range: '1-10', subpoints: ['Census', 'Camp Arrangement'] },
+            { title: 'Wandering in Wilderness', range: '11-25', subpoints: ['Rebellion', 'Spies', 'Bronze Serpent'] },
+            { title: 'Preparation for Promised Land', range: '26-36', subpoints: ['New Census', 'Succession'] }
+        ]
+    },
+    {
+        id: 'deuteronomy', bookName: 'Deuteronomy', theme: 'Covenant Renewal',
+        sections: [
+            { title: 'Review of History', range: '1-4', subpoints: ['Wilderness Years'] },
+            { title: 'Review of Law', range: '5-26', subpoints: ['10 Commandments', 'Statutes'] },
+            { title: 'Review of Covenant', range: '27-34', subpoints: ['Blessings/Curses', 'Song of Moses', 'Death of Moses'] }
+        ]
+    },
+    // HISTORY
+    {
+        id: 'joshua', bookName: 'Joshua', theme: 'Conquest & Possession',
+        sections: [
+            { title: 'Entering the Land', range: '1-5', subpoints: ['Rahab', 'Jordan Crossing', 'Jericho'] },
+            { title: 'Conquering the Land', range: '6-12', subpoints: ['Central', 'Southern', 'Northern Campaigns'] },
+            { title: 'Dividing the Land', range: '13-24', subpoints: ['Tribal Allotments', 'Covenant Renewal'] }
+        ]
+    },
+    {
+        id: 'judges', bookName: 'Judges', theme: 'Cycles of Apostasy',
+        sections: [
+            { title: 'Incomplete Conquest', range: '1-2', subpoints: ['Failure to drive out Canaanites'] },
+            { title: 'Cycles of Judges', range: '3-16', subpoints: ['Deborah', 'Gideon', 'Samson'] },
+            { title: 'Moral Chaos', range: '17-21', subpoints: ['Idolatry', 'Civil War'] }
+        ]
+    },
+    {
+        id: 'ruth', bookName: 'Ruth', theme: 'Kinsman Redeemer',
+        sections: [
+            { title: 'Return to Bethlehem', range: '1', subpoints: ['Naomi and Ruth'] },
+            { title: 'Reaping in Fields', range: '2', subpoints: ['Ruth meets Boaz'] },
+            { title: 'Request for Redemption', range: '3', subpoints: ['Threshing Floor'] },
+            { title: 'Redemption & Marriage', range: '4', subpoints: ['Boaz marries Ruth', 'Line of David'] }
+        ]
+    },
+    {
+        id: '1samuel', bookName: '1 Samuel', theme: 'Transition to Monarchy',
+        sections: [
+            { title: 'Samuel: Prophet & Judge', range: '1-7', subpoints: ['Birth', 'Call', 'Revival'] },
+            { title: 'Saul: King After Man\'s Heart', range: '8-15', subpoints: ['Anointing', 'Disobedience', 'Rejection'] },
+            { title: 'David: King After God\'s Heart', range: '16-31', subpoints: ['Goliath', 'Fugitive Years', 'Death of Saul'] }
+        ]
+    },
+    {
+        id: '2samuel', bookName: '2 Samuel', theme: 'Reign of David',
+        sections: [
+            { title: 'David\'s Triumphs', range: '1-10', subpoints: ['King of Judah/Israel', 'Ark to Jerusalem', 'Covenant'] },
+            { title: 'David\'s Transgressions', range: '11-12', subpoints: ['Bathsheba', 'Uriah', 'Nathan\'s Rebuke'] },
+            { title: 'David\'s Troubles', range: '13-24', subpoints: ['Absalom\'s Rebellion', 'Restoration'] }
+        ]
+    },
+    {
+        id: '1kings', bookName: '1 Kings', theme: 'Division of Kingdom',
+        sections: [
+            { title: 'United Kingdom (Solomon)', range: '1-11', subpoints: ['Wisdom', 'Temple', 'Apostasy'] },
+            { title: 'Divided Kingdom', range: '12-22', subpoints: ['Rehoboam/Jeroboam', 'Elijah vs Ahab'] }
+        ]
+    },
+    {
+        id: '2kings', bookName: '2 Kings', theme: 'Captivity',
+        sections: [
+            { title: 'Prophet Elisha', range: '1-8', subpoints: ['Miracles', 'Double Portion'] },
+            { title: 'Decline of Kingdoms', range: '9-16', subpoints: ['Jehu', 'Athaliah', 'Uzziah'] },
+            { title: 'Fill of Israel (Assyria)', range: '17', subpoints: ['Samaria Captured'] },
+            { title: 'Fall of Judah (Babylon)', range: '18-25', subpoints: ['Hezekiah', 'Josiah', 'Exile'] }
+        ]
+    },
+    {
+        id: '1chronicles', bookName: '1 Chronicles', theme: 'Davidic Covenant',
+        sections: [
+            { title: 'Royal Genealogy', range: '1-9', subpoints: ['Adam to Exile', 'Twelve Tribes'] },
+            { title: 'Reign of David', range: '10-29', subpoints: ['Ark Return', 'Temple Preparations'] }
+        ]
+    },
+    {
+        id: '2chronicles', bookName: '2 Chronicles', theme: 'Priestly View of Judah',
+        sections: [
+            { title: 'Reign of Solomon', range: '1-9', subpoints: ['Temple Dedication', 'Glory'] },
+            { title: 'The Kings of Judah', range: '10-36', subpoints: ['Reforms of Asa, Jehoshaphat, Hezekiah, Josiah'] },
+            { title: 'Decree of Cyrus', range: '36:22-23', subpoints: ['Return from Exile'] }
+        ]
+    },
+    {
+        id: 'ezra', bookName: 'Ezra', theme: 'Restoration of Temple',
+        sections: [
+            { title: 'Return under Zerubbabel', range: '1-6', subpoints: ['Rebuilding Temple', 'Opposition'] },
+            { title: 'Return under Ezra', range: '7-10', subpoints: ['Teaching Law', 'Moral Reform'] }
+        ]
+    },
+    {
+        id: 'nehemiah', bookName: 'Nehemiah', theme: 'Rebuilding Walls',
+        sections: [
+            { title: 'Rebuilding the Walls', range: '1-7', subpoints: ['Prayer', 'Inspection', 'Opposition', 'Completion'] },
+            { title: 'Renewing the People', range: '8-13', subpoints: ['Reading Law', 'Covenant Renewal'] }
+        ]
+    },
+    {
+        id: 'esther', bookName: 'Esther', theme: 'Providence',
+        sections: [
+            { title: 'Threat to Jews', range: '1-4', subpoints: ['Vashti Deposed', 'Esther Queen', 'Haman\'s Plot'] },
+            { title: 'Deliverance of Jews', range: '5-10', subpoints: ['Esther\'s Banquet', 'Mordecai Honored', 'Feast of Purim'] }
+        ]
+    },
+    // POETRY
+    {
+        id: 'job', bookName: 'Job', theme: 'Sovereignty & Suffering',
+        sections: [
+            { title: 'Job\'s Distress', range: '1-3', subpoints: ['Loss of Family/Wealth', 'Lament'] },
+            { title: 'Job\'s Defense', range: '4-37', subpoints: ['Friends\' Accusations', 'Job\'s Rebuttals', 'Elihu'] },
+            { title: 'God\'s Deliverance', range: '38-42', subpoints: ['God Speaks', 'Job Repents', 'Restoration'] }
+        ]
+    },
+    {
+        id: 'psalms', bookName: 'Psalms', theme: 'Worship',
+        sections: [
+            { title: 'Book I', range: '1-41', subpoints: ['Davidic', 'Man-ward'] },
+            { title: 'Book II', range: '42-72', subpoints: ['Davidic/Korah', 'Deliverance'] },
+            { title: 'Book III', range: '73-89', subpoints: ['Asaph', 'Sanctuary'] },
+            { title: 'Book IV', range: '90-106', subpoints: ['Moses/Anonymous', 'Reign of God'] },
+            { title: 'Book V', range: '107-150', subpoints: ['Hallel', 'Word of God (119)'] }
+        ]
+    },
+    {
+        id: 'proverbs', bookName: 'Proverbs', theme: 'Wisdom',
+        sections: [
+            { title: 'Wisdom vs Folly', range: '1-9', subpoints: ['Father\'s Instruction'] },
+            { title: 'Proverbs of Solomon', range: '10-24', subpoints: ['Righteous vs Wicked'] },
+            { title: 'Hezekiah\'s Collection', range: '25-29', subpoints: ['Leadership'] },
+            { title: 'Agur & Lemuel', range: '30-31', subpoints: ['Virtuous Woman'] }
+        ]
+    },
+    {
+        id: 'ecclesiastes', bookName: 'Ecclesiastes', theme: 'Vanity vs Meaning',
+        sections: [
+            { title: 'Vanity of Life "Under Sun"', range: '1-6', subpoints: ['Pleasure', 'Work', 'Riches'] },
+            { title: 'Wisdom for Life', range: '7-12', subpoints: ['Fear God', 'Judgement Coming'] }
+        ]
+    },
+    {
+        id: 'songofsolomon', bookName: 'Song of Solomon', theme: 'Love & Marriage',
+        sections: [
+            { title: 'Courtship', range: '1-3', subpoints: ['Longing', 'Praise'] },
+            { title: 'Wedding', range: '3-4', subpoints: ['Procession', 'Consummation'] },
+            { title: 'Maturing Marriage', range: '5-8', subpoints: ['Conflict', 'Restoration'] }
+        ]
+    },
+    // MAJOR PROPHETS
+    {
+        id: 'isaiah', bookName: 'Isaiah', theme: 'Salvation',
+        sections: [
+            { title: 'Prophecies of Condemnation', range: '1-35', subpoints: ['Judah', 'Nations'] },
+            { title: 'Historical Interlude', range: '36-39', subpoints: ['Hezekiah\'s Crisis'] },
+            { title: 'Prophecies of Comfort', range: '40-66', subpoints: ['Servant Songs', 'Future Glory'] }
+        ]
+    },
+    {
+        id: 'jeremiah', bookName: 'Jeremiah', theme: 'Judgment & New Covenant',
+        sections: [
+            { title: 'Call of Jeremiah', range: '1', subpoints: ['Appointed Prophet'] },
+            { title: 'Prophecies to Judah', range: '2-45', subpoints: ['Temple Sermon', '70 Years', 'New Covenant (31)'] },
+            { title: 'Prophecies to Nations', range: '46-51', subpoints: ['Egypt', 'Babylon'] },
+            { title: 'Fall of Jerusalem', range: '52', subpoints: ['Historical Appendix'] }
+        ]
+    },
+    {
+        id: 'lamentations', bookName: 'Lamentations', theme: 'Mourning',
+        sections: [
+            { title: 'Ruins of Jerusalem', range: '1', subpoints: ['Widowed City'] },
+            { title: 'Wrath of God', range: '2', subpoints: ['Day of Anger'] },
+            { title: 'Hope in Mercy', range: '3', subpoints: ['Great is Thy Faithfulness'] },
+            { title: 'Siege & Prayer', range: '4-5', subpoints: ['Restoration Plea'] }
+        ]
+    },
+    {
+        id: 'ezekiel', bookName: 'Ezekiel', theme: 'Glory of God',
+        sections: [
+            { title: 'Judgement on Judah', range: '1-24', subpoints: ['Call', 'Glory Departs'] },
+            { title: 'Judgement on Nations', range: '25-32', subpoints: ['Tyre', 'Egypt'] },
+            { title: 'Restoration of Israel', range: '33-48', subpoints: ['Dry Bones', 'New Temple', 'Glory Returns'] }
+        ]
+    },
+    {
+        id: 'daniel', bookName: 'Daniel', theme: 'God\'s Sovereignty',
+        sections: [
+            { title: 'Personal History', range: '1-6', subpoints: ['Diet', 'Statue', 'Furnace', 'Lions'] },
+            { title: 'Prophetic Visions', range: '7-12', subpoints: ['Four Beasts', '70 Weeks', 'End Times'] }
+        ]
+    },
+    // MINOR PROPHETS
+    {
+        id: 'hosea', bookName: 'Hosea', theme: 'Unfaithful Israel',
+        sections: [
+            { title: 'Adulterous Wife (Gomer)', range: '1-3', subpoints: ['Marriage Illustration'] },
+            { title: 'Adulterous People (Israel)', range: '4-14', subpoints: ['Charge against Israel', 'Call to Repent'] }
+        ]
+    },
+    {
+        id: 'joel', bookName: 'Joel', theme: 'Day of the Lord',
+        sections: [
+            { title: 'Locust Invasion', range: '1', subpoints: ['Current Judgment'] },
+            { title: 'Coming Day of Lord', range: '2-3', subpoints: ['Spirit Poured Out', 'Valley of Decision'] }
+        ]
+    },
+    {
+        id: 'amos', bookName: 'Amos', theme: 'Social Justice',
+        sections: [
+            { title: 'Judgments on Neighbors', range: '1-2', subpoints: ['Damascus, Gaza, Tyre...'] },
+            { title: 'Judgments on Israel', range: '3-6', subpoints: ['Cows of Bashan', 'Woe to complacent'] },
+            { title: 'Visions of End', range: '7-9', subpoints: ['Plumb Line', 'Basket of Fruit'] }
+        ]
+    },
+    {
+        id: 'obadiah', bookName: 'Obadiah', theme: 'Judgment on Edom',
+        sections: [
+            { title: 'Doom of Edom', range: '1-14', subpoints: ['Pride', 'Violence against Jacob'] },
+            { title: 'Day of the Lord', range: '15-21', subpoints: ['Kingdom shall be the Lord\'s'] }
+        ]
+    },
+    {
+        id: 'jonah', bookName: 'Jonah', theme: 'God\'s Mercy on Gentiles',
+        sections: [
+            { title: 'Running from God', range: '1-2', subpoints: ['Storm', 'Fish'] },
+            { title: 'Running with God', range: '3-4', subpoints: ['Nineveh Repents', 'Jonah\'s Anger'] }
+        ]
+    },
+    {
+        id: 'micah', bookName: 'Micah', theme: 'Justice & Mercy',
+        sections: [
+            { title: 'Sin and Judgment', range: '1-3', subpoints: ['Rulers and Prophets condemned'] },
+            { title: 'Hope and Kingdom', range: '4-5', subpoints: ['Mountain of Lord', 'Bethlehem Prophecy'] },
+            { title: 'Plea and Promise', range: '6-7', subpoints: ['Do Justice', 'Who is like God?'] }
+        ]
+    },
+    {
+        id: 'nahum', bookName: 'Nahum', theme: 'Doom of Nineveh',
+        sections: [
+            { title: 'Character of God', range: '1', subpoints: ['Jealous and Avenger'] },
+            { title: 'Siege of Nineveh', range: '2', subpoints: ['Chariots', 'Plunder'] },
+            { title: 'Misery of Nineveh', range: '3', subpoints: ['Woe to City of Blood'] }
+        ]
+    },
+    {
+        id: 'habakkuk', bookName: 'Habakkuk', theme: 'Faith in Crisis',
+        sections: [
+            { title: 'Prophet\'s Questions', range: '1-2', subpoints: ['Why evil persists?', 'Babylon as tool?'] },
+            { title: 'Prophet\'s Prayer', range: '3', subpoints: ['Yet I will Rejoice'] }
+        ]
+    },
+    {
+        id: 'zephaniah', bookName: 'Zephaniah', theme: 'Judgment & Joy',
+        sections: [
+            { title: 'Universal Judgment', range: '1', subpoints: ['Day of Wrath'] },
+            { title: 'Call to Seek Lord', range: '2', subpoints: ['Judgment on Nations'] },
+            { title: 'Restoration of Remnant', range: '3', subpoints: ['He will sing over you'] }
+        ]
+    },
+    {
+        id: 'haggai', bookName: 'Haggai', theme: 'Rebuilding the Temple',
+        sections: [
+            { title: 'Call to Rebuild', range: '1', subpoints: ['Consider your ways'] },
+            { title: 'Glory of the Temple', range: '2', subpoints: ['Greater glory', 'Signet Ring'] }
+        ]
+    },
+    {
+        id: 'zechariah', bookName: 'Zechariah', theme: 'Future Glory',
+        sections: [
+            { title: 'Eight Visions', range: '1-6', subpoints: ['Horses', 'Lampstand', 'Scroll'] },
+            { title: 'Questions on Fasting', range: '7-8', subpoints: ['Obedience > Ritual'] },
+            { title: 'Coming King', range: '9-14', subpoints: ['Donkey entry', 'Pierced One', 'Refiner\'s Fire'] }
+        ]
+    },
+    {
+        id: 'malachi', bookName: 'Malachi', theme: 'Sincerity',
+        sections: [
+            { title: 'God\'s Love', range: '1:1-5', subpoints: ['Jacob loved, Esau hated'] },
+            { title: 'Priests\' Sins', range: '1:6-2:9', subpoints: ['Blemished offerings'] },
+            { title: 'People\'s Sins', range: '2:10-4:6', subpoints: ['Divorce', 'Tithing', 'Sun of Righteousness'] }
+        ]
+    },
+    // GOSPELS
+    {
+        id: 'matthew', bookName: 'Matthew', theme: 'Jesus the King',
+        sections: [
+            { title: 'Presentation of King', range: '1-4', subpoints: ['Genealogy', 'Birth', 'Baptism'] },
+            { title: 'Proclamation (Sermon)', range: '5-7', subpoints: ['Beatitudes', 'Law fulfilled'] },
+            { title: 'Power', range: '8-10', subpoints: ['Miracles', 'Mission'] },
+            { title: 'Rejection', range: '11-16', subpoints: ['Parables', 'Pharisees'] },
+            { title: 'Preparation', range: '17-25', subpoints: ['Transfiguration', 'Olivet Discourse'] },
+            { title: 'Passion & Resurrection', range: '26-28', subpoints: ['Cross', 'Great Commission'] }
+        ]
+    },
+    {
+        id: 'mark', bookName: 'Mark', theme: 'Jesus the Servant',
+        sections: [
+            { title: 'Servant Witness (Galilee)', range: '1-9', subpoints: ['Immediate action', 'Miracles'] },
+            { title: 'Servant Way (Journey)', range: '10', subpoints: ['Discipleship costs'] },
+            { title: 'Servant Week (Jerusalem)', range: '11-16', subpoints: ['Passion', 'Empty Tomb'] }
+        ]
+    },
+    {
+        id: 'luke', bookName: 'Luke', theme: 'Jesus the Son of Man',
+        sections: [
+            { title: 'Introduction', range: '1-4', subpoints: ['Birth', 'Childhood', 'Genealogy back to Adam'] },
+            { title: 'Ministry in Galilee', range: '4-9', subpoints: ['Teaching', 'Healing'] },
+            { title: 'Journey to Jerusalem', range: '9-19', subpoints: ['Parables (Prodigal Son, Samaritan)'] },
+            { title: 'Jerusalem Ministry', range: '19-21', subpoints: ['Entry', 'Temple'] },
+            { title: 'Death & Resurrection', range: '22-24', subpoints: ['Emmaus Road', 'Ascension'] }
+        ]
+    },
+    {
+        id: 'john', bookName: 'John', theme: 'Jesus the Son of God',
+        sections: [
+            { title: 'Incarnation', range: '1', subpoints: ['Word made flesh'] },
+            { title: 'Book of Signs', range: '2-12', subpoints: ['7 Signs', 'I AM Statements'] },
+            { title: 'Book of Glory', range: '13-20', subpoints: ['Upper Room', 'Prayer', 'Passion'] },
+            { title: 'Epilogue', range: '21', subpoints: ['Peter Restored'] }
+        ]
+    },
+    // HISTORY
+    {
+        id: 'acts', bookName: 'Acts', theme: 'Spread of Gospel',
+        sections: [
+            { title: 'Church in Jerusalem', range: '1-7', subpoints: ['Pentecost', 'Stephen'] },
+            { title: 'Judea and Samaria', range: '8-12', subpoints: ['Philip', 'Saul\'s Conversion', 'Peter\'s Vision'] },
+            { title: 'Ends of the Earth', range: '13-28', subpoints: ['Paul\'s 3 Journeys', 'Rome'] }
+        ]
+    },
+    // PAULINE EPISTLES
+    {
+        id: 'romans', bookName: 'Romans', theme: 'Righteousness of God',
+        sections: [
+            { title: 'Sin (Condemnation)', range: '1-3', subpoints: ['All guilty'] },
+            { title: 'Salvation (Justification)', range: '3-5', subpoints: ['Faith alone', 'Peace'] },
+            { title: 'Sanctification', range: '6-8', subpoints: ['Dead to sin', 'Spirit life'] },
+            { title: 'Sovereignty (Israel)', range: '9-11', subpoints: ['Remnant', 'Graffed in'] },
+            { title: 'Service (Application)', range: '12-16', subpoints: ['Living Sacrifice'] }
+        ]
+    },
+    {
+        id: '1corinthians', bookName: '1 Corinthians', theme: 'Correction',
+        sections: [
+            { title: 'Divisions', range: '1-4', subpoints: ['Wisdom of God', 'Leaders'] },
+            { title: 'Disorders', range: '5-6', subpoints: ['Immorality', 'Lawsuits'] },
+            { title: 'Difficulties', range: '7-14', subpoints: ['Marriage', 'Idols', 'Gifts', 'Love (13)'] },
+            { title: 'Doctrine', range: '15', subpoints: ['Resurrection'] },
+            { title: 'Duties', range: '16', subpoints: ['Collection'] }
+        ]
+    },
+    {
+        id: '2corinthians', bookName: '2 Corinthians', theme: 'Paul\'s Defense',
+        sections: [
+            { title: 'Paul\'s Ministry', range: '1-7', subpoints: ['Comfort', 'New Covenant', 'Jars of Clay'] },
+            { title: 'Generous Giving', range: '8-9', subpoints: ['Sowing/Reaping'] },
+            { title: 'Paul\'s Authority', range: '10-13', subpoints: ['Thorn in flesh', 'Weakness is strength'] }
+        ]
+    },
+    {
+        id: 'galatians', bookName: 'Galatians', theme: 'Freedom in Christ',
+        sections: [
+            { title: 'Gospel Defense', range: '1-2', subpoints: ['No other gospel', 'Paul\'s history'] },
+            { title: 'Gospel Doctrine', range: '3-4', subpoints: ['Faith vs Works', 'Sons vs Slaves'] },
+            { title: 'Gospel Duty', range: '5-6', subpoints: ['Fruit of Spirit', 'Walking in Spirit'] }
+        ]
+    },
+    {
+        id: 'ephesians', bookName: 'Ephesians', theme: 'The Church',
+        sections: [
+            { title: 'Wealth (Doctrine)', range: '1-3', subpoints: ['Chosen', 'Grace', 'One Body', 'Prayer'] },
+            { title: 'Walk (Duty)', range: '4-6', subpoints: ['Unity', 'Husband/Wife', 'Armor of God'] }
+        ]
+    },
+    {
+        id: 'philippians', bookName: 'Philippians', theme: 'Joy',
+        sections: [
+            { title: 'Joy in Suffering', range: '1', subpoints: ['To live is Christ'] },
+            { title: 'Joy in Serving', range: '2', subpoints: ['Mind of Christ', 'Humility'] },
+            { title: 'Joy in Believing', range: '3', subpoints: ['Goal of the Prize'] },
+            { title: 'Joy in Giving', range: '4', subpoints: ['Contentment'] }
+        ]
+    },
+    {
+        id: 'colossians', bookName: 'Colossians', theme: 'Supremacy of Christ',
+        sections: [
+            { title: 'Doctrine: Christ Preeminent', range: '1-2', subpoints: ['Image of God', 'Fullness', 'No Legalism'] },
+            { title: 'Duty: Christ Lived Out', range: '3-4', subpoints: ['New Self', 'Household Codes'] }
+        ]
+    },
+    {
+        id: '1thessalonians', bookName: '1 Thessalonians', theme: 'Christ\'s Return',
+        sections: [
+            { title: 'Looking Back', range: '1-3', subpoints: ['Faith/Love', 'Paul\'s example'] },
+            { title: 'Looking Forward', range: '4-5', subpoints: ['Rapture', 'Day of Lord', 'Sanctification'] }
+        ]
+    },
+    {
+        id: '2thessalonians', bookName: '2 Thessalonians', theme: 'Day of the Lord',
+        sections: [
+            { title: 'Encouragement', range: '1', subpoints: ['Judgment on persecutors'] },
+            { title: 'Explanation', range: '2', subpoints: ['Man of Lawlessness', 'Restrainer'] },
+            { title: 'Exhortation', range: '3', subpoints: ['Warning against idleness'] }
+        ]
+    },
+    {
+        id: '1timothy', bookName: '1 Timothy', theme: 'Church Order',
+        sections: [
+            { title: 'Doctrine', range: '1', subpoints: ['Warning false teachers'] },
+            { title: 'Worship', range: '2', subpoints: ['Prayer', 'Women'] },
+            { title: 'Leaders', range: '3', subpoints: ['Overseers', 'Deacons'] },
+            { title: 'Practice', range: '4-6', subpoints: ['Pastoral care', 'Money'] }
+        ]
+    },
+    {
+        id: '2timothy', bookName: '2 Timothy', theme: 'Faithfulness',
+        sections: [
+            { title: 'Teacher\'s Perseverance', range: '1-2', subpoints: ['Not ashamed', 'Soldier/Athlete/Farmer'] },
+            { title: 'Teacher\'s Preaching', range: '3-4', subpoints: ['Inspired Scripture', 'Preach the Word'] }
+        ]
+    },
+    {
+        id: 'titus', bookName: 'Titus', theme: 'Good Works',
+        sections: [
+            { title: 'Order in Church', range: '1', subpoints: ['Elders', 'Rebuking'] },
+            { title: 'Order in Home', range: '2', subpoints: ['Older/Younger', 'Grace'] },
+            { title: 'Order in World', range: '3', subpoints: ['Citizenship', 'Good deeds'] }
+        ]
+    },
+    {
+        id: 'philemon', bookName: 'Philemon', theme: 'Forgiveness',
+        sections: [
+            { title: 'Prayer for Philemon', range: '1:1-7', subpoints: ['Love and Faith'] },
+            { title: 'Plea for Onesimus', range: '1:8-25', subpoints: ['Brother, not slave'] }
+        ]
+    },
+    // GENERAL EPISTLES
+    {
+        id: 'hebrews', bookName: 'Hebrews', theme: 'Jesus is Better',
+        sections: [
+            { title: 'Superior Person', range: '1-4', subpoints: ['> Angels', '> Moses', '> Joshua'] },
+            { title: 'Superior Priesthood', range: '5-10', subpoints: ['Melchizedek', 'New Covenant', 'Perfect Sacrifice'] },
+            { title: 'Superior Principle (Faith)', range: '11-13', subpoints: ['Hall of Faith', 'Endurance'] }
+        ]
+    },
+    {
+        id: 'james', bookName: 'James', theme: 'Faith in Action',
+        sections: [
+            { title: 'Authentic Faith...', range: '1', subpoints: ['Tested by Trials', 'Obeys Word'] },
+            { title: 'Faith & Works', range: '2', subpoints: ['Favoritism', 'Demons believe'] },
+            { title: 'Faith & Tongue', range: '3', subpoints: ['Taming tongue', 'Wisdom'] },
+            { title: 'Faith & Submission', range: '4-5', subpoints: ['Worldliness', 'Patience', 'Prayer'] }
+        ]
+    },
+    {
+        id: '1peter', bookName: '1 Peter', theme: 'Suffering & Glory',
+        sections: [
+            { title: 'Salvation', range: '1-2:10', subpoints: ['Living Hope', 'Living Stones'] },
+            { title: 'Submission', range: '2:11-3:12', subpoints: ['Authorities', 'Spouses'] },
+            { title: 'Suffering', range: '3:13-5:14', subpoints: ['Fiery ordeal', 'Shepherds'] }
+        ]
+    },
+    {
+        id: '2peter', bookName: '2 Peter', theme: 'Knowledge of God',
+        sections: [
+            { title: 'True Knowledge', range: '1', subpoints: ['Growth', 'Prophecy'] },
+            { title: 'False Teachers', range: '2', subpoints: ['Condemnation'] },
+            { title: 'Sure Return', range: '3', subpoints: ['Day of Lord', 'New Heavens'] }
+        ]
+    },
+    {
+        id: '1john', bookName: '1 John', theme: 'Fellowship & Assurance',
+        sections: [
+            { title: 'God is Light', range: '1-2', subpoints: ['Walk in light', 'Advocate'] },
+            { title: 'God is Love', range: '3-4', subpoints: ['Love one another', 'Testing spirits'] },
+            { title: 'God is Life', range: '5', subpoints: ['Victory', 'Assurance'] }
+        ]
+    },
+    {
+        id: '2john', bookName: '2 John', theme: 'Truth',
+        sections: [
+            { title: 'Walk in Truth', range: '1:1-6', subpoints: ['Commandment to love'] },
+            { title: 'Watch for Deceivers', range: '1:7-13', subpoints: ['Don\'t welcome false teachers'] }
+        ]
+    },
+    {
+        id: '3john', bookName: '3 John', theme: 'Hospitality',
+        sections: [
+            { title: 'Commendation (Gaius)', range: '1:1-8', subpoints: ['Walking in truth'] },
+            { title: 'Condemnation (Diotrephes)', range: '1:9-14', subpoints: ['Loves to be first'] }
+        ]
+    },
+    {
+        id: 'jude', bookName: 'Jude', theme: 'Contend for Faith',
+        sections: [
+            { title: 'Warning', range: '1-16', subpoints: ['Intruders', 'Past judgments'] },
+            { title: 'Exhortation', range: '17-25', subpoints: ['Build yourselves up', 'Doxology'] }
+        ]
+    },
+    {
+        id: 'revelation', bookName: 'Revelation', theme: 'Victory of Christ',
+        sections: [
+            { title: 'Vision of Christ', range: '1', subpoints: ['Son of Man'] },
+            { title: 'Letters to Churches', range: '2-3', subpoints: ['7 Churches'] },
+            { title: 'Tribulation (Seals/Trumpets)', range: '4-11', subpoints: ['Throne Room', '2 Witnesses'] },
+            { title: 'Conflict & Bowls', range: '12-18', subpoints: ['Dragon/Beast', 'Babylon Falls'] },
+            { title: 'Return & Reign', range: '19-20', subpoints: ['Second Coming', 'Millennium'] },
+            { title: 'New Creation', range: '21-22', subpoints: ['New Jerusalem'] }
         ]
     }
 ];
