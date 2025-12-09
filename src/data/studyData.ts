@@ -931,7 +931,7 @@ export const PATTERNS: Pattern[] = [
 ];
 
 export const OUTLINES: BookOutline[] = [
-    // PENTATEUCH
+    // Torah
     {
         id: 'genesis', bookName: 'Genesis', theme: 'Beginnings',
         sections: [

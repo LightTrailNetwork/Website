@@ -20,6 +20,7 @@ export default function Drawer({ isOpen, onClose }: DrawerProps) {
     { path: '/schedule', label: 'Schedule', subtitle: 'Quarterly Plan', icon: LayoutGrid },
     { path: '/table', label: 'Curriculum', subtitle: 'Quarterly Content', icon: Table },
     { path: '/tradition', label: 'Tradition', subtitle: 'Creed & Pyramid', icon: Scroll },
+    { path: '/oldtestament', label: 'Old Testament', subtitle: '39 Books Pyramid', icon: BookOpen },
   ];
 
   const handleItemClick = () => {

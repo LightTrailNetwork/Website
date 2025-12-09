@@ -8,6 +8,7 @@ import Today from './pages/Today';
 import Link from './pages/Link';
 import Settings from './pages/Settings';
 import Tradition from './pages/Tradition';
+import OldTestament from './pages/OldTestament';
 import About from './pages/About';
 import Bible from './pages/Bible';
 import Table from './pages/Table';
@@ -91,6 +92,8 @@ function AppContent() {
         return { title: 'Link & QR', subtitle: 'Connect with your triad members' };
       case '/tradition':
         return { title: 'Tradition', subtitle: 'Our shared creed and passage pyramid' };
+      case '/oldtestament':
+        return { title: 'Old Testament', subtitle: 'Overview of the 39 Books' };
       case '/table':
         return { title: 'T.A.B.L.E.', subtitle: 'Quarter Curriculum' };
       case '/settings':
@@ -142,6 +145,7 @@ function AppContent() {
           <Route path="/" element={<Today />} />
           <Route path="/link" element={<Link />} />
           <Route path="/tradition" element={<Tradition />} />
+          <Route path="/oldtestament" element={<OldTestament />} />
           <Route path="/table" element={<Table />} />
           <Route path="/schedule" element={<Schedule />} />
           <Route path="/bible/study" element={<BibleStudy />} />
