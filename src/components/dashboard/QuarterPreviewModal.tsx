@@ -74,9 +74,8 @@ export default function QuarterPreviewModal({ isOpen, onClose, currentWeekNum }:
                             filteredWeeks.map(week => {
                                 const isCurrent = week.weekNum === currentWeekNum;
                                 const mondayData = week.days['Monday']; // Monday usually holds key metadata
-                                const topic = mondayData?.study || "Rest / Review";
                                 const area = mondayData?.area || (week.session === 'Rest' ? 'Rest' : 'General');
-
+                                // Removed weekly 'topic' variable as we now show daily topics
 
                                 return (
                                     <div
@@ -89,19 +88,16 @@ export default function QuarterPreviewModal({ isOpen, onClose, currentWeekNum }:
                                         </div>
 
                                         <div className="p-4 space-y-4 flex-1 flex flex-col">
-                                            {/* Header: Area & Topic */}
+                                            {/* Header: Area Only */}
                                             <div className="shrink-0">
                                                 <div className="text-[10px] font-bold uppercase text-muted-foreground mb-1 tracking-wider flex items-center gap-1">
                                                     <Microscope className="w-3 h-3" />
                                                     {area}
                                                 </div>
-                                                <h3 className="font-semibold text-foreground text-sm leading-tight line-clamp-2" title={topic}>
-                                                    {topic}
-                                                </h3>
                                             </div>
 
                                             {/* Daily Breakdown */}
-                                            <div className="flex-1 space-y-2 mt-2">
+                                            <div className="flex-1 space-y-3 mt-2">
                                                 <div className="text-[10px] font-bold uppercase text-muted-foreground tracking-wider mb-1">Daily Schedule</div>
                                                 {daysOrder.map(day => {
                                                     const dayData = (week.days as any)[day];
@@ -153,44 +149,55 @@ export default function QuarterPreviewModal({ isOpen, onClose, currentWeekNum }:
                                                         }
                                                     }
 
+                                                    // Determine if we should show a study topic
+                                                    // Only show if it exists, isn't "Fellowship" or "Review", and isn't Saturday
+                                                    const studyTopic = dayData.study;
+                                                    const showTopic = studyTopic && studyTopic !== 'Fellowship' && studyTopic !== 'Review' && !isSaturday;
+
                                                     return (
-                                                        <div key={day} className="flex items-start gap-2 text-xs">
-                                                            <span className={`font-mono font-bold w-6 shrink-0 ${isSaturday ? 'text-orange-500' : 'text-muted-foreground'}`}>{shortDay}</span>
-                                                            {bibleLink ? (
-                                                                <div className="flex flex-wrap items-center gap-1">
-                                                                    <Link
-                                                                        to={bibleLink}
-                                                                        onClick={() => onClose()}
-                                                                        className="text-primary hover:underline hover:text-primary/80 line-clamp-1 font-medium"
-                                                                    >
-                                                                        {content}
-                                                                    </Link>
-                                                                    {memRef && (
-                                                                        memLink ? (
-                                                                            <Link
-                                                                                to={memLink}
-                                                                                onClick={() => onClose()}
-                                                                                className="text-muted-foreground font-normal text-[10px] whitespace-nowrap hover:text-primary hover:underline"
-                                                                            >
-                                                                                {memRef}
-                                                                            </Link>
-                                                                        ) : (
-                                                                            <span className="text-muted-foreground font-normal text-[10px] whitespace-nowrap">
-                                                                                {memRef}
-                                                                            </span>
-                                                                        )
-                                                                    )}
+                                                        <div key={day} className="flex flex-col text-xs space-y-0.5">
+                                                            <div className="flex items-start gap-2">
+                                                                <span className={`font-mono font-bold w-6 shrink-0 ${isSaturday ? 'text-orange-500' : 'text-muted-foreground'}`}>{shortDay}</span>
+                                                                {bibleLink ? (
+                                                                    <div className="flex flex-wrap items-center gap-1">
+                                                                        <Link
+                                                                            to={bibleLink}
+                                                                            onClick={() => onClose()}
+                                                                            className="text-primary hover:underline hover:text-primary/80 line-clamp-1 font-medium"
+                                                                        >
+                                                                            {content}
+                                                                        </Link>
+                                                                        {memRef && (
+                                                                            memLink ? (
+                                                                                <Link
+                                                                                    to={memLink}
+                                                                                    onClick={() => onClose()}
+                                                                                    className="text-muted-foreground font-normal text-[10px] whitespace-nowrap hover:text-primary hover:underline"
+                                                                                >
+                                                                                    {memRef}
+                                                                                </Link>
+                                                                            ) : (
+                                                                                <span className="text-muted-foreground font-normal text-[10px] whitespace-nowrap">
+                                                                                    {memRef}
+                                                                                </span>
+                                                                            )
+                                                                        )}
+                                                                    </div>
+                                                                ) : (
+                                                                    <span className={`text-muted-foreground/80 line-clamp-1 ${type === 'action' ? 'italic text-orange-600/80' : ''}`} title={content}>
+                                                                        {content || '-'}
+                                                                    </span>
+                                                                )}
+                                                            </div>
+                                                            {showTopic && (
+                                                                <div className="pl-8 text-[10px] text-muted-foreground/70 leading-tight">
+                                                                    {studyTopic}
                                                                 </div>
-                                                            ) : (
-                                                                <span className={`text-muted-foreground/80 line-clamp-1 ${type === 'action' ? 'italic text-orange-600/80' : ''}`} title={content}>
-                                                                    {content || '-'}
-                                                                </span>
                                                             )}
                                                         </div>
                                                     )
                                                 })}
                                             </div>
-
                                         </div>
                                     </div>
                                 );
@@ -199,50 +206,52 @@ export default function QuarterPreviewModal({ isOpen, onClose, currentWeekNum }:
                     </div>
 
                     {/* Fellowship Info Footer - Only for Active Sessions */}
-                    {['Session 1', 'Session 2', 'Session 3'].includes(activeSession) && (
-                        <div className="bg-gradient-to-r from-indigo-500/10 to-purple-500/10 border border-indigo-500/20 rounded-xl p-4 md:p-6 flex flex-col md:flex-row gap-6 items-start">
-                            <div className="flex items-center gap-3 text-indigo-500 shrink-0">
-                                <div className="p-3 bg-indigo-500/10 rounded-full">
-                                    <Users className="w-6 h-6" />
+                    {
+                        ['Session 1', 'Session 2', 'Session 3'].includes(activeSession) && (
+                            <div className="bg-gradient-to-r from-indigo-500/10 to-purple-500/10 border border-indigo-500/20 rounded-xl p-4 md:p-6 flex flex-col md:flex-row gap-6 items-start">
+                                <div className="flex items-center gap-3 text-indigo-500 shrink-0">
+                                    <div className="p-3 bg-indigo-500/10 rounded-full">
+                                        <Users className="w-6 h-6" />
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <h3 className="font-bold text-sm uppercase tracking-wide">Weekly Fellowship</h3>
+                                        <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                                            <Clock className="w-3 h-3" />
+                                            <span>Recurring Times</span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="flex flex-col">
-                                    <h3 className="font-bold text-sm uppercase tracking-wide">Weekly Fellowship</h3>
-                                    <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                                        <Clock className="w-3 h-3" />
-                                        <span>Recurring Times</span>
+
+                                <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+                                    <div className="space-y-1">
+                                        <div className="flex items-center gap-2">
+                                            <span className="text-xs font-bold px-2 py-0.5 rounded bg-indigo-500 text-white">TUESDAY</span>
+                                            <span className="text-sm font-semibold text-foreground">Scout Planning</span>
+                                        </div>
+                                        <p className="text-xs text-muted-foreground leading-relaxed">
+                                            <strong>Stewards, Scouts & Pre-Scouts</strong> meet to discuss options for Saturday Serve.
+                                            <br />
+                                            <strong>Mentee & Mentor</strong> meet for evening fellowship.
+                                        </p>
+                                    </div>
+
+                                    <div className="space-y-1">
+                                        <div className="flex items-center gap-2">
+                                            <span className="text-xs font-bold px-2 py-0.5 rounded bg-indigo-500 text-white">THURSDAY</span>
+                                            <span className="text-sm font-semibold text-foreground">Mentor Connect</span>
+                                        </div>
+                                        <p className="text-xs text-muted-foreground leading-relaxed">
+                                            <strong>Mentor & Steward</strong> meet first to finalize Saturday Serve plans.
+                                            <br />
+                                            <strong>Mentee & Mentor</strong> meet afterwards for Saturday Serve planning and evening fellowship.
+                                        </p>
                                     </div>
                                 </div>
                             </div>
-
-                            <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
-                                <div className="space-y-1">
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-xs font-bold px-2 py-0.5 rounded bg-indigo-500 text-white">TUESDAY</span>
-                                        <span className="text-sm font-semibold text-foreground">Scout Planning</span>
-                                    </div>
-                                    <p className="text-xs text-muted-foreground leading-relaxed">
-                                        <strong>Mentor & Steward</strong> meet first to schedule Serve Day (with Scouts/Stewards).
-                                        <br />
-                                        <strong>Mentee & Mentor</strong> meet afterwards to discuss plans and fellowship.
-                                    </p>
-                                </div>
-
-                                <div className="space-y-1">
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-xs font-bold px-2 py-0.5 rounded bg-indigo-500 text-white">THURSDAY</span>
-                                        <span className="text-sm font-semibold text-foreground">Mentor Connect</span>
-                                    </div>
-                                    <p className="text-xs text-muted-foreground leading-relaxed">
-                                        <strong>Mentor & Steward</strong> meet first to finalize Serve Day plans.
-                                        <br />
-                                        <strong>Mentee & Mentor</strong> meet afterwards for evening fellowship.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-                </div>
-            </div>
-        </div>
+                        )
+                    }
+                </div >
+            </div >
+        </div >
     );
 }
