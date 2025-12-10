@@ -81,7 +81,7 @@ export default function OldTestament() {
                             Old Testament Overview
                         </div>
                         <p className="text-xs text-muted-foreground italic mt-1">
-                            39 Lines from 39 Books mapped to 3 recurring levels of pyramids
+                            39 Passages from 39 Books mapped to 3 recurring levels of pyramids
                         </p>
                     </h2>
                     <p className="text-lg text-muted-foreground leading-relaxed font-light">

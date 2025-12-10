@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Calendar, Scroll, X, Book, Table, LayoutGrid, Home, Brain, BookOpen, Loader2, ChevronDown, ChevronRight, Library } from 'lucide-react';
 import { useSettings } from '../context/SettingsContext';
@@ -24,6 +24,13 @@ export default function Drawer({ isOpen, onClose }: DrawerProps) {
 
   // State to track expanded groups
   const [expandedGroups, setExpandedGroups] = useState<string[]>([]);
+
+  // Reset expanded groups when drawer closes
+  useEffect(() => {
+    if (!isOpen) {
+      setExpandedGroups([]);
+    }
+  }, [isOpen]);
 
   const toggleGroup = (groupId: string) => {
     setExpandedGroups(prev =>
