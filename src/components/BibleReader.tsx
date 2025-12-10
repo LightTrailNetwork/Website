@@ -134,10 +134,12 @@ export default function BibleReader() {
     }, [location]);
 
     // Swipe Navigation State
+    // Swipe Navigation State
     const [touchStart, setTouchStart] = useState<{ x: number, y: number } | null>(null);
     const [touchEnd, setTouchEnd] = useState<{ x: number, y: number } | null>(null);
     const [swipeAxis, setSwipeAxis] = useState<'horizontal' | 'vertical' | null>(null);
     const [translateX, setTranslateX] = useState(0);
+    const [isDragging, setIsDragging] = useState(false);
     const { scrollDirection, isAtTop } = useScrollDirection();
 
     // Mnemonic Interaction State
@@ -1276,6 +1278,7 @@ export default function BibleReader() {
     const onTouchStart = (e: React.TouchEvent) => {
         if (e.touches.length > 0) {
             setTouchStart({ x: e.touches[0]!.clientX, y: e.touches[0]!.clientY });
+            setIsDragging(true);
         }
         setTouchEnd(null);
         setSwipeAxis(null);
@@ -1287,6 +1290,8 @@ export default function BibleReader() {
 
         const currentX = e.touches[0]!.clientX;
         const currentY = e.touches[0]!.clientY;
+        // diffX > 0 means finger moved LEFT (dragging content left)
+        // diffX < 0 means finger moved RIGHT (dragging content right)
         const diffX = touchStart.x - currentX;
         const diffY = touchStart.y - currentY;
 
@@ -1300,24 +1305,34 @@ export default function BibleReader() {
         }
 
         if (swipeAxis === 'horizontal') {
-            setTranslateX(-diffX);
+            // Apply resistance using tanh for a smooth cap
+            // We want to limit the maximum visual displacement
+            const MAX_DRAG_DISTANCE = 120; // Max pixels the page will visually move
+            const DRAG_RESISTANCE = 0.5; // How much the page moves vs finger distance
+
+            const rawDrag = -diffX; // Negative because moving left (postive diffX) should be negative translate
+
+            // Soft limit formula
+            const dampedDrag = MAX_DRAG_DISTANCE * Math.tanh(rawDrag * DRAG_RESISTANCE / MAX_DRAG_DISTANCE);
+
+            setTranslateX(dampedDrag);
         }
 
         setTouchEnd({ x: currentX, y: currentY });
     };
 
     const onTouchEnd = () => {
+        setIsDragging(false);
+
         if (!touchStart || !touchEnd) return;
 
         if (swipeAxis === 'horizontal') {
-            const distance = touchStart.x - touchEnd.x;
-            const isLeftSwipe = distance > 100;
-            const isRightSwipe = distance < -100;
+            const NAV_THRESHOLD = 60; // Pixels needed to trigger navigation
 
-            if (isLeftSwipe && canGoNext) {
-                handleNext();
-            } else if (isRightSwipe && canGoPrev) {
+            if (translateX > NAV_THRESHOLD && canGoPrev) {
                 handlePrev();
+            } else if (translateX < -NAV_THRESHOLD && canGoNext) {
+                handleNext();
             }
         }
 
@@ -1329,11 +1344,30 @@ export default function BibleReader() {
 
     return (
         <div
-            className="flex flex-col sm:gap-0 relative max-w-7xl mx-auto px-0 sm:px-4"
+            className="flex flex-col sm:gap-0 relative max-w-7xl mx-auto px-0 sm:px-4 touch-pan-y"
         >
             <div className="flex gap-6 relative">
+                {/* Pull Indicators (Reveal Behind) */}
+                <div className="absolute inset-y-0 left-0 w-16 flex items-center justify-center z-0 pointer-events-none">
+                    <div className={`flex flex-col items-center gap-2 transition-all duration-300 ${translateX > 0 && canGoPrev ? 'opacity-100' : 'opacity-0'}`} style={{ opacity: Math.min(translateX / 60, 1), transform: `scale(${0.8 + Math.min(translateX / 100, 0.4)})` }}>
+                        <div className={`p-3 rounded-full transition-colors duration-300 ${translateX > 60 ? 'bg-primary text-primary-foreground shadow-[0_0_15px_rgba(var(--primary),0.5)]' : 'bg-secondary/20 text-muted-foreground'}`}>
+                            <ChevronLeft className="w-6 h-6" />
+                        </div>
+                        <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest bg-background/80 px-2 py-0.5 rounded-full">Previous</span>
+                    </div>
+                </div>
+
+                <div className="absolute inset-y-0 right-0 w-16 flex items-center justify-center z-0 pointer-events-none">
+                    <div className={`flex flex-col items-center gap-2 transition-all duration-300 ${translateX < 0 && canGoNext ? 'opacity-100' : 'opacity-0'}`} style={{ opacity: Math.min(-translateX / 60, 1), transform: `scale(${0.8 + Math.min(-translateX / 100, 0.4)})` }}>
+                        <div className={`p-3 rounded-full transition-colors duration-300 ${translateX < -60 ? 'bg-primary text-primary-foreground shadow-[0_0_15px_rgba(var(--primary),0.5)]' : 'bg-secondary/20 text-muted-foreground'}`}>
+                            <ChevronRight className="w-6 h-6" />
+                        </div>
+                        <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest bg-background/80 px-2 py-0.5 rounded-full">Next</span>
+                    </div>
+                </div>
+
                 <div
-                    className={`flex-1 w-full lg:max-w-3xl mx-auto pb-20 animate-fade-in transition-all duration-75 ease-out ${showCommentary ? 'lg:mr-[320px]' : ''}`}
+                    className={`flex-1 w-full lg:max-w-3xl mx-auto pb-20 animate-fade-in ease-out bg-background relative z-10 ${showCommentary ? 'lg:mr-[320px]' : ''} ${isDragging ? 'duration-0' : 'transition-transform duration-300'}`}
                     style={translateX !== 0 ? { transform: `translateX(${translateX}px)` } : undefined}
                     onTouchStart={onTouchStart}
                     onTouchMove={onTouchMove}
