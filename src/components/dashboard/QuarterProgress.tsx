@@ -43,7 +43,7 @@ export default function QuarterProgress({ info, onClick }: QuarterProgressProps)
                 <div>
                     <div className="flex items-center gap-2 mb-2">
                         <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-primary/10 text-primary uppercase tracking-wider">
-                            Quarter {quarter}
+                            Quarter {quarter} • Week {weekNum}
                         </span>
                         {isPrep && <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-yellow-500/10 text-yellow-600 uppercase tracking-wider">Prep Week</span>}
                         {isRest && <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-green-500/10 text-green-600 uppercase tracking-wider">Rest Week</span>}

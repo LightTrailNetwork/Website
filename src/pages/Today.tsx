@@ -133,6 +133,7 @@ export default function Today() {
         isOpen={isPreviewOpen}
         onClose={() => setIsPreviewOpen(false)}
         currentWeekNum={weekNum}
+        initialSession={quarterInfo.session}
       />
 
       {/* 1. Visual Progress Header */}

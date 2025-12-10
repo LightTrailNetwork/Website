@@ -61,10 +61,10 @@ export default function Drawer({ isOpen, onClose }: DrawerProps) {
     {
       id: 'quarterly',
       label: 'Quarterly Plan',
-      subtitle: 'Curriculum & Schedule',
+      subtitle: 'Schedule & Curriculum',
       icon: LayoutGrid,
       subItems: [
-        { id: 'schedule', path: '/schedule', label: 'Schedule', subtitle: 'Overview', icon: Calendar },
+        { id: 'schedule', path: '/schedule', label: 'Schedule', subtitle: 'Plan', icon: Calendar },
         { id: 'curriculum', path: '/table', label: 'Curriculum', subtitle: 'Content', icon: Table },
       ]
     },

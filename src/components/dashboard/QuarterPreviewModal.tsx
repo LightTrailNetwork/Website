@@ -8,11 +8,22 @@ interface QuarterPreviewModalProps {
     isOpen: boolean;
     onClose: () => void;
     currentWeekNum: number;
+    initialSession?: string;
 }
 
-export default function QuarterPreviewModal({ isOpen, onClose, currentWeekNum }: QuarterPreviewModalProps) {
+export default function QuarterPreviewModal({ isOpen, onClose, currentWeekNum, initialSession }: QuarterPreviewModalProps) {
     const [activeSession, setActiveSession] = useState<'Preparation' | 'Session 1' | 'Session 2' | 'Session 3' | 'Rest'>('Session 1');
     const navigate = useNavigate();
+
+    // Sync active session with initialSession when modal opens
+    React.useEffect(() => {
+        if (isOpen && initialSession) {
+            // Validate that it is a valid session type before setting
+            if (['Preparation', 'Session 1', 'Session 2', 'Session 3', 'Rest'].includes(initialSession)) {
+                setActiveSession(initialSession as any);
+            }
+        }
+    }, [isOpen, initialSession]);
 
     if (!isOpen) return null;
 
