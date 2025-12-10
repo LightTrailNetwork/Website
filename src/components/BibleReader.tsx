@@ -144,7 +144,14 @@ export default function BibleReader() {
     const [activeVerse, setActiveVerse] = useState<number | null>(null);
 
     // History State
-    const [history, setHistory] = useState<{ label: string; path: string }[]>([]);
+    const [history, setHistory] = useState<{ label: string; path: string }[]>(() => {
+        try {
+            const saved = localStorage.getItem('bible_nav_history');
+            return saved ? JSON.parse(saved) : [];
+        } catch {
+            return [];
+        }
+    });
     const [showHistory, setShowHistory] = useState(false);
 
     // Update History
@@ -155,7 +162,13 @@ export default function BibleReader() {
 
             setHistory(prev => {
                 const newHistory = prev.filter(h => h.path !== path); // Remove if exists (to move to top)
-                return [{ label, path }, ...newHistory].slice(0, 10); // Add to top, limit to 10
+                const updated = [{ label, path }, ...newHistory].slice(0, 20); // Add to top, limit to 20
+                try {
+                    localStorage.setItem('bible_nav_history', JSON.stringify(updated));
+                } catch (e) {
+                    console.warn('Failed to save history', e);
+                }
+                return updated;
             });
         }
     }, [bsbChapter]);
