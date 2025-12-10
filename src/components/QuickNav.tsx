@@ -11,10 +11,12 @@ interface QuickNavProps {
     books: BibleBook[];
     onNavigate: (bookId: string, chapter: number, verse?: number) => void;
     onNavigateToBookOverview?: (bookId: string) => void;
+
     initialBook?: BibleBook | null;
+    initialChapter?: number;
 }
 
-export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigateToBookOverview, initialBook }: QuickNavProps) {
+export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigateToBookOverview, initialBook, initialChapter }: QuickNavProps) {
     const [selectedNavBook, setSelectedNavBook] = useState<BibleBook | null>(null);
     const [selectedNavChapter, setSelectedNavChapter] = useState<number | null>(null);
 
@@ -51,14 +53,37 @@ export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigat
 
     useEffect(() => {
         if (isOpen && !selectedNavBook && initialBook && bookFilter === 'ALL' && !bookSearchQuery) {
+            // Scroll book into view
             setTimeout(() => {
-                const element = document.getElementById(`book-item-${initialBook.id}`);
-                if (element) {
-                    element.scrollIntoView({ block: 'center', behavior: 'smooth' });
+                const bookElement = document.getElementById(`book-item-${initialBook.id}`);
+                if (bookElement) {
+                    bookElement.scrollIntoView({ block: 'center', behavior: 'smooth' });
                 }
             }, 100);
+
+            // Scroll chapter into view if present
+            if (initialChapter && chapterListRef.current) {
+                setTimeout(() => {
+                    const chapterButton = document.getElementById(`quicknav-chapter-${initialChapter}`);
+                    const container = chapterListRef.current;
+                    if (chapterButton && container) {
+                        const containerRect = container.getBoundingClientRect();
+                        const buttonRect = chapterButton.getBoundingClientRect();
+
+                        // Calculate center position
+                        const relativeLeft = buttonRect.left - containerRect.left;
+                        const currentScrollLeft = container.scrollLeft;
+                        const centerOffset = (containerRect.width / 2) - (buttonRect.width / 2);
+
+                        container.scrollTo({
+                            left: currentScrollLeft + relativeLeft - centerOffset,
+                            behavior: 'smooth'
+                        });
+                    }
+                }, 100);
+            }
         }
-    }, [isOpen, selectedNavBook, initialBook, bookFilter, bookSearchQuery]);
+    }, [isOpen, selectedNavBook, initialBook, initialChapter, bookFilter, bookSearchQuery]);
 
     // Derived filtered lists
     const filteredBooks = useMemo(() => {
@@ -145,18 +170,24 @@ export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigat
                                         onWheel={handleWheel}
                                         className="flex-1 overflow-x-auto flex items-center gap-1 pb-1 scrollbar-hide mask-linear-fade [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']"
                                     >
-                                        {Array.from({ length: initialBook.numberOfChapters }, (_, i) => i + 1).map(chap => (
-                                            <button
-                                                key={chap}
-                                                onClick={() => {
-                                                    onNavigate(initialBook.id, chap);
-                                                    handleClose();
-                                                }}
-                                                className="w-8 h-8 shrink-0 flex items-center justify-center rounded-md text-xs font-medium hover:bg-primary/10 hover:text-primary transition-colors"
-                                            >
-                                                {chap}
-                                            </button>
-                                        ))}
+                                        {Array.from({ length: initialBook.numberOfChapters }, (_, i) => i + 1).map(chap => {
+                                            const isActive = initialChapter === chap;
+                                            return (
+                                                <button
+                                                    key={chap}
+                                                    id={`quicknav-chapter-${chap}`}
+                                                    onClick={() => {
+                                                        onNavigate(initialBook.id, chap);
+                                                        handleClose();
+                                                    }}
+                                                    className={`w-8 h-8 shrink-0 flex items-center justify-center rounded-md text-xs font-medium transition-all ${isActive
+                                                        ? 'bg-primary text-primary-foreground font-bold shadow-sm scale-105'
+                                                        : 'hover:bg-primary/10 hover:text-primary text-muted-foreground'}`}
+                                                >
+                                                    {chap}
+                                                </button>
+                                            );
+                                        })}
                                     </div>
                                 </div>
                             ) : (

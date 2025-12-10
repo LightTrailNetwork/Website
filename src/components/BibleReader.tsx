@@ -1720,6 +1720,7 @@ export default function BibleReader() {
                     navigate(`/bible/read/${bookName}`);
                 }}
                 initialBook={bsbChapter?.book}
+                initialChapter={parseInt(chapter || '1')}
             />
 
 
