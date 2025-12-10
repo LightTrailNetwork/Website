@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Menu, Settings, WifiOff, Loader2, CheckCircle, Info, Book } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useScrollDirection } from '../hooks/useScrollDirection';
 import { useSettings } from '../context/SettingsContext';
 
@@ -11,6 +12,7 @@ interface HeaderProps {
 }
 
 export default function Header({ onMenuClick, onSettingsClick, title, subtitle }: HeaderProps) {
+  const navigate = useNavigate();
   const { scrollDirection, isAtTop } = useScrollDirection();
   const { isOffline, downloadStatus } = useSettings();
   const isHidden = scrollDirection === 'down' && !isAtTop;
@@ -57,14 +59,14 @@ export default function Header({ onMenuClick, onSettingsClick, title, subtitle }
               <Menu className="w-6 h-6" />
             </button>
 
-            <a href="/" className="flex flex-col hover:opacity-80 transition-opacity">
+            <Link to="/" className="flex flex-col hover:opacity-80 transition-opacity">
               <h1 className="text-lg sm:text-xl font-semibold text-foreground">{title}</h1>
               {subtitle && (
                 <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">
                   {subtitle}
                 </p>
               )}
-            </a>
+            </Link>
           </div>
 
           {/* Right side - Settings Button */}
@@ -77,13 +79,27 @@ export default function Header({ onMenuClick, onSettingsClick, title, subtitle }
             )}
 
             {/* Quick Link: Bible Reader */}
-            <a
-              href="/bible/read"
+            <button
+              onClick={() => {
+                try {
+                  const lastRead = localStorage.getItem('last_read_bible_location');
+                  if (lastRead) {
+                    const { bookId, chapter } = JSON.parse(lastRead);
+                    if (bookId && chapter) {
+                      navigate(`/bible/read/${bookId}/${chapter}`);
+                      return;
+                    }
+                  }
+                } catch (e) {
+                  // Ignore error and fallback
+                }
+                navigate('/bible/read');
+              }}
               className="p-2 text-muted-foreground hover:text-primary hover:bg-accent/50 rounded-full transition-colors"
-              title="Bible Reader"
+              title="Bible Reader (Resume)"
             >
               <Book className="w-5 h-5" />
-            </a>
+            </button>
 
             {/* Download Progress */}
             {bsbStatus?.isDownloading && (

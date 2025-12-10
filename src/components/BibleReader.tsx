@@ -27,6 +27,17 @@ export default function BibleReader() {
         }
     }, [location.pathname, navType, chapter, bookId, location.state]);
 
+    // Save persistence location
+    useEffect(() => {
+        if (bookId && chapter) {
+            try {
+                localStorage.setItem('last_read_bible_location', JSON.stringify({ bookId, chapter }));
+            } catch (e) {
+                console.warn('Failed to save persistence location', e);
+            }
+        }
+    }, [bookId, chapter]);
+
     const [bsbChapter, setBsbChapter] = useState<BibleChapter | null>(null);
     const [msbChapter, setMsbChapter] = useState<BibleChapter | null>(null);
     const [loading, setLoading] = useState(true);
