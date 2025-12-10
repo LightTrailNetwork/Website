@@ -147,7 +147,7 @@ export const quarterlySchedule: WeekSchedule[] = [
         days: {
             Monday: { read: "Memorize Your Testimony", area: "Tradition" },
             Tuesday: {},
-            Wednesday: { read: "Practice the first Tradition and its 13 Outer Passages." },
+            Wednesday: { read: "Practice the Tradition creed and its 13 Outer Passages." },
             Thursday: { action: "Fast" },
             Friday: { action: "Cloak Ceremony" },
             Saturday: { action: "Steak Dinner" } // Non-Sabbath

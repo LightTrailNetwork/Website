@@ -163,7 +163,7 @@ export const ACROSTIC_DATA: Record<number, AcrosticDetail> = {
         tableLetter: "B",
         area: "Bible",
         subMnemonic: "STORY",
-        subMnemonicHighlight: "S",
+        subMnemonicHighlight: undefined,
         focusTerm: undefined, // Remove intermediate "Bible" focus term
         focusHighlight: undefined,
         deepMnemonic: undefined, // Remove deep to avoid duplication if Sub is STORY
@@ -181,7 +181,7 @@ export const ACROSTIC_DATA: Record<number, AcrosticDetail> = {
         weekNum: 9,
         tableLetter: "E",
         area: "Ethos", // E in TABLE
-        subMnemonic: "ETHOS", // Sub
+        subMnemonic: undefined, // Sub
         subMnemonicHighlight: undefined,
         focusTerm: undefined,
         focusHighlight: undefined,
