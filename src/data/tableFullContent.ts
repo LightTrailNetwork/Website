@@ -1319,7 +1319,7 @@ Brotherly: Fellowship`
     },
     {
         section: "Ethos",
-        subsection: "The Core HABITS of a Christian MAN",
+        subsection: "The ETHOS of the Triads",
         topic: "Honor",
         mentee: `"Love one another with brotherly affection. Outdo one another in showing honor." Romans 12:10
 
@@ -1425,7 +1425,7 @@ Study Time plus Followup through Message/Video or Fellowship depending on the da
     },
     {
         section: "Ethos",
-        subsection: "Organization",
+        subsection: "The ETHOS of the Triads",
         topic: "Structure",
         mentee: `Roles`,
         mentor: `Triple Triads`,
@@ -1433,7 +1433,7 @@ Study Time plus Followup through Message/Video or Fellowship depending on the da
     },
     {
         section: "Ethos",
-        subsection: "Stewardship",
+        subsection: "The ETHOS of the Triads",
         topic: "Triad Tribe",
         mentee: `The group of men who have been members of this triad in the past.`,
         mentor: `The group of men who have been members of this triad in the past.`,

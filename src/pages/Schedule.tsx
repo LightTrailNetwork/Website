@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Calendar, CheckCircle2, ChevronDown, ChevronUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { quarterlySchedule, scoutSchedule, preScoutSchedule } from '../data/tableData';
+import { getWeekMnemonicInfo } from '../data/curriculumMnemonics';
 import { useProfile } from '../hooks/useProfile';
 import { Role } from '../data/types';
 import { getBibleLink } from '../utils/linkUtils';
@@ -174,11 +175,25 @@ export default function Schedule() {
                                             )}
                                         </td>
                                         <td className="p-4 text-muted-foreground text-xs">
-                                            {displayArea && (
-                                                <span className="px-2 py-1 rounded-full bg-muted border border-border whitespace-nowrap">
-                                                    {displayArea}
-                                                </span>
-                                            )}
+                                            {(() => {
+                                                const mnemonic = getWeekMnemonicInfo(week.weekNum);
+                                                if (mnemonic && !isScoutOrPreScout && week.session !== 'Rest') {
+                                                    return (
+                                                        <div className="flex flex-col gap-1 items-start">
+                                                            {mnemonic.tags.map((tag, idx) => (
+                                                                <span key={idx} title={tag.tooltip} className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-primary/10 text-primary uppercase tracking-wide whitespace-nowrap">
+                                                                    {tag.label}
+                                                                </span>
+                                                            ))}
+                                                        </div>
+                                                    );
+                                                }
+                                                return displayArea && (
+                                                    <span className="px-2 py-1 rounded-full bg-muted border border-border whitespace-nowrap">
+                                                        {displayArea}
+                                                    </span>
+                                                );
+                                            })()}
                                         </td>
                                     </tr>
                                 );
@@ -261,11 +276,25 @@ export default function Schedule() {
                                             <div key={dayIdx} className="p-4 space-y-3">
                                                 <div className="flex items-center justify-between">
                                                     <span className="font-medium text-sm text-muted-foreground">{dayName}</span>
-                                                    {displayArea && (
-                                                        <span className="text-xs px-2 py-0.5 rounded-full bg-muted border border-border text-muted-foreground whitespace-nowrap">
-                                                            {displayArea}
-                                                        </span>
-                                                    )}
+                                                    {(() => {
+                                                        const mnemonic = getWeekMnemonicInfo(week.weekNum);
+                                                        if (mnemonic && !isScoutOrPreScout && week.session !== 'Rest' && dayIdx === 0) {
+                                                            return (
+                                                                <div className="flex flex-wrap gap-1 justify-end max-w-[60%]">
+                                                                    {mnemonic.tags.slice(0, 2).map((tag, idx) => (
+                                                                        <span key={idx} className="text-[10px] px-1.5 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20 whitespace-nowrap">
+                                                                            {tag.label}
+                                                                        </span>
+                                                                    ))}
+                                                                </div>
+                                                            )
+                                                        }
+                                                        return displayArea && (
+                                                            <span className="text-xs px-2 py-0.5 rounded-full bg-muted border border-border text-muted-foreground whitespace-nowrap">
+                                                                {displayArea}
+                                                            </span>
+                                                        );
+                                                    })()}
                                                 </div>
 
                                                 {displayRead && (

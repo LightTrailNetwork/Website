@@ -30,7 +30,7 @@ export default function QuarterProgress({ info, onClick }: QuarterProgressProps)
         >
             {/* Click Indicator */}
             {onClick && (
-                <div className="absolute top-3 right-3 opacity-60 hover:opacity-100 transition-opacity text-xs font-medium text-muted-foreground flex items-center gap-1 bg-background/50 backdrop-blur-sm px-2 py-0.5 rounded-full border border-transparent hover:border-border/50">
+                <div className="md:absolute md:top-3 md:right-3 mb-4 md:mb-0 w-fit ml-auto md:ml-0 opacity-80 md:opacity-60 hover:opacity-100 transition-opacity text-xs font-medium text-muted-foreground flex items-center gap-1 bg-background/50 backdrop-blur-sm px-2 py-0.5 rounded-full border border-transparent hover:border-border/50">
                     <Info className="w-3 h-3" />
                     View Plan
                 </div>

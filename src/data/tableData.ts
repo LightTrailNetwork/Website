@@ -145,9 +145,9 @@ export const quarterlySchedule: WeekSchedule[] = [
         weekNum: 0,
         session: 'Preparation',
         days: {
-            Monday: { read: "Your 1 Sentence Testimony", area: "Tradition" },
+            Monday: { read: "Memorize Your Testimony", area: "Tradition" },
             Tuesday: {},
-            Wednesday: { read: "I AIM to Abide in God, Imitate a Man of God, and Mobilize into the Way of God." },
+            Wednesday: { read: "Practice the first Tradition and its 13 Outer Passages." },
             Thursday: { action: "Fast" },
             Friday: { action: "Cloak Ceremony" },
             Saturday: { action: "Steak Dinner" } // Non-Sabbath
@@ -325,14 +325,14 @@ export const quarterlySchedule: WeekSchedule[] = [
             Monday: {
                 read: "Hebrews 4",
                 memorize: "For the word of God is living and active... - Hebrews 4:12 BSB",
-                study: "Causation, Information, Entropy and Consciousness Apologetics",
+                study: "Space, Causation, and Information (SCI) Apologetics",
                 area: "Apologetics Science"
             },
             Tuesday: { read: "Devotional", memorize: "Review", study: "Fellowship" },
             Wednesday: {
                 read: "James 1",
                 memorize: "Consider it pure joy, my brothers... - James 1:2 BSB",
-                study: "Space, Nature, and Earth Apologetics",
+                study: "Entropy, Nature, Consciousness, and Earth (ENCE) Apologetics",
                 area: "Apologetics Science"
             },
             Thursday: { read: "Devotional", memorize: "Review", study: "Fellowship" },

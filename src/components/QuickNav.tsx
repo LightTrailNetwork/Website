@@ -294,7 +294,7 @@ export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigat
                                 className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all flex items-center gap-2 ${activeTab === 'mnemonics' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
                             >
                                 <Brain className="w-4 h-4" />
-                                Mnemonics
+                                Acrostics
                             </button>
                         </div>
                         <button onClick={handleClose} className="p-2 hover:bg-accent/10 rounded-full">

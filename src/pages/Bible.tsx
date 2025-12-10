@@ -133,7 +133,7 @@ function BibleHome() {
                                 }`}
                         >
                             <List className="w-4 h-4" />
-                            Book Mnemonics
+                            Book Acrostics
                         </button>
                     </div>
                 </div>

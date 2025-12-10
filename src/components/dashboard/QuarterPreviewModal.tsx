@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { X, Calendar, BookOpen, Brain, Microscope, CheckCircle2, Users, Clock } from 'lucide-react';
 import { quarterlySchedule } from '../../data/tableData';
+import { getWeekMnemonicInfo } from '../../data/curriculumMnemonics';
+import { ACROSTIC_DATA } from '../../data/acrosticDetails';
 import { getBibleLink } from '../../utils/linkUtils';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -131,114 +133,280 @@ export default function QuarterPreviewModal({ isOpen, onClose, currentWeekNum, i
                                         </div>
 
                                         <div className="p-4 space-y-4 flex-1 flex flex-col">
-                                            {/* Header: Area Only */}
-                                            <div className="shrink-0">
-                                                <div className="text-[10px] font-bold uppercase text-muted-foreground mb-1 tracking-wider flex items-center gap-1">
-                                                    <Microscope className="w-3 h-3" />
-                                                    {area}
-                                                </div>
+                                            {/* Header: Area & Mnemonics */}
+                                            <div className="shrink-0 space-y-1">
+                                                {(() => {
+                                                    const acrostic = ACROSTIC_DATA[week.weekNum];
+
+                                                    if (!acrostic) {
+                                                        return (
+                                                            <div className="text-[10px] font-bold uppercase text-muted-foreground mb-1 tracking-wider flex items-center gap-1">
+                                                                <Microscope className="w-3 h-3" />
+                                                                Week {week.weekNum}
+                                                            </div>
+                                                        );
+                                                    }
+
+                                                    // Paths for linking
+                                                    const areaSlug = acrostic.area.toLowerCase();
+                                                    const focusSlug = acrostic.focusTerm?.toLowerCase() || '';
+                                                    const deepLink = `/curriculum/table/${areaSlug}/${focusSlug}`;
+
+                                                    // Highlight Helper
+                                                    const highlightText = (text: string | undefined, highlight: string | undefined) => {
+                                                        if (!text) return null;
+                                                        if (!highlight) return <span>{text}</span>;
+
+                                                        const idx = text.toUpperCase().indexOf(highlight.toUpperCase());
+                                                        if (idx !== -1) {
+                                                            return (
+                                                                <>
+                                                                    {text.substring(0, idx)}
+                                                                    <span className="text-primary font-bold underline decoration-2 underline-offset-2">
+                                                                        {text.substring(idx, idx + highlight.length)}
+                                                                    </span>
+                                                                    {text.substring(idx + highlight.length)}
+                                                                </>
+                                                            );
+                                                        }
+                                                        return <span>{text}</span>;
+                                                    };
+
+                                                    return (
+                                                        <div className="flex flex-wrap items-baseline gap-2">
+                                                            {/* T.A.B.L.E. */}
+                                                            <Link to={`/curriculum/table/${areaSlug}`} className="text-[10px] font-bold text-muted-foreground hover:text-primary tracking-widest">
+                                                                {['T', 'A', 'B', 'L', 'E'].map(c => (
+                                                                    <span key={c} className={c === acrostic.tableLetter ? "text-primary font-black underline decoration-2" : "opacity-50"}>{c}.</span>
+                                                                ))}
+                                                            </Link>
+
+                                                            <span className="text-muted-foreground/30 text-xs">›</span>
+
+                                                            <Link to={`/curriculum/table/${areaSlug}`} className="text-[10px] font-bold text-muted-foreground hover:text-primary uppercase tracking-wider">
+                                                                {acrostic.area}
+                                                            </Link>
+
+                                                            {acrostic.subMnemonic && (
+                                                                <>
+                                                                    <span className="text-muted-foreground/30 text-xs">›</span>
+                                                                    <span className="text-[10px] font-bold text-muted-foreground tracking-widest" title="Sub-Mnemonic">
+                                                                        {highlightText(acrostic.subMnemonic, acrostic.subMnemonicHighlight)}
+                                                                    </span>
+                                                                </>
+                                                            )}
+
+                                                            {acrostic.focusTerm && (
+                                                                <>
+                                                                    <span className="text-muted-foreground/30 text-xs">›</span>
+                                                                    <Link
+                                                                        to={deepLink}
+                                                                        onClick={() => onClose()}
+                                                                        className="font-bold text-sm text-primary tracking-tight group"
+                                                                    >
+                                                                        {highlightText(acrostic.focusTerm, acrostic.focusHighlight)}
+                                                                    </Link>
+                                                                </>
+                                                            )}
+
+                                                            {acrostic.deepMnemonic && (
+                                                                <>
+                                                                    <span className="text-muted-foreground/30 text-xs">›</span>
+                                                                    <span className="text-[10px] font-bold text-muted-foreground tracking-widest" title="Deep Mnemonic">
+                                                                        {acrostic.deepMnemonic}
+                                                                    </span>
+                                                                </>
+                                                            )}
+                                                        </div>
+                                                    );
+                                                })()}
                                             </div>
 
                                             {/* Daily Breakdown */}
                                             {week.session !== 'Rest' && (
                                                 <div className="flex-1 space-y-3 mt-2">
                                                     <div className="text-[10px] font-bold uppercase text-muted-foreground tracking-wider mb-1">Daily Schedule</div>
-                                                    {daysOrder.map(day => {
-                                                        const dayData = (week.days as any)[day];
+                                                    {daysOrder.map(dayName => {
+                                                        const dayData = (week.days as any)[dayName];
                                                         if (!dayData) return null;
 
-                                                        const isSaturday = day === 'Saturday';
-                                                        const shortDay = day.slice(0, 3);
+                                                        const isSaturday = dayName === 'Saturday';
+                                                        const shortDay = dayName.slice(0, 3);
+                                                        const topicText = dayData.study || '';
 
                                                         let content = dayData.read;
                                                         let type = 'read';
-
                                                         if (isSaturday && dayData.action) {
-                                                            content = dayData.action;
-                                                            type = 'action';
+                                                            content = dayData.action; type = 'action';
                                                         } else if (!content && dayData.action) {
-                                                            content = dayData.action;
-                                                            type = 'action';
+                                                            content = dayData.action; type = 'action';
                                                         }
 
-                                                        if (!content && week.session !== 'Rest') return null;
+                                                        const isToday = false;
 
+                                                        // Highlight Logic
+                                                        const renderTopic = () => {
+                                                            const acrostic = ACROSTIC_DATA[week.weekNum];
+                                                            if (!acrostic || !acrostic.dailyHighlights || !topicText) return topicText;
+
+                                                            const rules = acrostic.dailyHighlights.filter(h => dayName.startsWith(h.day));
+                                                            if (rules.length === 0) return topicText;
+
+                                                            // Find all highlight ranges
+                                                            // Each range: { start, end, highlight }
+                                                            const ranges: { start: number; end: number; }[] = [];
+
+                                                            rules.forEach(rule => {
+                                                                if (!rule.highlight) return;
+
+                                                                // Strategy:
+                                                                // 1. If 'term' is present, find term first, then highlight within that term
+                                                                // 2. If no 'term', find highlight directly in topicText
+                                                                // 3. For multiple occurrence (like 'R' in 'Rivalry, Relevance'), try to match carefully
+
+                                                                // Only taking first occurrence per rule to keep it simple unless we need global match?
+                                                                // User examples imply specific words.
+
+                                                                if (rule.term && topicText.includes(rule.term)) {
+                                                                    const termIdx = topicText.indexOf(rule.term);
+                                                                    const hIdx = rule.term.indexOf(rule.highlight);
+                                                                    if (hIdx !== -1) {
+                                                                        const start = termIdx + hIdx;
+                                                                        const end = start + rule.highlight.length;
+                                                                        ranges.push({ start, end });
+                                                                    }
+                                                                } else if (!rule.term && topicText.includes(rule.highlight)) {
+                                                                    // Direct match (dangerous if multiple, but efficient)
+                                                                    const start = topicText.indexOf(rule.highlight);
+                                                                    if (start !== -1) {
+                                                                        ranges.push({ start, end: start + rule.highlight.length });
+                                                                    }
+                                                                }
+                                                            });
+
+                                                            if (ranges.length === 0) return topicText;
+
+                                                            // Sort ranges
+                                                            ranges.sort((a, b) => a.start - b.start);
+
+                                                            // build result
+                                                            const result: React.ReactNode[] = [];
+                                                            let currentIndex = 0;
+
+                                                            ranges.forEach((range, i) => {
+                                                                if (range.start < currentIndex) return; // Overlap or duplicate ignored
+
+                                                                // Text before
+                                                                if (range.start > currentIndex) {
+                                                                    result.push(<span key={`text-${i}`}>{topicText.substring(currentIndex, range.start)}</span>);
+                                                                }
+
+                                                                // Highlighted text
+                                                                result.push(
+                                                                    <span key={`hl-${i}`} className="text-primary font-bold underline decoration-2 underline-offset-2">
+                                                                        {topicText.substring(range.start, range.end)}
+                                                                    </span>
+                                                                );
+
+                                                                currentIndex = range.end;
+                                                            });
+
+                                                            // Remaining text
+                                                            if (currentIndex < topicText.length) {
+                                                                result.push(<span key="text-end">{topicText.substring(currentIndex)}</span>);
+                                                            }
+
+                                                            return <>{result}</>;
+                                                        };
+
+                                                        // Link Logic
+                                                        const acrostic = ACROSTIC_DATA[week.weekNum];
+                                                        let topicLink = '';
+                                                        if (acrostic && topicText) {
+                                                            const s = acrostic.area.toLowerCase();
+                                                            const ss = acrostic.focusTerm?.toLowerCase();
+                                                            const rule = acrostic.dailyHighlights?.find(h => dayName.startsWith(h.day));
+                                                            const rawSlug = rule?.slug ? rule.slug : (rule?.term ? rule.term : topicText.split(' ')[0]);
+                                                            const topicSlug = rawSlug.toLowerCase();
+                                                            if (s && ss) {
+                                                                topicLink = `/curriculum/table/${s}/${ss}/${topicSlug}`;
+                                                            }
+                                                        }
+
+                                                        const showTopic = topicText && topicText !== 'Fellowship' && topicText !== 'Review' && !isSaturday;
                                                         const bibleLink = type === 'read' && content ? getBibleLink(content) : null;
 
-                                                        // Parse Memory Verse if available (format: "Text... - Ref Version")
                                                         let memRef = null;
                                                         let memLink = null;
-
                                                         if (dayData.memorize && content) {
                                                             const parts = dayData.memorize.split(' - ');
                                                             if (parts.length > 1) {
-                                                                const fullRef = parts[1]; // e.g. "Matthew 28:19 BSB"
-                                                                // Remove version
-                                                                const refOnly = fullRef.replace(/ [A-Z]+$/, ''); // "Matthew 28:19"
+                                                                const fullRef = parts[1];
+                                                                const refOnly = fullRef.replace(/ [A-Z]+$/, '');
                                                                 if (refOnly.startsWith(content)) {
-                                                                    // Extract just the verse part (e.g. ":19" -> "v. 19")
                                                                     const versePart = refOnly.substring(content.length).trim().replace(/^:/, '');
                                                                     if (versePart) {
                                                                         memRef = `(mem v. ${versePart})`;
-                                                                        // Construct deep link to verse
                                                                         if (bibleLink) memLink = `${bibleLink}/${versePart}`;
                                                                     }
                                                                 } else {
-                                                                    // Fallback
                                                                     memRef = `(mem ${refOnly})`;
                                                                 }
-                                                                // Clean up if it's "Review"
                                                                 if (dayData.memorize === 'Review') memRef = null;
                                                             }
                                                         }
 
-                                                        // Determine if we should show a study topic
-                                                        // Only show if it exists, isn't "Fellowship" or "Review", and isn't Saturday
-                                                        const studyTopic = dayData.study;
-                                                        const showTopic = studyTopic && studyTopic !== 'Fellowship' && studyTopic !== 'Review' && !isSaturday;
-
                                                         return (
-                                                            <div key={day} className="flex flex-col text-xs space-y-0.5">
-                                                                <div className="flex items-start gap-2">
-                                                                    <span className={`font-mono font-bold w-6 shrink-0 ${isSaturday ? 'text-orange-500' : 'text-muted-foreground'}`}>{shortDay}</span>
-                                                                    {bibleLink ? (
-                                                                        <div className="flex flex-wrap items-center gap-1">
-                                                                            <Link
-                                                                                to={bibleLink}
-                                                                                onClick={() => onClose()}
-                                                                                className="text-primary hover:underline hover:text-primary/80 line-clamp-1 font-medium"
-                                                                            >
-                                                                                {content}
-                                                                            </Link>
-                                                                            {memRef && (
-                                                                                memLink ? (
-                                                                                    <Link
-                                                                                        to={memLink}
-                                                                                        onClick={() => onClose()}
-                                                                                        className="text-muted-foreground font-normal text-[10px] whitespace-nowrap hover:text-primary hover:underline"
-                                                                                    >
-                                                                                        {memRef}
-                                                                                    </Link>
-                                                                                ) : (
-                                                                                    <span className="text-muted-foreground font-normal text-[10px] whitespace-nowrap">
-                                                                                        {memRef}
-                                                                                    </span>
-                                                                                )
-                                                                            )}
-                                                                        </div>
-                                                                    ) : (
-                                                                        <span className={`text-muted-foreground/80 line-clamp-1 ${type === 'action' ? 'italic text-orange-600/80' : ''}`} title={content}>
-                                                                            {content || '-'}
-                                                                        </span>
+                                                            <div key={dayName} className={`relative pl-4 border-l-2 ${isToday ? 'border-primary' : 'border-border'}`}>
+                                                                <div className={`absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full ${isToday ? 'bg-background border-2 border-primary/50' : 'hidden'}`} />
+
+                                                                <div className="flex flex-col text-xs space-y-0.5">
+                                                                    <div className="flex items-start gap-2">
+                                                                        <span className={`font-mono font-bold w-6 shrink-0 ${isSaturday ? 'text-orange-500' : 'text-muted-foreground'} ${isToday ? 'text-primary' : ''}`}>{shortDay}</span>
+                                                                        {bibleLink ? (
+                                                                            <div className="flex flex-wrap items-center gap-1">
+                                                                                <Link
+                                                                                    to={bibleLink}
+                                                                                    onClick={() => onClose()}
+                                                                                    className="text-primary hover:underline hover:text-primary/80 line-clamp-1 font-medium"
+                                                                                >
+                                                                                    {content}
+                                                                                </Link>
+                                                                                {memRef && (
+                                                                                    memLink ? (
+                                                                                        <Link
+                                                                                            to={memLink}
+                                                                                            onClick={() => onClose()}
+                                                                                            className="text-muted-foreground font-normal text-[10px] whitespace-nowrap hover:text-primary hover:underline"
+                                                                                        >
+                                                                                            {memRef}
+                                                                                        </Link>
+                                                                                    ) : (
+                                                                                        <span className="text-muted-foreground font-normal text-[10px] whitespace-nowrap">
+                                                                                            {memRef}
+                                                                                        </span>
+                                                                                    )
+                                                                                )}
+                                                                            </div>
+                                                                        ) : (
+                                                                            <span className={`text-muted-foreground/80 line-clamp-1 ${type === 'action' ? 'italic text-orange-600/80' : ''}`} title={content}>
+                                                                                {content || '-'}
+                                                                            </span>
+                                                                        )}
+                                                                    </div>
+
+                                                                    {showTopic && (
+                                                                        <Link
+                                                                            to={topicLink || '#'}
+                                                                            onClick={() => { if (topicLink) onClose(); }}
+                                                                            className={`pl-8 text-[10px] leading-tight block hover:text-primary transition-colors ${topicLink ? 'text-muted-foreground/70' : 'text-muted-foreground/40 cursor-default'}`}
+                                                                        >
+                                                                            {renderTopic()}
+                                                                        </Link>
                                                                     )}
                                                                 </div>
-                                                                {showTopic && (
-                                                                    <div className="pl-8 text-[10px] text-muted-foreground/70 leading-tight">
-                                                                        {studyTopic}
-                                                                    </div>
-                                                                )}
                                                             </div>
-                                                        )
+                                                        );
                                                     })}
                                                 </div>
                                             )}

@@ -11,7 +11,8 @@ import Tradition from './pages/Tradition';
 import OldTestament from './pages/OldTestament';
 import About from './pages/About';
 import Bible from './pages/Bible';
-import Table from './pages/Table';
+import CurriculumTable from './pages/Table'; // Renamed from Table
+import Curriculum from './pages/Curriculum'; // New page
 import Schedule from './pages/Schedule';
 import BibleStudy from './pages/BibleStudy';
 import StudyToolPage from './pages/StudyToolPage';
@@ -94,8 +95,10 @@ function AppContent() {
         return { title: 'Tradition', subtitle: 'Our shared creed and passage pyramid' };
       case '/oldtestament':
         return { title: 'Old Testament', subtitle: 'All 39 books seen in a new way' };
-      case '/table':
+      case '/curriculum':
         return { title: 'T.A.B.L.E.', subtitle: 'Quarter Curriculum' };
+      case '/curriculum/table':
+        return { title: 'T.A.B.L.E.', subtitle: 'Detailed Reference' };
       case '/settings':
         return { title: 'Role & Settings', subtitle: 'Manage your profile and app settings' };
       case '/about':
@@ -146,7 +149,11 @@ function AppContent() {
           <Route path="/link" element={<Link />} />
           <Route path="/tradition" element={<Tradition />} />
           <Route path="/oldtestament" element={<OldTestament />} />
-          <Route path="/table" element={<Table />} />
+          <Route path="/curriculum" element={<Curriculum />} />
+          <Route path="/curriculum/table" element={<CurriculumTable />} />
+          <Route path="/curriculum/table/:section" element={<CurriculumTable />} />
+          <Route path="/curriculum/table/:section/:subsection" element={<CurriculumTable />} />
+          <Route path="/curriculum/table/:section/:subsection/:topic" element={<CurriculumTable />} />
           <Route path="/schedule" element={<Schedule />} />
           <Route path="/bible/study" element={<BibleStudy />} />
           <Route path="/bible/study/:toolId" element={<StudyToolPage />} />

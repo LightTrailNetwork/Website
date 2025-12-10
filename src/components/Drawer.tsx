@@ -65,7 +65,7 @@ export default function Drawer({ isOpen, onClose }: DrawerProps) {
       icon: LayoutGrid,
       subItems: [
         { id: 'schedule', path: '/schedule', label: 'Schedule', subtitle: 'Plan', icon: Calendar },
-        { id: 'curriculum', path: '/table', label: 'Curriculum', subtitle: 'Content', icon: Table },
+        { id: 'curriculum', path: '/curriculum', label: 'Curriculum', subtitle: 'Content', icon: Table },
       ]
     },
     {
