@@ -72,7 +72,8 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
     const [theme, setTheme] = useState<'light' | 'dark'>(() => {
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'light' || savedTheme === 'dark') return savedTheme;
-        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        // Default to dark mode for new users
+        return 'dark';
     });
 
     const [fontSize, setFontSize] = useState<'small' | 'normal' | 'large' | 'xl'>(() => {

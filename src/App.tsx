@@ -4,6 +4,7 @@ import { Loader2 } from 'lucide-react';
 import Header from './components/Header';
 import Drawer from './components/Drawer';
 import SettingsModal from './components/SettingsModal';
+import WelcomeModal from './components/WelcomeModal';
 import Today from './pages/Today';
 import Link from './pages/Link';
 import Settings from './pages/Settings';
@@ -23,6 +24,7 @@ import { SettingsProvider } from './context/SettingsContext';
 function AppContent() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
   const location = useLocation();
 
@@ -41,6 +43,12 @@ function AppContent() {
           console.log('Creating new profile...');
           await createProfile(undefined, Role.MENTEE);
           console.log('Profile created');
+        }
+
+        // Check welcome message status
+        const hasSeenWelcome = localStorage.getItem('hasSeenWelcome');
+        if (!hasSeenWelcome) {
+          setShowWelcome(true);
         }
 
         setIsInitialized(true);
@@ -102,7 +110,7 @@ function AppContent() {
       case '/settings':
         return { title: 'Role & Settings', subtitle: 'Manage your profile and app settings' };
       case '/about':
-        return { title: 'About & Privacy', subtitle: 'Learn about the app and data handling' };
+        return { title: 'About & Privacy', subtitle: 'Learn about the app and network' };
       default:
         if (location.pathname.startsWith('/bible/study')) {
           return { title: 'Bible Study', subtitle: 'Deep Dive & Group Tools' };
@@ -139,8 +147,19 @@ function AppContent() {
       {/* Drawer Navigation */}
       <Drawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
 
+
+
       {/* Settings Modal */}
       <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
+
+      {/* Welcome Modal */}
+      <WelcomeModal
+        isOpen={showWelcome}
+        onClose={() => {
+          setShowWelcome(false);
+          localStorage.setItem('hasSeenWelcome', 'true');
+        }}
+      />
 
       {/* Main Content */}
       <main className={`min-h-screen ${location.pathname.startsWith('/bible/read') ? 'pt-0 sm:pt-0' : 'pt-12'} pb-10 px-4 max-w-7xl mx-auto animate-slide-up`}>
