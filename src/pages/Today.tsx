@@ -17,7 +17,34 @@ type TimeSection = 'morning' | 'afternoon' | 'night';
 
 export default function Today() {
   const { profile, loading } = useProfile();
-  const [completedTasks, setCompletedTasks] = useState<string[]>([]);
+  // Task Persistence State
+  const [completedTasks, setCompletedTasks] = useState<string[]>(() => {
+    try {
+      const saved = localStorage.getItem('dashboard_daily_tasks');
+      if (saved) {
+        const { date, tasks } = JSON.parse(saved);
+        // Only restore if it's from today
+        if (date === new Date().toDateString()) {
+          return tasks;
+        }
+      }
+    } catch (e) {
+      console.warn('Failed to load tasks', e);
+    }
+    return [];
+  });
+
+  // Persist tasks on change
+  useEffect(() => {
+    try {
+      localStorage.setItem('dashboard_daily_tasks', JSON.stringify({
+        date: new Date().toDateString(),
+        tasks: completedTasks
+      }));
+    } catch (e) {
+      console.warn('Failed to save tasks', e);
+    }
+  }, [completedTasks]);
   const [currentDate] = useState(new Date());
 
   // Accordion State
