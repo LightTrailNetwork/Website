@@ -19,7 +19,7 @@ export default function About() {
       {/* Mission / Core Concept */}
       <div className="prose prose-neutral dark:prose-invert max-w-none">
         <p className="text-center font-medium text-lg leading-relaxed">
-          The Light Trail Network is built to counter isolation and stagnation. work requires community, and growth requires a plan. This application is a digital companion to the tangible work of discipleship.
+          The Light Trail Network is built to counter isolation and stagnation. Work requires community, and growth requires a plan. This application is a digital companion to the tangible work of discipleship.
         </p>
       </div>
 
