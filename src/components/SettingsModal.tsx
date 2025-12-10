@@ -346,22 +346,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                                 <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
                             </button>
 
-                            <div className="h-px bg-border my-2" />
-
-                            {/* Link & QR */}
-                            <button
-                                onClick={() => setCurrentView('link')}
-                                className="w-full flex items-center p-4 hover:bg-accent/5 rounded-lg transition-colors group text-left"
-                            >
-                                <div className="p-2 bg-primary/10 rounded-lg mr-4 group-hover:bg-primary/20 transition-colors">
-                                    <LinkIcon className="w-5 h-5 text-primary" />
-                                </div>
-                                <div className="flex-1">
-                                    <h3 className="font-medium text-foreground">Link & QR</h3>
-                                    <p className="text-xs text-muted-foreground">Connect with your triad</p>
-                                </div>
-                                <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
-                            </button>
+                            {/* Link & QR Section Removed per User Request */}
 
                             {/* Role & Settings */}
                             <button

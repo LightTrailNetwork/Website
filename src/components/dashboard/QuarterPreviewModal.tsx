@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { X, Calendar, BookOpen, Brain, Microscope, CheckCircle2 } from 'lucide-react';
+import { X, Calendar, BookOpen, Brain, Microscope, CheckCircle2, Users, Clock } from 'lucide-react';
 import { quarterlySchedule } from '../../data/tableData';
+import { getBibleLink } from '../../utils/linkUtils';
+import { Link, useNavigate } from 'react-router-dom';
 
 interface QuarterPreviewModalProps {
     isOpen: boolean;
@@ -10,6 +12,7 @@ interface QuarterPreviewModalProps {
 
 export default function QuarterPreviewModal({ isOpen, onClose, currentWeekNum }: QuarterPreviewModalProps) {
     const [activeSession, setActiveSession] = useState<'Preparation' | 'Session 1' | 'Session 2' | 'Session 3' | 'Rest'>('Session 1');
+    const navigate = useNavigate();
 
     if (!isOpen) return null;
 
@@ -25,9 +28,17 @@ export default function QuarterPreviewModal({ isOpen, onClose, currentWeekNum }:
     // Helper to get ordered days Mon-Sat
     const daysOrder = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
+    const handleReadClick = (link: string | null) => {
+        if (link) {
+            onClose(); // Close modal on navigation
+            // If it's an external link or specialized route, handle naturally
+            // If it's a Bible Ref, standard router link
+        }
+    };
+
     return (
         <div className="fixed inset-0 z-[60] bg-background/80 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in">
-            <div className="bg-card border border-border rounded-xl shadow-2xl w-full max-w-4xl max-h-[85vh] flex flex-col overflow-hidden">
+            <div className="bg-card border border-border rounded-xl shadow-2xl w-full max-w-5xl max-h-[90vh] flex flex-col overflow-hidden">
                 {/* Header */}
                 <div className="p-4 border-b border-border flex items-center justify-between shrink-0 bg-card">
                     <div>
@@ -53,8 +64,8 @@ export default function QuarterPreviewModal({ isOpen, onClose, currentWeekNum }:
                 </div>
 
                 {/* Content */}
-                <div className="flex-1 overflow-y-auto p-4 md:p-6 min-h-0">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="flex-1 overflow-y-auto p-4 md:p-6 min-h-0 bg-secondary/5">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
                         {filteredWeeks.length === 0 ? (
                             <div className="col-span-full py-12 text-center text-muted-foreground italic">
                                 No scheduled content for this period.
@@ -65,7 +76,7 @@ export default function QuarterPreviewModal({ isOpen, onClose, currentWeekNum }:
                                 const mondayData = week.days['Monday']; // Monday usually holds key metadata
                                 const topic = mondayData?.study || "Rest / Review";
                                 const area = mondayData?.area || (week.session === 'Rest' ? 'Rest' : 'General');
-                                const memorize = mondayData?.memorize?.split(' - ')[0] || "Review"; // Truncate long verses for preview
+
 
                                 return (
                                     <div
@@ -99,11 +110,6 @@ export default function QuarterPreviewModal({ isOpen, onClose, currentWeekNum }:
                                                     const isSaturday = day === 'Saturday';
                                                     const shortDay = day.slice(0, 3);
 
-                                                    // Logic: 
-                                                    // If Read exists -> Show Read
-                                                    // If Action exists -> Show Action
-                                                    // Else -> Skip or show Rest?
-
                                                     let content = dayData.read;
                                                     let type = 'read';
 
@@ -115,29 +121,74 @@ export default function QuarterPreviewModal({ isOpen, onClose, currentWeekNum }:
                                                         type = 'action';
                                                     }
 
-                                                    if (!content && week.session !== 'Rest') return null; // Don't show empty days in sessions unless it's explicitly 'Rest' session which handles differently
-                                                    if (week.session === 'Rest') return null; // Don't show detailed breakdown for rest weeks generally
+                                                    if (!content && week.session !== 'Rest') return null;
+                                                    if (week.session === 'Rest') return null;
+
+                                                    const bibleLink = type === 'read' && content ? getBibleLink(content) : null;
+
+                                                    // Parse Memory Verse if available (format: "Text... - Ref Version")
+                                                    let memRef = null;
+                                                    let memLink = null;
+
+                                                    if (dayData.memorize && content) {
+                                                        const parts = dayData.memorize.split(' - ');
+                                                        if (parts.length > 1) {
+                                                            const fullRef = parts[1]; // e.g. "Matthew 28:19 BSB"
+                                                            // Remove version
+                                                            const refOnly = fullRef.replace(/ [A-Z]+$/, ''); // "Matthew 28:19"
+                                                            if (refOnly.startsWith(content)) {
+                                                                // Extract just the verse part (e.g. ":19" -> "v. 19")
+                                                                const versePart = refOnly.substring(content.length).trim().replace(/^:/, '');
+                                                                if (versePart) {
+                                                                    memRef = `(mem v. ${versePart})`;
+                                                                    // Construct deep link to verse
+                                                                    if (bibleLink) memLink = `${bibleLink}/${versePart}`;
+                                                                }
+                                                            } else {
+                                                                // Fallback
+                                                                memRef = `(mem ${refOnly})`;
+                                                            }
+                                                            // Clean up if it's "Review"
+                                                            if (dayData.memorize === 'Review') memRef = null;
+                                                        }
+                                                    }
 
                                                     return (
                                                         <div key={day} className="flex items-start gap-2 text-xs">
                                                             <span className={`font-mono font-bold w-6 shrink-0 ${isSaturday ? 'text-orange-500' : 'text-muted-foreground'}`}>{shortDay}</span>
-                                                            <span className={`text-muted-foreground/80 line-clamp-1 ${type === 'action' ? 'italic text-orange-600/80' : ''}`} title={content}>
-                                                                {content || '-'}
-                                                            </span>
+                                                            {bibleLink ? (
+                                                                <div className="flex flex-wrap items-center gap-1">
+                                                                    <Link
+                                                                        to={bibleLink}
+                                                                        onClick={() => onClose()}
+                                                                        className="text-primary hover:underline hover:text-primary/80 line-clamp-1 font-medium"
+                                                                    >
+                                                                        {content}
+                                                                    </Link>
+                                                                    {memRef && (
+                                                                        memLink ? (
+                                                                            <Link
+                                                                                to={memLink}
+                                                                                onClick={() => onClose()}
+                                                                                className="text-muted-foreground font-normal text-[10px] whitespace-nowrap hover:text-primary hover:underline"
+                                                                            >
+                                                                                {memRef}
+                                                                            </Link>
+                                                                        ) : (
+                                                                            <span className="text-muted-foreground font-normal text-[10px] whitespace-nowrap">
+                                                                                {memRef}
+                                                                            </span>
+                                                                        )
+                                                                    )}
+                                                                </div>
+                                                            ) : (
+                                                                <span className={`text-muted-foreground/80 line-clamp-1 ${type === 'action' ? 'italic text-orange-600/80' : ''}`} title={content}>
+                                                                    {content || '-'}
+                                                                </span>
+                                                            )}
                                                         </div>
                                                     )
                                                 })}
-                                            </div>
-
-                                            {/* Memorize Footer */}
-                                            <div className="pt-3 border-t border-border/50 shrink-0">
-                                                <div className="flex items-start gap-2 text-xs">
-                                                    <Brain className="w-3.5 h-3.5 text-orange-500 shrink-0 mt-0.5" />
-                                                    <div className="text-muted-foreground">
-                                                        <span className="font-bold text-foreground mr-1">MEMORIZE:</span>
-                                                        <span className="line-clamp-1" title={mondayData?.memorize}>{memorize}</span>
-                                                    </div>
-                                                </div>
                                             </div>
 
                                         </div>
@@ -146,6 +197,50 @@ export default function QuarterPreviewModal({ isOpen, onClose, currentWeekNum }:
                             })
                         )}
                     </div>
+
+                    {/* Fellowship Info Footer - Only for Active Sessions */}
+                    {['Session 1', 'Session 2', 'Session 3'].includes(activeSession) && (
+                        <div className="bg-gradient-to-r from-indigo-500/10 to-purple-500/10 border border-indigo-500/20 rounded-xl p-4 md:p-6 flex flex-col md:flex-row gap-6 items-start">
+                            <div className="flex items-center gap-3 text-indigo-500 shrink-0">
+                                <div className="p-3 bg-indigo-500/10 rounded-full">
+                                    <Users className="w-6 h-6" />
+                                </div>
+                                <div className="flex flex-col">
+                                    <h3 className="font-bold text-sm uppercase tracking-wide">Weekly Fellowship</h3>
+                                    <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                                        <Clock className="w-3 h-3" />
+                                        <span>Recurring Times</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+                                <div className="space-y-1">
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-xs font-bold px-2 py-0.5 rounded bg-indigo-500 text-white">TUESDAY</span>
+                                        <span className="text-sm font-semibold text-foreground">Scout Planning</span>
+                                    </div>
+                                    <p className="text-xs text-muted-foreground leading-relaxed">
+                                        <strong>Mentor & Steward</strong> meet first to schedule Serve Day (with Scouts/Stewards).
+                                        <br />
+                                        <strong>Mentee & Mentor</strong> meet afterwards to discuss plans and fellowship.
+                                    </p>
+                                </div>
+
+                                <div className="space-y-1">
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-xs font-bold px-2 py-0.5 rounded bg-indigo-500 text-white">THURSDAY</span>
+                                        <span className="text-sm font-semibold text-foreground">Mentor Connect</span>
+                                    </div>
+                                    <p className="text-xs text-muted-foreground leading-relaxed">
+                                        <strong>Mentor & Steward</strong> meet first to finalize Serve Day plans.
+                                        <br />
+                                        <strong>Mentee & Mentor</strong> meet afterwards for evening fellowship.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
