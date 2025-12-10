@@ -162,7 +162,7 @@ export default function QuarterPreviewModal({ isOpen, onClose, currentWeekNum, i
                                                             return (
                                                                 <>
                                                                     {text.substring(0, idx)}
-                                                                    <span className="text-primary font-bold underline decoration-2 underline-offset-2">
+                                                                    <span className="text-primary font-bold">
                                                                         {text.substring(idx, idx + highlight.length)}
                                                                     </span>
                                                                     {text.substring(idx + highlight.length)}
@@ -177,7 +177,7 @@ export default function QuarterPreviewModal({ isOpen, onClose, currentWeekNum, i
                                                             {/* T.A.B.L.E. */}
                                                             <Link to={`/curriculum/table/${areaSlug}`} className="text-[10px] font-bold text-muted-foreground hover:text-primary tracking-widest">
                                                                 {['T', 'A', 'B', 'L', 'E'].map(c => (
-                                                                    <span key={c} className={c === acrostic.tableLetter ? "text-primary font-black underline decoration-2" : "opacity-50"}>{c}.</span>
+                                                                    <span key={c} className={c === acrostic.tableLetter ? "text-primary font-bold" : "opacity-50"}>{c}.</span>
                                                                 ))}
                                                             </Link>
 
@@ -303,7 +303,7 @@ export default function QuarterPreviewModal({ isOpen, onClose, currentWeekNum, i
 
                                                                 // Highlighted text
                                                                 result.push(
-                                                                    <span key={`hl-${i}`} className="text-primary font-bold underline decoration-2 underline-offset-2">
+                                                                    <span key={`hl-${i}`} className="text-primary font-bold">
                                                                         {topicText.substring(range.start, range.end)}
                                                                     </span>
                                                                 );
