@@ -263,7 +263,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
             case 'appearance': return 'Appearance';
             case 'link': return 'Link & QR';
             case 'settings': return 'Role & Settings';
-            case 'about': return 'About & Privacy';
+            case 'about': return 'Privacy & Tech';
             default: return 'Settings & More';
         }
     };
@@ -372,8 +372,8 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                                     <Info className="w-5 h-5 text-primary" />
                                 </div>
                                 <div className="flex-1">
-                                    <h3 className="font-medium text-foreground">About & Privacy</h3>
-                                    <p className="text-xs text-muted-foreground">App info & data</p>
+                                    <h3 className="font-medium text-foreground">Privacy & Tech</h3>
+                                    <p className="text-xs text-muted-foreground">Data & specs</p>
                                 </div>
                                 <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
                             </button>
@@ -811,12 +811,40 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                         <div className="p-4 space-y-6 animate-in slide-in-from-right duration-200">
                             <div className="space-y-4">
                                 <div className="flex items-center gap-2 text-lg font-bold">
-                                    <Info className="w-5 h-5 text-primary" />
-                                    <h3>About</h3>
+                                    <Server className="w-5 h-5 text-primary" />
+                                    <h3>Technical Details</h3>
                                 </div>
-                                <div className="bg-secondary/5 rounded-xl p-4 text-sm text-muted-foreground space-y-2">
-                                    <p>A Christian men's mentorship application built around the "triad" model.</p>
-                                    <p>Designed to help you stay connected to your faith and brothers through the M.A.N. (Morning, Afternoon, Night) rhythm.</p>
+                                <div className="bg-secondary/5 border border-border rounded-xl p-4 shadow-sm text-sm">
+                                    <div className="space-y-3">
+                                        <div className="flex items-center justify-between p-2 hover:bg-accent/50 rounded-lg transition-colors">
+                                            <div className="flex items-center gap-3">
+                                                <Code2 className="w-4 h-4 text-muted-foreground" />
+                                                <span className="font-medium text-foreground">App Type</span>
+                                            </div>
+                                            <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded-md">PWA</span>
+                                        </div>
+                                        <div className="flex items-center justify-between p-2 hover:bg-accent/50 rounded-lg transition-colors">
+                                            <div className="flex items-center gap-3">
+                                                <Database className="w-4 h-4 text-muted-foreground" />
+                                                <span className="font-medium text-foreground">Storage</span>
+                                            </div>
+                                            <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded-md">IndexedDB</span>
+                                        </div>
+                                        <div className="flex items-center justify-between p-2 hover:bg-accent/50 rounded-lg transition-colors">
+                                            <div className="flex items-center gap-3">
+                                                <Wifi className="w-4 h-4 text-muted-foreground" />
+                                                <span className="font-medium text-foreground">Connectivity</span>
+                                            </div>
+                                            <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded-md">Offline-first</span>
+                                        </div>
+                                        <div className="flex items-center justify-between p-2 hover:bg-accent/50 rounded-lg transition-colors">
+                                            <div className="flex items-center gap-3">
+                                                <GitBranch className="w-4 h-4 text-muted-foreground" />
+                                                <span className="font-medium text-foreground">Version</span>
+                                            </div>
+                                            <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded-md">1.0.0</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 

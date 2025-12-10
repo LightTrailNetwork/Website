@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Calendar, Scroll, X, Book, Table, LayoutGrid, Home, Brain, BookOpen, Loader2, ChevronDown, ChevronRight, Library } from 'lucide-react';
+import { Calendar, Scroll, X, Book, Table, LayoutGrid, Home, Brain, BookOpen, Loader2, ChevronDown, ChevronRight, Library, Info } from 'lucide-react';
 import { useSettings } from '../context/SettingsContext';
 
 interface DrawerProps {
@@ -74,6 +74,13 @@ export default function Drawer({ isOpen, onClose }: DrawerProps) {
       label: 'Tradition',
       subtitle: 'Creed & Pyramid',
       icon: Scroll
+    },
+    {
+      id: 'about',
+      path: '/about',
+      label: 'About Light Trail',
+      subtitle: 'Mission & Vision',
+      icon: Info
     },
   ];
 

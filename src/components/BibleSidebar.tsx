@@ -105,10 +105,43 @@ export default function BibleSidebar({
                     if (item.type === 'verse_comment') {
                         return (
                             <div key={index} id={`commentary-verse-${item.verse}`} className="mb-4">
-                                <span className="font-bold text-primary text-xs bg-primary/10 px-1.5 py-0.5 rounded mr-2">
+                                <button
+                                    onClick={() => {
+                                        scrollToVerseInView(item.verse);
+                                        if (window.innerWidth < 1024) {
+                                            setShowCommentary(false);
+                                        }
+                                    }}
+                                    className="font-bold text-primary text-xs bg-primary/10 px-1.5 py-0.5 rounded mr-2 hover:bg-primary/20 transition-colors"
+                                >
                                     Verse {item.verse}
-                                </span>
+                                </button>
                                 <div dangerouslySetInnerHTML={{ __html: item.text }} className="inline" />
+                            </div>
+                        );
+                    }
+                    if (item.type === 'verse') {
+                        return (
+                            <div key={index} id={`commentary-verse-${item.number}`} className="mb-4">
+                                <button
+                                    onClick={() => {
+                                        scrollToVerseInView(item.number);
+                                        if (window.innerWidth < 1024) {
+                                            setShowCommentary(false);
+                                        }
+                                    }}
+                                    className="font-bold text-primary text-xs bg-primary/10 px-1.5 py-0.5 rounded mr-2 hover:bg-primary/20 transition-colors"
+                                >
+                                    Verse {item.number}
+                                </button>
+                                <div className="inline text-foreground/90 leading-relaxed">
+                                    {item.content.map((c, i) => {
+                                        if (typeof c === 'string') return <span key={i}>{c}</span>;
+                                        if ('text' in c) return <span key={i} className={c.wordsOfJesus ? 'text-red-700 dark:text-red-400' : ''}>{c.text}</span>;
+                                        if ('lineBreak' in c && c.lineBreak) return <br key={i} />;
+                                        return null;
+                                    })}
+                                </div>
                             </div>
                         );
                     }
@@ -117,6 +150,31 @@ export default function BibleSidebar({
                     }
                     return null;
                 })}
+            </div>
+        );
+    };
+
+    const renderIntroductionContent = () => {
+        if (!commentaryChapter?.book.introduction) {
+            return (
+                <div className="flex flex-col items-center justify-center h-full text-muted-foreground py-10">
+                    <p className="italic">No introduction available.</p>
+                </div>
+            );
+        }
+
+        const text = commentaryChapter.book.introduction;
+        // Simple check if it looks like HTML (has tags)
+        if (/<[a-z][\s\S]*>/i.test(text)) {
+            return <div dangerouslySetInnerHTML={{ __html: text }} />;
+        }
+
+        // Otherwise treat as plain text and split by newlines
+        return (
+            <div className="space-y-4 text-foreground/90 leading-relaxed">
+                {text.split(/\n+/).map((para, i) => (
+                    para.trim() ? <p key={i}>{para.trim()}</p> : null
+                ))}
             </div>
         );
     };
@@ -194,16 +252,9 @@ export default function BibleSidebar({
                     {renderCommentaryContent()}
                 </div>
 
-                {/* Intro Tab */}
                 <div className={`flex-1 overflow-y-auto px-4 pb-4 custom-scrollbar ${commentaryTab === 'intro' ? '' : 'hidden'}`}>
                     <div className="prose prose-sm dark:prose-invert">
-                        {commentaryChapter?.book.introduction ? (
-                            <div dangerouslySetInnerHTML={{ __html: commentaryChapter.book.introduction }} />
-                        ) : (
-                            <div className="flex flex-col items-center justify-center h-full text-muted-foreground py-10">
-                                <p className="italic">No introduction available.</p>
-                            </div>
-                        )}
+                        {renderIntroductionContent()}
                     </div>
                 </div>
 
@@ -218,9 +269,19 @@ export default function BibleSidebar({
                                             {note.caller || '+'}
                                         </span>
                                         {note.reference && (
-                                            <span className="text-xs text-muted-foreground uppercase tracking-wider">
+                                            <button
+                                                onClick={() => {
+                                                    if (note.reference?.verse) {
+                                                        scrollToVerseInView(note.reference.verse);
+                                                        if (window.innerWidth < 1024) {
+                                                            setShowCommentary(false);
+                                                        }
+                                                    }
+                                                }}
+                                                className="text-xs text-muted-foreground uppercase tracking-wider hover:text-primary hover:underline transition-colors ml-1"
+                                            >
                                                 Verse {note.reference.verse}
-                                            </span>
+                                            </button>
                                         )}
                                     </div>
                                     <p className="text-muted-foreground leading-relaxed">
