@@ -24,6 +24,13 @@ export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigat
     const [activeTab, setActiveTab] = useState<'books' | 'mnemonics'>('books');
 
     const inputRef = useRef<HTMLInputElement>(null);
+    const chapterListRef = useRef<HTMLDivElement>(null);
+
+    const handleWheel = (e: React.WheelEvent) => {
+        if (chapterListRef.current) {
+            chapterListRef.current.scrollLeft += e.deltaY;
+        }
+    };
 
     // Reset state on open
     useEffect(() => {
@@ -41,6 +48,17 @@ export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigat
             inputRef.current.focus();
         }
     }, [isSearchOpen]);
+
+    useEffect(() => {
+        if (isOpen && !selectedNavBook && initialBook && bookFilter === 'ALL' && !bookSearchQuery) {
+            setTimeout(() => {
+                const element = document.getElementById(`book-item-${initialBook.id}`);
+                if (element) {
+                    element.scrollIntoView({ block: 'center', behavior: 'smooth' });
+                }
+            }, 100);
+        }
+    }, [isOpen, selectedNavBook, initialBook, bookFilter, bookSearchQuery]);
 
     // Derived filtered lists
     const filteredBooks = useMemo(() => {
@@ -117,30 +135,58 @@ export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigat
                             >
                                 <Search className="w-5 h-5" />
                             </button>
-                            <div className="flex-1 text-sm text-muted-foreground italic">Select a book...</div>
+
+                            {initialBook ? (
+                                <div className="flex-1 flex items-center gap-3 overflow-hidden animate-fade-in">
+                                    <span className="font-bold whitespace-nowrap">{initialBook.name}</span>
+                                    <div className="h-4 w-[1px] bg-border shrink-0" />
+                                    <div
+                                        ref={chapterListRef}
+                                        onWheel={handleWheel}
+                                        className="flex-1 overflow-x-auto flex items-center gap-1 pb-1 scrollbar-hide mask-linear-fade [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']"
+                                    >
+                                        {Array.from({ length: initialBook.numberOfChapters }, (_, i) => i + 1).map(chap => (
+                                            <button
+                                                key={chap}
+                                                onClick={() => {
+                                                    onNavigate(initialBook.id, chap);
+                                                    handleClose();
+                                                }}
+                                                className="w-8 h-8 shrink-0 flex items-center justify-center rounded-md text-xs font-medium hover:bg-primary/10 hover:text-primary transition-colors"
+                                            >
+                                                {chap}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="flex-1 text-sm text-muted-foreground italic">Select a book...</div>
+                            )}
                         </>
                     )}
                 </div>
-                {!isSearchOpen && (
-                    <div className="flex flex-wrap gap-2 pb-1 animate-fade-in justify-center">
-                        {(['ALL', 'ALPHA', 'CHRONO', 'OT', 'NT'] as const).map(filter => (
-                            <button
-                                key={filter}
-                                onClick={() => setBookFilter(filter)}
-                                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${bookFilter === filter ? 'bg-primary text-primary-foreground' : 'bg-secondary/10 hover:bg-secondary/20 text-foreground'}`}
-                            >
-                                <span className="sm:hidden">{filter === 'ALPHA' ? 'A-Z' : filter === 'CHRONO' ? 'Chron' : filter === 'OT' ? 'OT' : filter === 'NT' ? 'NT' : 'All'}</span>
-                                <span className="hidden sm:inline">
-                                    {filter === 'ALPHA' ? 'Alphabetical' : filter === 'CHRONO' ? 'Chronological' : filter === 'OT' ? 'Old Testament' : filter === 'NT' ? 'New Testament' : 'All Books'}
-                                </span>
-                            </button>
-                        ))}
-                    </div>
-                )}
-            </div>
+                {
+                    !isSearchOpen && (
+                        <div className="flex flex-wrap gap-2 pb-1 animate-fade-in justify-center">
+                            {(['ALL', 'ALPHA', 'CHRONO', 'OT', 'NT'] as const).map(filter => (
+                                <button
+                                    key={filter}
+                                    onClick={() => setBookFilter(filter)}
+                                    className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${bookFilter === filter ? 'bg-primary text-primary-foreground' : 'bg-secondary/10 hover:bg-secondary/20 text-foreground'}`}
+                                >
+                                    <span className="sm:hidden">{filter === 'ALPHA' ? 'A-Z' : filter === 'CHRONO' ? 'Chron' : filter === 'OT' ? 'OT' : filter === 'NT' ? 'NT' : 'All'}</span>
+                                    <span className="hidden sm:inline">
+                                        {filter === 'ALPHA' ? 'Alphabetical' : filter === 'CHRONO' ? 'Chronological' : filter === 'OT' ? 'Old Testament' : filter === 'NT' ? 'New Testament' : 'All Books'}
+                                    </span>
+                                </button>
+                            ))}
+                        </div>
+                    )
+                }
+            </div >
 
             {/* Grid */}
-            <div className="flex-1 overflow-y-auto p-4 min-h-0 overscroll-contain">
+            < div className="flex-1 overflow-y-auto p-4 min-h-0 overscroll-contain" >
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
                     {filteredBooks.map(book => {
                         const chronoData = bookFilter === 'CHRONO' ? CHRONOLOGICAL_BOOKS.find(cb => cb.name === book.name) : null;
@@ -170,8 +216,8 @@ export default function QuickNav({ isOpen, onClose, books, onNavigate, onNavigat
                         );
                     })}
                 </div>
-            </div>
-        </div>
+            </div >
+        </div >
     );
 
     const renderChapterList = () => {
