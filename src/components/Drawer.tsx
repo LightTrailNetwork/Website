@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Calendar, Scroll, X, Book, Table, LayoutGrid, Home, Brain, BookOpen, Loader2, CheckCircle } from 'lucide-react';
+import { Calendar, Scroll, X, Book, Table, LayoutGrid, Home, Brain, BookOpen, Loader2, ChevronDown, ChevronRight, Library } from 'lucide-react';
 import { useSettings } from '../context/SettingsContext';
 
 interface DrawerProps {
@@ -7,20 +8,66 @@ interface DrawerProps {
   onClose: () => void;
 }
 
+type MenuItem = {
+  id: string;
+  label: string;
+  subtitle?: string;
+  icon: any;
+  path?: string;
+  subItems?: MenuItem[];
+};
+
 export default function Drawer({ isOpen, onClose }: DrawerProps) {
   const location = useLocation();
   const { downloadStatus } = useSettings();
   const bsbStatus = downloadStatus?.['BSB'];
 
-  const menuItems = [
-    { path: '/', label: 'Today', subtitle: 'Action Items', icon: Home },
-    { path: '/bible/read', label: 'Bible Reader', subtitle: 'Read Scripture', icon: Book },
-    { path: '/bible/memory', label: 'Bible Memory', subtitle: 'Memorize Scripture', icon: Brain },
-    { path: '/bible/study', label: 'Bible Study', subtitle: 'Deep Dive Tools', icon: BookOpen },
-    { path: '/schedule', label: 'Schedule', subtitle: 'Quarterly Plan', icon: LayoutGrid },
-    { path: '/table', label: 'Curriculum', subtitle: 'Quarterly Content', icon: Table },
-    { path: '/tradition', label: 'Tradition', subtitle: 'Creed & Pyramid', icon: Scroll },
-    { path: '/oldtestament', label: 'Old Testament', subtitle: '39 Books Pyramid', icon: BookOpen },
+  // State to track expanded groups
+  const [expandedGroups, setExpandedGroups] = useState<string[]>([]);
+
+  const toggleGroup = (groupId: string) => {
+    setExpandedGroups(prev =>
+      prev.includes(groupId) ? prev.filter(id => id !== groupId) : [...prev, groupId]
+    );
+  };
+
+  const menuItems: MenuItem[] = [
+    {
+      id: 'today',
+      path: '/',
+      label: 'Today',
+      subtitle: 'Action Items',
+      icon: Home
+    },
+    {
+      id: 'bible',
+      label: 'Bible',
+      subtitle: 'Scripture & Tools',
+      icon: Book,
+      subItems: [
+        { id: 'reader', path: '/bible/read', label: 'Bible Reader', subtitle: 'Read Scripture', icon: BookOpen },
+        { id: 'memory', path: '/bible/memory', label: 'Bible Memory', subtitle: 'Memorize', icon: Brain },
+        { id: 'study', path: '/bible/study', label: 'Bible Study', subtitle: 'Deep Dive', icon: Library },
+        { id: 'ot', path: '/oldtestament', label: 'Old Testament', subtitle: '39 Books', icon: Scroll },
+      ]
+    },
+    {
+      id: 'quarterly',
+      label: 'Quarterly Plan',
+      subtitle: 'Curriculum & Schedule',
+      icon: LayoutGrid,
+      subItems: [
+        { id: 'schedule', path: '/schedule', label: 'Schedule', subtitle: 'Overview', icon: Calendar },
+        { id: 'curriculum', path: '/table', label: 'Curriculum', subtitle: 'Content', icon: Table },
+      ]
+    },
+    {
+      id: 'tradition',
+      path: '/tradition',
+      label: 'Tradition',
+      subtitle: 'Creed & Pyramid',
+      icon: Scroll
+    },
   ];
 
   const handleItemClick = () => {
@@ -28,6 +75,66 @@ export default function Drawer({ isOpen, onClose }: DrawerProps) {
   };
 
   if (!isOpen) return null;
+
+  const renderMenuItem = (item: MenuItem, level: number = 0) => {
+    const Icon = item.icon;
+    const isActive = item.path ? location.pathname === item.path : false;
+    const hasSubItems = item.subItems && item.subItems.length > 0;
+    const isExpanded = expandedGroups.includes(item.id);
+    const isGroupActive = hasSubItems && item.subItems?.some(sub => sub.path === location.pathname);
+
+    // Indentation for nested items
+    const paddingLeft = level === 0 ? 'px-4' : 'px-4 pl-12';
+
+    if (hasSubItems) {
+      return (
+        <div key={item.id} className="space-y-1">
+          <button
+            onClick={() => toggleGroup(item.id)}
+            className={`w-full flex items-center justify-between ${paddingLeft} py-3 rounded-xl transition-all group ${isGroupActive ? 'bg-primary/5' : 'hover:bg-secondary/50'
+              }`}
+          >
+            <div className="flex items-center">
+              <div className={`p-2 rounded-lg mr-4 ${isGroupActive ? 'bg-primary/10 text-primary' : 'bg-background border border-border group-hover:border-primary/20 text-muted-foreground'}`}>
+                <Icon className="w-5 h-5" />
+              </div>
+              <div className="flex flex-col text-left">
+                <span className={`font-semibold text-sm ${isGroupActive ? 'text-foreground' : 'text-foreground'}`}>{item.label}</span>
+                <span className="text-xs text-muted-foreground">{item.subtitle}</span>
+              </div>
+            </div>
+            {isExpanded ? <ChevronDown className="w-4 h-4 text-muted-foreground" /> : <ChevronRight className="w-4 h-4 text-muted-foreground" />}
+          </button>
+
+          {/* SubItems Container */}
+          <div className={`space-y-1 overflow-hidden transition-all duration-300 ease-in-out ${isExpanded ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
+            {item.subItems?.map(subItem => renderMenuItem(subItem, level + 1))}
+          </div>
+        </div>
+      );
+    }
+
+    // Leaf Item
+    return (
+      <Link
+        key={item.id}
+        to={item.path!}
+        onClick={handleItemClick}
+        className={`flex items-center ${paddingLeft} py-3 rounded-xl transition-all group ${isActive
+          ? 'bg-primary text-primary-foreground shadow-md'
+          : 'text-muted-foreground hover:bg-secondary/50 hover:text-foreground'
+          }`}
+      >
+        <div className={`p-2 rounded-lg mr-4 ${isActive ? 'bg-primary-foreground/10' : 'bg-background border border-border group-hover:border-primary/20'}`}>
+          <Icon className={`w-5 h-5 ${isActive ? 'text-primary-foreground' : 'text-muted-foreground group-hover:text-primary'}`} />
+        </div>
+        <div className="flex flex-col">
+          <span className={`font-semibold text-sm ${isActive ? 'text-primary-foreground' : 'text-foreground'}`}>{item.label}</span>
+          <span className={`text-xs ${isActive ? 'text-primary-foreground/80' : 'text-muted-foreground'}`}>{item.subtitle}</span>
+        </div>
+      </Link>
+    );
+  };
 
   return (
     <>
@@ -54,30 +161,8 @@ export default function Drawer({ isOpen, onClose }: DrawerProps) {
         </div>
 
         {/* Menu Items */}
-        <nav className="flex-1 overflow-y-auto py-6 px-3 space-y-2">
-          {menuItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = location.pathname === item.path;
-            return (
-              <Link
-                key={item.path}
-                to={item.path}
-                onClick={handleItemClick}
-                className={`flex items-center px-4 py-3 rounded-xl transition-all group ${isActive
-                  ? 'bg-primary text-primary-foreground shadow-md'
-                  : 'text-muted-foreground hover:bg-secondary/50 hover:text-foreground'
-                  }`}
-              >
-                <div className={`p-2 rounded-lg mr-4 ${isActive ? 'bg-primary-foreground/10' : 'bg-background border border-border group-hover:border-primary/20'}`}>
-                  <Icon className={`w-5 h-5 ${isActive ? 'text-primary-foreground' : 'text-muted-foreground group-hover:text-primary'}`} />
-                </div>
-                <div className="flex flex-col">
-                  <span className={`font-semibold text-sm ${isActive ? 'text-primary-foreground' : 'text-foreground'}`}>{item.label}</span>
-                  <span className={`text-xs ${isActive ? 'text-primary-foreground/80' : 'text-muted-foreground'}`}>{item.subtitle}</span>
-                </div>
-              </Link>
-            );
-          })}
+        <nav className="flex-1 overflow-y-auto py-6 px-3 space-y-1 scrollbar-hide">
+          {menuItems.map(item => renderMenuItem(item))}
         </nav>
 
         {/* Footer */}

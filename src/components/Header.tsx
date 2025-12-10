@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Menu, Settings, WifiOff, Loader2, CheckCircle, Info } from 'lucide-react';
+import { Menu, Settings, WifiOff, Loader2, CheckCircle, Info, Book } from 'lucide-react';
 import { useScrollDirection } from '../hooks/useScrollDirection';
 import { useSettings } from '../context/SettingsContext';
 
@@ -57,14 +57,14 @@ export default function Header({ onMenuClick, onSettingsClick, title, subtitle }
               <Menu className="w-6 h-6" />
             </button>
 
-            <div className="flex flex-col">
+            <a href="/" className="flex flex-col hover:opacity-80 transition-opacity">
               <h1 className="text-lg sm:text-xl font-semibold text-foreground">{title}</h1>
               {subtitle && (
                 <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">
                   {subtitle}
                 </p>
               )}
-            </div>
+            </a>
           </div>
 
           {/* Right side - Settings Button */}
@@ -75,6 +75,15 @@ export default function Header({ onMenuClick, onSettingsClick, title, subtitle }
                 {activeTooltip}
               </div>
             )}
+
+            {/* Quick Link: Bible Reader */}
+            <a
+              href="/bible/read"
+              className="p-2 text-muted-foreground hover:text-primary hover:bg-accent/50 rounded-full transition-colors"
+              title="Bible Reader"
+            >
+              <Book className="w-5 h-5" />
+            </a>
 
             {/* Download Progress */}
             {bsbStatus?.isDownloading && (
