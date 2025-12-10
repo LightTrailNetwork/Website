@@ -283,6 +283,49 @@ export default function QuarterPreviewModal({ isOpen, onClose, currentWeekNum }:
                             </div>
                         )
                     }
+
+                    {/* Next Quarter Preview - Only for Rest Session */}
+                    {activeSession === 'Rest' && (
+                        <div className="bg-secondary/10 border border-border/40 rounded-xl p-4 flex flex-col items-center justify-center text-center space-y-2 mt-2">
+                            <div className="flex items-center gap-2 text-muted-foreground">
+                                <span className="p-1.5 rounded-full bg-secondary text-muted-foreground/50">
+                                    <Clock className="w-4 h-4" />
+                                </span>
+                                <span className="text-xs uppercase tracking-widest font-bold">Up Next</span>
+                            </div>
+                            <p className="text-sm font-medium text-foreground">
+                                Next Quarter begins on <span className="text-primary">
+                                    {(() => {
+                                        const now = new Date();
+                                        const startOfYear = new Date(now.getFullYear(), 0, 1);
+                                        const dayOfYear = Math.floor((now.getTime() - startOfYear.getTime()) / (1000 * 60 * 60 * 24));
+
+                                        // Current Quarter Index
+                                        const quarterIdx = Math.floor(dayOfYear / 91);
+
+                                        // Next Quarter Start Calculation
+                                        const nextQuarterIdx = quarterIdx + 1;
+                                        // Handle year rollover logic if needed, simplify for standard quarters
+                                        const nextQuarterStartMonth = (nextQuarterIdx * 3) % 12; // 0, 3, 6, 9
+                                        const yearOffset = Math.floor((nextQuarterIdx * 3) / 12);
+                                        const nextYear = now.getFullYear() + yearOffset;
+
+                                        const nextQStart = new Date(nextYear, nextQuarterStartMonth, 1);
+
+                                        // Align to Sunday
+                                        const offset = nextQStart.getDay();
+                                        const nextWeek0Start = new Date(nextQStart);
+                                        nextWeek0Start.setDate(nextQStart.getDate() - offset);
+
+                                        return nextWeek0Start.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+                                    })()}
+                                </span>
+                            </p>
+                            <p className="text-xs text-muted-foreground max-w-sm">
+                                Preparation week starts that Sunday.
+                            </p>
+                        </div>
+                    )}
                 </div >
             </div >
         </div >

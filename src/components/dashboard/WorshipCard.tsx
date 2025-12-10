@@ -26,7 +26,7 @@ export default function WorshipCard({ completedTasks, onToggle, readContent }: W
         },
         { id: 'silence', letter: 'S', label: 'Silence', desc: 'Sit quietly for 2 minutes', icon: Hourglass },
         { id: 'hear', letter: 'H', label: 'Hear', desc: 'Write down what God is saying', icon: PenLine },
-        { id: 'anchor_prayer', letter: 'I', label: 'Intercede', desc: 'Pray for others (See Anchor)', icon: Users },
+        { id: 'anchor_prayer', letter: 'I', label: 'Intercede', desc: 'Pray for others (See ANCHOR below)', icon: Users },
         { id: 'practice', letter: 'P', label: 'Practice', desc: 'One act of service today', icon: HandHeart },
     ];
 

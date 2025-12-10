@@ -73,8 +73,8 @@ export default function MemorizationHub() {
         },
         {
             title: "Important Lists",
-            subtitle: "Fruits, Armor, etc.",
-            description: "Memorize key lists like the Fruits of the Spirit, Armor of God, etc.",
+            subtitle: "Gifts, Armor, etc.",
+            description: "Memorize key lists like the Gifts of the Spirit, Armor of God, etc.",
             icon: List,
             color: "text-indigo-500",
             bg: "bg-indigo-500/10",
