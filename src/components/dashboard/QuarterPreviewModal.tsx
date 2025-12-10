@@ -77,13 +77,45 @@ export default function QuarterPreviewModal({ isOpen, onClose, currentWeekNum }:
                                 const area = mondayData?.area || (week.session === 'Rest' ? 'Rest' : 'General');
                                 // Removed weekly 'topic' variable as we now show daily topics
 
+                                const dateRange = (() => {
+                                    const now = new Date();
+                                    const startOfYear = new Date(now.getFullYear(), 0, 1);
+                                    const dayOfYear = Math.floor((now.getTime() - startOfYear.getTime()) / (1000 * 60 * 60 * 24));
+
+                                    // 1. Determine which Quarter we are in (0-3)
+                                    const quarterIdx = Math.floor(dayOfYear / 91);
+                                    const quarterStartMonth = Math.min(quarterIdx * 3, 9);
+
+                                    // 2. Get the 1st of that Quarter's month
+                                    const qStart = new Date(now.getFullYear(), quarterStartMonth, 1);
+
+                                    // 3. Align to the Sunday that begins that week
+                                    // If qStart is Sun (0), offset is 0. If Wed (3), offset is 3 (back to Sun).
+                                    const offset = qStart.getDay();
+                                    const week0Start = new Date(qStart);
+                                    week0Start.setDate(qStart.getDate() - offset);
+
+                                    // 4. Calculate this specific week's range
+                                    const currentWeekStart = new Date(week0Start);
+                                    currentWeekStart.setDate(week0Start.getDate() + (week.weekNum * 7));
+
+                                    const currentWeekEnd = new Date(currentWeekStart);
+                                    currentWeekEnd.setDate(currentWeekStart.getDate() + 6);
+
+                                    const format = (d: Date) => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                                    return `${format(currentWeekStart)} - ${format(currentWeekEnd)}`;
+                                })();
+
                                 return (
                                     <div
                                         key={week.weekNum}
                                         className={`flex flex-col border rounded-xl overflow-hidden shadow-sm transition-all hover:shadow-md hover:border-primary/50 h-full ${isCurrent ? 'ring-2 ring-primary border-primary bg-primary/5' : 'bg-card border-border'}`}
                                     >
                                         <div className="p-3 bg-secondary/20 border-b border-border/50 flex justify-between items-center shrink-0">
-                                            <span className="font-bold text-sm">Week {week.weekNum}</span>
+                                            <div className="flex flex-col">
+                                                <span className="font-bold text-sm">Week {week.weekNum}</span>
+                                                <span className="text-[10px] text-muted-foreground font-medium">{dateRange}</span>
+                                            </div>
                                             {isCurrent && <span className="text-[10px] font-bold px-2 py-0.5 bg-primary text-primary-foreground rounded-full">CURRENT</span>}
                                         </div>
 
@@ -97,107 +129,108 @@ export default function QuarterPreviewModal({ isOpen, onClose, currentWeekNum }:
                                             </div>
 
                                             {/* Daily Breakdown */}
-                                            <div className="flex-1 space-y-3 mt-2">
-                                                <div className="text-[10px] font-bold uppercase text-muted-foreground tracking-wider mb-1">Daily Schedule</div>
-                                                {daysOrder.map(day => {
-                                                    const dayData = (week.days as any)[day];
-                                                    if (!dayData) return null;
+                                            {week.session !== 'Rest' && (
+                                                <div className="flex-1 space-y-3 mt-2">
+                                                    <div className="text-[10px] font-bold uppercase text-muted-foreground tracking-wider mb-1">Daily Schedule</div>
+                                                    {daysOrder.map(day => {
+                                                        const dayData = (week.days as any)[day];
+                                                        if (!dayData) return null;
 
-                                                    const isSaturday = day === 'Saturday';
-                                                    const shortDay = day.slice(0, 3);
+                                                        const isSaturday = day === 'Saturday';
+                                                        const shortDay = day.slice(0, 3);
 
-                                                    let content = dayData.read;
-                                                    let type = 'read';
+                                                        let content = dayData.read;
+                                                        let type = 'read';
 
-                                                    if (isSaturday && dayData.action) {
-                                                        content = dayData.action;
-                                                        type = 'action';
-                                                    } else if (!content && dayData.action) {
-                                                        content = dayData.action;
-                                                        type = 'action';
-                                                    }
-
-                                                    if (!content && week.session !== 'Rest') return null;
-                                                    if (week.session === 'Rest') return null;
-
-                                                    const bibleLink = type === 'read' && content ? getBibleLink(content) : null;
-
-                                                    // Parse Memory Verse if available (format: "Text... - Ref Version")
-                                                    let memRef = null;
-                                                    let memLink = null;
-
-                                                    if (dayData.memorize && content) {
-                                                        const parts = dayData.memorize.split(' - ');
-                                                        if (parts.length > 1) {
-                                                            const fullRef = parts[1]; // e.g. "Matthew 28:19 BSB"
-                                                            // Remove version
-                                                            const refOnly = fullRef.replace(/ [A-Z]+$/, ''); // "Matthew 28:19"
-                                                            if (refOnly.startsWith(content)) {
-                                                                // Extract just the verse part (e.g. ":19" -> "v. 19")
-                                                                const versePart = refOnly.substring(content.length).trim().replace(/^:/, '');
-                                                                if (versePart) {
-                                                                    memRef = `(mem v. ${versePart})`;
-                                                                    // Construct deep link to verse
-                                                                    if (bibleLink) memLink = `${bibleLink}/${versePart}`;
-                                                                }
-                                                            } else {
-                                                                // Fallback
-                                                                memRef = `(mem ${refOnly})`;
-                                                            }
-                                                            // Clean up if it's "Review"
-                                                            if (dayData.memorize === 'Review') memRef = null;
+                                                        if (isSaturday && dayData.action) {
+                                                            content = dayData.action;
+                                                            type = 'action';
+                                                        } else if (!content && dayData.action) {
+                                                            content = dayData.action;
+                                                            type = 'action';
                                                         }
-                                                    }
 
-                                                    // Determine if we should show a study topic
-                                                    // Only show if it exists, isn't "Fellowship" or "Review", and isn't Saturday
-                                                    const studyTopic = dayData.study;
-                                                    const showTopic = studyTopic && studyTopic !== 'Fellowship' && studyTopic !== 'Review' && !isSaturday;
+                                                        if (!content && week.session !== 'Rest') return null;
 
-                                                    return (
-                                                        <div key={day} className="flex flex-col text-xs space-y-0.5">
-                                                            <div className="flex items-start gap-2">
-                                                                <span className={`font-mono font-bold w-6 shrink-0 ${isSaturday ? 'text-orange-500' : 'text-muted-foreground'}`}>{shortDay}</span>
-                                                                {bibleLink ? (
-                                                                    <div className="flex flex-wrap items-center gap-1">
-                                                                        <Link
-                                                                            to={bibleLink}
-                                                                            onClick={() => onClose()}
-                                                                            className="text-primary hover:underline hover:text-primary/80 line-clamp-1 font-medium"
-                                                                        >
-                                                                            {content}
-                                                                        </Link>
-                                                                        {memRef && (
-                                                                            memLink ? (
-                                                                                <Link
-                                                                                    to={memLink}
-                                                                                    onClick={() => onClose()}
-                                                                                    className="text-muted-foreground font-normal text-[10px] whitespace-nowrap hover:text-primary hover:underline"
-                                                                                >
-                                                                                    {memRef}
-                                                                                </Link>
-                                                                            ) : (
-                                                                                <span className="text-muted-foreground font-normal text-[10px] whitespace-nowrap">
-                                                                                    {memRef}
-                                                                                </span>
-                                                                            )
-                                                                        )}
+                                                        const bibleLink = type === 'read' && content ? getBibleLink(content) : null;
+
+                                                        // Parse Memory Verse if available (format: "Text... - Ref Version")
+                                                        let memRef = null;
+                                                        let memLink = null;
+
+                                                        if (dayData.memorize && content) {
+                                                            const parts = dayData.memorize.split(' - ');
+                                                            if (parts.length > 1) {
+                                                                const fullRef = parts[1]; // e.g. "Matthew 28:19 BSB"
+                                                                // Remove version
+                                                                const refOnly = fullRef.replace(/ [A-Z]+$/, ''); // "Matthew 28:19"
+                                                                if (refOnly.startsWith(content)) {
+                                                                    // Extract just the verse part (e.g. ":19" -> "v. 19")
+                                                                    const versePart = refOnly.substring(content.length).trim().replace(/^:/, '');
+                                                                    if (versePart) {
+                                                                        memRef = `(mem v. ${versePart})`;
+                                                                        // Construct deep link to verse
+                                                                        if (bibleLink) memLink = `${bibleLink}/${versePart}`;
+                                                                    }
+                                                                } else {
+                                                                    // Fallback
+                                                                    memRef = `(mem ${refOnly})`;
+                                                                }
+                                                                // Clean up if it's "Review"
+                                                                if (dayData.memorize === 'Review') memRef = null;
+                                                            }
+                                                        }
+
+                                                        // Determine if we should show a study topic
+                                                        // Only show if it exists, isn't "Fellowship" or "Review", and isn't Saturday
+                                                        const studyTopic = dayData.study;
+                                                        const showTopic = studyTopic && studyTopic !== 'Fellowship' && studyTopic !== 'Review' && !isSaturday;
+
+                                                        return (
+                                                            <div key={day} className="flex flex-col text-xs space-y-0.5">
+                                                                <div className="flex items-start gap-2">
+                                                                    <span className={`font-mono font-bold w-6 shrink-0 ${isSaturday ? 'text-orange-500' : 'text-muted-foreground'}`}>{shortDay}</span>
+                                                                    {bibleLink ? (
+                                                                        <div className="flex flex-wrap items-center gap-1">
+                                                                            <Link
+                                                                                to={bibleLink}
+                                                                                onClick={() => onClose()}
+                                                                                className="text-primary hover:underline hover:text-primary/80 line-clamp-1 font-medium"
+                                                                            >
+                                                                                {content}
+                                                                            </Link>
+                                                                            {memRef && (
+                                                                                memLink ? (
+                                                                                    <Link
+                                                                                        to={memLink}
+                                                                                        onClick={() => onClose()}
+                                                                                        className="text-muted-foreground font-normal text-[10px] whitespace-nowrap hover:text-primary hover:underline"
+                                                                                    >
+                                                                                        {memRef}
+                                                                                    </Link>
+                                                                                ) : (
+                                                                                    <span className="text-muted-foreground font-normal text-[10px] whitespace-nowrap">
+                                                                                        {memRef}
+                                                                                    </span>
+                                                                                )
+                                                                            )}
+                                                                        </div>
+                                                                    ) : (
+                                                                        <span className={`text-muted-foreground/80 line-clamp-1 ${type === 'action' ? 'italic text-orange-600/80' : ''}`} title={content}>
+                                                                            {content || '-'}
+                                                                        </span>
+                                                                    )}
+                                                                </div>
+                                                                {showTopic && (
+                                                                    <div className="pl-8 text-[10px] text-muted-foreground/70 leading-tight">
+                                                                        {studyTopic}
                                                                     </div>
-                                                                ) : (
-                                                                    <span className={`text-muted-foreground/80 line-clamp-1 ${type === 'action' ? 'italic text-orange-600/80' : ''}`} title={content}>
-                                                                        {content || '-'}
-                                                                    </span>
                                                                 )}
                                                             </div>
-                                                            {showTopic && (
-                                                                <div className="pl-8 text-[10px] text-muted-foreground/70 leading-tight">
-                                                                    {studyTopic}
-                                                                </div>
-                                                            )}
-                                                        </div>
-                                                    )
-                                                })}
-                                            </div>
+                                                        )
+                                                    })}
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 );
