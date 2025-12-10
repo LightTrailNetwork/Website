@@ -33,7 +33,7 @@ export default function About() {
             <h2 className="text-xl font-semibold">The Triad Model</h2>
           </div>
           <p className="text-muted-foreground leading-relaxed">
-            Our mentorship structure is built on the <strong>Triad</strong>—a robust, five-role system designed to ensure every man is both guided and guiding others.
+            Our mentorship structure is built on the <strong>Triad</strong>—a robust, three-role system designed to ensure every man is both guided and guiding others, along with a Scout and Pre-Scout role for those entering the trail.
           </p>
           <ul className="space-y-3 mt-4">
             <li className="flex items-start gap-3 p-3 bg-card border border-border rounded-xl shadow-sm">
@@ -68,7 +68,7 @@ export default function About() {
             <h2 className="text-xl font-semibold">The M.A.N. Rhythm</h2>
           </div>
           <p className="text-muted-foreground leading-relaxed">
-            Discipline is maintained through a daily rhythm of Morning, Afternoon, and Night (M.A.N.) check-ins.
+            Discipline is maintained through a daily rhythm of Morning, Afternoon, and Night (M.A.N.) rhythyms.
           </p>
 
           <div className="space-y-4 mt-4">
@@ -76,21 +76,21 @@ export default function About() {
               <Sunrise className="w-6 h-6 text-orange-500" />
               <div>
                 <h3 className="font-semibold">Morning</h3>
-                <p className="text-xs text-muted-foreground">Scripture & Prayer</p>
+                <p className="text-xs text-muted-foreground">Worship & Prayer</p>
               </div>
             </div>
             <div className="flex items-center gap-4 p-4 bg-card border border-border rounded-xl">
               <Sun className="w-6 h-6 text-yellow-500" />
               <div>
                 <h3 className="font-semibold">Afternoon</h3>
-                <p className="text-xs text-muted-foreground">Action & Application</p>
+                <p className="text-xs text-muted-foreground">Memorization & Application</p>
               </div>
             </div>
             <div className="flex items-center gap-4 p-4 bg-card border border-border rounded-xl">
               <Moon className="w-6 h-6 text-indigo-500" />
               <div>
                 <h3 className="font-semibold">Night</h3>
-                <p className="text-xs text-muted-foreground">Reflection & Examen</p>
+                <p className="text-xs text-muted-foreground">Study & Fellowship</p>
               </div>
             </div>
           </div>
