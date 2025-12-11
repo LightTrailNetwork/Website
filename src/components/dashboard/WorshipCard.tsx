@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sun, CheckCircle2, Circle, BookOpen, Heart, Mic2, Hourglass, PenLine, Users, HandHeart, CheckCheck } from 'lucide-react';
+import { Sun, CheckCircle2, Circle, BookOpen, Heart, Mic2, Hourglass, PenLine, Users, HandHeart, CheckCheck, Volume2, VolumeX } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getBibleLink } from '../../utils/linkUtils';
 
@@ -12,9 +12,96 @@ interface WorshipCardProps {
 export default function WorshipCard({ completedTasks, onToggle, readContent }: WorshipCardProps) {
     const readLink = readContent ? getBibleLink(readContent) : null;
 
+    // Timer State
+    const [timeLeft, setTimeLeft] = React.useState(120);
+    const [isTimerActive, setIsTimerActive] = React.useState(false);
+    const [isMuted, setIsMuted] = React.useState(() => {
+        if (typeof window !== 'undefined') {
+            return localStorage.getItem('timerMuted') === 'true';
+        }
+        return false;
+    });
+
+    const timerRef = React.useRef<NodeJS.Timeout | null>(null);
+
+    // Play Chime function using AudioContext (no external assets needed)
+    const playChime = React.useCallback(() => {
+        if (typeof window === 'undefined') return;
+        try {
+            const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+            if (!AudioContext) return;
+
+            const ctx = new AudioContext();
+            const osc = ctx.createOscillator();
+            const gainNode = ctx.createGain();
+
+            osc.connect(gainNode);
+            gainNode.connect(ctx.destination);
+
+            // Nice polite chime sound
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(523.25, ctx.currentTime); // C5
+            osc.frequency.exponentialRampToValueAtTime(1046.50, ctx.currentTime + 0.1); // C6
+
+            gainNode.gain.setValueAtTime(0.1, ctx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.5);
+
+            osc.start();
+            osc.stop(ctx.currentTime + 1.5);
+        } catch (e) {
+            console.error("Audio playback error:", e);
+        }
+    }, []);
+
+    // Timer Logic
+    React.useEffect(() => {
+        if (isTimerActive && timeLeft > 0) {
+            timerRef.current = setInterval(() => {
+                setTimeLeft((prev) => prev - 1);
+            }, 1000);
+        } else if (timeLeft === 0 && isTimerActive) {
+            // Timer Finished
+            setIsTimerActive(false);
+            if (!isMuted) playChime();
+
+            // Auto-complete the task if not already done
+            if (!completedTasks.includes('silence')) {
+                onToggle('silence');
+            }
+        }
+
+        return () => {
+            if (timerRef.current) clearInterval(timerRef.current);
+        };
+    }, [isTimerActive, timeLeft, isMuted, playChime, completedTasks, onToggle]);
+
+    const toggleTimer = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (timeLeft === 0) {
+            // Reset
+            setTimeLeft(120);
+            setIsTimerActive(true);
+        } else {
+            setIsTimerActive(!isTimerActive);
+        }
+    };
+
+    const toggleMute = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        const newState = !isMuted;
+        setIsMuted(newState);
+        localStorage.setItem('timerMuted', String(newState));
+    };
+
+    const formatTime = (seconds: number) => {
+        const m = Math.floor(seconds / 60);
+        const s = seconds % 60;
+        return `${m}:${s.toString().padStart(2, '0')}`;
+    };
+
     // Use 'anchor_prayer' instead of 'intercede' to sync with AnchorCard
     const items = [
-        { id: 'worship', letter: 'W', label: 'Worship', desc: 'Begin with praise & thanksgiving', icon: Mic2 },
+        { id: 'worship', letter: 'W', label: 'Worship', desc: 'Begin with a song & praise', icon: Mic2 },
         { id: 'offer', letter: 'O', label: 'Offer', desc: 'Surrender your day to God', icon: Heart },
         {
             id: 'read',
@@ -54,16 +141,29 @@ export default function WorshipCard({ completedTasks, onToggle, readContent }: W
                 {items.map((item) => {
                     const isCompleted = completedTasks.includes(item.id);
                     const Icon = item.icon;
+                    const isSilence = item.id === 'silence';
+
+                    // Determine if the timer UI should be active (either running or clearly manipulated)
+                    const showTimerUI = isSilence && (isTimerActive || timeLeft < 120);
 
                     return (
                         <div
                             key={item.id}
                             className={`flex items-start gap-3 p-4 hover:bg-muted/30 transition-colors group cursor-pointer ${isCompleted ? 'bg-primary/5' : ''}`}
-                            onClick={() => !item.isLink && onToggle(item.id)}
+                            onClick={() => !item.isLink && !showTimerUI && onToggle(item.id)}
                         >
-                            <div className="flex-shrink-0 mt-0.5">
-                                <span className={`flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold ring-1 ring-inset transition-colors ${isCompleted ? 'bg-primary text-primary-foreground ring-primary' : 'bg-secondary/50 text-muted-foreground ring-border'}`}>
-                                    {item.letter}
+                            <div className="flex-shrink-0 mt-0.5" onClick={isSilence ? toggleTimer : undefined}>
+                                <span className={`flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold ring-1 ring-inset transition-colors ${isSilence && (isTimerActive || timeLeft < 120)
+                                    ? 'bg-primary text-primary-foreground ring-primary cursor-pointer hover:bg-primary/90' // Active Timer Style
+                                    : isCompleted
+                                        ? 'bg-primary text-primary-foreground ring-primary'
+                                        : 'bg-secondary/50 text-muted-foreground ring-border'
+                                    }`}>
+                                    {isSilence && timeLeft > 0 ? (
+                                        <Hourglass className={`w-4 h-4 ${isTimerActive ? "animate-pulse" : ""}`} />
+                                    ) : (
+                                        item.letter
+                                    )}
                                 </span>
                             </div>
 
@@ -71,12 +171,30 @@ export default function WorshipCard({ completedTasks, onToggle, readContent }: W
                                 <div className="flex items-center justify-between">
                                     <h4 className={`font-medium text-sm transition-colors ${isCompleted ? 'text-primary' : 'text-foreground'}`}>
                                         {item.label}
+                                        {showTimerUI && timeLeft > 0 && (
+                                            <span className="ml-2 font-mono text-xs bg-muted px-1.5 py-0.5 rounded text-foreground">
+                                                {formatTime(timeLeft)}
+                                            </span>
+                                        )}
                                     </h4>
-                                    {/* For non-links, show checkbox here for easier access? Or whole row click */}
+
+                                    {/* Action Button: Checkbox or Mute */}
                                     {!item.isLink && (
-                                        <button onClick={(e) => { e.stopPropagation(); onToggle(item.id); }}>
-                                            {isCompleted ? <CheckCircle2 className="w-5 h-5 text-primary animate-scale-in" /> : <Circle className="w-5 h-5 text-muted-foreground/30 group-hover:text-primary/50" />}
-                                        </button>
+                                        <div className="flex items-center gap-2">
+                                            {showTimerUI && timeLeft > 0 && (
+                                                <button
+                                                    onClick={toggleMute}
+                                                    className="p-1 hover:bg-muted rounded-full transition-colors text-muted-foreground hover:text-foreground"
+                                                    title={isMuted ? "Unmute" : "Mute"}
+                                                >
+                                                    {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+                                                </button>
+                                            )}
+
+                                            <button onClick={(e) => { e.stopPropagation(); onToggle(item.id); }}>
+                                                {isCompleted ? <CheckCircle2 className="w-5 h-5 text-primary animate-scale-in" /> : <Circle className="w-5 h-5 text-muted-foreground/30 group-hover:text-primary/50" />}
+                                            </button>
+                                        </div>
                                     )}
                                 </div>
 
@@ -98,7 +216,11 @@ export default function WorshipCard({ completedTasks, onToggle, readContent }: W
                                         </button>
                                     </div>
                                 ) : (
-                                    <p className="text-sm text-muted-foreground mt-0.5 line-clamp-1">{item.desc}</p>
+                                    <p className="text-sm text-muted-foreground mt-0.5 leading-snug">
+                                        {showTimerUI
+                                            ? (timeLeft === 0 ? "Completed" : (isTimerActive ? "Counting down..." : "Paused"))
+                                            : item.desc}
+                                    </p>
                                 )}
                             </div>
                         </div>
