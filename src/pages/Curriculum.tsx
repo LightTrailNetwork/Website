@@ -147,7 +147,7 @@ export default function Curriculum() {
     return (
         <div className="min-h-screen bg-background pb-20">
             {/* Header */}
-            <div className="bg-secondary/40 backdrop-blur-md border-b border-border sticky top-0 z-10">
+            <div>
                 <div className="max-w-3xl mx-auto px-4 py-8">
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                         <div>
@@ -160,22 +160,6 @@ export default function Curriculum() {
                                 The T.A.B.L.E. Mnemonic Structure
                             </p>
                         </div>
-
-                        {/* Global Actions */}
-                        <div className="flex items-center gap-2">
-                            <button
-                                onClick={expandAll}
-                                className="text-xs font-medium px-3 py-1.5 rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
-                            >
-                                Expand All
-                            </button>
-                            <button
-                                onClick={collapseAll}
-                                className="text-xs font-medium px-3 py-1.5 rounded-full bg-secondary text-muted-foreground hover:bg-secondary/80 transition-colors"
-                            >
-                                Collapse All
-                            </button>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -183,6 +167,16 @@ export default function Curriculum() {
             {/* Content */}
             <div className="max-w-3xl mx-auto px-4 py-8">
                 <div className="space-y-6">
+                    {/* Toggle Button */}
+                    <div className="flex justify-end">
+                        <button
+                            onClick={expandedItems.size > 0 ? collapseAll : expandAll}
+                            className="text-xs font-medium text-muted-foreground hover:text-primary transition-colors flex items-center gap-1"
+                        >
+                            {expandedItems.size > 0 ? 'Collapse All' : 'Expand All'}
+                        </button>
+                    </div>
+
                     <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
                         {TABLE_MNEMONIC.map((node, idx) => (
                             <AccordionItem
