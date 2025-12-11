@@ -3,6 +3,8 @@ import { Sun, CheckCircle2, Circle, BookOpen, Heart, Mic2, Hourglass, PenLine, U
 import { Link } from 'react-router-dom';
 import { getBibleLink } from '../../utils/linkUtils';
 
+import HearJournalModal from './HearJournalModal';
+
 interface WorshipCardProps {
     completedTasks: string[];
     onToggle: (taskId: string | string[]) => void;
@@ -15,6 +17,7 @@ export default function WorshipCard({ completedTasks, onToggle, readContent }: W
     // Timer State
     const [timeLeft, setTimeLeft] = React.useState(120);
     const [isTimerActive, setIsTimerActive] = React.useState(false);
+    const [isJournalOpen, setIsJournalOpen] = React.useState(false);
     const [isMuted, setIsMuted] = React.useState(() => {
         if (typeof window !== 'undefined') {
             return localStorage.getItem('timerMuted') === 'true';
@@ -96,7 +99,7 @@ export default function WorshipCard({ completedTasks, onToggle, readContent }: W
     const formatTime = (seconds: number) => {
         const m = Math.floor(seconds / 60);
         const s = seconds % 60;
-        return `${m}:${s.toString().padStart(2, '0')}`;
+        return `${m}:${s.toString().padStart(2, '0')} `;
     };
 
     // Use 'anchor_prayer' instead of 'intercede' to sync with AnchorCard
@@ -142,6 +145,7 @@ export default function WorshipCard({ completedTasks, onToggle, readContent }: W
                     const isCompleted = completedTasks.includes(item.id);
                     const Icon = item.icon;
                     const isSilence = item.id === 'silence';
+                    const isHear = item.id === 'hear';
 
                     // Determine if the timer UI should be active (either running or clearly manipulated)
                     const showTimerUI = isSilence && (isTimerActive || timeLeft < 120);
@@ -150,17 +154,35 @@ export default function WorshipCard({ completedTasks, onToggle, readContent }: W
                         <div
                             key={item.id}
                             className={`flex items-start gap-3 p-4 hover:bg-muted/30 transition-colors group cursor-pointer ${isCompleted ? 'bg-primary/5' : ''}`}
-                            onClick={() => !item.isLink && !showTimerUI && onToggle(item.id)}
+                            onClick={() => {
+                                if (item.isLink) return;
+                                // Prevent toggling checkbox if we are clicking row for special tools
+                                if (showTimerUI) return;
+                                // If 'Hear', clicking row could toggle? Or should we force circle click?
+                                // Use default behavior: clicking row toggles completion, unless specific tool overrides.
+                                // User might prefer clicking row to open journal?
+                                // "make the circle... the pencil icon as the action item".
+                                // Implies circle is the action. Row click probably just checks it off.
+                                onToggle(item.id);
+                            }}
                         >
-                            <div className="flex-shrink-0 mt-0.5" onClick={isSilence ? toggleTimer : undefined}>
+                            <div className="flex-shrink-0 mt-0.5" onClick={(e) => {
+                                if (isSilence) toggleTimer(e);
+                                if (isHear) {
+                                    e.stopPropagation();
+                                    setIsJournalOpen(true);
+                                }
+                            }}>
                                 <span className={`flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold ring-1 ring-inset transition-colors ${isSilence && (isTimerActive || timeLeft < 120)
-                                    ? 'bg-primary text-primary-foreground ring-primary cursor-pointer hover:bg-primary/90' // Active Timer Style
-                                    : isCompleted
-                                        ? 'bg-primary text-primary-foreground ring-primary'
-                                        : 'bg-secondary/50 text-muted-foreground ring-border'
+                                        ? 'bg-primary text-primary-foreground ring-primary cursor-pointer hover:bg-primary/90' // Active Timer Style
+                                        : isCompleted
+                                            ? 'bg-primary text-primary-foreground ring-primary'
+                                            : `bg-secondary/50 text-muted-foreground ring-border ${isSilence || isHear ? 'cursor-pointer hover:bg-secondary hover:text-foreground' : ''}`
                                     }`}>
                                     {isSilence && timeLeft > 0 ? (
                                         <Hourglass className={`w-4 h-4 ${isTimerActive ? "animate-pulse" : ""}`} />
+                                    ) : isHear ? (
+                                        <PenLine className="w-4 h-4" />
                                     ) : (
                                         item.letter
                                     )}
@@ -227,6 +249,11 @@ export default function WorshipCard({ completedTasks, onToggle, readContent }: W
                     );
                 })}
             </div>
+
+            <HearJournalModal
+                isOpen={isJournalOpen}
+                onClose={() => setIsJournalOpen(false)}
+            />
         </div>
     );
 }
