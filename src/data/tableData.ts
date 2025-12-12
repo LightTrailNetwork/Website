@@ -1,4 +1,5 @@
 import { Role } from './types';
+import { getPassage } from '../utils/passageLookup';
 
 export interface CurriculumItem {
     area: string;
@@ -160,21 +161,21 @@ export const quarterlySchedule: WeekSchedule[] = [
         days: {
             Monday: {
                 read: "Matthew 28",
-                memorize: "Therefore go and make disciples of All nations... - Matthew 28:19 BSB",
+                memorize: getPassage("Matthew 28:19 BSB"),
                 study: "Philosophy Apologetics",
                 area: "Apologetics Axioms"
             },
             Tuesday: { read: "Devotional", memorize: "Review", study: "Fellowship" },
             Wednesday: {
                 read: "Mark 10",
-                memorize: "For even the Son of Man did not come to be served... - Mark 10:45 BSB",
+                memorize: getPassage("Mark 10:45 BSB"),
                 study: "Ethics & Morality Apologetics",
                 area: "Apologetics Axioms"
             },
             Thursday: { read: "Devotional", memorize: "Review", study: "Fellowship" },
             Friday: {
                 read: "Luke 2",
-                memorize: "Today in the City of David a Savior has been born to you... - Luke 2:11 BSB",
+                memorize: getPassage("Luke 2:11 BSB"),
                 study: "Ontology Apologetics",
                 area: "Apologetics Axioms"
             },
@@ -187,21 +188,21 @@ export const quarterlySchedule: WeekSchedule[] = [
         days: {
             Monday: {
                 read: "John 3",
-                memorize: "For God did not send His Son into the world to condemn... - John 3:17 BSB",
+                memorize: getPassage("John 3:17 BSB"),
                 study: "The Source and Canon of the Bible",
                 area: "Apologetics Narratives"
             },
             Tuesday: { read: "Devotional", memorize: "Review", study: "Fellowship" },
             Wednesday: {
                 read: "Acts 17",
-                memorize: "For in him we live and move and exist... - Acts 17:28 CSB",
+                memorize: getPassage("Acts 17:28 CSB"),
                 study: "Reliability of Transmission and Integrity of the Message of the Bible",
                 area: "Apologetics Narratives"
             },
             Thursday: { read: "Devotional", memorize: "Review", study: "Fellowship" },
             Friday: {
                 read: "Romans 8",
-                memorize: "And we know that God works all things together... - Romans 8:28 BSB",
+                memorize: getPassage("Romans 8:28 BSB"),
                 study: "Prophecies of the Messiah and Transformation of Witnesses",
                 area: "Apologetics Narratives"
             },
@@ -214,21 +215,21 @@ export const quarterlySchedule: WeekSchedule[] = [
         days: {
             Monday: {
                 read: "1 Corinthians 13",
-                memorize: "And now these three remain: faith, hope, and love... - 1 Corinthians 13:13 BSB",
+                memorize: getPassage("1 Corinthians 13:13 BSB"),
                 study: "Apostles Creed",
                 area: "Apologetics Creeds"
             },
             Tuesday: { read: "Devotional", memorize: "Review", study: "Fellowship" },
             Wednesday: {
                 read: "2 Corinthians 5",
-                memorize: "For we know that if the earthly tent we live in is dismantled... - 2 Corinthians 5:1 BSB",
+                memorize: getPassage("2 Corinthians 5:1 BSB"),
                 study: "Nicene Creed",
                 area: "Apologetics Creeds"
             },
             Thursday: { read: "Devotional", memorize: "Review", study: "Fellowship" },
             Friday: {
                 read: "Galatians 2",
-                memorize: "I have been crucified with Christ... - Galatians 2:20 BSB",
+                memorize: getPassage("Galatians 2:20 BSB"),
                 study: "Chalcedonian and Athanasian Creeds",
                 area: "Apologetics Creeds"
             },
@@ -242,21 +243,21 @@ export const quarterlySchedule: WeekSchedule[] = [
         days: {
             Monday: {
                 read: "Ephesians 2",
-                memorize: "But now in Christ Jesus, you who once were far away... - Ephesians 2:13 BSB",
+                memorize: getPassage("Ephesians 2:13 BSB"),
                 study: "History of the Church - Christ (30-100 AD)",
                 area: "Apologetics History"
             },
             Tuesday: { read: "Devotional", memorize: "Review", study: "Fellowship" },
             Wednesday: {
                 read: "Philippians 4",
-                memorize: "Finally, brothers and sisters, whatever is true... - Philippians 4:8 NIV",
+                memorize: getPassage("Philippians 4:8 NIV"),
                 study: "History of the Church - Heroic (100-500 AD) and Unified (500-1000 AD)",
                 area: "Apologetics History"
             },
             Thursday: { read: "Devotional", memorize: "Review", study: "Fellowship" },
             Friday: {
                 read: "Colossians 4",
-                memorize: "Let your speech always be gracious... - Colossians 4:6 BSB",
+                memorize: getPassage("Colossians 4:6 BSB"),
                 study: "History of the Church - Reformation (1000-1700 AD), Colonial (1700-1900 AD), Holistic (1900-Present)",
                 area: "Apologetics History"
             },
@@ -269,21 +270,21 @@ export const quarterlySchedule: WeekSchedule[] = [
         days: {
             Monday: {
                 read: "1 Thessalonians 5",
-                memorize: "Now may the God of peace Himself sanctify you completely... - 1 Thessalonians 5:23 BSB",
+                memorize: getPassage("1 Thessalonians 5:23 BSB"),
                 study: "Money and Influence/Politics Optics Apologetics",
                 area: "Apologetics Optics"
             },
             Tuesday: { read: "Devotional", memorize: "Review", study: "Fellowship" },
             Wednesday: {
                 read: "2 Thessalonians 3",
-                memorize: "For even when we were with you... - 2 Thessalonians 3:10 BSB",
+                memorize: getPassage("2 Thessalonians 3:10 BSB"),
                 study: "Rivalry (Division and Pride) and Relevance (Cultural Compromise) Optics Apologetics",
                 area: "Apologetics Optics"
             },
             Thursday: { read: "Devotional", memorize: "Review", study: "Fellowship" },
             Friday: {
                 read: "1 Timothy 6",
-                memorize: "For the love of money is the root of all kinds of evil... - 1 Timothy 6:10 BSB",
+                memorize: getPassage("1 Timothy 6:10 BSB"),
                 study: "Oppression (Abuse and Coercion) and Rejection (Church Hurt) Optics Apologetics",
                 area: "Apologetics Optics"
             },
@@ -296,21 +297,21 @@ export const quarterlySchedule: WeekSchedule[] = [
         days: {
             Monday: {
                 read: "2 Timothy 3",
-                memorize: "All Scripture is breathed out by God... - 2 Timothy 3:16 ESV",
+                memorize: getPassage("2 Timothy 3:16 ESV"),
                 study: "WORLD Religions",
                 area: "Apologetics Religion"
             },
             Tuesday: { read: "Devotional", memorize: "Review", study: "Fellowship" },
             Wednesday: {
                 read: "Titus 3",
-                memorize: "to speak evil of no one, to avoid quarreling... - Titus 3:2 ESV",
+                memorize: getPassage("Titus 3:2 ESV"),
                 study: "CHRISTian Churches",
                 area: "Apologetics Religion"
             },
             Thursday: { read: "Devotional", memorize: "Review", study: "Fellowship" },
             Friday: {
                 read: "Philemon 1",
-                memorize: "I take great joy and encouragement in your love... - Philemon 1:7 BSB",
+                memorize: getPassage("Philemon 1:7 BSB"),
                 study: "Review Religions & Churches",
                 area: "Apologetics Religion"
             },
@@ -324,21 +325,21 @@ export const quarterlySchedule: WeekSchedule[] = [
         days: {
             Monday: {
                 read: "Hebrews 4",
-                memorize: "For the word of God is living and active... - Hebrews 4:12 BSB",
+                memorize: getPassage("Hebrews 4:12 BSB"),
                 study: "Space, Causation, and Information (SCI) Apologetics",
                 area: "Apologetics Science"
             },
             Tuesday: { read: "Devotional", memorize: "Review", study: "Fellowship" },
             Wednesday: {
                 read: "James 1",
-                memorize: "Consider it pure joy, my brothers... - James 1:2 BSB",
+                memorize: getPassage("James 1:2 BSB"),
                 study: "Entropy, Nature, Consciousness, and Earth (ENCE) Apologetics",
                 area: "Apologetics Science"
             },
             Thursday: { read: "Devotional", memorize: "Review", study: "Fellowship" },
             Friday: {
                 read: "1 Peter 5",
-                memorize: "Casting all your care upon Him... - 1 Peter 5:7 NKJV",
+                memorize: getPassage("1 Peter 5:7 NKJV"),
                 study: "Review of SCIENCE Apologetics",
                 area: "Apologetics Science"
             },
@@ -351,21 +352,21 @@ export const quarterlySchedule: WeekSchedule[] = [
         days: {
             Monday: {
                 read: "2 Peter 1",
-                memorize: "Through these he has given us his very great and precious promises... - 2 Peter 1:4 NIV",
+                memorize: getPassage("2 Peter 1:4 NIV"),
                 study: "Bible Summary & Theology",
                 area: "Bible"
             },
             Tuesday: { read: "Devotional", memorize: "Review", study: "Fellowship" },
             Wednesday: {
                 read: "1 John 4",
-                memorize: "Whoever does not love does not know God... - 1 John 4:8 BSB",
+                memorize: getPassage("1 John 4:8 BSB"),
                 study: "Bible Observation & Revelation",
                 area: "Bible"
             },
             Thursday: { read: "Devotional", memorize: "Review", study: "Fellowship" },
             Friday: {
                 read: "2 John 1",
-                memorize: "I rejoiced exceedingly that I have found some of your children... - 2 John 1:4 BLB",
+                memorize: getPassage("2 John 1:4 BLB"),
                 study: "Yielding to the Bible",
                 area: "Bible"
             },
@@ -378,21 +379,21 @@ export const quarterlySchedule: WeekSchedule[] = [
         days: {
             Monday: {
                 read: "3 John 1",
-                memorize: "Beloved, you are faithful in what you are doing... - 3 John 1:5 BSB",
+                memorize: getPassage("3 John 1:5 BSB"),
                 study: "Ethics and Traditions of the Triad",
                 area: "Ethos"
             },
             Tuesday: { read: "Devotional", memorize: "Review", study: "Fellowship" },
             Wednesday: {
                 read: "Jude 1",
-                memorize: "Now to Him who is able to keep you from stumbling... - Jude 1:24 BSB",
+                memorize: getPassage("Jude 1:24 BSB"),
                 study: "Habits and Organization of the Triad",
                 area: "Ethos"
             },
             Thursday: { read: "Devotional", memorize: "Review", study: "Fellowship" },
             Friday: {
                 read: "Revelation 21",
-                memorize: "Look! God’s dwelling place is now among the people... - Revelation 21:4 NIV",
+                memorize: getPassage("Revelation 21:4 NIV"),
                 study: "Stewardship of the Triad",
                 area: "Ethos"
             },
@@ -406,21 +407,21 @@ export const quarterlySchedule: WeekSchedule[] = [
         days: {
             Monday: {
                 read: "Ephesians 2",
-                memorize: "But now in Christ Jesus, you who once were far away... - Ephesians 2:13 BSB",
+                memorize: getPassage("Ephesians 2:13 BSB"),
                 study: "Rest",
                 area: "Apologetics History"
             },
             Tuesday: { read: "Rest / Catch Up" },
             Wednesday: {
                 read: "Philippians 4",
-                memorize: "Finally, brothers and sisters, whatever is true... - Philippians 4:8 NIV",
+                memorize: getPassage("Philippians 4:8 NIV"),
                 study: "Rest",
                 area: "Apologetics History"
             },
             Thursday: { read: "Rest / Catch Up" },
             Friday: {
                 read: "Colossians 4",
-                memorize: "Let your speech always be gracious... - Colossians 4:6 BSB",
+                memorize: getPassage("Colossians 4:6 BSB"),
                 study: "Rest",
                 area: "Apologetics History"
             },
@@ -433,21 +434,21 @@ export const quarterlySchedule: WeekSchedule[] = [
         days: {
             Monday: {
                 read: "1 Thessalonians 5",
-                memorize: "Now may the God of peace Himself sanctify you completely... - 1 Thessalonians 5:23 BSB",
+                memorize: getPassage("1 Thessalonians 5:23 BSB"),
                 study: "Rest",
                 area: "Apologetics Optics"
             },
             Tuesday: { read: "Rest / Catch Up" },
             Wednesday: {
                 read: "2 Thessalonians 3",
-                memorize: "For even when we were with you... - 2 Thessalonians 3:10 BSB",
+                memorize: getPassage("2 Thessalonians 3:10 BSB"),
                 study: "Rest",
                 area: "Apologetics Optics"
             },
             Thursday: { read: "Rest / Catch Up" },
             Friday: {
                 read: "1 Timothy 6",
-                memorize: "For the love of money is the root of all kinds of evil... - 1 Timothy 6:10 BSB",
+                memorize: getPassage("1 Timothy 6:10 BSB"),
                 study: "Rest",
                 area: "Apologetics Optics"
             },
@@ -460,21 +461,21 @@ export const quarterlySchedule: WeekSchedule[] = [
         days: {
             Monday: {
                 read: "2 Timothy 3",
-                memorize: "All Scripture is breathed out by God... - 2 Timothy 3:16 ESV",
+                memorize: getPassage("2 Timothy 3:16 ESV"),
                 study: "Rest",
                 area: "Apologetics Religion"
             },
             Tuesday: { read: "Rest / Catch Up" },
             Wednesday: {
                 read: "Titus 3",
-                memorize: "to speak evil of no one, to avoid quarreling... - Titus 3:2 ESV",
+                memorize: getPassage("Titus 3:2 ESV"),
                 study: "Rest",
                 area: "Apologetics Religion"
             },
             Thursday: { read: "Rest / Catch Up" },
             Friday: {
                 read: "Philemon 1",
-                memorize: "I take great joy and encouragement in your love... - Philemon 1:7 BSB",
+                memorize: getPassage("Philemon 1:7 BSB"),
                 study: "Rest",
                 area: "Apologetics Religion"
             },
