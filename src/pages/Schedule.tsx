@@ -118,11 +118,11 @@ export default function Schedule() {
                                     }
                                     displayArea = "";
                                 } else if (week.session === 'Rest') {
-                                    // For non-scouts during rest weeks
-                                    displayRead = "Rest";
-                                    displayMemorize = "Rest";
-                                    displayStudy = "Rest";
                                     displayArea = "";
+                                }
+
+                                if (!displayRead && content.action) {
+                                    displayRead = content.action;
                                 }
 
                                 const readLink = displayRead ? getBibleLink(displayRead) : null;
@@ -133,7 +133,7 @@ export default function Schedule() {
                                         {isFirstDay && (
                                             <>
                                                 <td rowSpan={rowSpan} className="p-4 font-medium align-top border-r border-border/50 bg-muted/5">
-                                                    {week.session}
+                                                    {week.session === 'Rest' ? 'Rest & Review' : week.session}
                                                     {!isPrepOrRest && <div className="text-xs text-muted-foreground font-normal mt-1">3 Weeks</div>}
                                                 </td>
                                                 <td rowSpan={rowSpan} className="p-4 font-medium align-top border-r border-border/50 bg-muted/5">
@@ -146,11 +146,16 @@ export default function Schedule() {
                                             {displayRead && (
                                                 <div className="flex items-start gap-2">
                                                     <span className={`mt-1 w-1.5 h-1.5 rounded-full shrink-0 ${week.session === 'Rest' ? 'bg-muted-foreground/30' : 'bg-primary/70'}`} />
-                                                    {readLink ? (
-                                                        <Link to={readLink} className="hover:underline text-primary">{displayRead}</Link>
-                                                    ) : (
-                                                        <span className={week.session === 'Rest' ? 'text-muted-foreground' : ''}>{displayRead}</span>
-                                                    )}
+                                                    <div className="flex flex-col items-start">
+                                                        {week.session === 'Rest' && displayRead !== 'Rest / Catch Up' && displayRead !== 'Rest' && (
+                                                            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 uppercase tracking-wide mb-1">Review</span>
+                                                        )}
+                                                        {readLink ? (
+                                                            <Link to={readLink} className="hover:underline text-primary">{displayRead}</Link>
+                                                        ) : (
+                                                            <span className={week.session === 'Rest' ? 'text-muted-foreground' : ''}>{displayRead}</span>
+                                                        )}
+                                                    </div>
                                                 </div>
                                             )}
                                         </td>
@@ -158,11 +163,16 @@ export default function Schedule() {
                                             {displayMemorize && (
                                                 <div className="flex items-start gap-2">
                                                     <span className={`mt-1 w-1.5 h-1.5 rounded-full shrink-0 ${week.session === 'Rest' && !isScoutOrPreScout ? 'bg-muted-foreground/30' : 'bg-orange-500/70'}`} />
-                                                    {memoryLink ? (
-                                                        <Link to={memoryLink} className="hover:underline text-foreground/90 hover:text-orange-600">{displayMemorize}</Link>
-                                                    ) : (
-                                                        <span className={`text-foreground/90 ${week.session === 'Rest' && !isScoutOrPreScout ? 'text-muted-foreground' : ''}`}>{displayMemorize}</span>
-                                                    )}
+                                                    <div className="flex flex-col items-start">
+                                                        {week.session === 'Rest' && displayMemorize !== 'Rest' && !isScoutOrPreScout && (
+                                                            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 uppercase tracking-wide mb-1">Review</span>
+                                                        )}
+                                                        {memoryLink ? (
+                                                            <Link to={memoryLink} className="hover:underline text-foreground/90 hover:text-orange-600">{displayMemorize}</Link>
+                                                        ) : (
+                                                            <span className={`text-foreground/90 ${week.session === 'Rest' && !isScoutOrPreScout ? 'text-muted-foreground' : ''}`}>{displayMemorize}</span>
+                                                        )}
+                                                    </div>
                                                 </div>
                                             )}
                                         </td>
@@ -177,7 +187,7 @@ export default function Schedule() {
                                         <td className="p-4 text-muted-foreground text-xs">
                                             {(() => {
                                                 const mnemonic = getWeekMnemonicInfo(week.weekNum);
-                                                if (mnemonic && !isScoutOrPreScout && week.session !== 'Rest') {
+                                                if (mnemonic && !isScoutOrPreScout && week.session !== 'Rest' && dayName !== 'Saturday') {
                                                     return (
                                                         <div className="flex flex-col gap-1 items-start">
                                                             {mnemonic.tags.map((tag, idx) => (
@@ -230,7 +240,7 @@ export default function Schedule() {
                                 className="w-full flex items-center justify-between p-4 bg-muted/30 hover:bg-muted/50 transition-colors"
                             >
                                 <div className="flex flex-col items-start">
-                                    <span className="text-sm font-medium text-muted-foreground">{week.session}</span>
+                                    <span className="text-sm font-medium text-muted-foreground">{week.session === 'Rest' ? 'Rest & Review' : week.session}</span>
                                     <span className="font-semibold">Week {week.weekNum}</span>
                                 </div>
                                 {isExpanded ? <ChevronUp className="w-5 h-5 text-muted-foreground" /> : <ChevronDown className="w-5 h-5 text-muted-foreground" />}
@@ -260,11 +270,11 @@ export default function Schedule() {
                                                 }
                                             }
                                             displayArea = "";
-                                        } else if (week.session === 'Rest') {
-                                            displayRead = "Rest";
-                                            displayMemorize = "Rest";
-                                            displayStudy = "Rest";
                                             displayArea = "";
+                                        }
+
+                                        if (!displayRead && content.action) {
+                                            displayRead = content.action;
                                         }
 
                                         const readLink = displayRead ? getBibleLink(displayRead) : null;
@@ -278,7 +288,7 @@ export default function Schedule() {
                                                     <span className="font-medium text-sm text-muted-foreground">{dayName}</span>
                                                     {(() => {
                                                         const mnemonic = getWeekMnemonicInfo(week.weekNum);
-                                                        if (mnemonic && !isScoutOrPreScout && week.session !== 'Rest' && dayIdx === 0) {
+                                                        if (mnemonic && !isScoutOrPreScout && week.session !== 'Rest' && dayIdx === 0 && dayName !== 'Saturday') {
                                                             return (
                                                                 <div className="flex flex-wrap gap-1 justify-end max-w-[60%]">
                                                                     {mnemonic.tags.slice(0, 2).map((tag, idx) => (
@@ -301,7 +311,12 @@ export default function Schedule() {
                                                     <div className="flex items-start gap-2">
                                                         <span className={`mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 ${week.session === 'Rest' ? 'bg-muted-foreground/30' : 'bg-primary/70'}`} />
                                                         <div className="text-sm">
-                                                            <span className="text-xs font-medium text-muted-foreground block mb-0.5">READ</span>
+                                                            <div className="flex items-center gap-2 mb-0.5">
+                                                                <span className="text-xs font-medium text-muted-foreground block">READ</span>
+                                                                {week.session === 'Rest' && displayRead !== 'Rest / Catch Up' && displayRead !== 'Rest' && (
+                                                                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 uppercase tracking-wide">Review</span>
+                                                                )}
+                                                            </div>
                                                             {readLink ? (
                                                                 <Link to={readLink} className="hover:underline text-primary">{displayRead}</Link>
                                                             ) : (
@@ -315,7 +330,12 @@ export default function Schedule() {
                                                     <div className="flex items-start gap-2">
                                                         <span className={`mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 ${week.session === 'Rest' && !isScoutOrPreScout ? 'bg-muted-foreground/30' : 'bg-orange-500/70'}`} />
                                                         <div className="text-sm">
-                                                            <span className="text-xs font-medium text-muted-foreground block mb-0.5">MEMORIZE</span>
+                                                            <div className="flex items-center gap-2 mb-0.5">
+                                                                <span className="text-xs font-medium text-muted-foreground block">MEMORIZE</span>
+                                                                {week.session === 'Rest' && displayMemorize !== 'Rest' && !isScoutOrPreScout && (
+                                                                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 uppercase tracking-wide">Review</span>
+                                                                )}
+                                                            </div>
                                                             {memoryLink ? (
                                                                 <Link to={memoryLink} className="hover:underline text-foreground/90 hover:text-orange-600">{displayMemorize}</Link>
                                                             ) : (

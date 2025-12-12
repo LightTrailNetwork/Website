@@ -99,7 +99,7 @@ export default function QuarterProgress({ info, date, onClick, onWeekSelect }: Q
                         {isRest && <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 uppercase tracking-wider">Rest Week</span>}
                     </div>
                     <h2 className="text-2xl font-bold text-foreground tracking-tight flex items-center gap-2">
-                        {isPrep ? 'Preparation Week' : isRest ? 'Rest & Reflection' : session}
+                        {isPrep ? 'Preparation Week' : isRest ? 'Rest & Review' : session}
                         {!isPrep && <span className="text-muted-foreground font-normal text-lg">• Week {sessionWeek}</span>}
                     </h2>
                     <p className="text-muted-foreground mt-1 text-sm flex items-center gap-1.5">

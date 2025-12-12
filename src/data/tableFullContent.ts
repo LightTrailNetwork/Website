@@ -11,7 +11,7 @@ export const tableFullContent: TableRow[] = [
     {
         section: "Tradition",
         mentee: "I AIM to Abide in God, Imitate a Man of God, and Mobilize into the Way of God.\n(Plus memorize the 4 top-level verses)",
-        mentor: "I will Glorify, Obey, and Delight in GOD.\nI am a MAN Made by God, Aware of my sin, New in Christ.\nI am a Witness of the Acts of Jesus and will Yield to his WAY.\n(Plus memorize the 13 outer verses)",
+        mentor: "I will Glorify, Obey, and Delight in GOD.\nI am a MAN Made by God, Aware of my sin, New in Christ.\nI am a Witness of the Acts of Jesus and will Yield to His WAY.\n(Plus memorize the 13 outer verses)",
         steward: "(Plus memorize the 27 inner verses)"
     },
     {

@@ -9,9 +9,10 @@ interface WorshipCardProps {
     completedTasks: string[];
     onToggle: (taskId: string | string[]) => void;
     readContent?: string;
+    isRestWeek?: boolean;
 }
 
-export default function WorshipCard({ completedTasks, onToggle, readContent }: WorshipCardProps) {
+export default function WorshipCard({ completedTasks, onToggle, readContent, isRestWeek }: WorshipCardProps) {
     const readLink = readContent ? getBibleLink(readContent) : null;
 
     // Timer State
@@ -249,17 +250,22 @@ export default function WorshipCard({ completedTasks, onToggle, readContent }: W
 
                                 {item.isLink && readContent ? (
                                     <div className="flex items-center justify-between mt-1">
-                                        {readLink ? (
-                                            <Link
-                                                to={readLink}
-                                                className="text-lg font-semibold text-primary hover:underline truncate mr-2"
-                                                onClick={(e) => e.stopPropagation()}
-                                            >
-                                                {readContent}
-                                            </Link>
-                                        ) : (
-                                            <span className="text-lg font-semibold text-foreground/80 truncate mr-2">{readContent}</span>
-                                        )}
+                                        <div className="flex items-center gap-2 min-w-0 flex-1 mr-2">
+                                            {isRestWeek && (
+                                                <span className="shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 uppercase tracking-wide">Review</span>
+                                            )}
+                                            {readLink ? (
+                                                <Link
+                                                    to={readLink}
+                                                    className="text-lg font-semibold text-primary hover:underline truncate block"
+                                                    onClick={(e) => e.stopPropagation()}
+                                                >
+                                                    {readContent}
+                                                </Link>
+                                            ) : (
+                                                <span className="text-lg font-semibold text-foreground/80 truncate block">{readContent}</span>
+                                            )}
+                                        </div>
                                         <button onClick={(e) => { e.stopPropagation(); onToggle(item.id); }}>
                                             {isCompleted ? <CheckCircle2 className="w-5 h-5 text-primary animate-scale-in" /> : <Circle className="w-5 h-5 text-muted-foreground/30 group-hover:text-primary/50" />}
                                         </button>

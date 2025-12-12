@@ -52,8 +52,8 @@ export default function QuarterPreviewModal({ isOpen, onClose, currentWeekNum, i
     };
 
     return (
-        <div className="fixed inset-0 z-[60] bg-background/80 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in">
-            <div className="bg-card border border-border rounded-xl shadow-2xl w-full max-w-5xl max-h-[90vh] flex flex-col overflow-hidden">
+        <div className="fixed inset-0 z-[60] bg-background/80 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in" onClick={onClose}>
+            <div className="bg-card border border-border rounded-xl shadow-2xl w-full max-w-5xl max-h-[90vh] flex flex-col overflow-hidden" onClick={e => e.stopPropagation()}>
                 {/* Header */}
                 <div className="p-4 border-b border-border flex items-center justify-between shrink-0 bg-card">
                     <div>
@@ -225,7 +225,7 @@ export default function QuarterPreviewModal({ isOpen, onClose, currentWeekNum, i
                                             </div>
 
                                             {/* Daily Breakdown */}
-                                            {week.session !== 'Rest' && (
+                                            {(
                                                 <div className="flex-1 space-y-3 mt-2">
                                                     <div className="text-[10px] font-bold uppercase text-muted-foreground tracking-wider mb-1">Daily Schedule</div>
                                                     {daysOrder.map(dayName => {
@@ -371,6 +371,9 @@ export default function QuarterPreviewModal({ isOpen, onClose, currentWeekNum, i
                                                                         <span className={`font-mono font-bold w-6 shrink-0 ${isSaturday ? 'text-orange-500' : 'text-muted-foreground'} ${isToday ? 'text-primary' : ''}`}>{shortDay}</span>
                                                                         {bibleLink ? (
                                                                             <div className="flex flex-wrap items-center gap-1">
+                                                                                {week.session === 'Rest' && (
+                                                                                    <span className="text-[9px] font-bold px-1 py-px rounded bg-emerald-500/10 text-emerald-600 uppercase tracking-wide">Review</span>
+                                                                                )}
                                                                                 <Link
                                                                                     to={bibleLink}
                                                                                     onClick={() => onClose()}

@@ -310,6 +310,7 @@ export default function Today() {
               completedTasks={completedTasks}
               onToggle={toggleTask}
               readContent={dailyRead}
+              isRestWeek={quarterInfo.session === 'Rest'}
             />
             <div className="pt-2">
               <AnchorCard
@@ -335,6 +336,9 @@ export default function Today() {
               <div className="p-6">
                 <div className="flex items-start justify-between gap-4">
                   <div className="space-y-1">
+                    {quarterInfo.session === 'Rest' && (
+                      <span className="inline-block mb-1 text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 uppercase tracking-wide">Review</span>
+                    )}
                     {memoryLink ? (
                       <Link to={memoryLink} className="text-lg font-medium text-foreground hover:text-orange-600 transition-colors block leading-relaxed">
                         {memoryContent.verse}
@@ -359,7 +363,7 @@ export default function Today() {
           title="Night"
           icon={Moon}
           colorClass="from-indigo-500/10 to-purple-500/10"
-          subtitle="Review & Fellowship"
+          subtitle="Study & Fellowship"
         />
         {openSection === 'night' && (
           <div className="pl-2 border-l-2 border-border/50 ml-6 animate-accordion-down mb-8">
@@ -374,7 +378,7 @@ export default function Today() {
                     >
                       {dailyContent?.study || "Rest"}
                     </Link>
-                    {dailyContent?.area && (
+                    {dailyContent?.area && quarterInfo.session !== 'Rest' && (
                       <span className="text-xs px-2 py-0.5 rounded-full bg-secondary text-muted-foreground border border-border inline-block">
                         {dailyContent.area}
                       </span>
@@ -387,11 +391,13 @@ export default function Today() {
                   </button>
                 </div>
 
-                <div className="mt-4 pt-4 border-t border-border/50">
-                  <p className="text-sm text-muted-foreground italic">
-                    Tip: Click the title above to view the full curriculum details for this week.
-                  </p>
-                </div>
+                {quarterInfo.session !== 'Rest' && (
+                  <div className="mt-4 pt-4 border-t border-border/50">
+                    <p className="text-sm text-muted-foreground italic">
+                      Tip: Click the title above to view the full curriculum details for this week.
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           </div>

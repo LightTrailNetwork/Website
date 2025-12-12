@@ -400,9 +400,87 @@ export const quarterlySchedule: WeekSchedule[] = [
         }
     },
     // Rest (Weeks 10-12)
-    { weekNum: 10, session: 'Rest', days: {} },
-    { weekNum: 11, session: 'Rest', days: {} },
-    { weekNum: 12, session: 'Rest', days: {} }
+    {
+        weekNum: 10,
+        session: 'Rest',
+        days: {
+            Monday: {
+                read: "Ephesians 2",
+                memorize: "But now in Christ Jesus, you who once were far away... - Ephesians 2:13 BSB",
+                study: "Rest",
+                area: "Apologetics History"
+            },
+            Tuesday: { read: "Rest / Catch Up" },
+            Wednesday: {
+                read: "Philippians 4",
+                memorize: "Finally, brothers and sisters, whatever is true... - Philippians 4:8 NIV",
+                study: "Rest",
+                area: "Apologetics History"
+            },
+            Thursday: { read: "Rest / Catch Up" },
+            Friday: {
+                read: "Colossians 4",
+                memorize: "Let your speech always be gracious... - Colossians 4:6 BSB",
+                study: "Rest",
+                area: "Apologetics History"
+            },
+            Saturday: { read: "Rest / Catch Up" }
+        }
+    },
+    {
+        weekNum: 11,
+        session: 'Rest',
+        days: {
+            Monday: {
+                read: "1 Thessalonians 5",
+                memorize: "Now may the God of peace Himself sanctify you completely... - 1 Thessalonians 5:23 BSB",
+                study: "Rest",
+                area: "Apologetics Optics"
+            },
+            Tuesday: { read: "Rest / Catch Up" },
+            Wednesday: {
+                read: "2 Thessalonians 3",
+                memorize: "For even when we were with you... - 2 Thessalonians 3:10 BSB",
+                study: "Rest",
+                area: "Apologetics Optics"
+            },
+            Thursday: { read: "Rest / Catch Up" },
+            Friday: {
+                read: "1 Timothy 6",
+                memorize: "For the love of money is the root of all kinds of evil... - 1 Timothy 6:10 BSB",
+                study: "Rest",
+                area: "Apologetics Optics"
+            },
+            Saturday: { read: "Rest / Catch Up" }
+        }
+    },
+    {
+        weekNum: 12,
+        session: 'Rest',
+        days: {
+            Monday: {
+                read: "2 Timothy 3",
+                memorize: "All Scripture is breathed out by God... - 2 Timothy 3:16 ESV",
+                study: "Rest",
+                area: "Apologetics Religion"
+            },
+            Tuesday: { read: "Rest / Catch Up" },
+            Wednesday: {
+                read: "Titus 3",
+                memorize: "to speak evil of no one, to avoid quarreling... - Titus 3:2 ESV",
+                study: "Rest",
+                area: "Apologetics Religion"
+            },
+            Thursday: { read: "Rest / Catch Up" },
+            Friday: {
+                read: "Philemon 1",
+                memorize: "I take great joy and encouragement in your love... - Philemon 1:7 BSB",
+                study: "Rest",
+                area: "Apologetics Religion"
+            },
+            Saturday: { read: "Rest / Catch Up" }
+        }
+    }
 ];
 
 export const preScoutSchedule: ScoutSchedule[] = [
