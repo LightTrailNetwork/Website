@@ -4,9 +4,10 @@ import { X, ChevronLeft, ChevronRight, Calendar as CalendarIcon, Save } from 'lu
 interface HearJournalModalProps {
     isOpen: boolean;
     onClose: () => void;
+    onContentChange?: (hasContent: boolean) => void;
 }
 
-export default function HearJournalModal({ isOpen, onClose }: HearJournalModalProps) {
+export default function HearJournalModal({ isOpen, onClose, onContentChange }: HearJournalModalProps) {
     const [currentDate, setCurrentDate] = useState(new Date()); // For calendar navigation
     const [selectedDateKey, setSelectedDateKey] = useState(new Date().toLocaleDateString('en-CA')); // YYYY-MM-DD (local time)
     const [notes, setNotes] = useState<Record<string, string>>({});
@@ -38,6 +39,12 @@ export default function HearJournalModal({ isOpen, onClose }: HearJournalModalPr
 
         setNotes(updated);
         localStorage.setItem('hearJournal', JSON.stringify(updated));
+
+        // Notify parent if today has content
+        const isToday = selectedDateKey === new Date().toLocaleDateString('en-CA');
+        if (isToday && onContentChange) {
+            onContentChange(content.trim().length > 0);
+        }
     };
 
     // Mobile View State

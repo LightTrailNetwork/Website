@@ -11,9 +11,10 @@ interface QuarterPreviewModalProps {
     onClose: () => void;
     currentWeekNum: number;
     initialSession?: string;
+    referenceDate?: Date;
 }
 
-export default function QuarterPreviewModal({ isOpen, onClose, currentWeekNum, initialSession }: QuarterPreviewModalProps) {
+export default function QuarterPreviewModal({ isOpen, onClose, currentWeekNum, initialSession, referenceDate }: QuarterPreviewModalProps) {
     const [activeSession, setActiveSession] = useState<'Preparation' | 'Session 1' | 'Session 2' | 'Session 3' | 'Rest'>('Session 1');
     const navigate = useNavigate();
 
@@ -91,32 +92,27 @@ export default function QuarterPreviewModal({ isOpen, onClose, currentWeekNum, i
                                 // Removed weekly 'topic' variable as we now show daily topics
 
                                 const dateRange = (() => {
-                                    const now = new Date();
-                                    const startOfYear = new Date(now.getFullYear(), 0, 1);
-                                    const dayOfYear = Math.floor((now.getTime() - startOfYear.getTime()) / (1000 * 60 * 60 * 24));
+                                    const now = referenceDate || new Date();
 
-                                    // 1. Determine which Quarter we are in (0-3)
-                                    const quarterIdx = Math.floor(dayOfYear / 91);
-                                    const quarterStartMonth = Math.min(quarterIdx * 3, 9);
+                                    // 1. Find the Sunday of the reference date
+                                    const currentSunday = new Date(now);
+                                    currentSunday.setHours(0, 0, 0, 0);
+                                    currentSunday.setDate(currentSunday.getDate() - currentSunday.getDay());
 
-                                    // 2. Get the 1st of that Quarter's month
-                                    const qStart = new Date(now.getFullYear(), quarterStartMonth, 1);
+                                    // 2. Back-calculate Week 0 Start (Preparation Week)
+                                    // We assume currentWeekNum accurately reflects the distance from Week 0
+                                    const week0Start = new Date(currentSunday);
+                                    week0Start.setDate(week0Start.getDate() - (currentWeekNum * 7));
 
-                                    // 3. Align to the Sunday that begins that week
-                                    // If qStart is Sun (0), offset is 0. If Wed (3), offset is 3 (back to Sun).
-                                    const offset = qStart.getDay();
-                                    const week0Start = new Date(qStart);
-                                    week0Start.setDate(qStart.getDate() - offset);
+                                    // 3. Calculate this specific week's range
+                                    const thisWeekStart = new Date(week0Start);
+                                    thisWeekStart.setDate(week0Start.getDate() + (week.weekNum * 7));
 
-                                    // 4. Calculate this specific week's range
-                                    const currentWeekStart = new Date(week0Start);
-                                    currentWeekStart.setDate(week0Start.getDate() + (week.weekNum * 7));
-
-                                    const currentWeekEnd = new Date(currentWeekStart);
-                                    currentWeekEnd.setDate(currentWeekStart.getDate() + 6);
+                                    const thisWeekEnd = new Date(thisWeekStart);
+                                    thisWeekEnd.setDate(thisWeekStart.getDate() + 6);
 
                                     const format = (d: Date) => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-                                    return `${format(currentWeekStart)} - ${format(currentWeekEnd)}`;
+                                    return `${format(thisWeekStart)} - ${format(thisWeekEnd)}`;
                                 })();
 
                                 return (
@@ -372,7 +368,7 @@ export default function QuarterPreviewModal({ isOpen, onClose, currentWeekNum, i
                                                                                 <Link
                                                                                     to={bibleLink}
                                                                                     onClick={() => onClose()}
-                                                                                    className="text-primary hover:underline hover:text-primary/80 line-clamp-1 font-medium"
+                                                                                    className="text-primary hover:underline hover:text-primary/80 font-medium"
                                                                                 >
                                                                                     {content}
                                                                                 </Link>
@@ -393,7 +389,7 @@ export default function QuarterPreviewModal({ isOpen, onClose, currentWeekNum, i
                                                                                 )}
                                                                             </div>
                                                                         ) : (
-                                                                            <span className={`text-muted-foreground/80 line-clamp-1 ${type === 'action' ? 'italic text-orange-600/80' : ''}`} title={content}>
+                                                                            <span className={`text-muted-foreground/80 ${type === 'action' ? 'italic text-orange-600/80' : ''}`} title={content}>
                                                                                 {content || '-'}
                                                                             </span>
                                                                         )}
@@ -479,28 +475,23 @@ export default function QuarterPreviewModal({ isOpen, onClose, currentWeekNum, i
                             <p className="text-sm font-medium text-foreground">
                                 Next Quarter begins on <span className="text-primary">
                                     {(() => {
-                                        const now = new Date();
-                                        const startOfYear = new Date(now.getFullYear(), 0, 1);
-                                        const dayOfYear = Math.floor((now.getTime() - startOfYear.getTime()) / (1000 * 60 * 60 * 24));
+                                        const now = referenceDate || new Date();
 
-                                        // Current Quarter Index
-                                        const quarterIdx = Math.floor(dayOfYear / 91);
+                                        // Find Week 0 Start of *Current* Quarter
+                                        const currentSunday = new Date(now);
+                                        currentSunday.setHours(0, 0, 0, 0);
+                                        currentSunday.setDate(currentSunday.getDate() - currentSunday.getDay());
 
-                                        // Next Quarter Start Calculation
-                                        const nextQuarterIdx = quarterIdx + 1;
-                                        // Handle year rollover logic if needed, simplify for standard quarters
-                                        const nextQuarterStartMonth = (nextQuarterIdx * 3) % 12; // 0, 3, 6, 9
-                                        const yearOffset = Math.floor((nextQuarterIdx * 3) / 12);
-                                        const nextYear = now.getFullYear() + yearOffset;
+                                        const week0Start = new Date(currentSunday);
+                                        week0Start.setDate(week0Start.getDate() - (currentWeekNum * 7));
 
-                                        const nextQStart = new Date(nextYear, nextQuarterStartMonth, 1);
+                                        // Next Quarter is typically 13 weeks after current Week 0?
+                                        // Standard Schedule is Weeks 0..12 (13 weeks).
+                                        // So Next Week 0 is +13 weeks.
+                                        const nextQStart = new Date(week0Start);
+                                        nextQStart.setDate(nextQStart.getDate() + (13 * 7));
 
-                                        // Align to Sunday
-                                        const offset = nextQStart.getDay();
-                                        const nextWeek0Start = new Date(nextQStart);
-                                        nextWeek0Start.setDate(nextQStart.getDate() - offset);
-
-                                        return nextWeek0Start.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+                                        return nextQStart.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
                                     })()}
                                 </span>
                             </p>

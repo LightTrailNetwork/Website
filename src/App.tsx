@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
 import Header from './components/Header';
 import Drawer from './components/Drawer';
@@ -29,6 +29,7 @@ function AppContent() {
   const [showWelcome, setShowWelcome] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Initialize the app and create user profile if needed
@@ -72,7 +73,30 @@ function AppContent() {
     });
 
     return () => clearTimeout(timeoutId);
+    return () => clearTimeout(timeoutId);
   }, []);
+
+  // Daily Redirect Logic
+  useEffect(() => {
+    const checkDailyReset = () => {
+      const today = new Date().toDateString();
+      const lastVisit = localStorage.getItem('lastVisitDate');
+
+      if (lastVisit !== today) {
+        // It's a new day!
+        localStorage.setItem('lastVisitDate', today);
+        // If not already on home, redirect
+        if (location.pathname !== '/') {
+          // Use setTimeout to ensure router is ready or avoid conflits during mount
+          setTimeout(() => navigate('/'), 0);
+        }
+      }
+    };
+
+    if (isInitialized) {
+      checkDailyReset();
+    }
+  }, [isInitialized]); // Run once after init
 
   // Close drawer and settings when route changes
   useEffect(() => {

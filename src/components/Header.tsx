@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Menu, Settings, WifiOff, Loader2, CheckCircle, Info, Book } from 'lucide-react';
+import { Menu, Settings, WifiOff, Loader2, CheckCircle, Info, Book, Home } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useScrollDirection } from '../hooks/useScrollDirection';
 import { useSettings } from '../context/SettingsContext';
@@ -60,9 +60,12 @@ export default function Header({ onMenuClick, onSettingsClick, title, subtitle }
             </button>
 
             <Link to="/" className="flex flex-col hover:opacity-80 transition-opacity">
-              <h1 className="text-lg sm:text-xl font-semibold text-foreground">{title}</h1>
+              <div className="flex items-center gap-2">
+                <Home className={`w-5 h-5 ${window.location.pathname === '/' ? 'text-primary fill-primary/20' : 'text-muted-foreground'}`} />
+                <h1 className="text-lg sm:text-xl font-semibold text-foreground">{title}</h1>
+              </div>
               {subtitle && (
-                <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">
+                <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block pl-7">
                   {subtitle}
                 </p>
               )}

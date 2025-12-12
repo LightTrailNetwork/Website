@@ -28,7 +28,7 @@ export default function WorshipCard({ completedTasks, onToggle, readContent }: W
     const timerRef = React.useRef<NodeJS.Timeout | null>(null);
 
     // Play Chime function using AudioContext (no external assets needed)
-    const playChime = React.useCallback(() => {
+    const playChime = React.useCallback((silent: boolean = false) => {
         if (typeof window === 'undefined') return;
         try {
             const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
@@ -41,16 +41,25 @@ export default function WorshipCard({ completedTasks, onToggle, readContent }: W
             osc.connect(gainNode);
             gainNode.connect(ctx.destination);
 
-            // Nice polite chime sound
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(523.25, ctx.currentTime); // C5
-            osc.frequency.exponentialRampToValueAtTime(1046.50, ctx.currentTime + 0.1); // C6
+            if (silent) {
+                // Silent burst to unlock iOS audio
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(440, ctx.currentTime);
+                gainNode.gain.setValueAtTime(0.001, ctx.currentTime);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.1);
+            } else {
+                // Nice polite chime sound
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(523.25, ctx.currentTime); // C5
+                osc.frequency.exponentialRampToValueAtTime(1046.50, ctx.currentTime + 0.1); // C6
 
-            gainNode.gain.setValueAtTime(0.1, ctx.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.5);
+                gainNode.gain.setValueAtTime(0.1, ctx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.5);
 
-            osc.start();
-            osc.stop(ctx.currentTime + 1.5);
+                osc.start();
+                osc.stop(ctx.currentTime + 1.5);
+            }
         } catch (e) {
             console.error("Audio playback error:", e);
         }
@@ -84,7 +93,12 @@ export default function WorshipCard({ completedTasks, onToggle, readContent }: W
             // Reset
             setTimeLeft(120);
             setIsTimerActive(true);
+            playChime(true); // Silent play to unlock audio context
         } else {
+            if (!isTimerActive) {
+                // Resuming? Unlock audio too just in case
+                playChime(true);
+            }
             setIsTimerActive(!isTimerActive);
         }
     };
@@ -174,10 +188,10 @@ export default function WorshipCard({ completedTasks, onToggle, readContent }: W
                                 }
                             }}>
                                 <span className={`flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold ring-1 ring-inset transition-colors ${isSilence && (isTimerActive || timeLeft < 120)
-                                        ? 'bg-primary text-primary-foreground ring-primary cursor-pointer hover:bg-primary/90' // Active Timer Style
-                                        : isCompleted
-                                            ? 'bg-primary text-primary-foreground ring-primary'
-                                            : `bg-secondary/50 text-muted-foreground ring-border ${isSilence || isHear ? 'cursor-pointer hover:bg-secondary hover:text-foreground' : ''}`
+                                    ? 'bg-primary text-primary-foreground ring-primary cursor-pointer hover:bg-primary/90' // Active Timer Style
+                                    : isCompleted
+                                        ? 'bg-primary text-primary-foreground ring-primary'
+                                        : `bg-secondary/50 text-muted-foreground ring-border ${isSilence || isHear ? 'cursor-pointer hover:bg-secondary hover:text-foreground' : ''}`
                                     }`}>
                                     {isSilence && timeLeft > 0 ? (
                                         <Hourglass className={`w-4 h-4 ${isTimerActive ? "animate-pulse" : ""}`} />
@@ -253,6 +267,11 @@ export default function WorshipCard({ completedTasks, onToggle, readContent }: W
             <HearJournalModal
                 isOpen={isJournalOpen}
                 onClose={() => setIsJournalOpen(false)}
+                onContentChange={(hasContent) => {
+                    if (hasContent && !completedTasks.includes('hear')) {
+                        onToggle('hear');
+                    }
+                }}
             />
         </div>
     );

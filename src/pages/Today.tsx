@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Loader2, ChevronDown, Sun, BookOpen, Moon, CheckCircle2, Circle } from 'lucide-react';
+import { Loader2, ChevronDown, Sun, BookOpen, Moon, CheckCircle2, Circle, ChevronLeft, ChevronRight, Calendar as CalendarIcon, RotateCcw } from 'lucide-react';
 import { useProfile } from '../hooks/useProfile';
 import { getQuarterInfo, getDailyContent } from '../utils/scheduleUtils';
 import { scoutSchedule, preScoutSchedule } from '../data/tableData';
@@ -45,7 +45,20 @@ export default function Today() {
       console.warn('Failed to save tasks', e);
     }
   }, [completedTasks]);
-  const [currentDate] = useState(new Date());
+  const [displayDate, setDisplayDate] = useState(new Date());
+
+  const handleDateChange = (delta: number) => {
+    const newDate = new Date(displayDate);
+    newDate.setDate(newDate.getDate() + delta);
+    setDisplayDate(newDate);
+  };
+
+  const goToToday = () => {
+    setDisplayDate(new Date());
+  };
+
+  // Check if viewing today
+  const isToday = displayDate.toDateString() === new Date().toDateString();
 
   // Accordion State
   const [openSection, setOpenSection] = useState<TimeSection | null>('morning');
@@ -61,7 +74,7 @@ export default function Today() {
   }, []);
 
   // Get dynamic schedule info
-  const quarterInfo = getQuarterInfo(currentDate);
+  const quarterInfo = getQuarterInfo(displayDate);
   const { weekNum, dayOfWeek } = quarterInfo;
   const userRole = profile?.currentRole || Role.MENTEE;
   const dailyContent = getDailyContent(userRole, quarterInfo);
@@ -161,10 +174,90 @@ export default function Today() {
         onClose={() => setIsPreviewOpen(false)}
         currentWeekNum={weekNum}
         initialSession={quarterInfo.session}
+        referenceDate={displayDate}
       />
 
+      {/* Date Navigation */}
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center justify-between bg-card border border-border rounded-xl p-2 shadow-sm">
+          <button onClick={() => handleDateChange(-1)} className="p-2 hover:bg-secondary rounded-lg transition-colors text-muted-foreground hover:text-foreground">
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+
+          <div
+            className="relative flex items-center justify-center gap-2 font-semibold text-foreground px-4 py-2 hover:bg-secondary/50 rounded-lg cursor-pointer group transition-colors min-w-[200px]"
+            onClick={(e) => {
+              const input = e.currentTarget.querySelector('input');
+              if (input && 'showPicker' in input) {
+                try {
+                  (input as any).showPicker();
+                } catch (err) {
+                  // Fallback or ignore
+                }
+              }
+            }}
+          >
+            <CalendarIcon className="w-4 h-4 text-primary group-hover:text-primary/80" />
+            <span>{displayDate.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}</span>
+            <input
+              type="date"
+              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+              value={displayDate.toISOString().split('T')[0]}
+              onChange={(e) => {
+                if (e.target.value) {
+                  const parts = e.target.value.split('-').map(Number);
+                  if (parts.length === 3) {
+                    setDisplayDate(new Date(parts[0]!, parts[1]! - 1, parts[2]!));
+                  }
+                }
+              }}
+            />
+          </div>
+
+          <button onClick={() => handleDateChange(1)} className="p-2 hover:bg-secondary rounded-lg transition-colors text-muted-foreground hover:text-foreground">
+            <ChevronRight className="w-5 h-5" />
+          </button>
+        </div>
+
+        {!isToday && (
+          <div className="bg-amber-500/10 text-amber-600 dark:text-amber-400 p-2 rounded-lg text-sm font-medium text-center flex items-center justify-center gap-2 animate-in slide-in-from-top-2">
+            <div
+              className="relative group cursor-pointer"
+              onClick={(e) => {
+                const input = e.currentTarget.querySelector('input');
+                if (input && 'showPicker' in input) {
+                  try {
+                    (input as any).showPicker();
+                  } catch (err) {
+                    // Fallback
+                  }
+                }
+              }}
+            >
+              <span className="group-hover:underline decoration-amber-600/50 underline-offset-4">Previewing: {displayDate.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}</span>
+              <input
+                type="date"
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                value={displayDate.toISOString().split('T')[0]}
+                onChange={(e) => {
+                  if (e.target.value) {
+                    const parts = e.target.value.split('-').map(Number);
+                    if (parts.length === 3) {
+                      setDisplayDate(new Date(parts[0]!, parts[1]! - 1, parts[2]!));
+                    }
+                  }
+                }}
+              />
+            </div>
+            <button onClick={goToToday} className="underline hover:text-foreground flex items-center gap-1 z-20">
+              <RotateCcw className="w-3 h-3" /> Return to Today
+            </button>
+          </div>
+        )}
+      </div>
+
       {/* 1. Visual Progress Header */}
-      <QuarterProgress info={quarterInfo} onClick={() => setIsPreviewOpen(true)} />
+      <QuarterProgress info={quarterInfo} date={displayDate} onClick={() => setIsPreviewOpen(true)} />
 
       {/* 2. Accordion Stack */}
       <div className="space-y-1">
@@ -238,32 +331,33 @@ export default function Today() {
           <div className="pl-2 border-l-2 border-border/50 ml-6 animate-accordion-down mb-8">
             <div className="bg-card border border-border rounded-xl overflow-hidden shadow-sm flex-1">
               <div className="p-6">
-                <div className="flex items-center justify-between gap-4 mb-4" onClick={() => toggleTask('study')}>
-                  <div>
-                    <h4 className="font-medium text-foreground">{dailyContent?.study || "Rest"}</h4>
-                    {dailyContent?.area && <span className="text-xs px-2 py-0.5 rounded-full bg-secondary text-muted-foreground border border-border mt-1 inline-block">{dailyContent.area}</span>}
+                {/*  Use a simple Link instead of full collapsible text */}
+                <div className="flex items-center justify-between gap-4">
+                  <div className="space-y-1">
+                    <Link
+                      to="/curriculum"
+                      className="font-medium text-lg text-foreground hover:text-primary transition-colors block"
+                    >
+                      {dailyContent?.study || "Rest"}
+                    </Link>
+                    {dailyContent?.area && (
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-secondary text-muted-foreground border border-border inline-block">
+                        {dailyContent.area}
+                      </span>
+                    )}
+                    {!dailyContent?.study && <span className="text-muted-foreground">Rest night.</span>}
                   </div>
+
                   <button onClick={(e) => { e.stopPropagation(); toggleTask('study'); }}>
                     {completedTasks.includes('study') ? <CheckCircle2 className="w-6 h-6 text-indigo-500 animate-scale-in" /> : <Circle className="w-6 h-6 text-muted-foreground/30 hover:text-indigo-500/50" />}
                   </button>
                 </div>
 
-                {/* Collapsible Content */}
-                {studyContentRows.length > 0 && (
-                  <div className="space-y-3 pt-4 border-t border-border/50">
-                    {studyContentRows.map((row, i) => {
-                      let content = userRole === Role.STEWARD ? row.steward : userRole === Role.MENTOR ? row.mentor : row.mentee;
-                      return (
-                        <div key={i} className="space-y-1">
-                          {row.topic && <div className="text-[10px] font-bold uppercase text-indigo-500 tracking-wider">{row.topic}</div>}
-                          <div className="text-sm text-muted-foreground">
-                            <CollapsibleText text={content} />
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
+                <div className="mt-4 pt-4 border-t border-border/50">
+                  <p className="text-sm text-muted-foreground italic">
+                    Tip: Click the title above to view the full curriculum details for this week.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
