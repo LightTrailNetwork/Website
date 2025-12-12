@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Calendar, CheckCircle2, ChevronDown, ChevronUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { quarterlySchedule, scoutSchedule, preScoutSchedule } from '../data/tableData';
+import { useScrollDirection } from '../hooks/useScrollDirection';
 import { getWeekMnemonicInfo } from '../data/curriculumMnemonics';
 import { useProfile } from '../hooks/useProfile';
 import { Role } from '../data/types';
@@ -11,6 +12,12 @@ export default function Schedule() {
     const { profile } = useProfile();
     const [selectedRole, setSelectedRole] = useState<Role>(profile?.currentRole || Role.MENTEE);
     const [expandedWeek, setExpandedWeek] = useState<number | null>(null);
+
+    const { scrollDirection, isAtTop } = useScrollDirection();
+    const isHidden = scrollDirection === 'down' && !isAtTop;
+
+    // Helper to slugify consistent with Curriculum.tsx
+    const slugify = (text: string) => text?.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
     const roleTabs = [
         { role: Role.MENTEE, label: 'Mentee' },
@@ -58,9 +65,9 @@ export default function Schedule() {
             </div>
 
             {/* Desktop Table View */}
-            <div className="hidden md:block border border-border rounded-xl overflow-hidden bg-card shadow-sm overflow-x-auto">
+            <div className="hidden md:block border border-border rounded-xl bg-card shadow-sm">
                 <table className="w-full text-sm text-left">
-                    <thead className="bg-muted/50 text-muted-foreground font-medium border-b border-border">
+                    <thead className={`bg-card text-muted-foreground font-medium border-b border-border sticky z-40 transition-[top] duration-300 ${isHidden ? 'top-0' : 'top-16'}`}>
                         <tr>
                             <th className="p-4 whitespace-nowrap">Session</th>
                             <th className="p-4 whitespace-nowrap">Week</th>
@@ -180,7 +187,25 @@ export default function Schedule() {
                                             {displayStudy && (
                                                 <div className="flex items-start gap-2">
                                                     <span className={`mt-1 w-1.5 h-1.5 rounded-full shrink-0 ${week.session === 'Rest' ? 'bg-muted-foreground/30' : 'bg-indigo-500/70'}`} />
-                                                    <span className={week.session === 'Rest' ? 'text-muted-foreground' : ''}>{displayStudy}</span>
+                                                    {(() => {
+                                                        const parts = content.area ? content.area.split(' ') : [];
+                                                        const section = parts[0] || '';
+                                                        const subsection = parts.slice(1).join(' ') || ''; // Join rest if multiple words
+
+                                                        // Only link if we have valid area data and it's not a Rest week generic text
+                                                        const shouldLink = section && subsection && displayStudy && week.session !== 'Rest';
+                                                        const studyLink = shouldLink
+                                                            ? `/curriculum/table/${slugify(section)}/${slugify(subsection)}/${slugify(displayStudy)}`
+                                                            : null;
+
+                                                        return studyLink ? (
+                                                            <Link to={studyLink} className="hover:underline text-foreground/90 hover:text-indigo-600">
+                                                                {displayStudy}
+                                                            </Link>
+                                                        ) : (
+                                                            <span className={week.session === 'Rest' ? 'text-muted-foreground' : ''}>{displayStudy}</span>
+                                                        );
+                                                    })()}
                                                 </div>
                                             )}
                                         </td>

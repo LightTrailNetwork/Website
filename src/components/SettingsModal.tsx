@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { X, Link as LinkIcon, Settings, Info, ChevronRight, ChevronLeft, Globe, Search, Filter, BookOpen, Palette, Moon, Sun, User, Save, Download, Upload, Trash2, AlertTriangle, Users, Loader2, QrCode, Scan, Camera, Check, RefreshCw, Shield, Server, Mail, Code2, GitBranch, Database, Wifi, CheckCircle2, XCircle, Type, CheckCircle } from 'lucide-react';
+import { X, Link as LinkIcon, Settings, Info, ChevronRight, ChevronLeft, Globe, Search, Filter, BookOpen, Palette, Moon, Sun, User, Save, Download, Upload, Trash2, AlertTriangle, Loader2, QrCode, Scan, Camera, Check, RefreshCw, Shield, Server, Mail, Code2, GitBranch, Database, Wifi, CheckCircle2, XCircle, Type, CheckCircle } from 'lucide-react';
 import { useSettings } from '../context/SettingsContext';
 import { useProfile } from '../hooks/useProfile';
 import { useTodayData } from '../hooks/useTodayData';
 import { getTranslations, type BibleTranslation } from '../data/bibleApi';
-import { getContacts, exportAll, importAll, resetApp } from '../data/db';
+import { exportAll, importAll, resetApp } from '../data/db';
 import { generateLinkQR, generateActivityQR, processLinkPayload, processActivitySnapshot, type LinkPayload, type ActivitySnapshot } from "../utils/qr";
 import QRScanner from "./QRScanner";
 import { Role, type Relation } from '../data/types';
@@ -54,7 +54,6 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
 
     // Settings/Profile State
     const [displayName, setDisplayName] = useState('');
-    const [contacts, setContacts] = useState<any[]>([]);
 
     // Link/QR State
     const [activeQrTab, setActiveQrTab] = useState<"generate" | "scan">("generate");
@@ -77,7 +76,6 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
             if (profile) {
                 setDisplayName(profile.displayName || '');
             }
-            loadContacts();
         }
     }, [isOpen, profile]);
 
@@ -87,16 +85,6 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
             generateLinkCode();
         }
     }, [isOpen, currentView, activeQrTab, selectedRelation, profile]);
-
-
-    const loadContacts = async () => {
-        try {
-            const contactMap = await getContacts();
-            setContacts(Object.values(contactMap));
-        } catch (error) {
-            console.error('Failed to load contacts:', error);
-        }
-    };
 
     if (!isOpen) return null;
 
@@ -262,7 +250,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
             case 'reader': return 'Reader Settings';
             case 'appearance': return 'Appearance';
             case 'link': return 'Link & QR';
-            case 'settings': return 'Role & Settings';
+            case 'settings': return 'Role & Data';
             case 'about': return 'Privacy & Tech';
             default: return 'Settings & More';
         }
@@ -357,7 +345,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                                     <Settings className="w-5 h-5 text-primary" />
                                 </div>
                                 <div className="flex-1">
-                                    <h3 className="font-medium text-foreground">Role & Settings</h3>
+                                    <h3 className="font-medium text-foreground">Role & Data</h3>
                                     <p className="text-xs text-muted-foreground">Manage preferences & Data</p>
                                 </div>
                                 <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
@@ -786,24 +774,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                                 </div>
                             </div>
 
-                            {/* Contacts Preview */}
-                            <div className="space-y-3">
-                                <h3 className="section-header flex items-center gap-2 text-sm font-semibold text-primary">
-                                    <Users className="w-4 h-4" /> Contacts
-                                </h3>
-                                <div className="bg-secondary/5 border border-border rounded-xl p-2 max-h-40 overflow-y-auto">
-                                    {contacts.length === 0 ? (
-                                        <p className="text-xs text-muted-foreground text-center py-4">No contacts added yet.</p>
-                                    ) : (
-                                        contacts.map(c => (
-                                            <div key={c.id} className="flex justify-between items-center p-2 hover:bg-accent/5 rounded-lg text-sm">
-                                                <span>{c.displayName || 'Unknown'}</span>
-                                                <span className="text-xs text-muted-foreground">{c.relation}</span>
-                                            </div>
-                                        ))
-                                    )}
-                                </div>
-                            </div>
+                            {/* Contacts section removed per user request */}
                         </div>
                     )}
 
@@ -885,6 +856,6 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
 
                 </div>
             </div>
-        </div>
+        </div >
     );
 }
