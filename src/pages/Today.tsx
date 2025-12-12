@@ -257,7 +257,26 @@ export default function Today() {
       </div>
 
       {/* 1. Visual Progress Header */}
-      <QuarterProgress info={quarterInfo} date={displayDate} onClick={() => setIsPreviewOpen(true)} />
+      <QuarterProgress
+        info={quarterInfo}
+        date={displayDate}
+        onClick={() => setIsPreviewOpen(true)}
+        onWeekSelect={(targetWeek) => {
+          const currentWeek = quarterInfo.weekNum;
+          const deltaWeeks = targetWeek - currentWeek;
+
+          // Move to target week
+          const targetDate = new Date(displayDate);
+          targetDate.setDate(targetDate.getDate() + (deltaWeeks * 7));
+
+          // Snap to Monday of that week
+          const day = targetDate.getDay();
+          const diffToMon = targetDate.getDate() - day + (day === 0 ? -6 : 1);
+          targetDate.setDate(diffToMon);
+
+          setDisplayDate(targetDate);
+        }}
+      />
 
       {/* 2. Accordion Stack */}
       <div className="space-y-1">

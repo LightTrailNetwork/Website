@@ -6,15 +6,15 @@ interface QuarterProgressProps {
     info: ReturnType<typeof getQuarterInfo>;
     date: Date;
     onClick?: () => void;
+    onWeekSelect?: (weekNum: number) => void;
 }
 
-export default function QuarterProgress({ info, date, onClick }: QuarterProgressProps) {
+export default function QuarterProgress({ info, date, onClick, onWeekSelect }: QuarterProgressProps) {
     const { quarter, session, weekNum, sessionWeek, dayOfWeek } = info;
 
     const isPrep = session === 'Preparation'; // Week 0
     const isRest = session === 'Rest'; // Week 10-12
 
-    // Helper to render the progress bars
     // We have 5 logical rows: 
     // 0: Prep (Week 0)
     // 1: Session 1 (Weeks 1-3)
@@ -22,62 +22,56 @@ export default function QuarterProgress({ info, date, onClick }: QuarterProgress
     // 3: Session 3 (Weeks 7-9)
     // 4: Rest (Weeks 10-12)
 
-    const renderRow = (rowIndex: number, startWeek: number, endWeek: number, colorClass: string, label?: string) => {
-        // Is this row active?
-        // Week 0 is Row 0
-        // Week 1-3 is Row 1
-        // Week 4-6 is Row 2
-        // Week 7-9 is Row 3
-        // Week 10-12 is Row 4
+    let activeRowIndex = 0;
+    if (weekNum >= 1 && weekNum <= 3) activeRowIndex = 1;
+    if (weekNum >= 4 && weekNum <= 6) activeRowIndex = 2;
+    if (weekNum >= 7 && weekNum <= 9) activeRowIndex = 3;
+    if (weekNum >= 10 && weekNum <= 12) activeRowIndex = 4;
 
-        let isActiveRow = false;
-        if (rowIndex === 0 && weekNum === 0) isActiveRow = true;
-        if (rowIndex === 1 && weekNum >= 1 && weekNum <= 3) isActiveRow = true;
-        if (rowIndex === 2 && weekNum >= 4 && weekNum <= 6) isActiveRow = true;
-        if (rowIndex === 3 && weekNum >= 7 && weekNum <= 9) isActiveRow = true;
-        if (rowIndex === 4 && weekNum >= 10 && weekNum <= 12) isActiveRow = true;
+    const renderRow = (rowIndex: number, startWeek: number, endWeek: number, colorClass: string, className: string = "w-[120px] md:w-[140px]") => {
+        let isActiveRow = rowIndex === activeRowIndex;
 
-        // If row is NOT active, display it very subtly? "only highlight the one that is currently active"
-        // User probably wants to see the structure but dimmed.
-
-        const opacity = isActiveRow ? 'opacity-100' : 'opacity-20';
+        // Inactive rows are dimmed but light up on hover so you know they are interactive
+        const opacity = isActiveRow ? 'opacity-100' : 'opacity-30 hover:opacity-100';
 
         // Generate segments
         const segments = [];
         for (let w = startWeek; w <= endWeek; w++) {
-            // Determine state of this specific segment
-            // Past: weekNum > w
-            // Current: weekNum === w
-            // Future: weekNum < w
+            let bgClass = "bg-muted";
+            if (weekNum > w) bgClass = colorClass;
+            else if (weekNum === w) bgClass = `${colorClass} ring-1 ring-offset-1 ring-offset-card ring-${colorClass.split('-')[1]}-500`;
 
-            let bgClass = "bg-muted"; // Future
-            if (weekNum > w) bgClass = colorClass; // Past (Full Color)
-            else if (weekNum === w) bgClass = `${colorClass} ring-1 ring-offset-1 ring-offset-card ring-${colorClass.split('-')[1]}-500`; // Current
-
-            // For inactive rows, maybe just show muted structure?
-            // Or show completed state if passed?
             if (!isActiveRow) {
-                if (weekNum > w) bgClass = colorClass; // Still show progress in past rows? 
-                // User said "only highlight the one that is currently active".
-                // This implies past rows might not be the focus.
-                // But visual progress usually shows history.
-                // I'll keep history colored but the ROW opacity low? That works.
+                if (weekNum > w) bgClass = colorClass;
             }
 
             segments.push(
                 <div
                     key={w}
-                    className={`h-1.5 md:h-2 rounded-full transition-all duration-300 ${isActiveRow && weekNum === w ? 'flex-[1.5]' : 'flex-1'} ${bgClass}`}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        onWeekSelect?.(w);
+                    }}
+                    title={`Jump to Week ${w}`}
+                    className={`h-1.5 md:h-2 rounded-full transition-all duration-300 ${isActiveRow && weekNum === w ? 'flex-[1.5]' : 'flex-1'} ${bgClass} cursor-pointer hover:scale-125 hover:z-10 hover:ring-2 hover:ring-offset-1 hover:ring-primary/50 relative`}
                 />
             );
         }
 
         return (
-            <div className={`flex gap-1 w-[120px] md:w-[140px] shrink-0 ${opacity} transition-opacity duration-300`}>
+            <div className={`flex gap-1 shrink-0 ${opacity} transition-opacity duration-300 ${className}`}>
                 {segments}
             </div>
         );
     };
+
+    const rowConfigs = [
+        { idx: 0, start: 0, end: 0, color: 'bg-amber-500' },
+        { idx: 1, start: 1, end: 3, color: 'bg-blue-500' },
+        { idx: 2, start: 4, end: 6, color: 'bg-indigo-500' },
+        { idx: 3, start: 7, end: 9, color: 'bg-violet-500' },
+        { idx: 4, start: 10, end: 12, color: 'bg-emerald-500' },
+    ];
 
     return (
         <div
@@ -106,7 +100,7 @@ export default function QuarterProgress({ info, date, onClick }: QuarterProgress
                     </div>
                     <h2 className="text-2xl font-bold text-foreground tracking-tight flex items-center gap-2">
                         {isPrep ? 'Preparation Week' : isRest ? 'Rest & Reflection' : session}
-                        {!isPrep && !isRest && <span className="text-muted-foreground font-normal text-lg">• Week {sessionWeek}</span>}
+                        {!isPrep && <span className="text-muted-foreground font-normal text-lg">• Week {sessionWeek}</span>}
                     </h2>
                     <p className="text-muted-foreground mt-1 text-sm flex items-center gap-1.5">
                         <Calendar className="w-3.5 h-3.5" />
@@ -114,22 +108,21 @@ export default function QuarterProgress({ info, date, onClick }: QuarterProgress
                     </p>
                 </div>
 
-                {/* Vertical Stack Progress Indicator */}
-                <div className="flex flex-col gap-1.5 items-end shrink-0 w-full md:w-auto mt-4 md:mt-0">
-                    {/* Row 1: Prep (Week 0) */}
-                    {renderRow(0, 0, 0, 'bg-amber-500')}
+                {/* Mobile: Single Active Row Full Width */}
+                <div className="flex md:hidden w-full mt-2">
+                    {(() => {
+                        const cfg = rowConfigs[activeRowIndex] || rowConfigs[0];
+                        return renderRow(cfg.idx, cfg.start, cfg.end, cfg.color, "w-full h-3");
+                    })()}
+                </div>
 
-                    {/* Row 2: Session 1 (Weeks 1-3) */}
-                    {renderRow(1, 1, 3, 'bg-blue-500')}
-
-                    {/* Row 3: Session 2 (Weeks 4-6) */}
-                    {renderRow(2, 4, 6, 'bg-indigo-500')}
-
-                    {/* Row 4: Session 3 (Weeks 7-9) */}
-                    {renderRow(3, 7, 9, 'bg-violet-500')}
-
-                    {/* Row 5: Rest (Weeks 10-12) */}
-                    {renderRow(4, 10, 12, 'bg-emerald-500')}
+                {/* Desktop: Vertical Stack 5 Rows */}
+                <div className="hidden md:flex flex-col gap-1.5 items-end shrink-0 w-auto">
+                    {rowConfigs.map(cfg => (
+                        <React.Fragment key={cfg.idx}>
+                            {renderRow(cfg.idx, cfg.start, cfg.end, cfg.color)}
+                        </React.Fragment>
+                    ))}
                 </div>
             </div>
         </div>
