@@ -12,9 +12,10 @@ interface QuarterPreviewModalProps {
     currentWeekNum: number;
     initialSession?: string;
     referenceDate?: Date;
+    onWeekSelect?: (weekNum: number) => void;
 }
 
-export default function QuarterPreviewModal({ isOpen, onClose, currentWeekNum, initialSession, referenceDate }: QuarterPreviewModalProps) {
+export default function QuarterPreviewModal({ isOpen, onClose, currentWeekNum, initialSession, referenceDate, onWeekSelect }: QuarterPreviewModalProps) {
     const [activeSession, setActiveSession] = useState<'Preparation' | 'Session 1' | 'Session 2' | 'Session 3' | 'Rest'>('Session 1');
     const navigate = useNavigate();
 
@@ -118,7 +119,12 @@ export default function QuarterPreviewModal({ isOpen, onClose, currentWeekNum, i
                                 return (
                                     <div
                                         key={week.weekNum}
-                                        className={`flex flex-col border rounded-xl overflow-hidden shadow-sm transition-all hover:shadow-md hover:border-primary/50 h-full ${isCurrent ? 'ring-2 ring-primary border-primary bg-primary/5' : 'bg-card border-border'}`}
+                                        onClick={() => {
+                                            onWeekSelect?.(week.weekNum);
+                                            onClose();
+                                        }}
+                                        className={`flex flex-col border rounded-xl overflow-hidden shadow-sm transition-all hover:shadow-md hover:border-primary/50 h-full cursor-pointer group/card ${isCurrent ? 'ring-2 ring-primary border-primary bg-primary/5' : 'bg-card border-border'}`}
+                                        title={`Jump to Week ${week.weekNum}`}
                                     >
                                         <div className="p-3 bg-secondary/20 border-b border-border/50 flex justify-between items-center shrink-0">
                                             <div className="flex flex-col">

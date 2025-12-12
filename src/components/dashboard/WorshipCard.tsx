@@ -26,15 +26,28 @@ export default function WorshipCard({ completedTasks, onToggle, readContent }: W
     });
 
     const timerRef = React.useRef<NodeJS.Timeout | null>(null);
+    const audioCtxRef = React.useRef<AudioContext | null>(null);
 
-    // Play Chime function using AudioContext (no external assets needed)
+    // Play Chime function using AudioContext (persistent context for iOS)
     const playChime = React.useCallback((silent: boolean = false) => {
         if (typeof window === 'undefined') return;
         try {
-            const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
-            if (!AudioContext) return;
+            // Initialize Context if needed
+            if (!audioCtxRef.current) {
+                const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+                if (AudioContext) {
+                    audioCtxRef.current = new AudioContext();
+                }
+            }
 
-            const ctx = new AudioContext();
+            const ctx = audioCtxRef.current;
+            if (!ctx) return;
+
+            // Always try to resume if suspended (iOS requirement)
+            if (ctx.state === 'suspended') {
+                ctx.resume().catch(e => console.error("Audio resume failed", e));
+            }
+
             const osc = ctx.createOscillator();
             const gainNode = ctx.createGain();
 
@@ -45,7 +58,7 @@ export default function WorshipCard({ completedTasks, onToggle, readContent }: W
                 // Silent burst to unlock iOS audio
                 osc.type = 'sine';
                 osc.frequency.setValueAtTime(440, ctx.currentTime);
-                gainNode.gain.setValueAtTime(0.001, ctx.currentTime);
+                gainNode.gain.setValueAtTime(0.0001, ctx.currentTime);
                 osc.start();
                 osc.stop(ctx.currentTime + 0.1);
             } else {
