@@ -328,8 +328,12 @@ export default function QuarterPreviewModal({ isOpen, onClose, currentWeekNum, i
                                                             const rule = acrostic.dailyHighlights?.find(h => dayName.startsWith(h.day));
                                                             const rawSlug = rule?.slug ? rule.slug : (rule?.term ? rule.term : topicText.split(' ')[0]);
                                                             const topicSlug = rawSlug.toLowerCase();
-                                                            if (s && ss) {
-                                                                topicLink = `/curriculum/table/${s}/${ss}/${topicSlug}`;
+                                                            if (s) {
+                                                                if (ss) {
+                                                                    topicLink = `/curriculum/table/${s}/${ss}/${topicSlug}`;
+                                                                } else {
+                                                                    topicLink = `/curriculum/table/${s}/${topicSlug}`;
+                                                                }
                                                             }
                                                         }
 

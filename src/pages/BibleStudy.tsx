@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import {
     BookOpen, Users, MapPin, Lightbulb,
     ArrowRightLeft, GitMerge, Combine, Repeat,
-    Hourglass, ListTree, History, Library, ArrowRight
+    Hourglass, ListTree, History, Library, ArrowRight, ShieldQuestion, Scale
 } from 'lucide-react';
 import VerseLink from '../components/study/VerseLink';
 // Removed Search import
@@ -35,6 +35,7 @@ export default function BibleStudy() {
             subtitle: 'The Objects of Scripture',
             color: 'indigo',
             tools: [
+                { id: 'divinity', title: 'Claims of Divinity', description: 'Is Jesus God? Implicit and explicit evidence from the Gospels.', icon: ShieldQuestion, path: '/bible/study/divinity', status: 'ready' },
                 { id: 'themes', title: 'Biblical Themes', description: 'Trace major concepts like Redemption, Covenant, and Grace.', icon: Lightbulb, path: '/bible/study/themes', status: 'ready' },
                 { id: 'people', title: 'People Profiles', description: 'Deep dives into key figures, their journeys, and significance.', icon: Users, path: '/bible/study/people', status: 'ready' },
                 { id: 'places', title: 'Places & Maps', description: 'Geographic context for the unfolding narrative.', icon: MapPin, path: '/bible/study/places', status: 'ready' },
@@ -47,6 +48,7 @@ export default function BibleStudy() {
             subtitle: 'Prophecy & Patterns',
             color: 'amber',
             tools: [
+                { id: 'continuity', title: 'Biblical Continuity', description: 'Addressing alleged contradictions and discovering unity.', icon: Scale, path: '/bible/study/continuity', status: 'ready' },
                 { id: 'prophecy', title: 'Prophecy & Fulfillment', description: 'Connecting OT promises with NT realization.', icon: ArrowRightLeft, path: '/bible/study/prophecy', status: 'ready' },
                 { id: 'typology', title: 'Typology', description: 'Shadows of Christ in the Old Testament.', icon: GitMerge, path: '/bible/study/typology', status: 'ready' },
                 { id: 'harmony', title: 'Gospel Harmony', description: 'Parallel accounts of the life of Jesus.', icon: Combine, path: '/bible/study/harmony', status: 'ready' },

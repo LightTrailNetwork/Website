@@ -16,6 +16,8 @@ import CurriculumTable from './pages/Table'; // Renamed from Table
 import Curriculum from './pages/Curriculum'; // New page
 import Schedule from './pages/Schedule';
 import BibleStudy from './pages/BibleStudy';
+import JesusDivinityStudy from './pages/study/JesusDivinityStudy';
+import BibleDiscrepanciesStudy from './pages/study/BibleDiscrepanciesStudy';
 import StudyToolPage from './pages/StudyToolPage';
 import { initDB, getProfile, createProfile } from './data/db';
 import { Role } from './data/types';
@@ -175,6 +177,8 @@ function AppContent() {
           <Route path="/curriculum/table/:section/:subsection/:topic" element={<CurriculumTable />} />
           <Route path="/schedule" element={<Schedule />} />
           <Route path="/bible/study" element={<BibleStudy />} />
+          <Route path="/bible/study/divinity" element={<JesusDivinityStudy />} />
+          <Route path="/bible/study/continuity" element={<BibleDiscrepanciesStudy />} />
           <Route path="/bible/study/:toolId" element={<StudyToolPage />} />
           <Route path="/bible/*" element={<Bible />} />
           <Route path="/settings" element={<Settings />} />

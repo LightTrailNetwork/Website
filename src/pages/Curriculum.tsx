@@ -29,7 +29,9 @@ const AccordionItem: React.FC<AccordionItemProps> = ({ node, depth = 0, parentPa
     const toSlug = (s: string) => s.toLowerCase().replace(/ /g, '-');
 
     let linkUrl = '#';
-    if (depth === 0) {
+    if (node.term === 'Tradition') {
+        linkUrl = '/tradition';
+    } else if (depth === 0) {
         linkUrl = `/curriculum/table/${toSlug(node.term)}`;
     } else if (depth === 1) {
         const parentSlug = toSlug((parentPath || '').split('/').pop() || '');
