@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import {
     BookOpen, Users, MapPin, Lightbulb, Pickaxe,
     ArrowRightLeft, GitMerge, Combine, Repeat,
-    Hourglass, ListTree, History, Library, ArrowRight, ShieldQuestion, Scale, Crown, Tent, Zap
+    Hourglass, ListTree, History, Library, ArrowRight, ShieldQuestion, Scale, Crown, Tent, Zap, Wheat
 } from 'lucide-react';
 import VerseLink from '../components/study/VerseLink';
 
@@ -84,6 +84,7 @@ export default function BibleStudy() {
             tools: [
                 { id: 'feasts', title: 'Jewish Feasts', description: 'The 7 Levitical feasts and prophetic fulfillment.', icon: Tent, path: '/bible/study/feasts', status: 'ready' },
                 { id: 'miracles', title: 'The Miracles of Jesus', description: 'The 37 recorded miracles of Christ.', icon: Zap, path: '/bible/study/miracles', status: 'ready' },
+                { id: 'parables', title: 'The Parables of Jesus', description: 'Visual gallery of the 30+ parables.', icon: Wheat, path: '/bible/study/parables', status: 'ready' },
             ]
         }
     ];

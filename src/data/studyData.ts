@@ -3156,6 +3156,280 @@ export const THE_APOSTLES: Apostle[] = [
     }
 ];
 
+export interface Parable {
+    id: string;
+    title: string;
+    reference: string;
+    gospels: ('Matthew' | 'Mark' | 'Luke')[];
+    theme: 'Kingdom' | 'Grace' | 'Judgment' | 'Prayer' | 'Stewardship' | 'Wisdom';
+    summary: string;
+    lesson: string;
+}
+
+export const PARABLES: Parable[] = [
+    {
+        id: 'sower',
+        title: 'The Sower',
+        reference: 'Matthew 13:3-23',
+        gospels: ['Matthew', 'Mark', 'Luke'],
+        theme: 'Kingdom',
+        summary: 'A sower scatters seed on path, rocky ground, thorns, and good soil.',
+        lesson: 'The reception of God\'s Word depends on the condition of the human heart.'
+    },
+    {
+        id: 'tares',
+        title: 'The Wheat and Tares',
+        reference: 'Matthew 13:24-30',
+        gospels: ['Matthew'],
+        theme: 'Judgment',
+        summary: 'An enemy sows weeds among the wheat, and both grow together until harvest.',
+        lesson: 'Good and evil will coexist in the world until the final judgment.'
+    },
+    {
+        id: 'mustard',
+        title: 'The Mustard Seed',
+        reference: 'Matthew 13:31-32',
+        gospels: ['Matthew', 'Mark', 'Luke'],
+        theme: 'Kingdom',
+        summary: 'A tiny seed grows into a large tree where birds can nest.',
+        lesson: 'Values of the Kingdom start small but eventually spread worldwide.'
+    },
+    {
+        id: 'leaven',
+        title: 'The Leaven',
+        reference: 'Matthew 13:33',
+        gospels: ['Matthew', 'Luke'],
+        theme: 'Kingdom',
+        summary: 'Yeast works through dough until the whole batch rises.',
+        lesson: 'The subtle, pervasive, and transforming power of the Kingdom.'
+    },
+    {
+        id: 'treasure',
+        title: 'The Hidden Treasure',
+        reference: 'Matthew 13:44',
+        gospels: ['Matthew'],
+        theme: 'Wisdom',
+        summary: 'A man finds treasure in a field and sells everything to buy the field.',
+        lesson: 'The Kingdom of Heaven is worth sacrificing everything to possess.'
+    },
+    {
+        id: 'pearl',
+        title: 'The Pearl of Great Price',
+        reference: 'Matthew 13:45-46',
+        gospels: ['Matthew'],
+        theme: 'Wisdom',
+        summary: 'A merchant finds a perfect pearl and sells all he has to buy it.',
+        lesson: 'The surpassing value of knowing Christ and the Kingdom.'
+    },
+    {
+        id: 'dragnet',
+        title: 'The Dragnet',
+        reference: 'Matthew 13:47-50',
+        gospels: ['Matthew'],
+        theme: 'Judgment',
+        summary: 'A net catches all kinds of fish, which are sorted on the shore.',
+        lesson: 'The final separation of the righteous and the wicked.'
+    },
+    {
+        id: 'unmerciful',
+        title: 'The Unmerciful Servant',
+        reference: 'Matthew 18:23-35',
+        gospels: ['Matthew'],
+        theme: 'Grace',
+        summary: 'A servant forgiven a massive debt refuses to forgive a small debt.',
+        lesson: 'We must forgive others because God has forgiven us an unpayable debt.'
+    },
+    {
+        id: 'workers',
+        title: 'Workers in the Vineyard',
+        reference: 'Matthew 20:1-16',
+        gospels: ['Matthew'],
+        theme: 'Grace',
+        summary: 'Workers hired at the eleventh hour receive the same pay as those who worked all day.',
+        lesson: 'God\'s grace is sovereign and not based on human merit or duration of service.'
+    },
+    {
+        id: 'two-sons',
+        title: 'The Two Sons',
+        reference: 'Matthew 21:28-32',
+        gospels: ['Matthew'],
+        theme: 'Wisdom',
+        summary: 'One son says no but does it; the other says yes but doesn\'t.',
+        lesson: 'Obedience is better than empty words; tax collectors enter before Pharisees.'
+    },
+    {
+        id: 'tenants',
+        title: 'The Wicked Tenants',
+        reference: 'Matthew 21:33-46',
+        gospels: ['Matthew', 'Mark', 'Luke'],
+        theme: 'Judgment',
+        summary: 'Tenants kill the servants and finally the son of the vineyard owner.',
+        lesson: 'God will judge those who reject His prophets and His Son.'
+    },
+    {
+        id: 'wedding',
+        title: 'The Wedding Feast',
+        reference: 'Matthew 22:1-14',
+        gospels: ['Matthew'],
+        theme: 'Grace',
+        summary: 'Invited guests refuse to come, so the king invites everyone from the streets.',
+        lesson: 'The invitation to the Kingdom is open to all, but requires a response (wedding garment).'
+    },
+    {
+        id: 'virgins',
+        title: 'The Ten Virgins',
+        reference: 'Matthew 25:1-13',
+        gospels: ['Matthew'],
+        theme: 'Stewardship',
+        summary: 'Five wise virgins brought oil; five foolish ones did not.',
+        lesson: 'We must be spiritually prepared/watchful for Christ\'s return.'
+    },
+    {
+        id: 'talents',
+        title: 'The Talents',
+        reference: 'Matthew 25:14-30',
+        gospels: ['Matthew'],
+        theme: 'Stewardship',
+        summary: 'Servants are entrusted with property; two invest, one hides it.',
+        lesson: 'We are accountable to use our God-given gifts for His glory.'
+    },
+    {
+        id: 'sheep-goats',
+        title: 'The Sheep and Goats',
+        reference: 'Matthew 25:31-46',
+        gospels: ['Matthew'],
+        theme: 'Judgment',
+        summary: 'The King separates nations based on how they treated "the least of these."',
+        lesson: 'True faith is evidenced by love and service to the needy.'
+    },
+    {
+        id: 'growing-seed',
+        title: 'The Growing Seed',
+        reference: 'Mark 4:26-29',
+        gospels: ['Mark'],
+        theme: 'Kingdom',
+        summary: 'Seed grows secretly while the farmer sleeps.',
+        lesson: 'The growth of the Kingdom is God\'s work, often unseen by us.'
+    },
+    {
+        id: 'samaritan',
+        title: 'The Good Samaritan',
+        reference: 'Luke 10:25-37',
+        gospels: ['Luke'],
+        theme: 'Grace',
+        summary: 'A Samaritan helps a wounded man ignored by a priest and Levite.',
+        lesson: 'Who is my neighbor? Anyone in need, regardless of race or religion.'
+    },
+    {
+        id: 'friend-midnight',
+        title: 'Friend at Midnight',
+        reference: 'Luke 11:5-8',
+        gospels: ['Luke'],
+        theme: 'Prayer',
+        summary: 'A neighbor lends bread because of the requester\'s persistence.',
+        lesson: 'God answers persistent, bold prayer.'
+    },
+    {
+        id: 'rich-fool',
+        title: 'The Rich Fool',
+        reference: 'Luke 12:16-21',
+        gospels: ['Luke'],
+        theme: 'Stewardship',
+        summary: 'A rich man builds bigger barns but dies that very night.',
+        lesson: 'One\'s life does not consist in the abundance of possessions.'
+    },
+    {
+        id: 'barren-fig',
+        title: 'The Barren Fig Tree',
+        reference: 'Luke 13:6-9',
+        gospels: ['Luke'],
+        theme: 'Judgment',
+        summary: 'A tree is given one more year to bear fruit before being cut down.',
+        lesson: 'God is patient, but judgment will come if there is no repentance.'
+    },
+    {
+        id: 'great-banquet',
+        title: 'The Great Banquet',
+        reference: 'Luke 14:15-24',
+        gospels: ['Luke'],
+        theme: 'Grace',
+        summary: 'Those invited make excuses, so the poor and crippled are brought in.',
+        lesson: 'God\'s table will be full; if the self-righteous refuse, outcasts will be welcomed.'
+    },
+    {
+        id: 'lost-sheep',
+        title: 'The Lost Sheep',
+        reference: 'Luke 15:3-7',
+        gospels: ['Matthew', 'Luke'],
+        theme: 'Grace',
+        summary: 'A shepherd leaves ninety-nine sheep to find the one lost.',
+        lesson: 'Heaven rejoices more over one sinner repenting than 99 righteous.'
+    },
+    {
+        id: 'lost-coin',
+        title: 'The Lost Coin',
+        reference: 'Luke 15:8-10',
+        gospels: ['Luke'],
+        theme: 'Grace',
+        summary: 'A woman searches diligently for one lost silver coin.',
+        lesson: 'The value God places on finding the lost.'
+    },
+    {
+        id: 'prodigal',
+        title: 'The Prodigal Son',
+        reference: 'Luke 15:11-32',
+        gospels: ['Luke'],
+        theme: 'Grace',
+        summary: 'A wayward son returns home to a forgiving father; the older brother is jealous.',
+        lesson: 'The Father\'s extravagant love for the lost and the danger of self-righteousness.'
+    },
+    {
+        id: 'shrewd-manager',
+        title: 'The Shrewd Manager',
+        reference: 'Luke 16:1-13',
+        gospels: ['Luke'],
+        theme: 'Stewardship',
+        summary: 'A manager uses his position to make friends before being fired.',
+        lesson: 'Use worldly wealth to gain eternal friends (eternal rewards).'
+    },
+    {
+        id: 'rich-lazarus',
+        title: 'Rich Man and Lazarus',
+        reference: 'Luke 16:19-31',
+        gospels: ['Luke'],
+        theme: 'Judgment',
+        summary: 'A rich man ignores Lazarus; their roles are reversed in the afterlife.',
+        lesson: 'Our eternal destiny is fixed at death; listen to Scripture now.'
+    },
+    {
+        id: 'widow-judge',
+        title: 'Persistent Widow',
+        reference: 'Luke 18:1-8',
+        gospels: ['Luke'],
+        theme: 'Prayer',
+        summary: 'An unjust judge grants justice due to a widow\'s nagging.',
+        lesson: 'We should always pray and not give up.'
+    },
+    {
+        id: 'pharisee-tax',
+        title: 'Pharisee and Tax Collector',
+        reference: 'Luke 18:9-14',
+        gospels: ['Luke'],
+        theme: 'Kingdom',
+        summary: 'Two men pray; the humble sinner is justified, not the proud religious man.',
+        lesson: 'Everyone who exalts himself will be humbled, and he who humbles himself will be exalted.'
+    },
+    {
+        id: 'minas',
+        title: 'The Ten Minas',
+        reference: 'Luke 19:11-27',
+        gospels: ['Luke'],
+        theme: 'Stewardship',
+        summary: 'Nobleman goes away to receive a kingdom, servants invest minas.',
+        lesson: 'Faithfulness in potential intervening time before the Kingdom comes in fullness.'
+    }
+];
+
 export const ERAS: BiblicalEra[] = [
     {
         id: 'creation',
