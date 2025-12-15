@@ -54,7 +54,7 @@ export interface ConceptSymbol {
     name: string;
     meaning: string;
     appearances: { ref: string; context: string }[];
-    theme: 'Nature' | 'Cultic' | 'Color' | 'Number' | 'Object';
+    theme: 'Nature' | 'Cultic' | 'Color' | 'Number' | 'Object' | 'Role';
 }
 
 export interface Typology {
@@ -89,6 +89,7 @@ export interface BookOutline {
     id: string;
     bookName: string;
     theme: string;
+    category?: string;
     sections: { title: string; range: string; subpoints?: string[] }[];
 }
 
@@ -341,30 +342,118 @@ export const THEMES: BiblicalTheme[] = [
 ];
 
 export const TIMELINE: TimelineEvent[] = [
-    { id: 'creation', year: 'Undated', title: 'Creation & Fall', description: 'God creates the heavens and the earth. Adam and Eve sin.', references: ['Genesis 1'], era: 'Creation' },
-    { id: 'flood', year: 'Undated', title: 'The Flood', description: 'God judges the earth with water; Noah is saved.', references: ['Genesis 6'], era: 'Creation' },
-    { id: 'call-abraham', year: 'c. 2100 BC', title: 'Call of Abraham', description: 'God calls Abram to leave Ur. The Covenant is established.', references: ['Genesis 12'], era: 'Patriarchs' },
-    { id: 'isaac-jacob', year: 'c. 2000 BC', title: 'Isaac Given, Jacob Born', description: 'The line of promise continues through Isaac and Jacob (Israel).', references: ['Genesis 21'], era: 'Patriarchs' },
-    { id: 'joseph-egypt', year: 'c. 1898 BC', title: 'Joseph in Egypt', description: 'Joseph rises to power, saving his family from famine.', references: ['Genesis 37'], era: 'Patriarchs' },
-    { id: 'exodus', year: 'c. 1446 BC', title: 'The Exodus', description: 'Moses leads Israel out of Egypt. The Passover.', references: ['Exodus 12'], era: 'Exodus' },
-    { id: 'conquest', year: 'c. 1406 BC', title: 'Conquest of Canaan', description: 'Joshua leads Israel into the Promised Land.', references: ['Joshua 1'], era: 'Conquest' },
-    { id: 'judges', year: 'c. 1375 BC', title: 'Period of Judges', description: 'Israel cycles through rebellion and deliverance.', references: ['Judges 2'], era: 'Judges' },
-    { id: 'david-king', year: 'c. 1010 BC', title: 'David Becomes King', description: 'David ascends to the throne of Judah, later all Israel.', references: ['2 Samuel 2'], era: 'Kingdom' },
-    { id: 'temple-built', year: 'c. 966 BC', title: 'Solomon Builds Temple', description: 'The First Temple is constructed in Jerusalem.', references: ['1 Kings 6'], era: 'Kingdom' },
-    { id: 'kingdom-split', year: '930 BC', title: 'Kingdom Divided', description: 'Israel splits into North (Israel) and South (Judah).', references: ['1 Kings 12'], era: 'Kingdom' },
-    { id: 'exile-israel', year: '722 BC', title: 'Fall of Northern Kingdom', description: 'Assyria conquers Israel (Samaria).', references: ['2 Kings 17'], era: 'Kingdom' },
-    { id: 'josiah-reform', year: '640 BC', title: 'Josiah\'s Reforms', description: 'A brief revival of faithful worship in Judah.', references: ['2 Kings 22'], era: 'Kingdom' },
-    { id: 'exile-judah', year: '586 BC', title: 'Fall of Jerusalem', description: 'Babylon destroys the Temple and exiles Judah.', references: ['2 Kings 25'], era: 'Exile' },
-    { id: 'decree-cyrus', year: '538 BC', title: 'Decree of Cyrus', description: 'King Cyrus allows Jews to return and rebuild.', references: ['Ezra 1'], era: 'Return' },
-    { id: 'temple-rebuilt', year: '516 BC', title: 'Temple Rebuilt', description: 'The Second Temple is completed under Zerubbabel.', references: ['Ezra 6'], era: 'Return' },
-    { id: 'malachi', year: 'c. 430 BC', title: 'Prophecy of Malachi', description: 'The final prophet before the 400 years of silence.', references: ['Malachi 1'], era: 'Silence' },
-    { id: 'birth-jesus', year: 'c. 4 BC', title: 'Birth of Jesus', description: 'The Word becomes flesh in Bethlehem.', references: ['Luke 2'], era: 'Life of Christ' },
-    { id: 'ministry-start', year: 'c. 27 AD', title: 'Jesus Begins Ministry', description: 'Baptism by John and temptation in the wilderness.', references: ['Mark 1'], era: 'Life of Christ' },
-    { id: 'crucifixion', year: 'c. 30/33 AD', title: 'Crucifixion & Resurrection', description: 'The death and resurrection of Christ.', references: ['Matthew 27'], era: 'Life of Christ' },
-    { id: 'pentecost', year: 'c. 30/33 AD', title: 'Pentecost', description: 'The Holy Spirit descends. The Church is born.', references: ['Acts 2'], era: 'Early Church' },
-    { id: 'paul-conversion', year: 'c. 34 AD', title: 'Conversion of Paul', description: 'Saul encounters Jesus on the road to Damascus.', references: ['Acts 9'], era: 'Early Church' },
-    { id: 'council-jerusalem', year: 'c. 49 AD', title: 'Council of Jerusalem', description: 'The church decides Gentiles do not need to follow Jewish law.', references: ['Acts 15'], era: 'Early Church' },
-    { id: 'jerusalem-fall', year: '70 AD', title: 'Destruction of Jerusalem', description: 'Roman legions destroy the Second Temple.', references: ['Luke 21:20'], era: 'Early Church' }
+    // Creation Era
+    { id: 'creation', year: 'Undated', title: 'Creation', description: 'God creates the heavens and the earth ex nihilo.', references: ['Genesis 1'], era: 'Creation' },
+    { id: 'fall', year: 'Undated', title: 'The Fall', description: 'Adam and Eve disobey God; sin and death enter the world.', references: ['Genesis 3'], era: 'Creation' },
+    { id: 'first-murder', year: 'Undated', title: 'Cain kills Abel', description: 'The spread of sin culminates in the first murder.', references: ['Genesis 4'], era: 'Creation' },
+    { id: 'flood', year: 'Undated', title: 'The Great Flood', description: 'God judges the earth with water; Noah and his family are saved in the Ark.', references: ['Genesis 6-9'], era: 'Creation' },
+    { id: 'babel', year: 'Undated', title: 'Tower of Babel', description: 'Humanity unites in rebellion; God confuses languages and scatters the nations.', references: ['Genesis 11'], era: 'Creation' },
+
+    // Patriarchs Era
+    { id: 'call-abraham', year: 'c. 2091 BC', title: 'Call of Abraham', description: 'God calls Abram to leave Ur. The Abrahamic Covenant is established.', references: ['Genesis 12'], era: 'Patriarchs' },
+    { id: 'abraham-covenant', year: 'c. 2081 BC', title: 'Covenant Ratified', description: 'God walks between the pieces, promising the land to Abraham\'s offspring.', references: ['Genesis 15'], era: 'Patriarchs' },
+    { id: 'sodom', year: 'c. 2067 BC', title: 'Destruction of Sodom', description: 'God judges Sodom and Gomorrah; Lot is rescued.', references: ['Genesis 19'], era: 'Patriarchs' },
+    { id: 'isaac-born', year: 'c. 2066 BC', title: 'Birth of Isaac', description: 'The son of promise is born to Abraham and Sarah in their old age.', references: ['Genesis 21'], era: 'Patriarchs' },
+    { id: 'sacrifice-isaac', year: 'c. 2050 BC', title: 'Offering of Isaac', description: 'Abraham\'s faith is tested on Mount Moriah.', references: ['Genesis 22'], era: 'Patriarchs' },
+    { id: 'jacob-esau', year: 'c. 2006 BC', title: 'Birth of Jacob & Esau', description: 'Rebekah gives birth to twins; the older will serve the younger.', references: ['Genesis 25'], era: 'Patriarchs' },
+    { id: 'jacob-flee', year: 'c. 1929 BC', title: 'Jacob Flees to Haran', description: 'Jacob sees the ladder to heaven at Bethel.', references: ['Genesis 28'], era: 'Patriarchs' },
+    { id: 'jacob-wrestle', year: 'c. 1909 BC', title: 'Jacob Wrestles God', description: 'Jacob\'s name is changed to Israel.', references: ['Genesis 32'], era: 'Patriarchs' },
+    { id: 'joseph-sold', year: 'c. 1898 BC', title: 'Joseph Sold into Slavery', description: 'Joseph\'s brothers betray him; he is taken to Egypt.', references: ['Genesis 37'], era: 'Patriarchs' },
+    { id: 'joseph-gov', year: 'c. 1885 BC', title: 'Joseph Rules Egypt', description: 'Joseph interprets Pharaoh\'s dreams and becomes second in command.', references: ['Genesis 41'], era: 'Patriarchs' },
+    { id: 'jacob-egypt', year: 'c. 1876 BC', title: 'Israel Moves to Egypt', description: 'The family of Jacob moves to Goshen to survive the famine.', references: ['Genesis 46'], era: 'Patriarchs' },
+
+    // Exodus Era
+    { id: 'moses-birth', year: 'c. 1526 BC', title: 'Birth of Moses', description: 'Moses is born and hidden in the Nile basket.', references: ['Exodus 2'], era: 'Exodus' },
+    { id: 'burning-bush', year: 'c. 1446 BC', title: 'The Burning Bush', description: 'God calls Moses to deliver Israel.', references: ['Exodus 3'], era: 'Exodus' },
+    { id: 'plagues', year: 'c. 1446 BC', title: 'The Ten Plagues', description: 'God judges the gods of Egypt.', references: ['Exodus 7-11'], era: 'Exodus' },
+    { id: 'passover', year: 'c. 1446 BC', title: 'The First Passover', description: 'The blood of the lamb saves Israel\'s firstborn.', references: ['Exodus 12'], era: 'Exodus' },
+    { id: 'red-sea', year: 'c. 1446 BC', title: 'Crossing the Red Sea', description: 'Israel crosses on dry ground; Pharaoh\'s army drowns.', references: ['Exodus 14'], era: 'Exodus' },
+    { id: 'law-sinai', year: 'c. 1446 BC', title: 'Law Given at Sinai', description: 'God gives the Ten Commandments and the Mosaic Covenant.', references: ['Exodus 20'], era: 'Exodus' },
+    { id: 'golden-calf', year: 'c. 1446 BC', title: 'The Golden Calf', description: 'Israel falls into idolatry while Moses is on the mountain.', references: ['Exodus 32'], era: 'Exodus' },
+    { id: 'kadesh', year: 'c. 1445 BC', title: 'Spies sent to Canaan', description: 'Israel refuses to enter the land and is condemned to wander 40 years.', references: ['Numbers 13-14'], era: 'Exodus' },
+    { id: 'bronze-serpent', year: 'c. 1406 BC', title: 'The Bronze Serpent', description: 'Moses lifts up the serpent to save the people from snakes.', references: ['Numbers 21'], era: 'Exodus' },
+    { id: 'moses-death', year: 'c. 1406 BC', title: 'Death of Moses', description: 'Moses views the land from Mt. Nebo but does not enter.', references: ['Deuteronomy 34'], era: 'Exodus' },
+
+    // Conquest Era
+    { id: 'jordan-cross', year: 'c. 1406 BC', title: 'Crossing the Jordan', description: 'Joshua leads Israel into the Promised Land.', references: ['Joshua 3'], era: 'Conquest' },
+    { id: 'jericho', year: 'c. 1406 BC', title: 'Fall of Jericho', description: 'The walls come down after 7 days of marching.', references: ['Joshua 6'], era: 'Conquest' },
+    { id: 'sun-stand', year: 'c. 1400 BC', title: 'The Sun Stands Still', description: 'God fights for Israel during the southern campaign.', references: ['Joshua 10'], era: 'Conquest' },
+    { id: 'land-divide', year: 'c. 1399 BC', title: 'Land Divided', description: 'The tribes receive their inheritance.', references: ['Joshua 13-21'], era: 'Conquest' },
+
+    // Judges Era
+    { id: 'judges-cycle', year: 'c. 1375 BC', title: 'Joshua Dies / Cycle Begins', description: 'A generation arises that does not know the Lord.', references: ['Judges 2'], era: 'Judges' },
+    { id: 'deborah', year: 'c. 1209 BC', title: 'Deborah & Barak', description: 'Victory over Sisera and the Canaanites.', references: ['Judges 4-5'], era: 'Judges' },
+    { id: 'gideon', year: 'c. 1162 BC', title: 'Gideon\'s 300', description: 'Gideon defeats the Midianites with a small army.', references: ['Judges 7'], era: 'Judges' },
+    { id: 'samson', year: 'c. 1075 BC', title: 'Samson\'s Ministry', description: 'A Nazirite judge with great strength fights the Philistines.', references: ['Judges 13-16'], era: 'Judges' },
+    { id: 'ruth-boaz', year: 'c. 1100 BC', title: 'Ruth & Boaz', description: 'A story of redemption in Bethlehem during the time of Judges.', references: ['Ruth 4'], era: 'Judges' },
+    { id: 'samuel-birth', year: 'c. 1100 BC', title: 'Birth of Samuel', description: 'Hannah prays for a son; Samuel is dedicated to the Lord.', references: ['1 Samuel 1'], era: 'Judges' },
+
+    // United Kingdom
+    { id: 'saul-king', year: 'c. 1050 BC', title: 'Saul Anointed King', description: 'Israel demands a king; Saul is chosen.', references: ['1 Samuel 10'], era: 'Kingdom' },
+    { id: 'david-goliath', year: 'c. 1025 BC', title: 'David & Goliath', description: 'Young David defeats the Philistine giant.', references: ['1 Samuel 17'], era: 'Kingdom' },
+    { id: 'david-king-judah', year: 'c. 1010 BC', title: 'David King of Judah', description: 'After Saul\'s death, David rules in Hebron.', references: ['2 Samuel 2'], era: 'Kingdom' },
+    { id: 'david-king-all', year: 'c. 1003 BC', title: 'David King of Israel', description: 'David conquers Jerusalem and unites the tribes.', references: ['2 Samuel 5'], era: 'Kingdom' },
+    { id: 'davidic-covenant', year: 'c. 1000 BC', title: 'Davidic Covenant', description: 'God promises David an eternal throne.', references: ['2 Samuel 7'], era: 'Kingdom' },
+    { id: 'solomon-king', year: 'c. 970 BC', title: 'Solomon Crowned', description: 'David dies; Solomon succeeds him.', references: ['1 Kings 1'], era: 'Kingdom' },
+    { id: 'temple-dedication', year: 'c. 960 BC', title: 'Temple Dedication', description: 'The glory of the Lord fills the completed Temple.', references: ['1 Kings 8'], era: 'Kingdom' },
+
+    // Divided Kingdom
+    { id: 'schism', year: '930 BC', title: 'The Kingdom Divides', description: 'Ten tribes rebel against Rehoboam; Jeroboam sets up golden calves.', references: ['1 Kings 12'], era: 'Kingdom' },
+    { id: 'elijah-carmel', year: 'c. 860 BC', title: 'Elijah on Mt. Carmel', description: 'Fire from heaven defeats the prophets of Baal.', references: ['1 Kings 18'], era: 'Kingdom' },
+    { id: 'jonah-nineveh', year: 'c. 760 BC', title: 'Jonah to Nineveh', description: 'Jonah preaches repentance to the Assyrian capital.', references: ['Jonah 3'], era: 'Kingdom' },
+    { id: 'isaiah-call', year: 'c. 740 BC', title: 'Call of Isaiah', description: 'In the year King Uzziah died, Isaiah sees the Lord.', references: ['Isaiah 6'], era: 'Kingdom' },
+    { id: 'fall-israel', year: '722 BC', title: 'Fall of Israel (North)', description: 'Samaria falls to Assyria; the people are exiled.', references: ['2 Kings 17'], era: 'Kingdom' },
+    { id: 'hezekiah-deliverance', year: '701 BC', title: 'Assyrian Siege', description: 'God kills 185,000 Assyrians to save Jerusalem.', references: ['2 Kings 19'], era: 'Kingdom' },
+    { id: 'josiah-finds-law', year: '622 BC', title: 'Book of Law Found', description: 'Josiah leads a reformation based on Deuteronomy.', references: ['2 Kings 22'], era: 'Kingdom' },
+    { id: 'daniel-exile', year: '605 BC', title: 'First Deportation', description: 'Daniel and friends taken to Babylon.', references: ['Daniel 1'], era: 'Exile' },
+    { id: 'ezekiel-call', year: '593 BC', title: 'Call of Ezekiel', description: 'Ezekiel sees visions of God among the exiles.', references: ['Ezekiel 1'], era: 'Exile' },
+    { id: 'fall-jerusalem', year: '586 BC', title: 'Fall of Jerusalem', description: 'Nebuchadnezzar destroys the Temple and city.', references: ['2 Kings 25'], era: 'Exile' },
+
+    // Exile & Return Era
+    { id: 'fiery-furnace', year: 'c. 585 BC', title: 'The Fiery Furnace', description: 'Shadrach, Meshach, and Abednego preserved in the fire.', references: ['Daniel 3'], era: 'Exile' },
+    { id: 'belshazzar', year: '539 BC', title: 'Writing on the Wall', description: 'Babylon falls to the Medes and Persians.', references: ['Daniel 5'], era: 'Exile' },
+    { id: 'cyrus-decree', year: '538 BC', title: 'Decree of Cyrus', description: 'Jews allowed to return to Jerusalem.', references: ['Ezra 1'], era: 'Return' },
+    { id: 'temple-complete', year: '516 BC', title: 'Second Temple Dedicated', description: 'Rebuilding completed under Zerubbabel.', references: ['Ezra 6'], era: 'Return' },
+    { id: 'esther-queen', year: '479 BC', title: 'Esther Becomes Queen', description: 'Esther marries Xerxes in Susa.', references: ['Esther 2'], era: 'Return' },
+    { id: 'ezra-return', year: '458 BC', title: 'Return of Ezra', description: 'Ezra returns to teach the Law.', references: ['Ezra 7'], era: 'Return' },
+    { id: 'nehemiah-wall', year: '445 BC', title: 'Walls Rebuilt', description: 'Nehemiah rebuilds Jerusalem\'s walls in 52 days.', references: ['Nehemiah 6'], era: 'Return' },
+    { id: 'malachi-prophecy', year: 'c. 430 BC', title: 'Malachi Prophesies', description: 'The last OT prophet warns against dead worship.', references: ['Malachi 1'], era: 'Silence' },
+
+    // Silence
+    { id: 'alexander', year: '332 BC', title: 'Alexander the Great', description: 'Conquers Palestine; Hellenization begins.', references: [], era: 'Silence' },
+    { id: 'septuagint', year: 'c. 250 BC', title: 'Septuagint Translated', description: 'Hebrew Scriptures translated into Greek (LXX) in Egypt.', references: [], era: 'Silence' },
+    { id: 'maccabees', year: '167 BC', title: 'Maccabean Revolt', description: 'Judas Maccabeus leads revolt against Antiochus Epiphanes.', references: [], era: 'Silence' },
+    { id: 'rome-pompey', year: '63 BC', title: 'Rome Conquers Judea', description: 'Pompey enters Jerusalem; Roman rule begins.', references: [], era: 'Silence' },
+
+    // Life of Christ
+    { id: 'annunciation', year: 'c. 5 BC', title: 'The Annunciation', description: 'Gabriel announces the birth of Jesus to Mary.', references: ['Luke 1'], era: 'Life of Christ' },
+    { id: 'birth-jesus', year: 'c. 4 BC', title: 'Birth of Jesus', description: 'Born in Bethlehem.', references: ['Luke 2'], era: 'Life of Christ' },
+    { id: 'magi', year: 'c. 2 BC', title: 'Visit of Magi', description: 'Wise men worship the King.', references: ['Matthew 2'], era: 'Life of Christ' },
+    { id: 'temple-boy', year: 'c. 8 AD', title: 'Boy Jesus at Temple', description: 'Jesus in His Father\'s house.', references: ['Luke 2'], era: 'Life of Christ' },
+    { id: 'baptism', year: 'c. 27 AD', title: 'Baptism of Jesus', description: 'Ministry begins; Spirit descends.', references: ['Matthew 3'], era: 'Life of Christ' },
+    { id: 'temptation', year: 'c. 27 AD', title: 'Wilderness Temptation', description: 'Jesus overcomes Satan\'s tests.', references: ['Luke 4'], era: 'Life of Christ' },
+    { id: 'nicodemus', year: 'c. 27 AD', title: 'Jesus & Nicodemus', description: 'Teaching on being born again.', references: ['John 3'], era: 'Life of Christ' },
+    { id: 'transfiguration', year: 'c. 29 AD', title: 'The Transfiguration', description: 'Jesus\' glory revealed on the mountain.', references: ['Mark 9'], era: 'Life of Christ' },
+    { id: 'triumphal-entry', year: 'c. 30 AD', title: 'Triumphal Entry', description: 'Palm Sunday; Jesus enters as King.', references: ['John 12'], era: 'Life of Christ' },
+    { id: 'last-supper', year: 'c. 30 AD', title: 'The Last Supper', description: 'Institution of the Eucharist.', references: ['Luke 22'], era: 'Life of Christ' },
+    { id: 'crucifixion', year: 'c. 30 AD', title: 'The Crucifixion', description: 'Jesus dies for the sins of the world.', references: ['Matthew 27'], era: 'Life of Christ' },
+    { id: 'resurrection', year: 'c. 30 AD', title: 'The Resurrection', description: 'Jesus rises from the dead on the third day.', references: ['John 20'], era: 'Life of Christ' },
+    { id: 'ascension', year: 'c. 30 AD', title: 'The Ascension', description: 'Jesus returns to the Father.', references: ['Acts 1'], era: 'Life of Christ' },
+
+    // Early Church
+    { id: 'pentecost', year: 'c. 30 AD', title: 'Pentecost', description: 'Holy Spirit poured out; 3,000 saved.', references: ['Acts 2'], era: 'Early Church' },
+    { id: 'stephen', year: 'c. 33 AD', title: 'Stoning of Stephen', description: 'First Christian martyr.', references: ['Acts 7'], era: 'Early Church' },
+    { id: 'conversion-paul', year: 'c. 34 AD', title: 'Conversion of Paul', description: 'Road to Damascus encounter.', references: ['Acts 9'], era: 'Early Church' },
+    { id: 'cornelius', year: 'c. 38 AD', title: 'Peter & Cornelius', description: 'Gospel opens to Gentiles.', references: ['Acts 10'], era: 'Early Church' },
+    { id: 'first-journey', year: 'c. 46-48 AD', title: '1st Missionary Journey', description: 'Paul and Barnabas to Galatia.', references: ['Acts 13-14'], era: 'Early Church' },
+    { id: 'jerusalem-council', year: 'c. 49 AD', title: 'Jerusalem Council', description: 'Gentiles not under Law.', references: ['Acts 15'], era: 'Early Church' },
+    { id: 'second-journey', year: 'c. 49-52 AD', title: '2nd Missionary Journey', description: 'Paul to Macedonia and Greece.', references: ['Acts 16-18'], era: 'Early Church' },
+    { id: 'third-journey', year: 'c. 53-57 AD', title: '3rd Missionary Journey', description: 'Paul\'s long stay in Ephesus.', references: ['Acts 19-21'], era: 'Early Church' },
+    { id: 'paul-arrest', year: 'c. 57 AD', title: 'Paul Arrested', description: 'Taken into Roman custody in Jerusalem.', references: ['Acts 21'], era: 'Early Church' },
+    { id: 'rome-arrival', year: 'c. 60 AD', title: 'Paul Arrives in Rome', description: 'House arrest and prison epistles.', references: ['Acts 28'], era: 'Early Church' },
+    { id: 'peter-paul-death', year: 'c. 64-67 AD', title: 'Martyrdom of Leaders', description: 'Peter and Paul killed under Nero.', references: ['2 Timothy 4'], era: 'Early Church' },
+    { id: 'jerusalem-fall', year: '70 AD', title: 'Destruction of Jerusalem', description: 'Temple destroyed by Titus.', references: ['Luke 21:20'], era: 'Early Church' },
+    { id: 'john-patmos', year: 'c. 95 AD', title: 'John on Patmos', description: 'Revelation received.', references: ['Revelation 1'], era: 'Early Church' }
 ];
 
 export const PLACES: Place[] = [
@@ -933,14 +1022,14 @@ export const PATTERNS: Pattern[] = [
 export const OUTLINES: BookOutline[] = [
     // Torah
     {
-        id: 'genesis', bookName: 'Genesis', theme: 'Beginnings',
+        id: 'genesis', bookName: 'Genesis', theme: 'Beginnings', category: 'Torah',
         sections: [
             { title: 'Primeval History', range: '1-11', subpoints: ['Creation', 'Fall', 'Flood', 'Babel'] },
             { title: 'Patriarchal History', range: '12-50', subpoints: ['Abraham', 'Isaac', 'Jacob', 'Joseph'] }
         ]
     },
     {
-        id: 'exodus', bookName: 'Exodus', theme: 'Redemption & Deliverance',
+        id: 'exodus', bookName: 'Exodus', theme: 'Redemption & Deliverance', category: 'Torah',
         sections: [
             { title: 'Israel in Egypt', range: '1-12', subpoints: ['Slavery', 'Plagues', 'Passover'] },
             { title: 'Journey to Sinai', range: '13-18', subpoints: ['Red Sea', 'Manna', 'Water'] },
@@ -948,14 +1037,14 @@ export const OUTLINES: BookOutline[] = [
         ]
     },
     {
-        id: 'leviticus', bookName: 'Leviticus', theme: 'Holiness',
+        id: 'leviticus', bookName: 'Leviticus', theme: 'Holiness', category: 'Torah',
         sections: [
             { title: 'Way to God (Sacrifice)', range: '1-10', subpoints: ['Offerings', 'Priesthood'] },
             { title: 'Walk with God (Sanctification)', range: '11-27', subpoints: ['Purity', 'Day of Atonement', 'Feasts'] }
         ]
     },
     {
-        id: 'numbers', bookName: 'Numbers', theme: 'Wandering',
+        id: 'numbers', bookName: 'Numbers', theme: 'Wandering', category: 'Torah',
         sections: [
             { title: 'Preparation at Sinai', range: '1-10', subpoints: ['Census', 'Camp Arrangement'] },
             { title: 'Wandering in Wilderness', range: '11-25', subpoints: ['Rebellion', 'Spies', 'Bronze Serpent'] },
@@ -963,7 +1052,7 @@ export const OUTLINES: BookOutline[] = [
         ]
     },
     {
-        id: 'deuteronomy', bookName: 'Deuteronomy', theme: 'Covenant Renewal',
+        id: 'deuteronomy', bookName: 'Deuteronomy', theme: 'Covenant Renewal', category: 'Torah',
         sections: [
             { title: 'Review of History', range: '1-4', subpoints: ['Wilderness Years'] },
             { title: 'Review of Law', range: '5-26', subpoints: ['10 Commandments', 'Statutes'] },
@@ -971,8 +1060,9 @@ export const OUTLINES: BookOutline[] = [
         ]
     },
     // HISTORY
+    // HISTORY
     {
-        id: 'joshua', bookName: 'Joshua', theme: 'Conquest & Possession',
+        id: 'joshua', bookName: 'Joshua', theme: 'Conquest & Possession', category: 'Old Testament History',
         sections: [
             { title: 'Entering the Land', range: '1-5', subpoints: ['Rahab', 'Jordan Crossing', 'Jericho'] },
             { title: 'Conquering the Land', range: '6-12', subpoints: ['Central', 'Southern', 'Northern Campaigns'] },
@@ -980,7 +1070,7 @@ export const OUTLINES: BookOutline[] = [
         ]
     },
     {
-        id: 'judges', bookName: 'Judges', theme: 'Cycles of Apostasy',
+        id: 'judges', bookName: 'Judges', theme: 'Cycles of Apostasy', category: 'Old Testament History',
         sections: [
             { title: 'Incomplete Conquest', range: '1-2', subpoints: ['Failure to drive out Canaanites'] },
             { title: 'Cycles of Judges', range: '3-16', subpoints: ['Deborah', 'Gideon', 'Samson'] },
@@ -988,7 +1078,7 @@ export const OUTLINES: BookOutline[] = [
         ]
     },
     {
-        id: 'ruth', bookName: 'Ruth', theme: 'Kinsman Redeemer',
+        id: 'ruth', bookName: 'Ruth', theme: 'Kinsman Redeemer', category: 'Old Testament History',
         sections: [
             { title: 'Return to Bethlehem', range: '1', subpoints: ['Naomi and Ruth'] },
             { title: 'Reaping in Fields', range: '2', subpoints: ['Ruth meets Boaz'] },
@@ -997,7 +1087,7 @@ export const OUTLINES: BookOutline[] = [
         ]
     },
     {
-        id: '1samuel', bookName: '1 Samuel', theme: 'Transition to Monarchy',
+        id: '1samuel', bookName: '1 Samuel', theme: 'Transition to Monarchy', category: 'Old Testament History',
         sections: [
             { title: 'Samuel: Prophet & Judge', range: '1-7', subpoints: ['Birth', 'Call', 'Revival'] },
             { title: 'Saul: King After Man\'s Heart', range: '8-15', subpoints: ['Anointing', 'Disobedience', 'Rejection'] },
@@ -1005,7 +1095,7 @@ export const OUTLINES: BookOutline[] = [
         ]
     },
     {
-        id: '2samuel', bookName: '2 Samuel', theme: 'Reign of David',
+        id: '2samuel', bookName: '2 Samuel', theme: 'Reign of David', category: 'Old Testament History',
         sections: [
             { title: 'David\'s Triumphs', range: '1-10', subpoints: ['King of Judah/Israel', 'Ark to Jerusalem', 'Covenant'] },
             { title: 'David\'s Transgressions', range: '11-12', subpoints: ['Bathsheba', 'Uriah', 'Nathan\'s Rebuke'] },
@@ -1013,14 +1103,14 @@ export const OUTLINES: BookOutline[] = [
         ]
     },
     {
-        id: '1kings', bookName: '1 Kings', theme: 'Division of Kingdom',
+        id: '1kings', bookName: '1 Kings', theme: 'Division of Kingdom', category: 'Old Testament History',
         sections: [
             { title: 'United Kingdom (Solomon)', range: '1-11', subpoints: ['Wisdom', 'Temple', 'Apostasy'] },
             { title: 'Divided Kingdom', range: '12-22', subpoints: ['Rehoboam/Jeroboam', 'Elijah vs Ahab'] }
         ]
     },
     {
-        id: '2kings', bookName: '2 Kings', theme: 'Captivity',
+        id: '2kings', bookName: '2 Kings', theme: 'Captivity', category: 'Old Testament History',
         sections: [
             { title: 'Prophet Elisha', range: '1-8', subpoints: ['Miracles', 'Double Portion'] },
             { title: 'Decline of Kingdoms', range: '9-16', subpoints: ['Jehu', 'Athaliah', 'Uzziah'] },
@@ -1029,14 +1119,14 @@ export const OUTLINES: BookOutline[] = [
         ]
     },
     {
-        id: '1chronicles', bookName: '1 Chronicles', theme: 'Davidic Covenant',
+        id: '1chronicles', bookName: '1 Chronicles', theme: 'Davidic Covenant', category: 'Old Testament History',
         sections: [
             { title: 'Royal Genealogy', range: '1-9', subpoints: ['Adam to Exile', 'Twelve Tribes'] },
             { title: 'Reign of David', range: '10-29', subpoints: ['Ark Return', 'Temple Preparations'] }
         ]
     },
     {
-        id: '2chronicles', bookName: '2 Chronicles', theme: 'Priestly View of Judah',
+        id: '2chronicles', bookName: '2 Chronicles', theme: 'Priestly View of Judah', category: 'Old Testament History',
         sections: [
             { title: 'Reign of Solomon', range: '1-9', subpoints: ['Temple Dedication', 'Glory'] },
             { title: 'The Kings of Judah', range: '10-36', subpoints: ['Reforms of Asa, Jehoshaphat, Hezekiah, Josiah'] },
@@ -1044,21 +1134,21 @@ export const OUTLINES: BookOutline[] = [
         ]
     },
     {
-        id: 'ezra', bookName: 'Ezra', theme: 'Restoration of Temple',
+        id: 'ezra', bookName: 'Ezra', theme: 'Restoration of Temple', category: 'Old Testament History',
         sections: [
             { title: 'Return under Zerubbabel', range: '1-6', subpoints: ['Rebuilding Temple', 'Opposition'] },
             { title: 'Return under Ezra', range: '7-10', subpoints: ['Teaching Law', 'Moral Reform'] }
         ]
     },
     {
-        id: 'nehemiah', bookName: 'Nehemiah', theme: 'Rebuilding Walls',
+        id: 'nehemiah', bookName: 'Nehemiah', theme: 'Rebuilding Walls', category: 'Old Testament History',
         sections: [
             { title: 'Rebuilding the Walls', range: '1-7', subpoints: ['Prayer', 'Inspection', 'Opposition', 'Completion'] },
             { title: 'Renewing the People', range: '8-13', subpoints: ['Reading Law', 'Covenant Renewal'] }
         ]
     },
     {
-        id: 'esther', bookName: 'Esther', theme: 'Providence',
+        id: 'esther', bookName: 'Esther', theme: 'Providence', category: 'Old Testament History',
         sections: [
             { title: 'Threat to Jews', range: '1-4', subpoints: ['Vashti Deposed', 'Esther Queen', 'Haman\'s Plot'] },
             { title: 'Deliverance of Jews', range: '5-10', subpoints: ['Esther\'s Banquet', 'Mordecai Honored', 'Feast of Purim'] }
@@ -1066,7 +1156,7 @@ export const OUTLINES: BookOutline[] = [
     },
     // POETRY
     {
-        id: 'job', bookName: 'Job', theme: 'Sovereignty & Suffering',
+        id: 'job', bookName: 'Job', theme: 'Sovereignty & Suffering', category: 'Poetry',
         sections: [
             { title: 'Job\'s Distress', range: '1-3', subpoints: ['Loss of Family/Wealth', 'Lament'] },
             { title: 'Job\'s Defense', range: '4-37', subpoints: ['Friends\' Accusations', 'Job\'s Rebuttals', 'Elihu'] },
@@ -1074,7 +1164,7 @@ export const OUTLINES: BookOutline[] = [
         ]
     },
     {
-        id: 'psalms', bookName: 'Psalms', theme: 'Worship',
+        id: 'psalms', bookName: 'Psalms', theme: 'Worship', category: 'Poetry',
         sections: [
             { title: 'Book I', range: '1-41', subpoints: ['Davidic', 'Man-ward'] },
             { title: 'Book II', range: '42-72', subpoints: ['Davidic/Korah', 'Deliverance'] },
@@ -1084,7 +1174,7 @@ export const OUTLINES: BookOutline[] = [
         ]
     },
     {
-        id: 'proverbs', bookName: 'Proverbs', theme: 'Wisdom',
+        id: 'proverbs', bookName: 'Proverbs', theme: 'Wisdom', category: 'Poetry',
         sections: [
             { title: 'Wisdom vs Folly', range: '1-9', subpoints: ['Father\'s Instruction'] },
             { title: 'Proverbs of Solomon', range: '10-24', subpoints: ['Righteous vs Wicked'] },
@@ -1093,14 +1183,14 @@ export const OUTLINES: BookOutline[] = [
         ]
     },
     {
-        id: 'ecclesiastes', bookName: 'Ecclesiastes', theme: 'Vanity vs Meaning',
+        id: 'ecclesiastes', bookName: 'Ecclesiastes', theme: 'Vanity vs Meaning', category: 'Poetry',
         sections: [
             { title: 'Vanity of Life "Under Sun"', range: '1-6', subpoints: ['Pleasure', 'Work', 'Riches'] },
             { title: 'Wisdom for Life', range: '7-12', subpoints: ['Fear God', 'Judgement Coming'] }
         ]
     },
     {
-        id: 'songofsolomon', bookName: 'Song of Solomon', theme: 'Love & Marriage',
+        id: 'songofsolomon', bookName: 'Song of Solomon', theme: 'Love & Marriage', category: 'Poetry',
         sections: [
             { title: 'Courtship', range: '1-3', subpoints: ['Longing', 'Praise'] },
             { title: 'Wedding', range: '3-4', subpoints: ['Procession', 'Consummation'] },
@@ -1109,7 +1199,7 @@ export const OUTLINES: BookOutline[] = [
     },
     // MAJOR PROPHETS
     {
-        id: 'isaiah', bookName: 'Isaiah', theme: 'Salvation',
+        id: 'isaiah', bookName: 'Isaiah', theme: 'Salvation', category: 'Major Prophets',
         sections: [
             { title: 'Prophecies of Condemnation', range: '1-35', subpoints: ['Judah', 'Nations'] },
             { title: 'Historical Interlude', range: '36-39', subpoints: ['Hezekiah\'s Crisis'] },
@@ -1117,7 +1207,7 @@ export const OUTLINES: BookOutline[] = [
         ]
     },
     {
-        id: 'jeremiah', bookName: 'Jeremiah', theme: 'Judgment & New Covenant',
+        id: 'jeremiah', bookName: 'Jeremiah', theme: 'Judgment & New Covenant', category: 'Major Prophets',
         sections: [
             { title: 'Call of Jeremiah', range: '1', subpoints: ['Appointed Prophet'] },
             { title: 'Prophecies to Judah', range: '2-45', subpoints: ['Temple Sermon', '70 Years', 'New Covenant (31)'] },
@@ -1126,7 +1216,7 @@ export const OUTLINES: BookOutline[] = [
         ]
     },
     {
-        id: 'lamentations', bookName: 'Lamentations', theme: 'Mourning',
+        id: 'lamentations', bookName: 'Lamentations', theme: 'Mourning', category: 'Major Prophets',
         sections: [
             { title: 'Ruins of Jerusalem', range: '1', subpoints: ['Widowed City'] },
             { title: 'Wrath of God', range: '2', subpoints: ['Day of Anger'] },
@@ -1135,7 +1225,7 @@ export const OUTLINES: BookOutline[] = [
         ]
     },
     {
-        id: 'ezekiel', bookName: 'Ezekiel', theme: 'Glory of God',
+        id: 'ezekiel', bookName: 'Ezekiel', theme: 'Glory of God', category: 'Major Prophets',
         sections: [
             { title: 'Judgement on Judah', range: '1-24', subpoints: ['Call', 'Glory Departs'] },
             { title: 'Judgement on Nations', range: '25-32', subpoints: ['Tyre', 'Egypt'] },
@@ -1143,7 +1233,7 @@ export const OUTLINES: BookOutline[] = [
         ]
     },
     {
-        id: 'daniel', bookName: 'Daniel', theme: 'God\'s Sovereignty',
+        id: 'daniel', bookName: 'Daniel', theme: 'God\'s Sovereignty', category: 'Major Prophets',
         sections: [
             { title: 'Personal History', range: '1-6', subpoints: ['Diet', 'Statue', 'Furnace', 'Lions'] },
             { title: 'Prophetic Visions', range: '7-12', subpoints: ['Four Beasts', '70 Weeks', 'End Times'] }
@@ -1151,21 +1241,21 @@ export const OUTLINES: BookOutline[] = [
     },
     // MINOR PROPHETS
     {
-        id: 'hosea', bookName: 'Hosea', theme: 'Unfaithful Israel',
+        id: 'hosea', bookName: 'Hosea', theme: 'Unfaithful Israel', category: 'Minor Prophets',
         sections: [
             { title: 'Adulterous Wife (Gomer)', range: '1-3', subpoints: ['Marriage Illustration'] },
             { title: 'Adulterous People (Israel)', range: '4-14', subpoints: ['Charge against Israel', 'Call to Repent'] }
         ]
     },
     {
-        id: 'joel', bookName: 'Joel', theme: 'Day of the Lord',
+        id: 'joel', bookName: 'Joel', theme: 'Day of the Lord', category: 'Minor Prophets',
         sections: [
             { title: 'Locust Invasion', range: '1', subpoints: ['Current Judgment'] },
             { title: 'Coming Day of Lord', range: '2-3', subpoints: ['Spirit Poured Out', 'Valley of Decision'] }
         ]
     },
     {
-        id: 'amos', bookName: 'Amos', theme: 'Social Justice',
+        id: 'amos', bookName: 'Amos', theme: 'Social Justice', category: 'Minor Prophets',
         sections: [
             { title: 'Judgments on Neighbors', range: '1-2', subpoints: ['Damascus, Gaza, Tyre...'] },
             { title: 'Judgments on Israel', range: '3-6', subpoints: ['Cows of Bashan', 'Woe to complacent'] },
@@ -1173,21 +1263,21 @@ export const OUTLINES: BookOutline[] = [
         ]
     },
     {
-        id: 'obadiah', bookName: 'Obadiah', theme: 'Judgment on Edom',
+        id: 'obadiah', bookName: 'Obadiah', theme: 'Judgment on Edom', category: 'Minor Prophets',
         sections: [
             { title: 'Doom of Edom', range: '1-14', subpoints: ['Pride', 'Violence against Jacob'] },
             { title: 'Day of the Lord', range: '15-21', subpoints: ['Kingdom shall be the Lord\'s'] }
         ]
     },
     {
-        id: 'jonah', bookName: 'Jonah', theme: 'God\'s Mercy on Gentiles',
+        id: 'jonah', bookName: 'Jonah', theme: 'God\'s Mercy on Gentiles', category: 'Minor Prophets',
         sections: [
             { title: 'Running from God', range: '1-2', subpoints: ['Storm', 'Fish'] },
             { title: 'Running with God', range: '3-4', subpoints: ['Nineveh Repents', 'Jonah\'s Anger'] }
         ]
     },
     {
-        id: 'micah', bookName: 'Micah', theme: 'Justice & Mercy',
+        id: 'micah', bookName: 'Micah', theme: 'Justice & Mercy', category: 'Minor Prophets',
         sections: [
             { title: 'Sin and Judgment', range: '1-3', subpoints: ['Rulers and Prophets condemned'] },
             { title: 'Hope and Kingdom', range: '4-5', subpoints: ['Mountain of Lord', 'Bethlehem Prophecy'] },
@@ -1195,7 +1285,7 @@ export const OUTLINES: BookOutline[] = [
         ]
     },
     {
-        id: 'nahum', bookName: 'Nahum', theme: 'Doom of Nineveh',
+        id: 'nahum', bookName: 'Nahum', theme: 'Doom of Nineveh', category: 'Minor Prophets',
         sections: [
             { title: 'Character of God', range: '1', subpoints: ['Jealous and Avenger'] },
             { title: 'Siege of Nineveh', range: '2', subpoints: ['Chariots', 'Plunder'] },
@@ -1203,14 +1293,14 @@ export const OUTLINES: BookOutline[] = [
         ]
     },
     {
-        id: 'habakkuk', bookName: 'Habakkuk', theme: 'Faith in Crisis',
+        id: 'habakkuk', bookName: 'Habakkuk', theme: 'Faith in Crisis', category: 'Minor Prophets',
         sections: [
             { title: 'Prophet\'s Questions', range: '1-2', subpoints: ['Why evil persists?', 'Babylon as tool?'] },
             { title: 'Prophet\'s Prayer', range: '3', subpoints: ['Yet I will Rejoice'] }
         ]
     },
     {
-        id: 'zephaniah', bookName: 'Zephaniah', theme: 'Judgment & Joy',
+        id: 'zephaniah', bookName: 'Zephaniah', theme: 'Judgment & Joy', category: 'Minor Prophets',
         sections: [
             { title: 'Universal Judgment', range: '1', subpoints: ['Day of Wrath'] },
             { title: 'Call to Seek Lord', range: '2', subpoints: ['Judgment on Nations'] },
@@ -1218,14 +1308,14 @@ export const OUTLINES: BookOutline[] = [
         ]
     },
     {
-        id: 'haggai', bookName: 'Haggai', theme: 'Rebuilding the Temple',
+        id: 'haggai', bookName: 'Haggai', theme: 'Rebuilding the Temple', category: 'Minor Prophets',
         sections: [
             { title: 'Call to Rebuild', range: '1', subpoints: ['Consider your ways'] },
             { title: 'Glory of the Temple', range: '2', subpoints: ['Greater glory', 'Signet Ring'] }
         ]
     },
     {
-        id: 'zechariah', bookName: 'Zechariah', theme: 'Future Glory',
+        id: 'zechariah', bookName: 'Zechariah', theme: 'Future Glory', category: 'Minor Prophets',
         sections: [
             { title: 'Eight Visions', range: '1-6', subpoints: ['Horses', 'Lampstand', 'Scroll'] },
             { title: 'Questions on Fasting', range: '7-8', subpoints: ['Obedience > Ritual'] },
@@ -1233,7 +1323,7 @@ export const OUTLINES: BookOutline[] = [
         ]
     },
     {
-        id: 'malachi', bookName: 'Malachi', theme: 'Sincerity',
+        id: 'malachi', bookName: 'Malachi', theme: 'Sincerity', category: 'Minor Prophets',
         sections: [
             { title: 'God\'s Love', range: '1:1-5', subpoints: ['Jacob loved, Esau hated'] },
             { title: 'Priests\' Sins', range: '1:6-2:9', subpoints: ['Blemished offerings'] },
@@ -1242,7 +1332,7 @@ export const OUTLINES: BookOutline[] = [
     },
     // GOSPELS
     {
-        id: 'matthew', bookName: 'Matthew', theme: 'Jesus the King',
+        id: 'matthew', bookName: 'Matthew', theme: 'Jesus the King', category: 'Gospels',
         sections: [
             { title: 'Presentation of King', range: '1-4', subpoints: ['Genealogy', 'Birth', 'Baptism'] },
             { title: 'Proclamation (Sermon)', range: '5-7', subpoints: ['Beatitudes', 'Law fulfilled'] },
@@ -1253,7 +1343,7 @@ export const OUTLINES: BookOutline[] = [
         ]
     },
     {
-        id: 'mark', bookName: 'Mark', theme: 'Jesus the Servant',
+        id: 'mark', bookName: 'Mark', theme: 'Jesus the Servant', category: 'Gospels',
         sections: [
             { title: 'Servant Witness (Galilee)', range: '1-9', subpoints: ['Immediate action', 'Miracles'] },
             { title: 'Servant Way (Journey)', range: '10', subpoints: ['Discipleship costs'] },
@@ -1261,7 +1351,7 @@ export const OUTLINES: BookOutline[] = [
         ]
     },
     {
-        id: 'luke', bookName: 'Luke', theme: 'Jesus the Son of Man',
+        id: 'luke', bookName: 'Luke', theme: 'Jesus the Son of Man', category: 'Gospels',
         sections: [
             { title: 'Introduction', range: '1-4', subpoints: ['Birth', 'Childhood', 'Genealogy back to Adam'] },
             { title: 'Ministry in Galilee', range: '4-9', subpoints: ['Teaching', 'Healing'] },
@@ -1271,7 +1361,7 @@ export const OUTLINES: BookOutline[] = [
         ]
     },
     {
-        id: 'john', bookName: 'John', theme: 'Jesus the Son of God',
+        id: 'john', bookName: 'John', theme: 'Jesus the Son of God', category: 'Gospels',
         sections: [
             { title: 'Incarnation', range: '1', subpoints: ['Word made flesh'] },
             { title: 'Book of Signs', range: '2-12', subpoints: ['7 Signs', 'I AM Statements'] },
@@ -1281,7 +1371,7 @@ export const OUTLINES: BookOutline[] = [
     },
     // HISTORY
     {
-        id: 'acts', bookName: 'Acts', theme: 'Spread of Gospel',
+        id: 'acts', bookName: 'Acts', theme: 'Spread of Gospel', category: 'New Testament History',
         sections: [
             { title: 'Church in Jerusalem', range: '1-7', subpoints: ['Pentecost', 'Stephen'] },
             { title: 'Judea and Samaria', range: '8-12', subpoints: ['Philip', 'Saul\'s Conversion', 'Peter\'s Vision'] },
@@ -1290,7 +1380,7 @@ export const OUTLINES: BookOutline[] = [
     },
     // PAULINE EPISTLES
     {
-        id: 'romans', bookName: 'Romans', theme: 'Righteousness of God',
+        id: 'romans', bookName: 'Romans', theme: 'Righteousness of God', category: 'Pauline Epistles',
         sections: [
             { title: 'Sin (Condemnation)', range: '1-3', subpoints: ['All guilty'] },
             { title: 'Salvation (Justification)', range: '3-5', subpoints: ['Faith alone', 'Peace'] },
@@ -1300,7 +1390,7 @@ export const OUTLINES: BookOutline[] = [
         ]
     },
     {
-        id: '1corinthians', bookName: '1 Corinthians', theme: 'Correction',
+        id: '1corinthians', bookName: '1 Corinthians', theme: 'Correction', category: 'Pauline Epistles',
         sections: [
             { title: 'Divisions', range: '1-4', subpoints: ['Wisdom of God', 'Leaders'] },
             { title: 'Disorders', range: '5-6', subpoints: ['Immorality', 'Lawsuits'] },
@@ -1310,7 +1400,7 @@ export const OUTLINES: BookOutline[] = [
         ]
     },
     {
-        id: '2corinthians', bookName: '2 Corinthians', theme: 'Paul\'s Defense',
+        id: '2corinthians', bookName: '2 Corinthians', theme: 'Paul\'s Defense', category: 'Pauline Epistles',
         sections: [
             { title: 'Paul\'s Ministry', range: '1-7', subpoints: ['Comfort', 'New Covenant', 'Jars of Clay'] },
             { title: 'Generous Giving', range: '8-9', subpoints: ['Sowing/Reaping'] },
@@ -1318,7 +1408,7 @@ export const OUTLINES: BookOutline[] = [
         ]
     },
     {
-        id: 'galatians', bookName: 'Galatians', theme: 'Freedom in Christ',
+        id: 'galatians', bookName: 'Galatians', theme: 'Freedom in Christ', category: 'Pauline Epistles',
         sections: [
             { title: 'Gospel Defense', range: '1-2', subpoints: ['No other gospel', 'Paul\'s history'] },
             { title: 'Gospel Doctrine', range: '3-4', subpoints: ['Faith vs Works', 'Sons vs Slaves'] },
@@ -1326,14 +1416,14 @@ export const OUTLINES: BookOutline[] = [
         ]
     },
     {
-        id: 'ephesians', bookName: 'Ephesians', theme: 'The Church',
+        id: 'ephesians', bookName: 'Ephesians', theme: 'The Church', category: 'Pauline Epistles',
         sections: [
             { title: 'Wealth (Doctrine)', range: '1-3', subpoints: ['Chosen', 'Grace', 'One Body', 'Prayer'] },
             { title: 'Walk (Duty)', range: '4-6', subpoints: ['Unity', 'Husband/Wife', 'Armor of God'] }
         ]
     },
     {
-        id: 'philippians', bookName: 'Philippians', theme: 'Joy',
+        id: 'philippians', bookName: 'Philippians', theme: 'Joy', category: 'Pauline Epistles',
         sections: [
             { title: 'Joy in Suffering', range: '1', subpoints: ['To live is Christ'] },
             { title: 'Joy in Serving', range: '2', subpoints: ['Mind of Christ', 'Humility'] },
@@ -1342,21 +1432,21 @@ export const OUTLINES: BookOutline[] = [
         ]
     },
     {
-        id: 'colossians', bookName: 'Colossians', theme: 'Supremacy of Christ',
+        id: 'colossians', bookName: 'Colossians', theme: 'Supremacy of Christ', category: 'Pauline Epistles',
         sections: [
             { title: 'Doctrine: Christ Preeminent', range: '1-2', subpoints: ['Image of God', 'Fullness', 'No Legalism'] },
             { title: 'Duty: Christ Lived Out', range: '3-4', subpoints: ['New Self', 'Household Codes'] }
         ]
     },
     {
-        id: '1thessalonians', bookName: '1 Thessalonians', theme: 'Christ\'s Return',
+        id: '1thessalonians', bookName: '1 Thessalonians', theme: 'Christ\'s Return', category: 'Pauline Epistles',
         sections: [
             { title: 'Looking Back', range: '1-3', subpoints: ['Faith/Love', 'Paul\'s example'] },
             { title: 'Looking Forward', range: '4-5', subpoints: ['Rapture', 'Day of Lord', 'Sanctification'] }
         ]
     },
     {
-        id: '2thessalonians', bookName: '2 Thessalonians', theme: 'Day of the Lord',
+        id: '2thessalonians', bookName: '2 Thessalonians', theme: 'Day of the Lord', category: 'Pauline Epistles',
         sections: [
             { title: 'Encouragement', range: '1', subpoints: ['Judgment on persecutors'] },
             { title: 'Explanation', range: '2', subpoints: ['Man of Lawlessness', 'Restrainer'] },
@@ -1364,7 +1454,7 @@ export const OUTLINES: BookOutline[] = [
         ]
     },
     {
-        id: '1timothy', bookName: '1 Timothy', theme: 'Church Order',
+        id: '1timothy', bookName: '1 Timothy', theme: 'Church Order', category: 'Pauline Epistles',
         sections: [
             { title: 'Doctrine', range: '1', subpoints: ['Warning false teachers'] },
             { title: 'Worship', range: '2', subpoints: ['Prayer', 'Women'] },
@@ -1373,14 +1463,14 @@ export const OUTLINES: BookOutline[] = [
         ]
     },
     {
-        id: '2timothy', bookName: '2 Timothy', theme: 'Faithfulness',
+        id: '2timothy', bookName: '2 Timothy', theme: 'Faithfulness', category: 'Pauline Epistles',
         sections: [
             { title: 'Teacher\'s Perseverance', range: '1-2', subpoints: ['Not ashamed', 'Soldier/Athlete/Farmer'] },
             { title: 'Teacher\'s Preaching', range: '3-4', subpoints: ['Inspired Scripture', 'Preach the Word'] }
         ]
     },
     {
-        id: 'titus', bookName: 'Titus', theme: 'Good Works',
+        id: 'titus', bookName: 'Titus', theme: 'Good Works', category: 'Pauline Epistles',
         sections: [
             { title: 'Order in Church', range: '1', subpoints: ['Elders', 'Rebuking'] },
             { title: 'Order in Home', range: '2', subpoints: ['Older/Younger', 'Grace'] },
@@ -1388,7 +1478,7 @@ export const OUTLINES: BookOutline[] = [
         ]
     },
     {
-        id: 'philemon', bookName: 'Philemon', theme: 'Forgiveness',
+        id: 'philemon', bookName: 'Philemon', theme: 'Forgiveness', category: 'Pauline Epistles',
         sections: [
             { title: 'Prayer for Philemon', range: '1:1-7', subpoints: ['Love and Faith'] },
             { title: 'Plea for Onesimus', range: '1:8-25', subpoints: ['Brother, not slave'] }
@@ -1396,7 +1486,7 @@ export const OUTLINES: BookOutline[] = [
     },
     // GENERAL EPISTLES
     {
-        id: 'hebrews', bookName: 'Hebrews', theme: 'Jesus is Better',
+        id: 'hebrews', bookName: 'Hebrews', theme: 'Jesus is Better', category: 'General Epistles',
         sections: [
             { title: 'Superior Person', range: '1-4', subpoints: ['> Angels', '> Moses', '> Joshua'] },
             { title: 'Superior Priesthood', range: '5-10', subpoints: ['Melchizedek', 'New Covenant', 'Perfect Sacrifice'] },
@@ -1404,7 +1494,7 @@ export const OUTLINES: BookOutline[] = [
         ]
     },
     {
-        id: 'james', bookName: 'James', theme: 'Faith in Action',
+        id: 'james', bookName: 'James', theme: 'Faith in Action', category: 'General Epistles',
         sections: [
             { title: 'Authentic Faith...', range: '1', subpoints: ['Tested by Trials', 'Obeys Word'] },
             { title: 'Faith & Works', range: '2', subpoints: ['Favoritism', 'Demons believe'] },
@@ -1413,7 +1503,7 @@ export const OUTLINES: BookOutline[] = [
         ]
     },
     {
-        id: '1peter', bookName: '1 Peter', theme: 'Suffering & Glory',
+        id: '1peter', bookName: '1 Peter', theme: 'Suffering & Glory', category: 'General Epistles',
         sections: [
             { title: 'Salvation', range: '1-2:10', subpoints: ['Living Hope', 'Living Stones'] },
             { title: 'Submission', range: '2:11-3:12', subpoints: ['Authorities', 'Spouses'] },
@@ -1421,7 +1511,7 @@ export const OUTLINES: BookOutline[] = [
         ]
     },
     {
-        id: '2peter', bookName: '2 Peter', theme: 'Knowledge of God',
+        id: '2peter', bookName: '2 Peter', theme: 'Knowledge of God', category: 'General Epistles',
         sections: [
             { title: 'True Knowledge', range: '1', subpoints: ['Growth', 'Prophecy'] },
             { title: 'False Teachers', range: '2', subpoints: ['Condemnation'] },
@@ -1429,7 +1519,7 @@ export const OUTLINES: BookOutline[] = [
         ]
     },
     {
-        id: '1john', bookName: '1 John', theme: 'Fellowship & Assurance',
+        id: '1john', bookName: '1 John', theme: 'Fellowship & Assurance', category: 'General Epistles',
         sections: [
             { title: 'God is Light', range: '1-2', subpoints: ['Walk in light', 'Advocate'] },
             { title: 'God is Love', range: '3-4', subpoints: ['Love one another', 'Testing spirits'] },
@@ -1437,28 +1527,28 @@ export const OUTLINES: BookOutline[] = [
         ]
     },
     {
-        id: '2john', bookName: '2 John', theme: 'Truth',
+        id: '2john', bookName: '2 John', theme: 'Truth', category: 'General Epistles',
         sections: [
             { title: 'Walk in Truth', range: '1:1-6', subpoints: ['Commandment to love'] },
             { title: 'Watch for Deceivers', range: '1:7-13', subpoints: ['Don\'t welcome false teachers'] }
         ]
     },
     {
-        id: '3john', bookName: '3 John', theme: 'Hospitality',
+        id: '3john', bookName: '3 John', theme: 'Hospitality', category: 'General Epistles',
         sections: [
             { title: 'Commendation (Gaius)', range: '1:1-8', subpoints: ['Walking in truth'] },
             { title: 'Condemnation (Diotrephes)', range: '1:9-14', subpoints: ['Loves to be first'] }
         ]
     },
     {
-        id: 'jude', bookName: 'Jude', theme: 'Contend for Faith',
+        id: 'jude', bookName: 'Jude', theme: 'Contend for Faith', category: 'General Epistles',
         sections: [
             { title: 'Warning', range: '1-16', subpoints: ['Intruders', 'Past judgments'] },
             { title: 'Exhortation', range: '17-25', subpoints: ['Build yourselves up', 'Doxology'] }
         ]
     },
     {
-        id: 'revelation', bookName: 'Revelation', theme: 'Victory of Christ',
+        id: 'revelation', bookName: 'Revelation', theme: 'Victory of Christ', category: 'Prophecy',
         sections: [
             { title: 'Vision of Christ', range: '1', subpoints: ['Son of Man'] },
             { title: 'Letters to Churches', range: '2-3', subpoints: ['7 Churches'] },
@@ -1534,6 +1624,14 @@ export const ERAS: BiblicalEra[] = [
         description: 'The exiles return to rebuild the Temple and the walls of Jerusalem.',
         majorFigures: ['Ezra', 'Nehemiah', 'Zerubbabel', 'Esther', 'Malachi'],
         books: ['Ezra', 'Nehemiah', 'Esther', 'Haggai', 'Zechariah', 'Malachi']
+    },
+    {
+        id: 'silence',
+        title: 'Intertestamental Period',
+        dates: '400 - 4 BC',
+        description: 'The "Silent Years" where no new Scripture was given, but God prepared the world for the Messiah through political shifts.',
+        majorFigures: ['Alexander the Great', 'Judas Maccabeus', 'Herod the Great'],
+        books: ['Apocrypha (Historical Context)']
     },
     {
         id: 'christ',
