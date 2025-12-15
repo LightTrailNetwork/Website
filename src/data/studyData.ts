@@ -1608,17 +1608,7 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         bibleReferences: ['2 Kings 8:28-29'],
         significance: 'The first extra-biblical reference to King David and his dynasty, refuting claims that David was a myth.'
     },
-    {
-        id: 'merneptah-stele',
-        title: 'Merneptah Stele',
-        description: 'An inscription by Pharaoh Merneptah listing his victories, including a campaign in Canaan where "Israel is laid waste".',
-        dateDiscovered: '1896',
-        artifactDate: 'c. 1208 BC',
-        location: 'Thebes, Egypt',
-        coordinates: { lat: 25.7205, lng: 32.6103 },
-        bibleReferences: ['Exodus 1:8-10', 'Judges 1'],
-        significance: 'The earliest mention of "Israel" outside the Bible, proving Israel was established as a people group in Canaan by 1200 BC.'
-    },
+
     {
         id: 'pilate-stone',
         title: 'Pilate Stone',
@@ -1970,6 +1960,297 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         coordinates: { lat: 31.7715, lng: 35.2354 },
         bibleReferences: ['Psalm 122:4', 'John 7:14'],
         significance: 'The actual stones Jesus and his disciples would have walked on to ascend to the Temple. Coins found underneath date its construction to Pontius Pilate.'
+    },
+    // --- Patriarchs & Egypt ---
+    {
+        id: 'beni-hasan',
+        title: 'Beni Hasan Tomb Painting',
+        description: 'A wall painting in the tomb of Khnumhotep II depicting a caravan of 37 Asiatic (Semitic) people entering Egypt, wearing multicolored coats.',
+        dateDiscovered: '1890',
+        artifactDate: 'c. 1890 BC',
+        location: 'Beni Hasan, Egypt',
+        coordinates: { lat: 27.9333, lng: 30.8333 },
+        bibleReferences: ['Genesis 37:3', 'Genesis 46:6'],
+        significance: 'Provides a vivid contemporary visual of what the Patriarchs (like Jacob\'s family) looked like entering Egypt, including the "coat of many colors" style.'
+    },
+    {
+        id: 'brooklyn-papyrus',
+        title: 'Brooklyn Papyrus',
+        description: 'An Egyptian tax list of slaves, where over 50% have Semitic names, including biblical names like "Shiphrah" and "Menahem".',
+        dateDiscovered: '1800s (Published 1955)',
+        artifactDate: 'c. 1700-1600 BC',
+        location: 'Thebes, Egypt',
+        coordinates: { lat: 25.7000, lng: 32.6000 },
+        bibleReferences: ['Exodus 1:11-14', 'Exodus 1:15'],
+        significance: 'Confirms the presence of a large Semitic slave population in Egypt during the era preceding the Exodus, including the specific mid-wife name Shiphrah.'
+    },
+    {
+        id: 'soleb-hieroglyph',
+        title: 'Soleb Hieroglyph (Yahweh Inscription)',
+        description: 'An inscription in the temple of Amenhotep III listing enemies, including the "Land of the Shasu of YHWH".',
+        dateDiscovered: '1957',
+        artifactDate: 'c. 1380 BC',
+        location: 'Soleb, Sudan',
+        coordinates: { lat: 20.4333, lng: 30.3333 },
+        bibleReferences: ['Exodus 3:14', 'Exodus 5:2'],
+        significance: 'The earliest known historical mention of the name of God (YHWH) by outsiders, proving the Israelites worshiping YHWH were a known entity before the monarchy.'
+    },
+    {
+        id: 'merneptah-stele',
+        title: 'Merneptah Stele (Israel Stele)',
+        description: 'A giant granite victory stele of Pharaoh Merneptah boasting "Israel is laid waste; his seed is not."',
+        dateDiscovered: '1896',
+        artifactDate: 'c. 1208 BC',
+        location: 'Thebes, Egypt',
+        coordinates: { lat: 25.7200, lng: 32.6100 },
+        bibleReferences: ['Joshua 11:23', 'Judges 1'],
+        significance: 'The absolute earliest concrete mention of "Israel" as a people group in the land of Canaan found in archaeology, destroying the theory that Israel emerged much later.'
+    },
+    {
+        id: 'nuzi-tablets',
+        title: 'Nuzi Tablets',
+        description: 'Thousands of clay tablets relating to the Hurrians, detailing customs of adoption, birthright handling, and household idols (teraphim).',
+        dateDiscovered: '1925',
+        artifactDate: 'c. 1450 BC',
+        location: 'Nuzi (Iraq)',
+        coordinates: { lat: 35.3000, lng: 44.2500 },
+        bibleReferences: ['Genesis 15:2', 'Genesis 25:31', 'Genesis 31:19'],
+        significance: 'Validates the precise, peculiar cultural customs described in the Patriarchal narratives (e.g., Rachel stealing idols) that were unknown in later eras.'
+    },
+    // --- Judges & United Monarchy ---
+    {
+        id: 'khirbet-qeiyafa',
+        title: 'Khirbet Qeiyafa Ostracon',
+        description: 'A pottery shard with early Hebrew text found in a fortified city from David\'s time, mentioning "king", "judge", and "widow".',
+        dateDiscovered: '2008',
+        artifactDate: 'c. 1000 BC',
+        location: 'Elah Valley',
+        coordinates: { lat: 31.6961, lng: 34.9547 },
+        bibleReferences: ['1 Samuel 17:52', '1 Chronicles 4:31'],
+        significance: 'Proves widespread literacy and a centralized administration in Judah during David\'s reign, countering claims that David was a mere tribal chieftain.'
+    },
+    {
+        id: 'gath-ostracon',
+        title: 'The Gath Ostracon',
+        description: 'A shard found in Philistine Gath with two names (Alwat and Wlt) etymologically similar to "Goliath".',
+        dateDiscovered: '2005',
+        artifactDate: 'c. 950 BC',
+        location: 'Tell es-Safi (Gath)',
+        coordinates: { lat: 31.7000, lng: 34.8500 },
+        bibleReferences: ['1 Samuel 17:4'],
+        significance: 'While not Goliath\'s name tag, it proves that names like Goliath were authentic to that specific time and place (Iron Age Philistia).'
+    },
+    {
+        id: 'gezer-calendar',
+        title: 'Gezer Calendar',
+        description: 'A small limestone tablet serving as a schoolboy\'s exercise listing the agricultural seasons of ancient Israel.',
+        dateDiscovered: '1908',
+        artifactDate: 'c. 925 BC',
+        location: 'Tel Gezer',
+        coordinates: { lat: 31.8617, lng: 34.9192 },
+        bibleReferences: ['Amos 5:11', 'Isaiah 28:24'],
+        significance: 'Evidence of literacy and confirms the agricultural cycle described in the Bible during Solomon\'s era.'
+    },
+    {
+        id: 'tel-arad-temple',
+        title: 'Tel Arad Temple',
+        description: 'A fortress temple found in Judah with a "Holy of Holies", incense altars, and standing stones, modeled after Solomon\'s Temple but with unauthorized elements.',
+        dateDiscovered: '1962',
+        artifactDate: 'c. 900-600 BC',
+        location: 'Tel Arad',
+        coordinates: { lat: 31.2808, lng: 35.1250 },
+        bibleReferences: ['2 Kings 23:8', '2 Chronicles 34:3-7'],
+        significance: 'Shows that "high places" and alternative temples existed in Judah exactly as the kings were often condemned for allowing, until Josiah buried it.'
+    },
+    {
+        id: 'ziggurat-ur',
+        title: 'Great Ziggurat of Ur',
+        description: 'A massive dedicated tower structure (Etemenniguru) in Abraham\'s home city.',
+        dateDiscovered: '1920s',
+        artifactDate: 'c. 2100 BC',
+        location: 'Ur (Iraq)',
+        coordinates: { lat: 30.9630, lng: 46.1030 },
+        bibleReferences: ['Genesis 11:4'],
+        significance: 'Provides the architectural context for the Tower of Babel. These "towers reaching to heavens" were real Mesopotamian religious structures.'
+    },
+    // --- Divided Kingdom ---
+    {
+        id: 'siloam-inscription',
+        title: 'Siloam Inscription',
+        description: 'The ancient Paleo-Hebrew inscription cut into the wall of Hezekiah\'s tunnel recording the moment the two teams of diggers met.',
+        dateDiscovered: '1880',
+        artifactDate: 'c. 701 BC',
+        location: 'City of David',
+        coordinates: { lat: 31.7720, lng: 35.2350 },
+        bibleReferences: ['2 Kings 20:20'],
+        significance: 'Primary source confirmation of the engineering feat described in Kings and Chronicles. One of the most important Hebrew inscriptions ever found.'
+    },
+    {
+        id: 'samaria-ostraca',
+        title: 'Samaria Ostraca',
+        description: '60+ pottery shards recording shipments of wine and oil to the royal palace in Samaria.',
+        dateDiscovered: '1910',
+        artifactDate: 'c. 780 BC',
+        location: 'Samaria (Sebaste)',
+        coordinates: { lat: 32.2770, lng: 35.1900 },
+        bibleReferences: ['Joshua 17:2', 'Numbers 26:30'],
+        significance: 'Records clan names (like Abiezer, Helek, Shemida) that exactly match the clans of Manasseh listed in Joshua and Numbers, showing they still lived there centuries later.'
+    },
+    {
+        id: 'samaria-ivories',
+        title: 'Samaria Ivories',
+        description: 'Thousands of carved ivory pieces used to decorate furniture and walls in the palace of the Northern Kingdom.',
+        dateDiscovered: '1930s',
+        artifactDate: 'c. 850-750 BC',
+        location: 'Samaria',
+        coordinates: { lat: 32.2772, lng: 35.1905 },
+        bibleReferences: ['Amos 6:4', '1 Kings 22:39'],
+        significance: 'Direct physical evidence of the "beds of ivory" and "ivory house" that the prophet Amos condemned for their decadence.'
+    },
+    {
+        id: 'seal-shema',
+        title: 'Seal of Shema',
+        description: 'A magnificent jasper seal reading "Belonging to Shema, servant of Jeroboam" featuring a roaring lion.',
+        dateDiscovered: '1904',
+        artifactDate: 'c. 760 BC',
+        location: 'Megiddo',
+        coordinates: { lat: 32.5850, lng: 35.1850 },
+        bibleReferences: ['2 Kings 14:23'],
+        significance: 'Reference to King Jeroboam II, testifying to the wealth and royal administration of the Northern Kingdom at its peak.'
+    },
+    {
+        id: 'tirzah-excavation',
+        title: 'Tirzah (Tell el-Farah)',
+        description: 'Excavations of the first capital of the Northern Kingdom showing it was abandoned unfinished/abruptly when Omri moved the capital.',
+        dateDiscovered: '1946',
+        artifactDate: 'c. 880 BC',
+        location: 'Tirzah',
+        coordinates: { lat: 32.2880, lng: 35.3380 },
+        bibleReferences: ['1 Kings 16:23-24', 'Song of Solomon 6:4'],
+        significance: 'Confirms the biblical history of the capital moving from Tirzah to Samaria under King Omri.'
+    },
+    // --- Exile & Prophecy ---
+    {
+        id: 'nabonidus-chronicle',
+        title: 'Nabonidus Chronicle',
+        description: 'A clay tablet history revealing that King Nabonidus spent years in Arabia, leaving his son Belshazzar to rule Babylon.',
+        dateDiscovered: '1879',
+        artifactDate: 'c. 530 BC',
+        location: 'Babylon',
+        coordinates: { lat: 32.5422, lng: 44.4211 },
+        bibleReferences: ['Daniel 5:16', 'Daniel 5:29'],
+        significance: 'Explains why Belshazzar could only offer Daniel the "third" place in the kingdom (he himself was second), a detail critics mocked until this discovery.'
+    },
+    {
+        id: 'ishtar-gate',
+        title: 'Ishtar Gate',
+        description: 'The immense blue glazed-brick gate of Babylon featuring dragons (mushussu) and bulls, built by Nebuchadnezzar II.',
+        dateDiscovered: '1902',
+        artifactDate: 'c. 575 BC',
+        location: 'Babylon (Rebuilt split)',
+        coordinates: { lat: 32.5430, lng: 44.4220 },
+        bibleReferences: ['Daniel 4:30'],
+        significance: 'The massive glory of Babylon that Daniel lived in. The bricks themselves are stamped "Nebuchadnezzar, King of Babylon", confirming his building projects.'
+    },
+    {
+        id: 'lachish-letters',
+        title: 'Lachish Letters',
+        description: 'Ostraca (inscribed pottery) from the last days of Judah, writing "We are watching for the signals of Lachish... for we cannot see Azekah."',
+        dateDiscovered: '1935',
+        artifactDate: 'c. 587 BC',
+        location: 'Lachish',
+        coordinates: { lat: 31.5640, lng: 34.8460 },
+        bibleReferences: ['Jeremiah 34:7'],
+        significance: 'A desperate real-time report matching Jeremiah 34:7, which names Lachish and Azekah as the last two cities standing against Babylon.'
+    },
+    // --- New Testament ---
+    {
+        id: 'politarch-inscription',
+        title: 'Politarch Inscription',
+        description: 'Inscriptions from Thessalonica using the unique term "Politarchs" (City Rulers) to describe the officials there.',
+        dateDiscovered: '1835',
+        artifactDate: 'c. 1st Century AD',
+        location: 'Thessalonica',
+        coordinates: { lat: 40.6401, lng: 22.9444 },
+        bibleReferences: ['Acts 17:6'],
+        significance: 'Critics once claimed Luke was wrong to use this obscure title. Archaeology proved it was the *exact* correct legal title for that specific city.'
+    },
+    {
+        id: 'sergius-paulus',
+        title: 'Sergius Paulus Inscription',
+        description: 'A boundary stone near Paphos mentioning "L. Sergius Paulus" as Proconsul.',
+        dateDiscovered: '1877',
+        artifactDate: 'c. 47 AD',
+        location: 'Cyprus',
+        coordinates: { lat: 35.0400, lng: 32.5500 },
+        bibleReferences: ['Acts 13:7'],
+        significance: 'Confirms the existence and correct title of the Roman Proconsul who converted to Christianity under Paul\'s ministry.'
+    },
+    {
+        id: 'crucified-man',
+        title: 'Yehohanan (Crucified Man)',
+        description: 'An ossuary containing a heel bone with a large iron nail driven through it and bent, preserving evidence of Roman crucifixion.',
+        dateDiscovered: '1968',
+        artifactDate: 'c. 1st Century AD',
+        location: 'Givat HaMivtar, Jerusalem',
+        coordinates: { lat: 31.8000, lng: 35.2200 },
+        bibleReferences: ['John 19:18', 'Luke 24:39'],
+        significance: 'The only physical skeletal evidence of Roman crucifixion ever found in Israel. It confirms that nails were indeed used (not just ropes) and driven through the heel/feet.'
+    },
+    {
+        id: 'temple-artemis',
+        title: 'Temple of Artemis',
+        description: 'Ruins of one of the Seven Wonders of the World, the massive center of pagan worship in Ephesus.',
+        dateDiscovered: '1869',
+        artifactDate: 'c. 1st Century AD',
+        location: 'Ephesus',
+        coordinates: { lat: 37.9497, lng: 27.3639 },
+        bibleReferences: ['Acts 19:23-41'],
+        significance: 'The context for the riot in Acts. Inscriptions found there even use the term "Neokoros" (Guardian of the Temple), exactly as the city clerk calls Ephesus in Acts 19:35.'
+    },
+    {
+        id: 'jacobs-well',
+        title: 'Jacob\'s Well',
+        description: 'A deep hewn well in Nablus (Shechem) that has been venerated by Jews, Samaritans, Christians, and Muslims for millennia.',
+        dateDiscovered: 'Ancient',
+        artifactDate: 'c. 2000 BC',
+        location: 'Nablus (Sychar)',
+        coordinates: { lat: 32.2096, lng: 35.2696 },
+        bibleReferences: ['John 4:6', 'Genesis 33:19'],
+        significance: 'One of the few sites where we can be almost 100% sure Jesus sat. It is deep (over 100ft) just as the Samaritan woman said ("the well is deep").'
+    },
+    {
+        id: 'robinsons-arch',
+        title: 'Robinson\'s Arch',
+        description: 'The remains of a massive stone arch that supported a monumental staircase leading from the street to the Temple Mount.',
+        dateDiscovered: '1838',
+        artifactDate: 'c. 1st Century BC',
+        location: 'Jerusalem (Western Wall)',
+        coordinates: { lat: 31.7760, lng: 35.2345 },
+        bibleReferences: ['Matthew 24:1'],
+        significance: 'Part of the massive Herod temple complex that the disciples marveled at. Stones from its destruction lie in a heap on the 1st-century street below today.'
+    },
+    {
+        id: 'mamertine-prison',
+        title: 'Mamertine Prison (Tullianum)',
+        description: 'An ancient dungeon in Rome where tradition (and evidence) says Peter and Paul were held before execution.',
+        dateDiscovered: 'Ancient',
+        artifactDate: 'c. 7th Century BC',
+        location: 'Rome',
+        coordinates: { lat: 41.8936, lng: 12.4848 },
+        bibleReferences: ['2 Timothy 4:6-21'],
+        significance: 'The likely setting for Paul\'s final letter (2 Timothy), describing being "poured out like a drink offering" in a cold, dark place.'
+    },
+    {
+        id: 'areopagus-mars-hill',
+        title: 'The Areopagus (Mars Hill)',
+        description: 'A prominent rock outcropping beneath the Acropolis in Athens which served as the high court.',
+        dateDiscovered: 'Ancient',
+        artifactDate: 'Ancient',
+        location: 'Athens',
+        coordinates: { lat: 37.9722, lng: 23.7247 },
+        bibleReferences: ['Acts 17:19-34'],
+        significance: 'The actual physical platform where Paul delivered his famous sermon about the "Unknown God" on the Areopagus.'
     }
 ];
 
