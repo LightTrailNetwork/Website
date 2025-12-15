@@ -12,6 +12,7 @@ import PatternsView from '../components/study/PatternsView';
 import OutlinesView from '../components/study/OutlinesView';
 import ErasView from '../components/study/ErasView';
 import ArchaeologyView from '../components/study/ArchaeologyView';
+import FeastsView from '../components/study/FeastsView';
 import GenericStudyView from '../components/study/GenericStudyView';
 import DivineNamesView from '../components/study/DivineNamesView';
 
@@ -46,6 +47,8 @@ export default function StudyToolPage() {
                 return <ErasView />;
             case 'archaeology':
                 return <ArchaeologyView />;
+            case 'feasts':
+                return <FeastsView />;
             case 'names':
                 return <DivineNamesView />;
             default:

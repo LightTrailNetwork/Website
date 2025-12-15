@@ -2523,6 +2523,126 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
     }
 ];
 
+
+export interface JewishFeast {
+    id: string;
+    title: string;
+    hebrewTitle: string;
+    transliteration: string;
+    month: string; // e.g. "Nisan 14"
+    season: 'Spring' | 'Fall' | 'Winter';
+    references: string[]; // Leviticus 23 ref
+    significance: string; // Historic/Agricultural
+    fulfillment: string; // Messianic Prophecy
+    iconName?: string;
+}
+
+export const JEWISH_FEASTS: JewishFeast[] = [
+    // --- Spring Feasts (First Coming) ---
+    {
+        id: 'passover',
+        title: 'Passover',
+        hebrewTitle: 'פֶּסַח',
+        transliteration: 'Pesach',
+        month: 'Nisan 14',
+        season: 'Spring',
+        references: ['Leviticus 23:5'],
+        significance: 'Commemorates the deliverance from Egypt when the angel of death "passed over" the homes marked by the blood of the lamb.',
+        fulfillment: 'Crucifixion: Jesus is the "Lamb of God" sacrificed on Passover (1 Cor 5:7), whose blood redeems us from death.',
+    },
+    {
+        id: 'unleavened-bread',
+        title: 'Unleavened Bread',
+        hebrewTitle: 'חַג הַמַּצּוֹת',
+        transliteration: 'Chag HaMatzot',
+        month: 'Nisan 15-21',
+        season: 'Spring',
+        references: ['Leviticus 23:6-8'],
+        significance: 'Eating bread without leaven (yeast) to remember the haste of leaving Egypt. Leaven also symbolizes sin in the Bible.',
+        fulfillment: 'Burial: Jesus, the "Bread of Life", was buried on this feast. He was sinless (unleavened) and His body did not decay.',
+    },
+    {
+        id: 'firstfruits',
+        title: 'Firstfruits',
+        hebrewTitle: 'יוֹם הַבִּכּוּרִים',
+        transliteration: 'Yom HaBikkurim',
+        month: 'Nisan 16 (Day after Sabbath)',
+        season: 'Spring',
+        references: ['Leviticus 23:10-14'],
+        significance: 'Offering the very first sheaf of the barley harvest to God, acknowledging Him as the provider.',
+        fulfillment: 'Resurrection: Jesus rose on the Feast of Firstfruits, becoming the "firstfruits of those who have fallen asleep" (1 Cor 15:20).',
+    },
+    {
+        id: 'pentecost',
+        title: 'Pentecost (Weeks)',
+        hebrewTitle: 'שָׁבוּעוֹת',
+        transliteration: 'Shavuot',
+        month: 'Sivan 6 (50 days later)',
+        season: 'Spring',
+        references: ['Leviticus 23:15-22'],
+        significance: 'Celebrates the wheat harvest and the giving of the Law (Torah) at Mt. Sinai.',
+        fulfillment: 'Giving of the Spirit: The Holy Spirit was poured out on Pentecost (Acts 2), writing the Law on our hearts and birthing the Church.',
+    },
+
+    // --- Fall Feasts (Second Coming) ---
+    {
+        id: 'trumpets',
+        title: 'Feast of Trumpets',
+        hebrewTitle: 'יוֹם תְּרוּעָה',
+        transliteration: 'Yom Teruah (Rosh Hashanah)',
+        month: 'Tishrei 1',
+        season: 'Fall',
+        references: ['Leviticus 23:23-25'],
+        significance: 'The Jewish New Year. A day of blowing the shofar (trumpet) to call the people to repentance and prepare for judgment.',
+        fulfillment: 'Rapture / Return: Associated with the "Last Trumpet" (1 Cor 15:52) and the gathering of God\'s people.',
+    },
+    {
+        id: 'atonement',
+        title: 'Day of Atonement',
+        hebrewTitle: 'יוֹם כִּפּוּר',
+        transliteration: 'Yom Kippur',
+        month: 'Tishrei 10',
+        season: 'Fall',
+        references: ['Leviticus 23:26-32'],
+        significance: 'The holiest day of the year. The High Priest enters the Holy of Holies to make atonement for the nation\'s sins.',
+        fulfillment: 'Redemption of Israel: Prophetic of the day when "all Israel will be saved" (Rom 11:26) as they mourn for Him whom they pierced (Zech 12:10).',
+    },
+    {
+        id: 'tabernacles',
+        title: 'Tabernacles (Booths)',
+        hebrewTitle: 'סֻכּוֹת',
+        transliteration: 'Sukkot',
+        month: 'Tishrei 15-21',
+        season: 'Fall',
+        references: ['Leviticus 23:33-43'],
+        significance: 'Living in temporary shelters (booths) to remember God\'s dwelling with them in the wilderness. The festival of "Ingathering".',
+        fulfillment: 'Millennial Kingdom: God dwells with men (Rev 21:3). Jesus "tabernacled" among us (John 1:14), but the ultimate fulfillment is His reign on earth.',
+    },
+    // --- Winter / Additional ---
+    {
+        id: 'hanukkah',
+        title: 'Hanukkah (Dedication)',
+        hebrewTitle: 'חֲנֻכָּה',
+        transliteration: 'Hanukkah',
+        month: 'Kislev 25',
+        season: 'Winter',
+        references: ['John 10:22'],
+        significance: 'Commemorates the rededication of the Temple after the Maccabean revolt against the Greeks.',
+        fulfillment: 'Light of the World: Jesus visited the Temple during this "Feast of Dedication" (John 10:22) and spoke of His oneness with the Father.',
+    },
+    {
+        id: 'purim',
+        title: 'Purim (Lots)',
+        hebrewTitle: 'פּוּרִים',
+        transliteration: 'Purim',
+        month: 'Adar 14',
+        season: 'Winter',
+        references: ['Esther 9:20-22'],
+        significance: 'Celebrates the deliverance of the Jews from Haman\'s plot to annihilate them in Persia.',
+        fulfillment: 'Providence: Highlights God\'s hidden hand in history preserving His people against Satanic attempts at genocide.',
+    }
+];
+
 export const ERAS: BiblicalEra[] = [
     {
         id: 'creation',

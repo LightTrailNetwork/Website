@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import {
     BookOpen, Users, MapPin, Lightbulb, Pickaxe,
     ArrowRightLeft, GitMerge, Combine, Repeat,
-    Hourglass, ListTree, History, Library, ArrowRight, ShieldQuestion, Scale, Crown
+    Hourglass, ListTree, History, Library, ArrowRight, ShieldQuestion, Scale, Crown, Tent
 } from 'lucide-react';
 import VerseLink from '../components/study/VerseLink';
 // Removed Search import
@@ -66,6 +66,7 @@ export default function BibleStudy() {
                 { id: 'structure', title: 'Book Outlines', description: 'Literary structure and chiasms of each book.', icon: ListTree, path: '/bible/study/outlines', status: 'ready' },
                 { id: 'eras', title: 'Biblical Eras', description: 'The grand epochs of redemptive history.', icon: Hourglass, path: '/bible/study/eras', status: 'ready' },
                 { id: 'archaeology', title: 'Archaeological Evidence', description: 'Physical proof confirming the biblical record.', icon: Pickaxe, path: '/bible/study/archaeology', status: 'ready' },
+                { id: 'feasts', title: 'Jewish Feasts', description: 'The 7 Levitical feasts and their prophetic fulfillment.', icon: Tent, path: '/bible/study/feasts', status: 'ready' },
             ]
         }
     ];
