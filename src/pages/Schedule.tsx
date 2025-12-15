@@ -7,6 +7,7 @@ import { getWeekMnemonicInfo } from '../data/curriculumMnemonics';
 import { useProfile } from '../hooks/useProfile';
 import { Role } from '../data/types';
 import { getBibleLink } from '../utils/linkUtils';
+import { getTraditionInfo } from '../utils/traditionUtils';
 
 export default function Schedule() {
     const { profile } = useProfile();
@@ -170,16 +171,84 @@ export default function Schedule() {
                                             {displayMemorize && (
                                                 <div className="flex items-start gap-2">
                                                     <span className={`mt-1 w-1.5 h-1.5 rounded-full shrink-0 ${week.session === 'Rest' && !isScoutOrPreScout ? 'bg-muted-foreground/30' : 'bg-orange-500/70'}`} />
-                                                    <div className="flex flex-col items-start">
-                                                        {week.session === 'Rest' && displayMemorize !== 'Rest' && !isScoutOrPreScout && (
-                                                            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 uppercase tracking-wide mb-1">Review</span>
-                                                        )}
-                                                        {memoryLink ? (
-                                                            <Link to={memoryLink} className="hover:underline text-foreground/90 hover:text-orange-600">{displayMemorize}</Link>
-                                                        ) : (
-                                                            <span className={`text-foreground/90 ${week.session === 'Rest' && !isScoutOrPreScout ? 'text-muted-foreground' : ''}`}>{displayMemorize}</span>
-                                                        )}
-                                                    </div>
+                                                    {(() => {
+                                                        const renderEmphasizedContent = (content: string, link: string | null) => {
+                                                            let lookup = content;
+                                                            if (typeof content === 'string' && content.includes(' - ')) {
+                                                                const parts = content.split(' - ');
+                                                                lookup = parts[parts.length - 1] || '';
+                                                            }
+
+                                                            const traditionInfo = getTraditionInfo(lookup);
+
+                                                            let contentToRender: React.ReactNode = content;
+
+                                                            if (traditionInfo && typeof content === 'string') {
+                                                                const cleanRawText = traditionInfo.rawText.replace(/\*\*/g, '');
+                                                                if (content.includes(cleanRawText)) {
+                                                                    const splitParts = content.split(cleanRawText);
+                                                                    if (splitParts.length >= 2) {
+                                                                        const emphasizedParts = traditionInfo.rawText.split(/(\*\*.*?\*\*)/g).map((part, index) => {
+                                                                            if (part.startsWith('**') && part.endsWith('**')) {
+                                                                                return <span key={index} className="text-primary font-bold">{part.slice(2, -2)}</span>;
+                                                                            }
+                                                                            return part;
+                                                                        });
+
+                                                                        contentToRender = (
+                                                                            <>
+                                                                                {splitParts[0]}
+                                                                                {emphasizedParts}
+                                                                                {splitParts[1]}
+                                                                            </>
+                                                                        );
+                                                                    }
+                                                                } else if (traditionInfo.rawText && content.includes(traditionInfo.translation)) {
+                                                                    const refPart = content.split(' - ').pop();
+                                                                    if (refPart) {
+                                                                        const emphasizedParts = traditionInfo.rawText.split(/(\*\*.*?\*\*)/g).map((part, index) => {
+                                                                            if (part.startsWith('**') && part.endsWith('**')) {
+                                                                                return <span key={index} className="text-primary font-bold">{part.slice(2, -2)}</span>;
+                                                                            }
+                                                                            return part;
+                                                                        });
+                                                                        contentToRender = <>{emphasizedParts} - {refPart}</>;
+                                                                    }
+                                                                }
+                                                            }
+
+                                                            const renderedContent = link ? (
+                                                                <Link to={link} className="hover:underline text-foreground/90 hover:text-orange-600">{contentToRender}</Link>
+                                                            ) : (
+                                                                <span className={`text-foreground/90 ${week.session === 'Rest' && !isScoutOrPreScout ? 'text-muted-foreground' : ''}`}>{contentToRender}</span>
+                                                            );
+
+                                                            return (
+                                                                <div className="flex flex-col items-start">
+                                                                    {week.session === 'Rest' && content !== 'Rest' && !isScoutOrPreScout && (
+                                                                        <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 uppercase tracking-wide mb-1">Review</span>
+                                                                    )}
+                                                                    {renderedContent}
+                                                                    {traditionInfo && (
+                                                                        <div className="flex items-center gap-1.5 mt-1">
+                                                                            <span className="inline-flex items-center justify-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-primary/10 text-primary uppercase tracking-wide border border-primary/20">
+                                                                                {traditionInfo.letter}
+                                                                            </span>
+                                                                            <span className="text-[10px] text-muted-foreground font-medium">• {traditionInfo.emphasisWord}</span>
+                                                                        </div>
+                                                                    )}
+                                                                </div>
+                                                            );
+                                                        };
+
+                                                        return typeof displayMemorize === 'string'
+                                                            ? renderEmphasizedContent(displayMemorize, memoryLink)
+                                                            : (
+                                                                <div className="flex flex-col items-start">
+                                                                    <span className="text-foreground/90">{displayMemorize}</span>
+                                                                </div>
+                                                            );
+                                                    })()}
                                                 </div>
                                             )}
                                         </td>
@@ -361,11 +430,75 @@ export default function Schedule() {
                                                                     <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 uppercase tracking-wide">Review</span>
                                                                 )}
                                                             </div>
-                                                            {memoryLink ? (
-                                                                <Link to={memoryLink} className="hover:underline text-foreground/90 hover:text-orange-600">{displayMemorize}</Link>
-                                                            ) : (
-                                                                <span className={`text-foreground/90 ${week.session === 'Rest' && !isScoutOrPreScout ? 'text-muted-foreground' : ''}`}>{displayMemorize}</span>
-                                                            )}
+                                                            {(() => {
+                                                                // Mobile view logic - duplicate of desktop logic for emphasis
+                                                                const content = displayMemorize;
+                                                                const link = memoryLink;
+
+                                                                let lookup = content;
+                                                                if (typeof content === 'string' && content.includes(' - ')) {
+                                                                    const parts = content.split(' - ');
+                                                                    lookup = parts[parts.length - 1] || '';
+                                                                }
+
+                                                                const traditionInfo = getTraditionInfo(lookup);
+
+                                                                let contentToRender: React.ReactNode = content;
+
+                                                                if (traditionInfo && typeof content === 'string') {
+                                                                    const cleanRawText = traditionInfo.rawText.replace(/\*\*/g, '');
+                                                                    if (content.includes(cleanRawText)) {
+                                                                        const splitParts = content.split(cleanRawText);
+                                                                        if (splitParts.length >= 2) {
+                                                                            const emphasizedParts = traditionInfo.rawText.split(/(\*\*.*?\*\*)/g).map((part, index) => {
+                                                                                if (part.startsWith('**') && part.endsWith('**')) {
+                                                                                    return <span key={index} className="text-primary font-bold">{part.slice(2, -2)}</span>;
+                                                                                }
+                                                                                return part;
+                                                                            });
+
+                                                                            contentToRender = (
+                                                                                <>
+                                                                                    {splitParts[0]}
+                                                                                    {emphasizedParts}
+                                                                                    {splitParts[1]}
+                                                                                </>
+                                                                            );
+                                                                        }
+                                                                    } else if (traditionInfo.rawText && content.includes(traditionInfo.translation)) {
+                                                                        const refPart = content.split(' - ').pop();
+                                                                        if (refPart) {
+                                                                            const emphasizedParts = traditionInfo.rawText.split(/(\*\*.*?\*\*)/g).map((part, index) => {
+                                                                                if (part.startsWith('**') && part.endsWith('**')) {
+                                                                                    return <span key={index} className="text-primary font-bold">{part.slice(2, -2)}</span>;
+                                                                                }
+                                                                                return part;
+                                                                            });
+                                                                            contentToRender = <>{emphasizedParts} - {refPart}</>;
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                const renderedContent = link ? (
+                                                                    <Link to={link} className="hover:underline text-foreground/90 hover:text-orange-600">{contentToRender}</Link>
+                                                                ) : (
+                                                                    <span className={`text-foreground/90 ${week.session === 'Rest' && !isScoutOrPreScout ? 'text-muted-foreground' : ''}`}>{contentToRender}</span>
+                                                                );
+
+                                                                return (
+                                                                    <>
+                                                                        {renderedContent}
+                                                                        {traditionInfo && (
+                                                                            <div className="flex items-center gap-1.5 mt-1">
+                                                                                <span className="inline-flex items-center justify-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-primary/10 text-primary uppercase tracking-wide border border-primary/20">
+                                                                                    {traditionInfo.letter}
+                                                                                </span>
+                                                                                <span className="text-[10px] text-muted-foreground font-medium">• {traditionInfo.emphasisWord}</span>
+                                                                            </div>
+                                                                        )}
+                                                                    </>
+                                                                );
+                                                            })()}
                                                         </div>
                                                     </div>
                                                 )}

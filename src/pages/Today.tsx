@@ -12,6 +12,7 @@ import WorshipCard from '../components/dashboard/WorshipCard';
 import AnchorCard from '../components/dashboard/AnchorCard';
 import { Link } from 'react-router-dom';
 import { CollapsibleText } from '../components/CollapsibleText';
+import { getTraditionInfo } from '../utils/traditionUtils';
 
 type TimeSection = 'morning' | 'afternoon' | 'night';
 
@@ -108,7 +109,16 @@ export default function Today() {
       const preScoutItem = preScoutSchedule.find(s => s.weekNum === weekNum);
       return { verse: preScoutItem?.memorize || 'Review', reference: '' };
     } else {
-      return { verse: dailyContent?.memorize || 'Review', reference: '' };
+      const mem = dailyContent?.memorize || 'Review';
+      // getPassage returns "Text - Reference" format
+      if (mem.includes(' - ')) {
+        const lastDashIndex = mem.lastIndexOf(' - ');
+        return {
+          verse: mem.substring(0, lastDashIndex),
+          reference: mem.substring(lastDashIndex + 3)
+        };
+      }
+      return { verse: mem, reference: '' };
     }
   };
 
@@ -449,9 +459,41 @@ export default function Today() {
                               {memoryContent.verse}
                             </Link>
                           ) : (
-                            <p className="text-lg font-medium text-foreground leading-relaxed">{memoryContent.verse}</p>
+                            (() => {
+                              // Try to find tradition info using the reference first, then the verse (which might be the reference if split failed)
+                              const lookupKey = memoryContent.reference || memoryContent.verse;
+                              const traditionInfo = getTraditionInfo(lookupKey);
+                              const parts = traditionInfo ? traditionInfo.rawText.split(/(\*\*.*?\*\*)/g) : [memoryContent.verse];
+
+                              return (
+                                <>
+                                  <p className="text-lg font-medium text-foreground leading-relaxed">
+                                    {parts.map((part, index) => {
+                                      if (part.startsWith('**') && part.endsWith('**')) {
+                                        return <span key={index} className="text-primary font-bold">{part.slice(2, -2)}</span>;
+                                      }
+                                      return part;
+                                    })}
+                                  </p>
+                                  {memoryContent.reference && <p className="text-sm text-muted-foreground">{memoryContent.reference}</p>}
+
+                                  {traditionInfo && (
+                                    <div className="mt-1 flex items-center gap-2 animate-in fade-in slide-in-from-left-2">
+                                      <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-primary/10 border border-primary/20">
+                                        <span className="text-xs font-bold text-primary">{traditionInfo.letter}</span>
+                                        <span className="text-[10px] text-primary/50">•</span>
+                                        <span className="text-xs font-medium text-primary">{traditionInfo.emphasisWord}</span>
+                                      </div>
+                                      {/* Only show translation if it's NOT in the reference line and NOT in the raw text */}
+                                      {traditionInfo.translation && !memoryContent.reference && !traditionInfo.rawText.includes(traditionInfo.translation) && (
+                                        <span className="text-xs text-muted-foreground font-mono">({traditionInfo.translation})</span>
+                                      )}
+                                    </div>
+                                  )}
+                                </>
+                              );
+                            })()
                           )}
-                          {memoryContent.reference && <p className="text-sm text-muted-foreground">{memoryContent.reference}</p>}
                         </div>
                         <button onClick={() => toggleTask('memorize')}>
                           {completedTasks.includes('memorize') ? <CheckCircle2 className="w-6 h-6 text-orange-500 animate-scale-in" /> : <Circle className="w-6 h-6 text-muted-foreground/30 hover:text-orange-500/50" />}
