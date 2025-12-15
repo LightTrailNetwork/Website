@@ -335,7 +335,7 @@ export default function OTPyramidSVG({
 
                     {/* LABELS */}
                     {/* LABELS - Shifted up to avoid overlap */}
-                    <SubPyramidLabel center={{ x: topCenter.x, y: topCenter.y - H * 0.02 }} label="Mix" textColor={"hsl(var(--primary))"} fontSize={subFontSizeWord} />
+                    <SubPyramidLabel center={{ x: topCenter.x, y: topCenter.y - H * 0.02 }} label="Three" textColor={"hsl(var(--primary))"} fontSize={subFontSizeWord} />
                     <SubPyramidLabel center={{ x: leftCenter.x, y: leftCenter.y - H * 0.02 }} label="History" textColor={"hsl(var(--primary))"} fontSize={subFontSizeWord} />
                     <SubPyramidLabel center={{ x: rightCenter.x, y: rightCenter.y - H * 0.02 }} label="Prophecy" textColor={"hsl(var(--primary))"} fontSize={subFontSizeWord} />
 
