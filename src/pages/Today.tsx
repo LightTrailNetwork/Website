@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Loader2, ChevronDown, Sun, BookOpen, Moon, CheckCircle2, Circle, ChevronLeft, ChevronRight, Calendar as CalendarIcon, RotateCcw } from 'lucide-react';
+import { Loader2, ChevronDown, Sun, BookOpen, Moon, CheckCircle2, Circle, ChevronLeft, ChevronRight, Calendar as CalendarIcon, RotateCcw, Globe, Heart } from 'lucide-react';
 import { useProfile } from '../hooks/useProfile';
 import { getQuarterInfo, getDailyContent } from '../utils/scheduleUtils';
 import { scoutSchedule, preScoutSchedule } from '../data/tableData';
@@ -293,116 +293,223 @@ export default function Today() {
         }}
       />
 
-      {/* 2. Accordion Stack */}
-      <div className="space-y-1">
+      {/* 2. Content Sections (Dynamic based on Day/Session) */}
+      <div className="space-y-4">
+        {(() => {
+          const dayIndex = displayDate.getDay(); // 0=Sun, 6=Sat
+          const isSaturday = dayIndex === 6;
+          const isSunday = dayIndex === 0;
+          const sessionType = quarterInfo.session; // "Preparation", "Rest", or other
 
-        {/* MORNING SECTION */}
-        <SectionHeader
-          section="morning"
-          title="Morning"
-          icon={Sun}
-          colorClass="from-blue-500/10 to-cyan-500/10"
-          subtitle="Worship & Anchor Prayer"
-        />
-        {openSection === 'morning' && (
-          <div className="pl-2 border-l-2 border-border/50 ml-6 space-y-6 animate-accordion-down mb-8">
-            <WorshipCard
-              completedTasks={completedTasks}
-              onToggle={toggleTask}
-              readContent={dailyRead}
-              isRestWeek={quarterInfo.session === 'Rest'}
-            />
-            <div className="pt-2">
-              <AnchorCard
-                completedTasks={completedTasks}
-                onToggle={toggleTask}
-                dayOfWeek={dayOfWeek}
-              />
-            </div>
-          </div>
-        )}
-
-        {/* AFTERNOON SECTION */}
-        <SectionHeader
-          section="afternoon"
-          title="Afternoon"
-          icon={BookOpen}
-          colorClass="from-orange-500/10 to-amber-500/10"
-          subtitle="Memorization"
-        />
-        {openSection === 'afternoon' && (
-          <div className="pl-2 border-l-2 border-border/50 ml-6 animate-accordion-down mb-8">
-            <div className="bg-card border border-border rounded-xl overflow-hidden shadow-sm">
-              <div className="p-6">
-                <div className="flex items-start justify-between gap-4">
-                  <div className="space-y-1">
-                    {quarterInfo.session === 'Rest' && (
-                      <span className="inline-block mb-1 text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 uppercase tracking-wide">Review</span>
-                    )}
-                    {memoryLink ? (
-                      <Link to={memoryLink} className="text-lg font-medium text-foreground hover:text-orange-600 transition-colors block leading-relaxed">
-                        {memoryContent.verse}
-                      </Link>
-                    ) : (
-                      <p className="text-lg font-medium text-foreground leading-relaxed">{memoryContent.verse}</p>
-                    )}
-                    {memoryContent.reference && <p className="text-sm text-muted-foreground">{memoryContent.reference}</p>}
+          // 1. Preparation Week Saturday -> Steak Dinner
+          if (isSaturday && sessionType === 'Preparation') {
+            return (
+              <div className="bg-card border border-border rounded-xl p-6 shadow-sm space-y-4 animate-in fade-in">
+                <div className="flex items-center gap-3 text-primary mb-2">
+                  <div className="p-2 rounded-full bg-primary/10">
+                    <div className="w-5 h-5 font-bold flex items-center justify-center">🍽️</div>
                   </div>
-                  <button onClick={() => toggleTask('memorize')}>
-                    {completedTasks.includes('memorize') ? <CheckCircle2 className="w-6 h-6 text-orange-500 animate-scale-in" /> : <Circle className="w-6 h-6 text-muted-foreground/30 hover:text-orange-500/50" />}
+                  <h3 className="font-bold text-lg uppercase tracking-wide">Steak Dinner</h3>
+                </div>
+                <div className="space-y-2">
+                  <p className="text-foreground font-medium">Hosted by the Mentee</p>
+                  <p className="text-muted-foreground text-sm leading-relaxed">
+                    A special gathering for all current, past, and future members of the triad.
+                    Celebrate the journey ahead and the bonds of brotherhood.
+                  </p>
+                </div>
+                <div className="flex items-center justify-end pt-2">
+                  <button onClick={() => toggleTask('steak_dinner')} className="flex items-center gap-2 text-sm text-primary font-medium hover:underline">
+                    {completedTasks.includes('steak_dinner') ? <CheckCircle2 className="w-5 h-5" /> : <Circle className="w-5 h-5" />}
+                    <span>Mark Complete</span>
                   </button>
                 </div>
               </div>
-            </div>
-          </div>
-        )}
+            );
+          }
 
-        {/* NIGHT SECTION */}
-        <SectionHeader
-          section="night"
-          title="Night"
-          icon={Moon}
-          colorClass="from-indigo-500/10 to-purple-500/10"
-          subtitle="Study & Fellowship"
-        />
-        {openSection === 'night' && (
-          <div className="pl-2 border-l-2 border-border/50 ml-6 animate-accordion-down mb-8">
-            <div className="bg-card border border-border rounded-xl overflow-hidden shadow-sm flex-1">
-              <div className="p-6">
-                {/*  Use a simple Link instead of full collapsible text */}
-                <div className="flex items-center justify-between gap-4">
-                  <div className="space-y-1">
-                    <Link
-                      to="/curriculum"
-                      className="font-medium text-lg text-foreground hover:text-primary transition-colors block"
-                    >
-                      {dailyContent?.study || "Rest"}
-                    </Link>
-                    {dailyContent?.area && quarterInfo.session !== 'Rest' && (
-                      <span className="text-xs px-2 py-0.5 rounded-full bg-secondary text-muted-foreground border border-border inline-block">
-                        {dailyContent.area}
-                      </span>
-                    )}
-                    {!dailyContent?.study && <span className="text-muted-foreground">Rest night.</span>}
-                  </div>
-
-                  <button onClick={(e) => { e.stopPropagation(); toggleTask('study'); }}>
-                    {completedTasks.includes('study') ? <CheckCircle2 className="w-6 h-6 text-indigo-500 animate-scale-in" /> : <Circle className="w-6 h-6 text-muted-foreground/30 hover:text-indigo-500/50" />}
-                  </button>
+          // 2. Rest Weeks (Sat/Sun) OR Regular Sundays -> Day of Rest
+          if ((sessionType === 'Rest' && (isSaturday || isSunday)) || isSunday) {
+            return (
+              <div className="bg-card border border-border rounded-xl p-8 shadow-sm text-center space-y-4 animate-in fade-in flex flex-col items-center justify-center min-h-[200px]">
+                <div className="p-4 rounded-full bg-indigo-500/10 mb-2">
+                  <Moon className="w-8 h-8 text-indigo-500" />
                 </div>
+                <div>
+                  <h3 className="text-xl font-bold text-foreground">Day of Rest</h3>
+                  <p className="text-muted-foreground mt-2 max-w-sm mx-auto">
+                    No obligations today. Rest, recover, and enjoy fellowship with God and family.
+                  </p>
+                </div>
+              </div>
+            );
+          }
 
-                {quarterInfo.session !== 'Rest' && (
-                  <div className="mt-4 pt-4 border-t border-border/50">
-                    <p className="text-sm text-muted-foreground italic">
-                      Tip: Click the title above to view the full curriculum details for this week.
+          // 3. Regular Saturday -> Reach Prayer + Serve Day
+          if (isSaturday) {
+            return (
+              <div className="space-y-4 animate-in fade-in">
+                {/* Reach Prayer & Serve Day Combined Card */}
+                <div className="bg-card border border-border rounded-xl p-6 shadow-sm space-y-6">
+
+                  {/* Reach Prayer Section */}
+                  <div className="space-y-3 pb-6 border-b border-border/50">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 rounded-full bg-rose-500/10 text-rose-600">
+                        <Globe className="w-5 h-5" />
+                      </div>
+                      <h3 className="font-bold text-lg uppercase tracking-wide">Reach Prayer</h3>
+                    </div>
+                    <p className="text-foreground p-4 bg-muted/30 rounded-lg italic border-l-4 border-rose-500/30">
+                      "Lord, we pray for the lost souls around the world. Use us to Reach them with Your Gospel."
                     </p>
+                    <p className="text-sm text-muted-foreground">
+                      Pray this with your triad brothers and those you are serving today. Intertwine your mission with action.
+                    </p>
+                    <div className="flex justify-end">
+                      <button onClick={() => toggleTask('reach_prayer')} className="text-rose-600 hover:text-rose-700">
+                        {completedTasks.includes('reach_prayer') ? <CheckCircle2 className="w-6 h-6" /> : <Circle className="w-6 h-6" />}
+                      </button>
+                    </div>
                   </div>
-                )}
-              </div>
-            </div>
-          </div>
-        )}
 
+                  {/* Serve Day Section */}
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 rounded-full bg-emerald-500/10 text-emerald-600">
+                        <Heart className="w-5 h-5" />
+                      </div>
+                      <h3 className="font-bold text-lg uppercase tracking-wide">Serve Day</h3>
+                    </div>
+                    <p className="text-muted-foreground">
+                      Go out and serve together at your designated location. Be the hands and feet of Jesus.
+                    </p>
+                    <div className="flex justify-end">
+                      <button onClick={() => toggleTask('serve_day')} className="text-emerald-600 hover:text-emerald-700">
+                        {completedTasks.includes('serve_day') ? <CheckCircle2 className="w-6 h-6" /> : <Circle className="w-6 h-6" />}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          }
+
+          // 4. Default Weekday -> Standard Accordion
+          const showReviewBadge = sessionType === 'Rest' && ![2, 4].includes(dayIndex);
+
+          return (
+            <div className="space-y-1">
+
+              {/* MORNING SECTION */}
+              <SectionHeader
+                section="morning"
+                title="Morning"
+                icon={Sun}
+                colorClass="from-blue-500/10 to-cyan-500/10"
+                subtitle="Worship & Anchor Prayer"
+              />
+              {openSection === 'morning' && (
+                <div className="pl-2 border-l-2 border-border/50 ml-6 space-y-6 animate-accordion-down mb-8">
+                  <WorshipCard
+                    completedTasks={completedTasks}
+                    onToggle={toggleTask}
+                    readContent={dailyRead}
+                    isRestWeek={showReviewBadge}
+                  />
+                  <div className="pt-2">
+                    <AnchorCard
+                      completedTasks={completedTasks}
+                      onToggle={toggleTask}
+                      dayOfWeek={dayOfWeek}
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* AFTERNOON SECTION */}
+              <SectionHeader
+                section="afternoon"
+                title="Afternoon"
+                icon={BookOpen}
+                colorClass="from-orange-500/10 to-amber-500/10"
+                subtitle="Memorization"
+              />
+              {openSection === 'afternoon' && (
+                <div className="pl-2 border-l-2 border-border/50 ml-6 animate-accordion-down mb-8">
+                  <div className="bg-card border border-border rounded-xl overflow-hidden shadow-sm">
+                    <div className="p-6">
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="space-y-1">
+                          {showReviewBadge && (
+                            <span className="inline-block mb-1 text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 uppercase tracking-wide">Review</span>
+                          )}
+                          {memoryLink ? (
+                            <Link to={memoryLink} className="text-lg font-medium text-foreground hover:text-orange-600 transition-colors block leading-relaxed">
+                              {memoryContent.verse}
+                            </Link>
+                          ) : (
+                            <p className="text-lg font-medium text-foreground leading-relaxed">{memoryContent.verse}</p>
+                          )}
+                          {memoryContent.reference && <p className="text-sm text-muted-foreground">{memoryContent.reference}</p>}
+                        </div>
+                        <button onClick={() => toggleTask('memorize')}>
+                          {completedTasks.includes('memorize') ? <CheckCircle2 className="w-6 h-6 text-orange-500 animate-scale-in" /> : <Circle className="w-6 h-6 text-muted-foreground/30 hover:text-orange-500/50" />}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* NIGHT SECTION */}
+              <SectionHeader
+                section="night"
+                title="Night"
+                icon={Moon}
+                colorClass="from-indigo-500/10 to-purple-500/10"
+                subtitle="Study & Fellowship"
+              />
+              {openSection === 'night' && (
+                <div className="pl-2 border-l-2 border-border/50 ml-6 animate-accordion-down mb-8">
+                  <div className="bg-card border border-border rounded-xl overflow-hidden shadow-sm flex-1">
+                    <div className="p-6">
+                      <div className="flex items-center justify-between gap-4">
+                        <div className="space-y-1">
+                          <Link
+                            to="/curriculum"
+                            className="font-medium text-lg text-foreground hover:text-primary transition-colors block"
+                          >
+                            {dailyContent?.study || "Rest"}
+                          </Link>
+                          {dailyContent?.area && quarterInfo.session !== 'Rest' && (
+                            <span className="text-xs px-2 py-0.5 rounded-full bg-secondary text-muted-foreground border border-border inline-block">
+                              {dailyContent.area}
+                            </span>
+                          )}
+                          {!dailyContent?.study && <span className="text-muted-foreground">Rest night.</span>}
+                        </div>
+
+                        <button onClick={(e) => { e.stopPropagation(); toggleTask('study'); }}>
+                          {completedTasks.includes('study') ? <CheckCircle2 className="w-6 h-6 text-indigo-500 animate-scale-in" /> : <Circle className="w-6 h-6 text-muted-foreground/30 hover:text-indigo-500/50" />}
+                        </button>
+                      </div>
+
+                      {quarterInfo.session !== 'Rest' && (
+                        <div className="mt-4 pt-4 border-t border-border/50">
+                          <p className="text-sm text-muted-foreground italic">
+                            Tip: Click the title above to view the full curriculum details for this week.
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+            </div>
+          );
+        })()}
       </div>
     </div>
   );
