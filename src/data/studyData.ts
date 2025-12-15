@@ -1904,6 +1904,72 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         coordinates: { lat: 32.5015, lng: 35.5020 },
         bibleReferences: ['Mark 7:31', 'Matthew 4:25'],
         significance: 'Provides the visual context for the "Decapolis" region where Jesus ministered. The contrast between this pagan metropolis and humble Galilean villages is striking.'
+    },
+    {
+        id: 'large-stone-structure',
+        title: 'Large Stone Structure (David\'s Palace)',
+        description: 'A massive public building located at the highest point of the City of David, believed by excavator Eilat Mazar to be King David\'s palace.',
+        dateDiscovered: '2005',
+        artifactDate: 'c. 10th Century BC',
+        location: 'City of David (Area G)',
+        coordinates: { lat: 31.7738, lng: 35.2355 },
+        bibleReferences: ['2 Samuel 5:11', '1 Chronicles 14:1'],
+        significance: 'Situated exactly where the Bible says David went "down" to the citadel, this structure dating to the 10th century is the strongest candidate for David\'s royal residence.'
+    },
+    {
+        id: 'stepped-stone-structure',
+        title: 'Stepped Stone Structure',
+        description: 'A massive curved retaining wall standing 60 feet high, supporting the Large Stone Structure above it.',
+        dateDiscovered: '1920s (Re-excavated 1970s/2000s)',
+        artifactDate: 'c. 1200-1000 BC',
+        location: 'City of David (Area G)',
+        coordinates: { lat: 31.7737, lng: 35.2356 },
+        bibleReferences: ['2 Samuel 5:9'],
+        significance: 'Likely the "Millo" (filling) mentioned in Scripture that David built/repaired. It is one of the largest Iron Age structures in Israel.'
+    },
+    {
+        id: 'bulla-gemaryahu',
+        title: 'Bulla of Gemaryahu ben Shaphan',
+        description: 'A clay seal impression found in a destroyed archive room ("House of Bullae") reading "Belonging to Gemaryahu son of Shaphan".',
+        dateDiscovered: '1982',
+        artifactDate: 'c. 600 BC',
+        location: 'City of David (Area G)',
+        coordinates: { lat: 31.7736, lng: 35.2355 },
+        bibleReferences: ['Jeremiah 36:10'],
+        significance: 'Identifies the exact scribe mentioned in Jeremiah who urged the king not to burn the scroll. Found in a layer of ash from the Babylonian destruction (586 BC).'
+    },
+    {
+        id: 'bulla-yehucal',
+        title: 'Bulla of Jehucal (Yukal)',
+        description: 'A stamped clay seal reading "Belonging to Yehucal son of Shelemiah" found in the Large Stone Structure.',
+        dateDiscovered: '2005',
+        artifactDate: 'c. 590 BC',
+        location: 'City of David',
+        coordinates: { lat: 31.7738, lng: 35.2355 },
+        bibleReferences: ['Jeremiah 37:3', 'Jeremiah 38:1'],
+        significance: 'Confirms the existence of the royal official sent by King Zedekiah to ask Jeremiah for prayer, found in the very palace ruins where he would have served.'
+    },
+    {
+        id: 'bulla-gedaliah',
+        title: 'Bulla of Gedaliah',
+        description: 'A bulla reading "Belonging to Gedaliah son of Pashhur" found just meters from the Jehucal bulla.',
+        dateDiscovered: '2008',
+        artifactDate: 'c. 590 BC',
+        location: 'City of David',
+        coordinates: { lat: 31.7739, lng: 35.2355 },
+        bibleReferences: ['Jeremiah 38:1'],
+        significance: 'Confirms another of Jeremiah\'s accusers. Finding two specific officials mentioned in the same verse (Jer 38:1) in the same excavation area is statistically astounding.'
+    },
+    {
+        id: 'pilgrimage-road',
+        title: 'Ancient Pilgrimage Road',
+        description: 'The paved stepped street leading from the Pool of Siloam up to the Temple Mount, walked by millions of pilgrims.',
+        dateDiscovered: '2000s-Present',
+        artifactDate: 'c. 1st Century AD',
+        location: 'City of David',
+        coordinates: { lat: 31.7715, lng: 35.2354 },
+        bibleReferences: ['Psalm 122:4', 'John 7:14'],
+        significance: 'The actual stones Jesus and his disciples would have walked on to ascend to the Temple. Coins found underneath date its construction to Pontius Pilate.'
     }
 ];
 
