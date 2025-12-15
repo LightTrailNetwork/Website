@@ -1572,6 +1572,7 @@ export interface ArchaeologicalFind {
     bibleReferences: string[];
     significance: string;
     imageUrl?: string;
+    currentLocation?: string; // e.g. "British Museum, London"
 }
 
 export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
@@ -1584,7 +1585,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Jerusalem (Ketef Hinnom)',
         coordinates: { lat: 31.7690, lng: 35.2256 },
         bibleReferences: ['Numbers 6:24-26'],
-        significance: 'The oldest biblical text ever found, pre-dating the Dead Sea Scrolls by 400 years. Confirms the text of the Torah was in use before the Babylonian Exile.'
+        significance: 'The oldest biblical text ever found, pre-dating the Dead Sea Scrolls by 400 years. Confirms the text of the Torah was in use before the Babylonian Exile.',
+        currentLocation: 'The Israel Museum, Jerusalem'
     },
     {
         id: 'dead-sea-scrolls',
@@ -1595,7 +1597,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Qumran',
         coordinates: { lat: 31.7417, lng: 35.4592 },
         bibleReferences: ['Isaiah 40:8', 'Jeremiah 32:44'],
-        significance: 'Provided manuscripts 1,000 years older than previous copies, demonstrating the incredible accuracy of the transmission of the Hebrew Bible.'
+        significance: 'Provided manuscripts 1,000 years older than previous copies, demonstrating the incredible accuracy of the transmission of the Hebrew Bible.',
+        currentLocation: 'The Israel Museum (Shrine of the Book), Jerusalem'
     },
     {
         id: 'tel-dan-stele',
@@ -1606,7 +1609,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Tel Dan',
         coordinates: { lat: 33.2486, lng: 35.6525 },
         bibleReferences: ['2 Kings 8:28-29'],
-        significance: 'The first extra-biblical reference to King David and his dynasty, refuting claims that David was a myth.'
+        significance: 'The first extra-biblical reference to King David and his dynasty, refuting claims that David was a myth.',
+        currentLocation: 'The Israel Museum, Jerusalem'
     },
 
     {
@@ -1618,7 +1622,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Caesarea Maritima',
         coordinates: { lat: 32.5000, lng: 34.8917 },
         bibleReferences: ['Matthew 27:2', 'Luke 3:1'],
-        significance: 'Confirmed the existence and office of Pontius Pilate, who some critics previously doubted existed.'
+        significance: 'Confirmed the existence and office of Pontius Pilate, who some critics previously doubted existed.',
+        currentLocation: 'The Israel Museum, Jerusalem (Replica at Caesarea)'
     },
     {
         id: 'caiaphas-ossuary',
@@ -1629,7 +1634,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Jerusalem',
         coordinates: { lat: 31.7511, lng: 35.2222 },
         bibleReferences: ['Matthew 26:3', 'John 11:49'],
-        significance: 'Provides physical evidence of the High Priest who presided over Jesus\' trial.'
+        significance: 'Provides physical evidence of the High Priest who presided over Jesus\' trial.',
+        currentLocation: 'The Israel Museum, Jerusalem'
     },
     {
         id: 'hezekiahs-tunnel',
@@ -1640,7 +1646,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'City of David, Jerusalem',
         coordinates: { lat: 31.7725, lng: 35.2356 },
         bibleReferences: ['2 Kings 20:20', '2 Chronicles 32:30'],
-        significance: 'Matches the biblical account of Hezekiah\'s preparation for the Assyrian siege perfectly.'
+        significance: 'Matches the biblical account of Hezekiah\'s preparation for the Assyrian siege perfectly.',
+        currentLocation: 'In Situ (City of David, Jerusalem)'
     },
     {
         id: 'sennacherib-prism',
@@ -1651,7 +1658,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Nineveh',
         coordinates: { lat: 36.3585, lng: 43.1519 },
         bibleReferences: ['2 Kings 18:13-19:37', 'Isaiah 36-37'],
-        significance: 'Confirms the siege of Jerusalem and that Hezekiah was "shut up like a bird in a cage" but notably does NOT claim the city was conquered, matching the Bible\'s account of divine deliverance.'
+        significance: 'Confirms the siege of Jerusalem and that Hezekiah was "shut up like a bird in a cage" but notably does NOT claim the city was conquered, matching the Bible\'s account of divine deliverance.',
+        currentLocation: 'The British Museum, London (Taylor Prism); The Israel Museum, Jerusalem (Sennacherib Prism)'
     },
     {
         id: 'cyrus-cylinder',
@@ -1662,7 +1670,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Babylon',
         coordinates: { lat: 32.5422, lng: 44.4211 },
         bibleReferences: ['Ezra 1:1-4', '2 Chronicles 36:23'],
-        significance: 'Confirms the biblical policy of Cyrus regarding the return of exiles, a policy once thought to be fiction.'
+        significance: 'Confirms the biblical policy of Cyrus regarding the return of exiles, a policy once thought to be fiction.',
+        currentLocation: 'The British Museum, London'
     },
     {
         id: 'pool-of-siloam',
@@ -1673,7 +1682,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Jerusalem',
         coordinates: { lat: 31.7709, lng: 35.2350 },
         bibleReferences: ['John 9:7'],
-        significance: 'Until 2004, critics questioned John\'s accuracy. The discovery of the pool exactly where the Bible places it validates the Gospel of John.'
+        significance: 'Until 2004, critics questioned John\'s accuracy. The discovery of the pool exactly where the Bible places it validates the Gospel of John.',
+        currentLocation: 'In Situ (City of David, Jerusalem)'
     },
     {
         id: 'peters-house',
@@ -1684,7 +1694,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Capernaum',
         coordinates: { lat: 32.8811, lng: 35.5751 },
         bibleReferences: ['Mark 1:29', 'Luke 4:38'],
-        significance: 'Strong evidence for the home of Peter, which served as a base for Jesus\' ministry.'
+        significance: 'Strong evidence for the home of Peter, which served as a base for Jesus\' ministry.',
+        currentLocation: 'In Situ (Capernaum, Israel)'
     },
     {
         id: 'jericho-walls',
@@ -1695,7 +1706,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Jericho',
         coordinates: { lat: 31.8703, lng: 35.4429 },
         bibleReferences: ['Joshua 6:20'],
-        significance: 'The fallen walls forming a ramp matches Joshua 6:20 ("the wall fell down flat... the people went up"). The burn layer matches the city being burned.'
+        significance: 'The fallen walls forming a ramp matches Joshua 6:20 ("the wall fell down flat... the people went up"). The burn layer matches the city being burned.',
+        currentLocation: 'In Situ (Tel Jericho)'
     },
     {
         id: 'hittite-capital',
@@ -1706,7 +1718,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Boghazkoy, Turkey',
         coordinates: { lat: 40.0194, lng: 34.6153 },
         bibleReferences: ['Genesis 23:10', '2 Kings 7:6'],
-        significance: 'For centuries, critics claimed the Hittites were a biblical invention. This discovery proved the existence of this major empire mentioned often in Scripture.'
+        significance: 'For centuries, critics claimed the Hittites were a biblical invention. This discovery proved the existence of this major empire mentioned often in Scripture.',
+        currentLocation: 'In Situ (Boghazkoy, Turkey); Artifacts at Museum of Anatolian Civilizations, Ankara'
     },
     {
         id: 'black-obelisk',
@@ -1717,7 +1730,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Nimrud',
         coordinates: { lat: 36.0988, lng: 43.3283 },
         bibleReferences: ['2 Kings 9-10'],
-        significance: 'The only contemporary image of an Israelite king ever discovered.'
+        significance: 'The only contemporary image of an Israelite king ever discovered.',
+        currentLocation: 'The British Museum, London'
     },
     {
         id: 'temple-warning',
@@ -1728,7 +1742,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Jerusalem',
         coordinates: { lat: 31.7781, lng: 35.2360 },
         bibleReferences: ['Acts 21:28', 'Ephesians 2:14'],
-        significance: 'Illustrates the "dividing wall of hostility" mentioned in Ephesians and the charge against Paul in Acts.'
+        significance: 'Illustrates the "dividing wall of hostility" mentioned in Ephesians and the charge against Paul in Acts.',
+        currentLocation: 'Istanbul Archaeology Museums, Istanbul'
     },
     {
         id: 'mesha-stele',
@@ -1739,7 +1754,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Dibon (Modern Dhiban)',
         coordinates: { lat: 31.5009, lng: 35.7766 },
         bibleReferences: ['2 Kings 3:4-27'],
-        significance: 'Confirms the existence of King Omri, the revolt of Moab, and contains the earliest extra-biblical reference to the name of God (YHWH).'
+        significance: 'Confirms the existence of King Omri, the revolt of Moab, and contains the earliest extra-biblical reference to the name of God (YHWH).',
+        currentLocation: 'The Louvre, Paris'
     },
     {
         id: 'kurkh-monolith',
@@ -1750,7 +1766,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Kurkh, Turkey',
         coordinates: { lat: 37.8425, lng: 40.6738 },
         bibleReferences: ['1 Kings 20-22'],
-        significance: 'Establishes King Ahab as a major regional power, contradicting the minimalist view that Israel was a small, insignificant tribe.'
+        significance: 'Establishes King Ahab as a major regional power, contradicting the minimalist view that Israel was a small, insignificant tribe.',
+        currentLocation: 'The British Museum, London'
     },
     {
         id: 'jehoiachin-tablets',
@@ -1761,7 +1778,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Babylon',
         coordinates: { lat: 32.5422, lng: 44.4211 },
         bibleReferences: ['2 Kings 25:27-30', 'Jeremiah 52:31-34'],
-        significance: 'Directly confirms the biblical account that King Jehoiachin was treated kindly and given a daily allowance by the king of Babylon.'
+        significance: 'Directly confirms the biblical account that King Jehoiachin was treated kindly and given a daily allowance by the king of Babylon.',
+        currentLocation: 'Pergamon Museum, Berlin'
     },
     {
         id: 'lachish-reliefs',
@@ -1772,7 +1790,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Nineveh',
         coordinates: { lat: 36.3585, lng: 43.1519 },
         bibleReferences: ['2 Kings 18:13-17', '2 Chronicles 32:9'],
-        significance: 'Provides a "war correspondent\'s" visual record of the biblical siege, matching details like the battering rams and the captivity of the people.'
+        significance: 'Provides a "war correspondent\'s" visual record of the biblical siege, matching details like the battering rams and the captivity of the people.',
+        currentLocation: 'The British Museum, London'
     },
     {
         id: 'seal-of-baruch',
@@ -1783,7 +1802,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Jerusalem',
         coordinates: { lat: 31.7770, lng: 35.2340 },
         bibleReferences: ['Jeremiah 36:4'],
-        significance: 'Physical signature of Jeremiah\'s scribe, Baruch, proving he was a real historical figure holding the office described in the Bible.'
+        significance: 'Physical signature of Jeremiah\'s scribe, Baruch, proving he was a real historical figure holding the office described in the Bible.',
+        currentLocation: 'The Israel Museum, Jerusalem'
     },
     {
         id: 'seal-of-hezekiah',
@@ -1794,7 +1814,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Jerusalem (Ophel)',
         coordinates: { lat: 31.7750, lng: 35.2360 },
         bibleReferences: ['2 Kings 18-20', 'Isaiah 36-39'],
-        significance: 'The personal seal impression of one of Judah\'s greatest kings, found in a controlled excavation near the Temple Mount.'
+        significance: 'The personal seal impression of one of Judah\'s greatest kings, found in a controlled excavation near the Temple Mount.',
+        currentLocation: 'The Israel Museum, Jerusalem'
     },
     {
         id: 'broad-wall',
@@ -1805,7 +1826,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Jerusalem (Jewish Quarter)',
         coordinates: { lat: 31.7761, lng: 35.2312 },
         bibleReferences: ['Isaiah 22:10', 'Nehemiah 3:8'],
-        significance: 'Archaeological proof of Hezekiah\'s fortification of Jerusalem against the Assyrians, mentioned specifically by Isaiah.'
+        significance: 'Archaeological proof of Hezekiah\'s fortification of Jerusalem against the Assyrians, mentioned specifically by Isaiah.',
+        currentLocation: 'In Situ (Jewish Quarter, Jerusalem)'
     },
     {
         id: 'amarna-letters',
@@ -1816,7 +1838,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Amarna, Egypt',
         coordinates: { lat: 27.6464, lng: 30.9036 },
         bibleReferences: ['Joshua 10-12', 'Judges 1'],
-        significance: 'Describes the chaotic conditions in Canaan consistent with the Israelite conquest/incursion from the perspective of the Canaanites.'
+        significance: 'Describes the chaotic conditions in Canaan consistent with the Israelite conquest/incursion from the perspective of the Canaanites.',
+        currentLocation: 'The British Museum, London; The Louvre, Paris; Vorderasiatisches Museum, Berlin'
     },
     {
         id: 'mt-ebal-altar',
@@ -1827,7 +1850,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Mt. Ebal',
         coordinates: { lat: 32.2285, lng: 35.2755 },
         bibleReferences: ['Joshua 8:30-35', 'Deuteronomy 27:4-8'],
-        significance: 'Matches the biblical description of Joshua\'s altar. The presence of a "curse tablet" (defixio) found recently further supports early literacy and worship here.'
+        significance: 'Matches the biblical description of Joshua\'s altar. The presence of a "curse tablet" (defixio) found recently further supports early literacy and worship here.',
+        currentLocation: 'In Situ (Mt. Ebal)'
     },
     {
         id: 'gallio-inscription',
@@ -1838,7 +1862,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Delphi, Greece',
         coordinates: { lat: 38.4824, lng: 22.5010 },
         bibleReferences: ['Acts 18:12-17'],
-        significance: 'The Linchpin of Pauline Chronology. Because we know exactly when Gallio ruled, we can date Paul\'s time in Corinth and his epistles.'
+        significance: 'The Linchpin of Pauline Chronology. Because we know exactly when Gallio ruled, we can date Paul\'s time in Corinth and his epistles.',
+        currentLocation: 'Archaeological Museum of Delphi, Greece'
     },
     {
         id: 'erastus-inscription',
@@ -1849,7 +1874,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Corinth',
         coordinates: { lat: 37.9056, lng: 22.8790 },
         bibleReferences: ['Romans 16:23', '2 Timothy 4:20'],
-        significance: 'Identifies the high-ranking city official "Erastus" mentioned by Paul, showing that early Christians were not just from the lower classes.'
+        significance: 'Identifies the high-ranking city official "Erastus" mentioned by Paul, showing that early Christians were not just from the lower classes.',
+        currentLocation: 'In Situ (Corinth, Greece)'
     },
     {
         id: 'pool-of-bethesda',
@@ -1860,7 +1886,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Jerusalem (St. Anne)',
         coordinates: { lat: 31.7816, lng: 35.2356 },
         bibleReferences: ['John 5:2'],
-        significance: 'Confirmed the existence of the specific "five porticoes" mentioned by John, a detail once dismissed by critics as allegorical.'
+        significance: 'Confirmed the existence of the specific "five porticoes" mentioned by John, a detail once dismissed by critics as allegorical.',
+        currentLocation: 'In Situ (St. Anne\'s Church, Jerusalem)'
     },
     {
         id: 'synagogue-magdala',
@@ -1871,7 +1898,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Magdala',
         coordinates: { lat: 32.8573, lng: 35.5238 },
         bibleReferences: ['Matthew 4:23', 'Luke 8:2'],
-        significance: 'One of the oldest synagogues in Galilee, where Jesus almost certainly taught. The stone shows that Galileans were deeply connected to the Temple.'
+        significance: 'One of the oldest synagogues in Galilee, where Jesus almost certainly taught. The stone shows that Galileans were deeply connected to the Temple.',
+        currentLocation: 'In Situ (Magdala); Stone at Israel Antiquities Authority'
     },
     {
         id: 'nazareth-decree',
@@ -1882,7 +1910,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Nazareth (Origins)',
         coordinates: { lat: 32.7019, lng: 35.2971 },
         bibleReferences: ['Matthew 28:11-15'],
-        significance: 'Suggests that the Roman authorities were reacting to the rumors of Jesus\' resurrection and the "stolen body" theory circulating in the area.'
+        significance: 'Suggests that the Roman authorities were reacting to the rumors of Jesus\' resurrection and the "stolen body" theory circulating in the area.',
+        currentLocation: 'National Library of France (BnF), Paris'
     },
     {
         id: 'scythopolis',
@@ -1893,7 +1922,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Beit She\'an',
         coordinates: { lat: 32.5015, lng: 35.5020 },
         bibleReferences: ['Mark 7:31', 'Matthew 4:25'],
-        significance: 'Provides the visual context for the "Decapolis" region where Jesus ministered. The contrast between this pagan metropolis and humble Galilean villages is striking.'
+        significance: 'Provides the visual context for the "Decapolis" region where Jesus ministered. The contrast between this pagan metropolis and humble Galilean villages is striking.',
+        currentLocation: 'In Situ (Beit She\'an National Park)'
     },
     {
         id: 'large-stone-structure',
@@ -1904,7 +1934,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'City of David (Area G)',
         coordinates: { lat: 31.7738, lng: 35.2355 },
         bibleReferences: ['2 Samuel 5:11', '1 Chronicles 14:1'],
-        significance: 'Situated exactly where the Bible says David went "down" to the citadel, this structure dating to the 10th century is the strongest candidate for David\'s royal residence.'
+        significance: 'Situated exactly where the Bible says David went "down" to the citadel, this structure dating to the 10th century is the strongest candidate for David\'s royal residence.',
+        currentLocation: 'In Situ (City of David National Park)'
     },
     {
         id: 'stepped-stone-structure',
@@ -1915,7 +1946,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'City of David (Area G)',
         coordinates: { lat: 31.7737, lng: 35.2356 },
         bibleReferences: ['2 Samuel 5:9'],
-        significance: 'Likely the "Millo" (filling) mentioned in Scripture that David built/repaired. It is one of the largest Iron Age structures in Israel.'
+        significance: 'Likely the "Millo" (filling) mentioned in Scripture that David built/repaired. It is one of the largest Iron Age structures in Israel.',
+        currentLocation: 'In Situ (City of David National Park)'
     },
     {
         id: 'bulla-gemaryahu',
@@ -1926,7 +1958,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'City of David (Area G)',
         coordinates: { lat: 31.7736, lng: 35.2355 },
         bibleReferences: ['Jeremiah 36:10'],
-        significance: 'Identifies the exact scribe mentioned in Jeremiah who urged the king not to burn the scroll. Found in a layer of ash from the Babylonian destruction (586 BC).'
+        significance: 'Identifies the exact scribe mentioned in Jeremiah who urged the king not to burn the scroll. Found in a layer of ash from the Babylonian destruction (586 BC).',
+        currentLocation: 'The Israel Museum, Jerusalem'
     },
     {
         id: 'bulla-yehucal',
@@ -1937,7 +1970,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'City of David',
         coordinates: { lat: 31.7738, lng: 35.2355 },
         bibleReferences: ['Jeremiah 37:3', 'Jeremiah 38:1'],
-        significance: 'Confirms the existence of the royal official sent by King Zedekiah to ask Jeremiah for prayer, found in the very palace ruins where he would have served.'
+        significance: 'Confirms the existence of the royal official sent by King Zedekiah to ask Jeremiah for prayer, found in the very palace ruins where he would have served.',
+        currentLocation: 'The Israel Museum, Jerusalem'
     },
     {
         id: 'bulla-gedaliah',
@@ -1948,7 +1982,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'City of David',
         coordinates: { lat: 31.7739, lng: 35.2355 },
         bibleReferences: ['Jeremiah 38:1'],
-        significance: 'Confirms another of Jeremiah\'s accusers. Finding two specific officials mentioned in the same verse (Jer 38:1) in the same excavation area is statistically astounding.'
+        significance: 'Confirms another of Jeremiah\'s accusers. Finding two specific officials mentioned in the same verse (Jer 38:1) in the same excavation area is statistically astounding.',
+        currentLocation: 'The Israel Museum, Jerusalem'
     },
     {
         id: 'pilgrimage-road',
@@ -1959,7 +1994,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'City of David',
         coordinates: { lat: 31.7715, lng: 35.2354 },
         bibleReferences: ['Psalm 122:4', 'John 7:14'],
-        significance: 'The actual stones Jesus and his disciples would have walked on to ascend to the Temple. Coins found underneath date its construction to Pontius Pilate.'
+        significance: 'The actual stones Jesus and his disciples would have walked on to ascend to the Temple. Coins found underneath date its construction to Pontius Pilate.',
+        currentLocation: 'In Situ (City of David National Park)'
     },
     // --- Patriarchs & Egypt ---
     {
@@ -1971,7 +2007,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Beni Hasan, Egypt',
         coordinates: { lat: 27.9333, lng: 30.8333 },
         bibleReferences: ['Genesis 37:3', 'Genesis 46:6'],
-        significance: 'Provides a vivid contemporary visual of what the Patriarchs (like Jacob\'s family) looked like entering Egypt, including the "coat of many colors" style.'
+        significance: 'Provides a vivid contemporary visual of what the Patriarchs (like Jacob\'s family) looked like entering Egypt, including the "coat of many colors" style.',
+        currentLocation: 'In Situ (Tomb of Khnumhotep II, Beni Hasan)'
     },
     {
         id: 'brooklyn-papyrus',
@@ -1982,7 +2019,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Thebes, Egypt',
         coordinates: { lat: 25.7000, lng: 32.6000 },
         bibleReferences: ['Exodus 1:11-14', 'Exodus 1:15'],
-        significance: 'Confirms the presence of a large Semitic slave population in Egypt during the era preceding the Exodus, including the specific mid-wife name Shiphrah.'
+        significance: 'Confirms the presence of a large Semitic slave population in Egypt during the era preceding the Exodus, including the specific mid-wife name Shiphrah.',
+        currentLocation: 'Brooklyn Museum, New York'
     },
     {
         id: 'soleb-hieroglyph',
@@ -1993,7 +2031,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Soleb, Sudan',
         coordinates: { lat: 20.4333, lng: 30.3333 },
         bibleReferences: ['Exodus 3:14', 'Exodus 5:2'],
-        significance: 'The earliest known historical mention of the name of God (YHWH) by outsiders, proving the Israelites worshiping YHWH were a known entity before the monarchy.'
+        significance: 'The earliest known historical mention of the name of God (YHWH) by outsiders, proving the Israelites worshiping YHWH were a known entity before the monarchy.',
+        currentLocation: 'In Situ (Temple of Amun-Ra, Soleb, Sudan)'
     },
     {
         id: 'merneptah-stele',
@@ -2004,7 +2043,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Thebes, Egypt',
         coordinates: { lat: 25.7200, lng: 32.6100 },
         bibleReferences: ['Joshua 11:23', 'Judges 1'],
-        significance: 'The absolute earliest concrete mention of "Israel" as a people group in the land of Canaan found in archaeology, destroying the theory that Israel emerged much later.'
+        significance: 'The absolute earliest concrete mention of "Israel" as a people group in the land of Canaan found in archaeology, destroying the theory that Israel emerged much later.',
+        currentLocation: 'The Egyptian Museum, Cairo'
     },
     {
         id: 'nuzi-tablets',
@@ -2015,7 +2055,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Nuzi (Iraq)',
         coordinates: { lat: 35.3000, lng: 44.2500 },
         bibleReferences: ['Genesis 15:2', 'Genesis 25:31', 'Genesis 31:19'],
-        significance: 'Validates the precise, peculiar cultural customs described in the Patriarchal narratives (e.g., Rachel stealing idols) that were unknown in later eras.'
+        significance: 'Validates the precise, peculiar cultural customs described in the Patriarchal narratives (e.g., Rachel stealing idols) that were unknown in later eras.',
+        currentLocation: 'Iraq Museum, Baghdad; Harvard Semitic Museum, Cambridge'
     },
     // --- Judges & United Monarchy ---
     {
@@ -2027,7 +2068,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Elah Valley',
         coordinates: { lat: 31.6961, lng: 34.9547 },
         bibleReferences: ['1 Samuel 17:52', '1 Chronicles 4:31'],
-        significance: 'Proves widespread literacy and a centralized administration in Judah during David\'s reign, countering claims that David was a mere tribal chieftain.'
+        significance: 'Proves widespread literacy and a centralized administration in Judah during David\'s reign, countering claims that David was a mere tribal chieftain.',
+        currentLocation: 'The Israel Museum, Jerusalem'
     },
     {
         id: 'gath-ostracon',
@@ -2038,7 +2080,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Tell es-Safi (Gath)',
         coordinates: { lat: 31.7000, lng: 34.8500 },
         bibleReferences: ['1 Samuel 17:4'],
-        significance: 'While not Goliath\'s name tag, it proves that names like Goliath were authentic to that specific time and place (Iron Age Philistia).'
+        significance: 'While not Goliath\'s name tag, it proves that names like Goliath were authentic to that specific time and place (Iron Age Philistia).',
+        currentLocation: 'The Israel Museum, Jerusalem'
     },
     {
         id: 'gezer-calendar',
@@ -2049,7 +2092,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Tel Gezer',
         coordinates: { lat: 31.8617, lng: 34.9192 },
         bibleReferences: ['Amos 5:11', 'Isaiah 28:24'],
-        significance: 'Evidence of literacy and confirms the agricultural cycle described in the Bible during Solomon\'s era.'
+        significance: 'Evidence of literacy and confirms the agricultural cycle described in the Bible during Solomon\'s era.',
+        currentLocation: 'Istanbul Archaeology Museums, Istanbul'
     },
     {
         id: 'tel-arad-temple',
@@ -2060,7 +2104,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Tel Arad',
         coordinates: { lat: 31.2808, lng: 35.1250 },
         bibleReferences: ['2 Kings 23:8', '2 Chronicles 34:3-7'],
-        significance: 'Shows that "high places" and alternative temples existed in Judah exactly as the kings were often condemned for allowing, until Josiah buried it.'
+        significance: 'Shows that "high places" and alternative temples existed in Judah exactly as the kings were often condemned for allowing, until Josiah buried it.',
+        currentLocation: 'The Israel Museum, Jerusalem'
     },
     {
         id: 'ziggurat-ur',
@@ -2071,7 +2116,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Ur (Iraq)',
         coordinates: { lat: 30.9630, lng: 46.1030 },
         bibleReferences: ['Genesis 11:4'],
-        significance: 'Provides the architectural context for the Tower of Babel. These "towers reaching to heavens" were real Mesopotamian religious structures.'
+        significance: 'Provides the architectural context for the Tower of Babel. These "towers reaching to heavens" were real Mesopotamian religious structures.',
+        currentLocation: 'In Situ (Dhi Qar Province, Iraq)'
     },
     // --- Divided Kingdom ---
     {
@@ -2083,7 +2129,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'City of David',
         coordinates: { lat: 31.7720, lng: 35.2350 },
         bibleReferences: ['2 Kings 20:20'],
-        significance: 'Primary source confirmation of the engineering feat described in Kings and Chronicles. One of the most important Hebrew inscriptions ever found.'
+        significance: 'Primary source confirmation of the engineering feat described in Kings and Chronicles. One of the most important Hebrew inscriptions ever found.',
+        currentLocation: 'Istanbul Archaeology Museums, Istanbul'
     },
     {
         id: 'samaria-ostraca',
@@ -2094,7 +2141,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Samaria (Sebaste)',
         coordinates: { lat: 32.2770, lng: 35.1900 },
         bibleReferences: ['Joshua 17:2', 'Numbers 26:30'],
-        significance: 'Records clan names (like Abiezer, Helek, Shemida) that exactly match the clans of Manasseh listed in Joshua and Numbers, showing they still lived there centuries later.'
+        significance: 'Records clan names (like Abiezer, Helek, Shemida) that exactly match the clans of Manasseh listed in Joshua and Numbers, showing they still lived there centuries later.',
+        currentLocation: 'Istanbul Archaeology Museums, Istanbul; The Israel Museum, Jerusalem'
     },
     {
         id: 'samaria-ivories',
@@ -2105,7 +2153,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Samaria',
         coordinates: { lat: 32.2772, lng: 35.1905 },
         bibleReferences: ['Amos 6:4', '1 Kings 22:39'],
-        significance: 'Direct physical evidence of the "beds of ivory" and "ivory house" that the prophet Amos condemned for their decadence.'
+        significance: 'Direct physical evidence of the "beds of ivory" and "ivory house" that the prophet Amos condemned for their decadence.',
+        currentLocation: 'The Israel Museum, Jerusalem; Rockefeller Museum, Jerusalem'
     },
     {
         id: 'seal-shema',
@@ -2116,7 +2165,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Megiddo',
         coordinates: { lat: 32.5850, lng: 35.1850 },
         bibleReferences: ['2 Kings 14:23'],
-        significance: 'Reference to King Jeroboam II, testifying to the wealth and royal administration of the Northern Kingdom at its peak.'
+        significance: 'Reference to King Jeroboam II, testifying to the wealth and royal administration of the Northern Kingdom at its peak.',
+        currentLocation: 'Lost (Bronze Cast at Rockefeller Museum)'
     },
     {
         id: 'tirzah-excavation',
@@ -2127,7 +2177,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Tirzah',
         coordinates: { lat: 32.2880, lng: 35.3380 },
         bibleReferences: ['1 Kings 16:23-24', 'Song of Solomon 6:4'],
-        significance: 'Confirms the biblical history of the capital moving from Tirzah to Samaria under King Omri.'
+        significance: 'Confirms the biblical history of the capital moving from Tirzah to Samaria under King Omri.',
+        currentLocation: 'In Situ (Tell el-Farah North)'
     },
     // --- Exile & Prophecy ---
     {
@@ -2139,7 +2190,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Babylon',
         coordinates: { lat: 32.5422, lng: 44.4211 },
         bibleReferences: ['Daniel 5:16', 'Daniel 5:29'],
-        significance: 'Explains why Belshazzar could only offer Daniel the "third" place in the kingdom (he himself was second), a detail critics mocked until this discovery.'
+        significance: 'Explains why Belshazzar could only offer Daniel the "third" place in the kingdom (he himself was second), a detail critics mocked until this discovery.',
+        currentLocation: 'The British Museum, London'
     },
     {
         id: 'ishtar-gate',
@@ -2150,7 +2202,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Babylon (Rebuilt split)',
         coordinates: { lat: 32.5430, lng: 44.4220 },
         bibleReferences: ['Daniel 4:30'],
-        significance: 'The massive glory of Babylon that Daniel lived in. The bricks themselves are stamped "Nebuchadnezzar, King of Babylon", confirming his building projects.'
+        significance: 'The massive glory of Babylon that Daniel lived in. The bricks themselves are stamped "Nebuchadnezzar, King of Babylon", confirming his building projects.',
+        currentLocation: 'Pergamon Museum, Berlin'
     },
     {
         id: 'lachish-letters',
@@ -2161,7 +2214,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Lachish',
         coordinates: { lat: 31.5640, lng: 34.8460 },
         bibleReferences: ['Jeremiah 34:7'],
-        significance: 'A desperate real-time report matching Jeremiah 34:7, which names Lachish and Azekah as the last two cities standing against Babylon.'
+        significance: 'A desperate real-time report matching Jeremiah 34:7, which names Lachish and Azekah as the last two cities standing against Babylon.',
+        currentLocation: 'The British Museum, London; The Israel Museum, Jerusalem'
     },
     // --- New Testament ---
     {
@@ -2173,7 +2227,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Thessalonica',
         coordinates: { lat: 40.6401, lng: 22.9444 },
         bibleReferences: ['Acts 17:6'],
-        significance: 'Critics once claimed Luke was wrong to use this obscure title. Archaeology proved it was the *exact* correct legal title for that specific city.'
+        significance: 'Critics once claimed Luke was wrong to use this obscure title. Archaeology proved it was the *exact* correct legal title for that specific city.',
+        currentLocation: 'The British Museum, London'
     },
     {
         id: 'sergius-paulus',
@@ -2184,7 +2239,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Cyprus',
         coordinates: { lat: 35.0400, lng: 32.5500 },
         bibleReferences: ['Acts 13:7'],
-        significance: 'Confirms the existence and correct title of the Roman Proconsul who converted to Christianity under Paul\'s ministry.'
+        significance: 'Confirms the existence and correct title of the Roman Proconsul who converted to Christianity under Paul\'s ministry.',
+        currentLocation: 'Cyprus Museum, Nicosia'
     },
     {
         id: 'crucified-man',
@@ -2195,7 +2251,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Givat HaMivtar, Jerusalem',
         coordinates: { lat: 31.8000, lng: 35.2200 },
         bibleReferences: ['John 19:18', 'Luke 24:39'],
-        significance: 'The only physical skeletal evidence of Roman crucifixion ever found in Israel. It confirms that nails were indeed used (not just ropes) and driven through the heel/feet.'
+        significance: 'The only physical skeletal evidence of Roman crucifixion ever found in Israel. It confirms that nails were indeed used (not just ropes) and driven through the heel/feet.',
+        currentLocation: 'The Israel Museum, Jerusalem'
     },
     {
         id: 'temple-artemis',
@@ -2206,7 +2263,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Ephesus',
         coordinates: { lat: 37.9497, lng: 27.3639 },
         bibleReferences: ['Acts 19:23-41'],
-        significance: 'The context for the riot in Acts. Inscriptions found there even use the term "Neokoros" (Guardian of the Temple), exactly as the city clerk calls Ephesus in Acts 19:35.'
+        significance: 'The context for the riot in Acts. Inscriptions found there even use the term "Neokoros" (Guardian of the Temple), exactly as the city clerk calls Ephesus in Acts 19:35.',
+        currentLocation: 'In Situ (Ephesus); Artifacts at British Museum, London'
     },
     {
         id: 'jacobs-well',
@@ -2217,7 +2275,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Nablus (Sychar)',
         coordinates: { lat: 32.2096, lng: 35.2696 },
         bibleReferences: ['John 4:6', 'Genesis 33:19'],
-        significance: 'One of the few sites where we can be almost 100% sure Jesus sat. It is deep (over 100ft) just as the Samaritan woman said ("the well is deep").'
+        significance: 'One of the few sites where we can be almost 100% sure Jesus sat. It is deep (over 100ft) just as the Samaritan woman said ("the well is deep").',
+        currentLocation: 'In Situ (Greek Orthodox Church, Nablus)'
     },
     {
         id: 'robinsons-arch',
@@ -2228,7 +2287,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Jerusalem (Western Wall)',
         coordinates: { lat: 31.7760, lng: 35.2345 },
         bibleReferences: ['Matthew 24:1'],
-        significance: 'Part of the massive Herod temple complex that the disciples marveled at. Stones from its destruction lie in a heap on the 1st-century street below today.'
+        significance: 'Part of the massive Herod temple complex that the disciples marveled at. Stones from its destruction lie in a heap on the 1st-century street below today.',
+        currentLocation: 'In Situ (Jerusalem Archaeological Park)'
     },
     {
         id: 'mamertine-prison',
@@ -2239,7 +2299,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Rome',
         coordinates: { lat: 41.8936, lng: 12.4848 },
         bibleReferences: ['2 Timothy 4:6-21'],
-        significance: 'The likely setting for Paul\'s final letter (2 Timothy), describing being "poured out like a drink offering" in a cold, dark place.'
+        significance: 'The likely setting for Paul\'s final letter (2 Timothy), describing being "poured out like a drink offering" in a cold, dark place.',
+        currentLocation: 'In Situ (San Pietro in Carcere, Rome)'
     },
     {
         id: 'areopagus-mars-hill',
@@ -2250,7 +2311,8 @@ export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
         location: 'Athens',
         coordinates: { lat: 37.9722, lng: 23.7247 },
         bibleReferences: ['Acts 17:19-34'],
-        significance: 'The actual physical platform where Paul delivered his famous sermon about the "Unknown God" on the Areopagus.'
+        significance: 'The actual physical platform where Paul delivered his famous sermon about the "Unknown God" on the Areopagus.',
+        currentLocation: 'In Situ (Athens)'
     }
 ];
 

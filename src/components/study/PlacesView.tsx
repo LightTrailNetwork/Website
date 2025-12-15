@@ -7,6 +7,8 @@ import BibleLeafletMap from './BibleLeafletMap';
 export default function PlacesView() {
     const [activeId, setActiveId] = useState<string | null>(null);
 
+    const mapRef = React.useRef<HTMLDivElement>(null);
+
     const handleSelect = (id: string, shouldScroll = true) => {
         setActiveId(id);
         if (shouldScroll) {
@@ -14,6 +16,14 @@ export default function PlacesView() {
             if (el) {
                 el.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
+        }
+    };
+
+    const handleItemClick = (id: string) => {
+        setActiveId(id);
+        // On mobile, scroll back up to map
+        if (window.innerWidth < 1024 && mapRef.current) {
+            mapRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     };
 
@@ -36,7 +46,7 @@ export default function PlacesView() {
 
             <div className="flex flex-col lg:flex-row gap-8 items-start">
                 {/* Map Section - Sticky on Desktop */}
-                <div className="w-full lg:w-1/2 lg:sticky lg:top-24 z-10">
+                <div ref={mapRef} className="w-full lg:w-1/2 lg:sticky lg:top-24 z-10 scroll-mt-24">
                     <div className="bg-card rounded-xl shadow-lg overflow-hidden border border-border">
                         <BibleLeafletMap onSelectLocation={handleSelect} activeLocationId={activeId} />
                     </div>
@@ -55,7 +65,7 @@ export default function PlacesView() {
                                     : 'border-border shadow-sm hover:shadow-md hover:border-blue-500/30'
                                 }
                             `}
-                            onClick={() => setActiveId(place.id)}
+                            onClick={() => handleItemClick(place.id)}
                         >
                             <div className="flex items-center gap-3 mb-4">
                                 <div className={`p-3 rounded-full ${activeId === place.id ? 'bg-blue-500 text-white' : 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400'} transition-colors`}>

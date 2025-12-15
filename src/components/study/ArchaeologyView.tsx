@@ -15,6 +15,8 @@ export default function ArchaeologyView() {
         label: item.title
     }));
 
+    const mapRef = React.useRef<HTMLDivElement>(null);
+
     const handleSelect = (id: string, shouldScroll = true) => {
         setActiveId(id);
         if (shouldScroll) {
@@ -22,6 +24,14 @@ export default function ArchaeologyView() {
             if (el) {
                 el.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
+        }
+    };
+
+    const handleItemClick = (id: string) => {
+        setActiveId(id);
+        // On mobile, scroll back up to map
+        if (window.innerWidth < 1024 && mapRef.current) {
+            mapRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     };
 
@@ -44,7 +54,7 @@ export default function ArchaeologyView() {
 
             <div className="flex flex-col lg:flex-row gap-8 items-start">
                 {/* Map Section - Sticky on Desktop */}
-                <div className="w-full lg:w-1/2 lg:sticky lg:top-24 z-10">
+                <div ref={mapRef} className="w-full lg:w-1/2 lg:sticky lg:top-24 z-10 scroll-mt-24">
                     <div className="bg-card rounded-xl shadow-lg overflow-hidden border border-border">
                         <BibleLeafletMap
                             onSelectLocation={handleSelect}
@@ -71,7 +81,7 @@ export default function ArchaeologyView() {
                                     : 'border-border shadow-sm hover:shadow-md hover:border-amber-500/30'
                                 }
                             `}
-                            onClick={() => setActiveId(item.id)}
+                            onClick={() => handleItemClick(item.id)}
                         >
                             {/* Card Header with Location Image Placeholder or just stylized header */}
                             <div className="p-6 space-y-4">
@@ -103,6 +113,12 @@ export default function ArchaeologyView() {
                                         <ScrollText className="w-3 h-3 text-amber-500" />
                                         <span>Discovered: <strong className="text-foreground">{item.dateDiscovered}</strong></span>
                                     </div>
+                                    {item.currentLocation && (
+                                        <div className="flex items-center gap-2 sm:col-span-2 border-t border-border/50 pt-2 mt-1">
+                                            <span className="text-[10px] uppercase font-bold text-amber-600/70 tracking-wider">Housed At:</span>
+                                            <span className="font-medium text-foreground">{item.currentLocation}</span>
+                                        </div>
+                                    )}
                                 </div>
 
                                 <div className="pt-4 border-t border-border/50">
