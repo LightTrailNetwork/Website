@@ -14,6 +14,7 @@ import ErasView from '../components/study/ErasView';
 import ArchaeologyView from '../components/study/ArchaeologyView';
 import FeastsView from '../components/study/FeastsView';
 import MiraclesView from '../components/study/MiraclesView';
+import ApostlesView from '../components/study/ApostlesView';
 import GenericStudyView from '../components/study/GenericStudyView';
 import DivineNamesView from '../components/study/DivineNamesView';
 
@@ -54,6 +55,10 @@ export default function StudyToolPage() {
                 return <ProphecyView />;
             case 'miracles':
                 return <MiraclesView />;
+            case 'apostles':
+                return <ApostlesView />;
+            case 'people':
+                return <PeopleView />;
             case 'names':
                 return <DivineNamesView />;
             default:

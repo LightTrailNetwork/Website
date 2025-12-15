@@ -2915,6 +2915,247 @@ export const MIRACLES: Miracle[] = [
     { id: 'lazarus', title: 'Raising of Lazarus', category: 'Resurrection', location: 'Bethany', scripture: 'John 11:1-44', description: 'Calling Lazarus from the tomb after four days, prefiguring His own resurrection.' }
 ];
 
+export interface Apostle {
+    id: string;
+    name: string;
+    ako: string[]; // Also Known As
+    meaning: string;
+    occupation: string;
+    symbol: string;
+    scripture: string; // Deprecated, use keyVerses
+    keyVerses: { ref: string; label: string }[];
+    profile: string;
+    martyrdom: string;
+}
+
+export const THE_APOSTLES: Apostle[] = [
+    {
+        id: 'peter',
+        name: 'Simon Peter',
+        ako: ['Cephas', 'Simon son of Jonah'],
+        meaning: 'Rock (Petros)',
+        occupation: 'Fisherman',
+        symbol: 'Inverted Cross / Keys',
+        scripture: 'Matthew 16:18',
+        keyVerses: [
+            { ref: 'Matthew 4:18-20', label: 'Call' },
+            { ref: 'Matthew 16:13-19', label: 'Confession' },
+            { ref: 'Luke 22:31-34', label: 'Denial Predicted' },
+            { ref: 'John 21:15-19', label: 'Restoration' },
+            { ref: 'Acts 2:14-41', label: 'Pentecost Sermon' },
+            { ref: '1 Peter 1:1', label: 'Epistle' }
+        ],
+        profile: 'The impulsive leader of the Twelve. First to confess Jesus as Messiah, but also denied Him three times. Restored by Jesus to "feed my sheep" and became the pillar of the Jerusalem church.',
+        martyrdom: 'Crucified upside down in Rome under Nero (c. 64-68 AD) because he felt unworthy to die in the same manner as his Lord.'
+    },
+    {
+        id: 'andrew',
+        name: 'Andrew',
+        ako: ['Protocletus (First-Called)'],
+        meaning: 'Manly',
+        occupation: 'Fisherman',
+        symbol: 'X-shaped Cross (Saltire)',
+        scripture: 'John 1:40-42',
+        keyVerses: [
+            { ref: 'John 1:35-42', label: 'First Call' },
+            { ref: 'John 6:8-9', label: 'loaves and fishes' },
+            { ref: 'John 12:20-22', label: 'Bringing Greeks' },
+            { ref: 'Mark 13:3', label: 'Olivet Question' }
+        ],
+        profile: 'Peter\'s brother and a former disciple of John the Baptist. Known for bringing others to Jesus (Peter, the lad with loaves, the Greeks).',
+        martyrdom: 'Crucified on an X-shaped cross in Patras, Greece. He reportedly preached from the cross for two days before dying.'
+    },
+    {
+        id: 'james-zebedee',
+        name: 'James (Son of Zebedee)',
+        ako: ['Boanerges (Son of Thunder)', 'James the Great'],
+        meaning: 'Supplanter',
+        occupation: 'Fisherman',
+        symbol: 'Scallop Shell / Sword',
+        scripture: 'Mark 3:17',
+        keyVerses: [
+            { ref: 'Matthew 4:21-22', label: 'Call' },
+            { ref: 'Mark 3:17', label: 'Son of Thunder' },
+            { ref: 'Matthew 17:1-8', label: 'Transfiguration' },
+            { ref: 'Acts 12:1-2', label: 'Martyrdom' }
+        ],
+        profile: 'Part of the inner circle (with Peter and John). Known for his fiery zeal (wanting to call down fire on Samaritans). The first apostle to be martyred.',
+        martyrdom: 'Beheaded by Herod Agrippa I in Jerusalem (44 AD). The only apostolic martyrdom recorded in Scripture.'
+    },
+    {
+        id: 'john',
+        name: 'John',
+        ako: ['The Beloved Disciple', 'Boanerges', 'The Theologian'],
+        meaning: 'God is Gracious',
+        occupation: 'Fisherman',
+        symbol: 'Eagle / Chalice with Snake',
+        scripture: 'John 13:23',
+        keyVerses: [
+            { ref: 'John 19:26-27', label: 'At the Cross' },
+            { ref: 'John 20:1-10', label: 'Empty Tomb' },
+            { ref: 'Acts 4:13', label: 'Boldness' },
+            { ref: 'Revelation 1:9', label: 'Patmos' }
+        ],
+        profile: 'The author of the Fourth Gospel, three epistles, and Revelation. Known for deep theology ("The Word was God") and emphasis on love. The only apostle thought to have died of natural causes.',
+        martyrdom: 'Exiled to Patmos under Domitian. Tradition says he survived being boiled in oil in Rome before his exile.'
+    },
+    {
+        id: 'philip',
+        name: 'Philip',
+        ako: [],
+        meaning: 'Lover of Horses',
+        occupation: 'Fisherman (likely)',
+        symbol: 'Basket / Cross with Spears',
+        scripture: 'John 1:43',
+        keyVerses: [
+            { ref: 'John 1:43-46', label: 'Call & Nathanael' },
+            { ref: 'John 6:5-7', label: 'Feeding 5000' },
+            { ref: 'John 14:8-9', label: 'Show us the Father' }
+        ],
+        profile: 'From Bethsaida (like Peter and Andrew). Practical and analytical ("Two hundred denarii worth of bread is not enough"). Led Nathanael to Jesus.',
+        martyrdom: 'Crucified (and/or stoned) in Hierapolis, Phrygia (modern Turkey).'
+    },
+    {
+        id: 'bartholomew',
+        name: 'Bartholomew',
+        ako: ['Nathanael'],
+        meaning: 'Son of Tolmai',
+        occupation: 'Unknown (Scholar?)',
+        symbol: 'Flaying Knives',
+        scripture: 'John 1:45-51',
+        keyVerses: [
+            { ref: 'John 1:45-51', label: 'Under the Fig Tree' },
+            { ref: 'John 21:2', label: 'Fishing' },
+            { ref: 'Acts 1:13', label: 'Upper Room' }
+        ],
+        profile: 'Praised by Jesus as "an Israelite in whom there is no deceit." Initially skeptical ("Can anything good come out of Nazareth?").',
+        martyrdom: 'Flayed alive and then beheaded in Armenia (or India) for converting the king\'s brother.'
+    },
+    {
+        id: 'thomas',
+        name: 'Thomas',
+        ako: ['Didymus (The Twin)'],
+        meaning: 'Twin',
+        occupation: 'Builder/Fisherman?',
+        symbol: 'Spear / Carpenter\'s Square',
+        scripture: 'John 20:24-29',
+        keyVerses: [
+            { ref: 'John 11:16', label: 'Let us die with Him' },
+            { ref: 'John 14:5', label: 'We do not know the way' },
+            { ref: 'John 20:24-29', label: 'My Lord and my God' }
+        ],
+        profile: 'Often called "Doubting Thomas," but demonstrated great courage ("Let us also go, that we may die with him") and gave the highest confession of Christ\'s divinity.',
+        martyrdom: 'Speared to death in India (Mylapore, near Chennai) where he established ancient churches.'
+    },
+    {
+        id: 'matthew',
+        name: 'Matthew',
+        ako: ['Levi'],
+        meaning: 'Gift of God',
+        occupation: 'Tax Collector',
+        symbol: 'Angel / Money Bags',
+        scripture: 'Matthew 9:9',
+        keyVerses: [
+            { ref: 'Matthew 9:9-13', label: 'Call' },
+            { ref: 'Luke 5:29', label: 'Great Banquet' },
+            { ref: 'Acts 1:13', label: 'Apostle' }
+        ],
+        profile: 'A despised tax collector who left his booth immediately to follow Jesus. Wrote the Gospel of Matthew, emphasizing Jesus as the Jewish Messiah and fulfillment of prophecy.',
+        martyrdom: 'Martyred in Ethiopia (or Persia) by sword or spear.'
+    },
+    {
+        id: 'james-alphaeus',
+        name: 'James (Son of Alphaeus)',
+        ako: ['James the Less', 'James the Younger'],
+        meaning: 'Supplanter',
+        occupation: 'Unknown',
+        symbol: 'Saw / Fuller\'s Club',
+        scripture: 'Mark 15:40',
+        keyVerses: [
+            { ref: 'Matthew 10:3', label: 'List of Twelve' },
+            { ref: 'Acts 1:13', label: 'Upper Room' }
+        ],
+        profile: 'Little is known of him scripturally ("the Less" may refer to age or stature). Often confused with James the brother of Jesus (who wrote the Epistle of James).',
+        martyrdom: 'Stoned and clubbed to death (traditionally in Jerusalem).'
+    },
+    {
+        id: 'thaddaeus',
+        name: 'Thaddaeus',
+        ako: ['Jude', 'Judas son of James', 'Lebbaeus'],
+        meaning: 'Heart / Courageous',
+        occupation: 'Unknown',
+        symbol: 'Club / Ship',
+        scripture: 'John 14:22',
+        keyVerses: [
+            { ref: 'John 14:22', label: 'Question at Supper' },
+            { ref: 'Jude 1:1', label: 'Epistle of Jude?' }
+        ],
+        profile: 'Asked Jesus why He would reveal Himself to the disciples and not the world. (Often associated with the author of Jude).',
+        martyrdom: 'Martyred in Beirut or Persia (with Simon the Zealot) by axe or club.'
+    },
+    {
+        id: 'simon',
+        name: 'Simon the Zealot',
+        ako: ['Simon the Cananaean'],
+        meaning: 'He has heard',
+        occupation: 'Revolutionary (Zealot)',
+        symbol: 'Saw',
+        scripture: 'Luke 6:15',
+        keyVerses: [
+            { ref: 'Matthew 10:4', label: 'List of Twelve' },
+            { ref: 'Acts 1:13', label: 'Upper Room' }
+        ],
+        profile: 'A former member of the radical Zealot party which advocated violent overthrow of Rome. The fact that he could serve alongside Matthew (a Roman collaborator) is a testament to the Gospel\'s unifying power.',
+        martyrdom: 'Sawn in half (traditionally in Persia).'
+    },
+    {
+        id: 'judas',
+        name: 'Judas Iscariot',
+        ako: ['The Betrayer'],
+        meaning: 'Man of Kerioth',
+        occupation: 'Treasurer',
+        symbol: 'Noose / 30 Pieces of Silver',
+        scripture: 'Matthew 26:14-16',
+        keyVerses: [
+            { ref: 'John 12:4-6', label: 'The Thief' },
+            { ref: 'Matthew 26:14-16', label: 'The Deal' },
+            { ref: 'Matthew 27:3-5', label: 'The End' }
+        ],
+        profile: 'The treasurer of the group who stole from the money bag. Betrayed Jesus for 30 pieces of silver. Committed suicide.',
+        martyrdom: 'Suicide (Hanged himself; Acts 1:18 describes his body bursting open).'
+    },
+    {
+        id: 'matthias',
+        name: 'Matthias',
+        ako: ['The Replacement'],
+        meaning: 'Gift of God',
+        occupation: 'Witness from the Baptism',
+        symbol: 'Book / Axe',
+        scripture: 'Acts 1:21-26',
+        keyVerses: [
+            { ref: 'Acts 1:21-26', label: 'Selected by Lot' }
+        ],
+        profile: 'Chosen by lot to replace Judas. Had been with Jesus from the baptism of John until the Ascension. (Some argue Paul was the true 12th, but Scripture recognizes Matthias).',
+        martyrdom: 'Stoned and beheaded in Jerusalem or Ethiopia.'
+    },
+    {
+        id: 'paul',
+        name: 'Paul (Saul)',
+        ako: ['Apostle to the Gentiles'],
+        meaning: 'Small (Paulus)',
+        occupation: 'Pharisee / Tentmaker',
+        symbol: 'Sword / Scroll',
+        scripture: 'Acts 9:1-19',
+        keyVerses: [
+            { ref: 'Acts 9:1-19', label: 'Conversion' },
+            { ref: 'Galatians 1:11-12', label: 'Revelation' },
+            { ref: '2 Timothy 4:6-8', label: 'Finish Line' }
+        ],
+        profile: 'Persecutor turned Apostle. Author of 13 NT epistles. Not one of the Twelve, but "one untimely born." The central figure of the Gentile mission.',
+        martyrdom: 'Beheaded in Rome under Nero (c. 64-67 AD).'
+    }
+];
+
 export const ERAS: BiblicalEra[] = [
     {
         id: 'creation',

@@ -6,7 +6,6 @@ import {
     Hourglass, ListTree, History, Library, ArrowRight, ShieldQuestion, Scale, Crown, Tent, Zap
 } from 'lucide-react';
 import VerseLink from '../components/study/VerseLink';
-// Removed Search import
 
 interface StudyTool {
     id: string;
@@ -21,7 +20,7 @@ interface StudyCategory {
     id: string;
     title: string;
     subtitle: string;
-    color: string; // Tailwind color class prefix e.g. "blue"
+    color: string;
     tools: StudyTool[];
 }
 
@@ -30,45 +29,61 @@ export default function BibleStudy() {
 
     const categories: StudyCategory[] = [
         {
-            id: 'topics',
-            title: 'Topics & Themes',
-            subtitle: 'The Objects of Scripture',
-            color: 'indigo',
-            tools: [
-                { id: 'divinity', title: 'Claims of Divinity', description: 'Is Jesus God? Implicit and explicit evidence from the Gospels.', icon: ShieldQuestion, path: '/bible/study/divinity', status: 'ready' },
-                { id: 'themes', title: 'Biblical Themes', description: 'Trace major concepts like Redemption, Covenant, and Grace.', icon: Lightbulb, path: '/bible/study/themes', status: 'ready' },
-                { id: 'people', title: 'People Profiles', description: 'Deep dives into key figures, their journeys, and significance.', icon: Users, path: '/bible/study/people', status: 'ready' },
-                { id: 'places', title: 'Places & Maps', description: 'Geographic context for the unfolding narrative.', icon: MapPin, path: '/bible/study/places', status: 'ready' },
-                { id: 'objects', title: 'Motifs & Symbols', description: 'Recurring images like Water, Fire, and the Lamb.', icon: BookOpen, path: '/bible/study/symbols', status: 'ready' },
-                { id: 'names', title: 'Divine Names', description: 'Hebrew names of God (YHWH, Elohim) and Greek titles of Christ.', icon: Crown, path: '/bible/study/names', status: 'ready' },
-                { id: 'prophecy', title: 'Messianic Prophecies', description: 'Witness the mathematical impossibility of Jesus fulfilling ancient Scripture.', icon: GitMerge, path: '/bible/study/prophecy', status: 'ready' },
-            ]
-        },
-        {
-            id: 'connections',
-            title: 'Connections',
-            subtitle: 'Prophecy & Patterns',
-            color: 'amber',
-            tools: [
-                { id: 'continuity', title: 'Biblical Continuity', description: 'Addressing alleged contradictions and discovering unity.', icon: Scale, path: '/bible/study/continuity', status: 'ready' },
-                { id: 'prophecy', title: 'Prophecy & Fulfillment', description: 'Connecting OT promises with NT realization.', icon: ArrowRightLeft, path: '/bible/study/prophecy', status: 'ready' },
-                { id: 'typology', title: 'Typology', description: 'Shadows of Christ in the Old Testament.', icon: GitMerge, path: '/bible/study/typology', status: 'ready' },
-                { id: 'harmony', title: 'Gospel Harmony', description: 'Parallel accounts of the life of Jesus.', icon: Combine, path: '/bible/study/harmony', status: 'ready' },
-                { id: 'patterns', title: 'Structure Patterns', description: 'Literary structures and repeated motifs.', icon: Repeat, path: '/bible/study/patterns', status: 'ready' },
-            ]
-        },
-        {
-            id: 'timeline',
-            title: 'Timeline & Context',
-            subtitle: 'History & Structure',
+            id: 'history',
+            title: 'History & Geography',
+            subtitle: 'Time & Place',
             color: 'emerald',
             tools: [
-                { id: 'chronology', title: 'Chronological Timeline', description: 'Events in the order they occurred.', icon: History, path: '/bible/study/timeline', status: 'ready' },
-                { id: 'structure', title: 'Book Outlines', description: 'Literary structure and chiasms of each book.', icon: ListTree, path: '/bible/study/outlines', status: 'ready' },
-                { id: 'miracles', title: 'The Miracles of Jesus', description: 'Explore the 37 recorded miracles across the Gospels.', icon: Zap, path: '/bible/study/miracles', status: 'ready' },
+                { id: 'timeline', title: 'Chronological Timeline', description: 'Events in the order they occurred.', icon: History, path: '/bible/study/timeline', status: 'ready' },
                 { id: 'eras', title: 'Biblical Eras', description: 'The grand epochs of redemptive history.', icon: Hourglass, path: '/bible/study/eras', status: 'ready' },
                 { id: 'archaeology', title: 'Archaeological Evidence', description: 'Physical proof confirming the biblical record.', icon: Pickaxe, path: '/bible/study/archaeology', status: 'ready' },
-                { id: 'feasts', title: 'Jewish Feasts', description: 'The 7 Levitical feasts and their prophetic fulfillment.', icon: Tent, path: '/bible/study/feasts', status: 'ready' },
+                { id: 'places', title: 'Places & Maps', description: 'Geographic context for the unfolding narrative.', icon: MapPin, path: '/bible/study/places', status: 'ready' },
+            ]
+        },
+        {
+            id: 'biography',
+            title: 'Biographies',
+            subtitle: 'People of the Word',
+            color: 'indigo',
+            tools: [
+                { id: 'apostles', title: 'The Twelve Apostles', description: 'Profiles of the Twelve + Matthias & Paul.', icon: Users, path: '/bible/study/apostles', status: 'ready' },
+                { id: 'people', title: 'People Profiles', description: 'Key figures from Adam to the Early Church.', icon: Users, path: '/bible/study/people', status: 'ready' },
+            ]
+        },
+        {
+            id: 'theology',
+            title: 'Theology & Themes',
+            subtitle: 'Doctrine & Symbols',
+            color: 'violet',
+            tools: [
+                { id: 'divinity', title: 'Claims of Divinity', description: 'Evidence of Jesus\' Godhood.', icon: ShieldQuestion, path: '/bible/study/divinity', status: 'ready' },
+                { id: 'names', title: 'Divine Names', description: 'Names of God and Christ.', icon: Crown, path: '/bible/study/names', status: 'ready' },
+                { id: 'themes', title: 'Biblical Themes', description: 'Major concepts like Redemption & Covenant.', icon: Lightbulb, path: '/bible/study/themes', status: 'ready' },
+                { id: 'symbols', title: 'Motifs & Symbols', description: 'Water, Fire, Blood, Oil, etc.', icon: BookOpen, path: '/bible/study/symbols', status: 'ready' },
+                { id: 'prophecy', title: 'Messianic Prophecies', description: 'OT Promises fulfilled in Christ.', icon: GitMerge, path: '/bible/study/prophecy', status: 'ready' },
+            ]
+        },
+        {
+            id: 'structure',
+            title: 'Literary Structure',
+            subtitle: 'Composition & Unity',
+            color: 'amber',
+            tools: [
+                { id: 'outlines', title: 'Book Outlines', description: 'Structure and chiasms of each book.', icon: ListTree, path: '/bible/study/outlines', status: 'ready' },
+                { id: 'patterns', title: 'Design Patterns', description: 'Literary structures and repeated motifs.', icon: Repeat, path: '/bible/study/patterns', status: 'ready' },
+                { id: 'harmony', title: 'Gospel Harmony', description: 'Parallel accounts of Jesus\' life.', icon: Combine, path: '/bible/study/harmony', status: 'ready' },
+                { id: 'continuity', title: 'Biblical Continuity', description: 'Addressing alleged contradictions.', icon: Scale, path: '/bible/study/continuity', status: 'ready' },
+                { id: 'typology', title: 'Typology', description: 'Shadows of Christ in the OT.', icon: GitMerge, path: '/bible/study/typology', status: 'ready' },
+            ]
+        },
+        {
+            id: 'culture',
+            title: 'Culture & Events',
+            subtitle: 'Context & Power',
+            color: 'rose',
+            tools: [
+                { id: 'feasts', title: 'Jewish Feasts', description: 'The 7 Levitical feasts and prophetic fulfillment.', icon: Tent, path: '/bible/study/feasts', status: 'ready' },
+                { id: 'miracles', title: 'The Miracles of Jesus', description: 'The 37 recorded miracles of Christ.', icon: Zap, path: '/bible/study/miracles', status: 'ready' },
             ]
         }
     ];
@@ -78,6 +93,8 @@ export default function BibleStudy() {
             case 'indigo': return 'from-indigo-500/10 to-blue-500/10 hover:from-indigo-500/20 hover:to-blue-500/20 border-indigo-200/50 dark:border-indigo-800/50';
             case 'amber': return 'from-amber-500/10 to-orange-500/10 hover:from-amber-500/20 hover:to-orange-500/20 border-amber-200/50 dark:border-amber-800/50';
             case 'emerald': return 'from-emerald-500/10 to-teal-500/10 hover:from-emerald-500/20 hover:to-teal-500/20 border-emerald-200/50 dark:border-emerald-800/50';
+            case 'violet': return 'from-violet-500/10 to-purple-500/10 hover:from-violet-500/20 hover:to-purple-500/20 border-violet-200/50 dark:border-violet-800/50';
+            case 'rose': return 'from-rose-500/10 to-pink-500/10 hover:from-rose-500/20 hover:to-pink-500/20 border-rose-200/50 dark:border-rose-800/50';
             default: return 'from-gray-500/10 to-slate-500/10';
         }
     };
@@ -87,6 +104,8 @@ export default function BibleStudy() {
             case 'indigo': return 'text-indigo-600 dark:text-indigo-400';
             case 'amber': return 'text-amber-600 dark:text-amber-400';
             case 'emerald': return 'text-emerald-600 dark:text-emerald-400';
+            case 'violet': return 'text-violet-600 dark:text-violet-400';
+            case 'rose': return 'text-rose-600 dark:text-rose-400';
             default: return 'text-primary';
         }
     };
