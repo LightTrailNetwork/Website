@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import {
     BookOpen, Users, MapPin, Lightbulb, Pickaxe,
     ArrowRightLeft, GitMerge, Combine, Repeat,
-    Hourglass, ListTree, History, Library, ArrowRight, ShieldQuestion, Scale
+    Hourglass, ListTree, History, Library, ArrowRight, ShieldQuestion, Scale, Crown
 } from 'lucide-react';
 import VerseLink from '../components/study/VerseLink';
 // Removed Search import
@@ -40,6 +40,7 @@ export default function BibleStudy() {
                 { id: 'people', title: 'People Profiles', description: 'Deep dives into key figures, their journeys, and significance.', icon: Users, path: '/bible/study/people', status: 'ready' },
                 { id: 'places', title: 'Places & Maps', description: 'Geographic context for the unfolding narrative.', icon: MapPin, path: '/bible/study/places', status: 'ready' },
                 { id: 'objects', title: 'Motifs & Symbols', description: 'Recurring images like Water, Fire, and the Lamb.', icon: BookOpen, path: '/bible/study/symbols', status: 'ready' },
+                { id: 'names', title: 'Divine Names', description: 'Hebrew names of God (YHWH, Elohim) and Greek titles of Christ.', icon: Crown, path: '/bible/study/names', status: 'ready' },
             ]
         },
         {

@@ -1561,6 +1561,213 @@ export const OUTLINES: BookOutline[] = [
 ];
 
 
+
+export interface DivineName {
+    id: string;
+    english: string;
+    original: string; // Hebrew or Greek script
+    transliteration: string;
+    language: 'Hebrew' | 'Greek' | 'Aramaic';
+    meaning: string;
+    significance: string;
+    references: string[];
+    category: 'Name of God' | 'Title of Christ' | 'Holy Spirit';
+}
+
+export const DIVINE_NAMES: DivineName[] = [
+    // --- Hebrew Names of God ---
+    {
+        id: 'elohim',
+        english: 'God',
+        original: 'אֱלֹהִים',
+        transliteration: 'Elohim',
+        language: 'Hebrew',
+        meaning: 'Strong One, Creator, Mighty',
+        significance: 'The first name of God in Scripture (Gen 1:1), emphasizing His transcendent power and sovereignty as Creator. The "im" ending is plural, hinting at the Trinity (plurality in unity).',
+        references: ['Genesis 1:1', 'Psalm 19:1'],
+        category: 'Name of God'
+    },
+    {
+        id: 'yhwh',
+        english: 'LORD',
+        original: 'יהוה',
+        transliteration: 'Yahweh (YHWH)',
+        language: 'Hebrew',
+        meaning: 'I AM WHO I AM',
+        significance: 'The personal, covenant name of God revealed to Moses. It speaks of His eternal self-existence and relationship with His people. Often rendered "LORD" in all caps.',
+        references: ['Exodus 3:14', 'Exodus 6:3'],
+        category: 'Name of God'
+    },
+    {
+        id: 'el-shaddai',
+        english: 'God Almighty',
+        original: 'אֵל שַׁדַּי',
+        transliteration: 'El Shaddai',
+        language: 'Hebrew',
+        meaning: 'God Almighty / All-Sufficient',
+        significance: 'The name by which God appeared to the Patriarchs (Abraham, Isaac, Jacob), emphasizing His power to fulfill promises against all natural odds (e.g., Isaac\'s birth).',
+        references: ['Genesis 17:1', 'Genesis 35:11'],
+        category: 'Name of God'
+    },
+    {
+        id: 'adonai',
+        english: 'Lord / Master',
+        original: 'אֲדֹנָי',
+        transliteration: 'Adonai',
+        language: 'Hebrew',
+        meaning: 'Lord, Master, Owner',
+        significance: 'Acknowledges God\'s authority and our position as His servants. Used reverently by Jews in place of pronouncing YHWH.',
+        references: ['Genesis 15:2', 'Psalm 8:1'],
+        category: 'Name of God'
+    },
+    {
+        id: 'jehovah-jireh',
+        english: 'The LORD Will Provide',
+        original: 'יְהוָה יִרְאֶה',
+        transliteration: 'Yahweh Yireh',
+        language: 'Hebrew',
+        meaning: 'The LORD Will Provide / See to it',
+        significance: 'Revealed when God provided the ram as a substitute for Isaac. Prophetically points to God providing the Lamb of God for our salvation.',
+        references: ['Genesis 22:14'],
+        category: 'Name of God'
+    },
+    {
+        id: 'jehovah-rapha',
+        english: 'The LORD Who Heals',
+        original: 'יְהוָה רֹפְאֶךָ',
+        transliteration: 'Yahweh Rophe',
+        language: 'Hebrew',
+        meaning: 'The LORD Who Heals',
+        significance: 'God reveals Himself as the physician of His people, healing both physical ailments and spiritual brokenness.',
+        references: ['Exodus 15:26'],
+        category: 'Name of God'
+    },
+    {
+        id: 'jehovah-nissi',
+        english: 'The LORD My Banner',
+        original: 'יְהוָה נִסִּי',
+        transliteration: 'Yahweh Nissi',
+        language: 'Hebrew',
+        meaning: 'The LORD My Banner',
+        significance: 'Given after the victory over Amalek. A "banner" was a rallying point in battle; God is our victory and focus.',
+        references: ['Exodus 17:15'],
+        category: 'Name of God'
+    },
+    {
+        id: 'jehovah-shalom',
+        english: 'The LORD Is Peace',
+        original: 'יְהוָה שָׁלוֹם',
+        transliteration: 'Yahweh Shalom',
+        language: 'Hebrew',
+        meaning: 'The LORD Is Peace / Wholeness',
+        significance: 'Revealed to Gideon when he was afraid he would die after seeing the Angel of the LORD. God is the source of true peace.',
+        references: ['Judges 6:24'],
+        category: 'Name of God'
+    },
+    {
+        id: 'jehovah-tsidkenu',
+        english: 'The LORD Our Righteousness',
+        original: 'יְהוָה צִדְקֵנוּ',
+        transliteration: 'Yahweh Tsidkenu',
+        language: 'Hebrew',
+        meaning: 'The LORD Our Righteousness',
+        significance: 'Prophetic name used by Jeremiah predicting the Messiah who would provide the righteousness we lack.',
+        references: ['Jeremiah 23:6'],
+        category: 'Name of God'
+    },
+
+    // --- Greek Titles of Christ ---
+    {
+        id: 'logos',
+        english: 'The Word',
+        original: 'Λόγος',
+        transliteration: 'Logos',
+        language: 'Greek',
+        meaning: 'Word, Reason, Expression',
+        significance: 'Jesus is the perfect expression of God\'s mind and the creative power by which all things exist. "The Word became flesh."',
+        references: ['John 1:1', 'Revelation 19:13'],
+        category: 'Title of Christ'
+    },
+    {
+        id: 'kurios',
+        english: 'Lord',
+        original: 'Κύριος',
+        transliteration: 'Kyrios',
+        language: 'Greek',
+        meaning: 'Lord, Master, Sovereign',
+        significance: 'The standard translation for "YHWH" in the Greek OT (Septuagint). Applying this title to Jesus is a direct claim to His deity.',
+        references: ['Romans 10:9', 'Philippians 2:11'],
+        category: 'Title of Christ'
+    },
+    {
+        id: 'alpha-omega',
+        english: 'Alpha & Omega',
+        original: 'Α & Ω',
+        transliteration: 'Alpha kai Omega',
+        language: 'Greek',
+        meaning: 'The Beginning and the End',
+        significance: 'First and last letters of the Greek alphabet. Signifies Christ\'s eternity, sovereignty over history, and completeness.',
+        references: ['Revelation 1:8', 'Revelation 22:13'],
+        category: 'Title of Christ'
+    },
+    {
+        id: 'amnos-theou',
+        english: 'Lamb of God',
+        original: 'Ἀμνὸς τοῦ Θεοῦ',
+        transliteration: 'Amnos tou Theou',
+        language: 'Greek',
+        meaning: 'Lamb of God',
+        significance: 'Identifies Jesus as the perfect sacrificial offering who fulfills the Passover and Isaiah 53, taking away the sin of the world.',
+        references: ['John 1:29', 'Revelation 5:6'],
+        category: 'Title of Christ'
+    },
+    {
+        id: 'iam',
+        english: 'I AM',
+        original: 'Ἐγώ εἰμι',
+        transliteration: 'Ego Eimi',
+        language: 'Greek',
+        meaning: 'I Am / I Exist',
+        significance: 'Jesus applies the holy name of God (Exodus 3:14) to Himself, causing the crowd to pick up stones to execute Him for blasphemy.',
+        references: ['John 8:58', 'John 18:6'],
+        category: 'Title of Christ'
+    },
+    {
+        id: 'messiah-christ',
+        english: 'Christ / Messiah',
+        original: 'Χριστός',
+        transliteration: 'Christos',
+        language: 'Greek',
+        meaning: 'Anointed One',
+        significance: 'The Greek equivalent of the Hebrew "Mashiach" (Messiah). He is the Prophet, Priest, and King anointed by God for salvation.',
+        references: ['Matthew 16:16', 'John 4:25-26'],
+        category: 'Title of Christ'
+    },
+    {
+        id: 'theos',
+        english: 'God',
+        original: 'Θεός',
+        transliteration: 'Theos',
+        language: 'Greek',
+        meaning: 'God',
+        significance: 'Explicitly used of Jesus, showing He is not just a man or angel, but God Himself.',
+        references: ['John 1:1', 'John 20:28', 'Titus 2:13'],
+        category: 'Title of Christ'
+    },
+    {
+        id: 'parakletos',
+        english: 'Helper / Advocate',
+        original: 'Παράκλητος',
+        transliteration: 'Parakletos',
+        language: 'Greek',
+        meaning: 'Called to one\'s aid / Comforter',
+        significance: 'The Holy Spirit is one called to walk alongside us, our Advocate and Helper, just as Jesus was.',
+        references: ['John 14:16', 'John 14:26'],
+        category: 'Holy Spirit'
+    }
+];
+
+
 export interface ArchaeologicalFind {
     id: string;
     title: string;

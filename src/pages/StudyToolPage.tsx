@@ -13,6 +13,7 @@ import OutlinesView from '../components/study/OutlinesView';
 import ErasView from '../components/study/ErasView';
 import ArchaeologyView from '../components/study/ArchaeologyView';
 import GenericStudyView from '../components/study/GenericStudyView';
+import DivineNamesView from '../components/study/DivineNamesView';
 
 export default function StudyToolPage() {
     const { toolId } = useParams();
@@ -45,6 +46,8 @@ export default function StudyToolPage() {
                 return <ErasView />;
             case 'archaeology':
                 return <ArchaeologyView />;
+            case 'names':
+                return <DivineNamesView />;
             default:
                 return (
                     <div className="text-center py-20">
