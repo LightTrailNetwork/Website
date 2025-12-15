@@ -12,7 +12,7 @@ import Tradition from './pages/Tradition';
 import OldTestament from './pages/OldTestament';
 import About from './pages/About';
 import Bible from './pages/Bible';
-import CurriculumTable from './pages/Table'; // Renamed from Table
+
 import Curriculum from './pages/Curriculum'; // New page
 import Schedule from './pages/Schedule';
 import BibleStudy from './pages/BibleStudy';
@@ -195,10 +195,10 @@ function AppContent() {
           <Route path="/tradition" element={<Tradition />} />
           <Route path="/oldtestament" element={<OldTestament />} />
           <Route path="/curriculum" element={<Curriculum />} />
-          <Route path="/curriculum/table" element={<CurriculumTable />} />
-          <Route path="/curriculum/table/:section" element={<CurriculumTable />} />
-          <Route path="/curriculum/table/:section/:subsection" element={<CurriculumTable />} />
-          <Route path="/curriculum/table/:section/:subsection/:topic" element={<CurriculumTable />} />
+          <Route path="/curriculum/table" element={<Curriculum />} />
+          <Route path="/curriculum/table/:section" element={<Curriculum />} />
+          <Route path="/curriculum/table/:section/:subsection" element={<Curriculum />} />
+          <Route path="/curriculum/table/:section/:subsection/:topic" element={<Curriculum />} />
           <Route path="/schedule" element={<Schedule />} />
           <Route path="/bible/study" element={<BibleStudy />} />
           <Route path="/bible/study/divinity" element={<JesusDivinityStudy />} />

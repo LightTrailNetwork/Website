@@ -11,7 +11,7 @@ export const TABLE_MNEMONIC: MnemonicNode[] = [
     {
         char: 'T',
         term: 'Tradition',
-        description: 'Memorized in full with corresponding verses in Scout phase, studied again on Wednesday of Prep Week, recited at Cloak Ceremony.',
+        description: 'Memorized in full with corresponding 13 outer passages in Scout phase, studied again on Wednesday of Prep Week, recited at Cloak Ceremony.',
     },
     {
         char: 'A',
@@ -117,8 +117,19 @@ export const TABLE_MNEMONIC: MnemonicNode[] = [
         description: 'The ETHOS of the Triads',
         subMnemonic: 'ETHOS',
         subItems: [
-            { char: 'E', term: 'Ethics' },
-            { char: 'T', term: 'Traditions' },
+            {
+                char: 'E', term: 'Ethics', subItems: [
+                    { char: 'Heart', term: 'Heart' },
+                    { char: 'Mind', term: 'Mind' },
+                    { char: 'Words', term: 'Words' },
+                    { char: 'Actions', term: 'Actions' }
+                ]
+            },
+            {
+                char: 'T', term: 'Traditions', subItems: [
+                    { char: 'Traditions', term: 'Traditions' }
+                ]
+            },
             {
                 char: 'H', term: 'Habits', subMnemonic: 'The Core HABITS of a Christian MAN', subItems: [
                     { char: 'Honor', term: 'Honor' },
@@ -132,8 +143,17 @@ export const TABLE_MNEMONIC: MnemonicNode[] = [
                     { char: 'Night', term: 'Night' }
                 ]
             },
-            { char: 'O', term: 'Organization' },
-            { char: 'S', term: 'Stewardship' }
+            {
+                char: 'O', term: 'Organization', subItems: [
+                    { char: 'Structure', term: 'Structure' },
+                    { char: 'Triad Tribe', term: 'Triad Tribe' }
+                ]
+            },
+            {
+                char: 'S', term: 'Stewardship', subItems: [
+                    { char: 'Stewardship', term: 'Stewardship' }
+                ]
+            }
         ]
     }
 ];

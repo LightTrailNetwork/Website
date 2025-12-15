@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
-import { tableFullContent, type TableRow } from '../data/tableFullContent';
-import { ACROSTIC_DATA } from '../data/acrosticDetails';
-import { BookOpen, Users, Shield, ChevronDown, ChevronRight, ChevronUp } from 'lucide-react';
-import { useScrollDirection } from '../hooks/useScrollDirection';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { tableFullContent, type TableRow } from '../../data/tableFullContent';
+import { ACROSTIC_DATA } from '../../data/acrosticDetails';
+import { BookOpen, Users, Shield, ChevronDown, ChevronRight, ChevronUp, Home, ArrowLeft } from 'lucide-react';
+import { useScrollDirection } from '../../hooks/useScrollDirection';
 
 // Helper to slugify consistent with Curriculum.tsx
 const slugify = (text: string) => text?.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
@@ -59,8 +59,9 @@ const RoleContent: React.FC<{ row: TableRow; roles: { mentee: boolean; mentor: b
     );
 };
 
-export default function CurriculumTable() {
+export default function CurriculumDetail() {
     const params = useParams<{ section?: string; subsection?: string; topic?: string }>();
+    const navigate = useNavigate();
     const [roles, setRoles] = useState({ mentee: false, mentor: false, steward: false });
 
     // Scroll sync
@@ -85,6 +86,9 @@ export default function CurriculumTable() {
         }, {} as Record<string, Record<string, TableRow[]>>);
     }, []);
 
+    // Helper to get active section object
+    const activeSection = Object.keys(groupedContent).find(k => slugify(k) === params.section);
+
     // Effect: Handle Params -> Auto Expand & Scroll
     useEffect(() => {
         if (params.section) {
@@ -94,7 +98,7 @@ export default function CurriculumTable() {
                 setExpandedSections(prev => ({ ...prev, [matchingSection]: true }));
 
                 if (params.subsection) {
-                    const subsections = groupedContent[matchingSection] || {};
+                    const subsections = groupedContent[matchingSection!] || {};
                     // Subsection key is like "Axioms (PhilEMOn)"
                     // params.subsection might be "axioms" OR "theology" (topic search)
 
@@ -106,6 +110,7 @@ export default function CurriculumTable() {
                     let targetTopic = params.topic;
 
                     // If NO direct subsection match, search for a topic that matches params.subsection
+                    // This handles legacy deep links or weird param mapping
                     if (!matchingSub) {
                         const potentialSub = Object.keys(subsections).find(k => {
                             const rows = subsections[k] || [];
@@ -164,69 +169,129 @@ export default function CurriculumTable() {
         setRoles(prev => ({ ...prev, [role]: !prev[role] }));
     };
 
+    // --- Compressed Hierarchy Navigation ---
+    const allSections = Object.keys(groupedContent);
+    // If we have an active subsection, find it
+    let activeSubsection: string | undefined;
+    if (activeSection && params.subsection) {
+        const subsections = groupedContent[activeSection!] || {};
+        activeSubsection = Object.keys(subsections).find(k => {
+            const main = k.split('(')[0].trim();
+            return slugify(main) === params.subsection || slugify(k) === params.subsection;
+        });
+    }
+
     return (
         <div className="min-h-screen bg-background pb-20">
-            {/* Header / Controls */}
-            <div className={`bg-secondary/40 backdrop-blur-md border-b border-border sticky z-10 shadow-sm transition-all duration-300 ${isMainHeaderHidden ? 'top-0' : 'top-16'}`}>
-                <div className="max-w-5xl mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
-                    <div>
-                        <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60">Curriculum Reference</h1>
-                        <p className="text-xs text-muted-foreground hidden md:block">Interactive T.A.B.L.E. Guide</p>
+            {/* Compressed Hierarchy Header */}
+            <div className={`bg-background/80 backdrop-blur-md border-b border-border sticky z-20 transition-all duration-300 ${isMainHeaderHidden ? 'top-0' : 'top-16'}`}>
+                <div className="max-w-5xl mx-auto px-4 py-3 flex flex-col md:flex-row items-center justify-between gap-3">
+
+                    {/* Breadcrumbs / Navigation */}
+                    <div className="flex items-center gap-2 overflow-x-auto text-sm w-full md:w-auto" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+                        <style>{`
+                            .no-scrollbar::-webkit-scrollbar {
+                                display: none;
+                            }
+                        `}</style>
+                        <Link to="/curriculum" className="flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors shrink-0">
+                            <Home className="w-4 h-4" />
+                            <span className="font-medium">Curriculum</span>
+                        </Link>
+
+                        <ChevronRight className="w-4 h-4 text-muted-foreground/40 shrink-0" />
+
+                        {/* Section Selector */}
+                        <div className="relative group shrink-0">
+                            <div className="flex items-center gap-1 font-semibold text-foreground cursor-pointer hover:text-primary transition-colors">
+                                {activeSection || 'Select Section'}
+                                <ChevronDown className="w-3 h-3 text-muted-foreground" />
+                            </div>
+                            {/* Section Dropdown */}
+                            <div className="absolute top-full left-0 mt-2 w-48 bg-card border border-border shadow-xl rounded-lg overflow-hidden hidden group-hover:block z-50 animate-in fade-in zoom-in-95 duration-200">
+                                {allSections.map(s => (
+                                    <Link
+                                        key={s}
+                                        to={`/curriculum/table/${slugify(s)}`}
+                                        className={`block px-4 py-2 text-sm hover:bg-secondary/50 transition-colors ${s === activeSection ? 'bg-primary/5 text-primary font-semibold' : 'text-foreground/80'}`}
+                                    >
+                                        {s}
+                                    </Link>
+                                ))}
+                            </div>
+                        </div>
+
+                        {activeSubsection && (
+                            <>
+                                <ChevronRight className="w-4 h-4 text-muted-foreground/40 shrink-0" />
+                                <span className="font-medium text-foreground truncate max-w-[150px] sm:max-w-none">
+                                    {activeSubsection?.split('(')[0].trim()}
+                                </span>
+                            </>
+                        )}
                     </div>
 
-                    <div className="flex items-center gap-2">
-                        <span className="text-xs font-semibold text-muted-foreground mr-2 uppercase tracking-wide">Filters:</span>
+                    {/* Role Toggles */}
+                    <div className="flex items-center gap-2 shrink-0 w-full md:w-auto overflow-x-auto no-scrollbar">
+                        <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider whitespace-nowrap hidden sm:inline">Role:</span>
                         <button
                             onClick={() => toggleRole('mentee')}
-                            className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-colors flex items-center gap-1.5 ${roles.mentee ? 'bg-blue-100 border-blue-200 text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-400' : 'bg-background/50 border-border text-muted-foreground hover:bg-secondary'}`}
+                            className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-colors flex items-center gap-1.5 whitespace-nowrap ${roles.mentee ? 'bg-blue-100 border-blue-200 text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-400' : 'bg-background/50 border-border text-muted-foreground hover:bg-secondary'}`}
                         >
                             <BookOpen className="w-3 h-3" /> Mentee
                         </button>
                         <button
                             onClick={() => toggleRole('mentor')}
-                            className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-colors flex items-center gap-1.5 ${roles.mentor ? 'bg-purple-100 border-purple-200 text-purple-700 dark:bg-purple-900/30 dark:border-purple-800 dark:text-purple-400' : 'bg-background/50 border-border text-muted-foreground hover:bg-secondary'}`}
+                            className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-colors flex items-center gap-1.5 whitespace-nowrap ${roles.mentor ? 'bg-purple-100 border-purple-200 text-purple-700 dark:bg-purple-900/30 dark:border-purple-800 dark:text-purple-400' : 'bg-background/50 border-border text-muted-foreground hover:bg-secondary'}`}
                         >
                             <Users className="w-3 h-3" /> Mentor
                         </button>
                         <button
                             onClick={() => toggleRole('steward')}
-                            className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-colors flex items-center gap-1.5 ${roles.steward ? 'bg-amber-100 border-amber-200 text-amber-700 dark:bg-amber-900/30 dark:border-amber-800 dark:text-amber-400' : 'bg-background/50 border-border text-muted-foreground hover:bg-secondary'}`}
+                            className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-colors flex items-center gap-1.5 whitespace-nowrap ${roles.steward ? 'bg-amber-100 border-amber-200 text-amber-700 dark:bg-amber-900/30 dark:border-amber-800 dark:text-amber-400' : 'bg-background/50 border-border text-muted-foreground hover:bg-secondary'}`}
                         >
                             <Shield className="w-3 h-3" /> Steward
                         </button>
                     </div>
-
-                    <button
-                        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                        className="p-2 hover:bg-secondary rounded-full transition-colors text-muted-foreground"
-                    >
-                        <ChevronUp className="w-5 h-5" />
-                    </button>
                 </div>
             </div>
 
             <div className="max-w-5xl mx-auto px-4 py-8 space-y-4">
+                {/* Back Button for Mobile Clarity */}
+                <div className="md:hidden mb-4">
+                    <Link to="/curriculum" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
+                        <ArrowLeft className="w-4 h-4" /> Back to Overview
+                    </Link>
+                </div>
+
                 {Object.keys(groupedContent).map((section) => {
                     const sectionSlug = slugify(section);
-                    const isExpanded = !!expandedSections[section];
+                    // Force expand active section if it matches URL
+                    const isUrlMatch = sectionSlug === params.section;
+                    // If isUrlMatch, always expanded. Otherwise, check state.
+                    const isExpanded = isUrlMatch || !!expandedSections[section];
+
+                    // We only want to show the current section if we are deep linked?
+                    // User request: "When you click a section, then you only see the hierarchical stuff as a page header at the top and the content below"
+                    // This implies we should FILTER to show ONLY the selected section if params.section is present.
+                    // But if we want to allow scrolling to others easily... 
+                    // Let's stick to the request: "Drill down".
+                    // So we should probably ONLY render the active section.
+
+                    if (params.section && !isUrlMatch) return null;
+
                     const subsections = groupedContent[section] || {};
 
                     // Find associated Mnemonic/Acrostic for this section
-                    // We look for any week that matches this Area
                     const acrosticData = Object.values(ACROSTIC_DATA).find(a => a.area === section);
                     const subMnemonic = acrosticData?.subMnemonic; // e.g. "ANCHORS"
 
                     return (
                         <div key={section} id={sectionSlug} className="scroll-mt-24 border border-border rounded-xl bg-card overflow-hidden shadow-sm">
                             {/* Section Header */}
-                            <button
-                                onClick={() => setExpandedSections(prev => ({ ...prev, [section]: !prev[section] }))}
-                                className="w-full flex items-center justify-between p-6 hover:bg-secondary/5 transition-colors text-left group"
-                            >
+                            {/* Section Header - Static in Detail View */}
+                            <div className="w-full flex items-center justify-between p-6 bg-card border-b border-border/50">
                                 <div className="flex items-center gap-4">
-                                    <div className={`p-2 rounded-lg bg-secondary/10 group-hover:bg-secondary/20 transition-all duration-200 ${isExpanded ? 'rotate-90 text-primary' : 'text-muted-foreground'}`}>
-                                        <ChevronRight className="w-6 h-6" />
-                                    </div>
                                     <div className="flex flex-col items-start gap-1">
                                         <div className="flex items-center gap-3">
                                             <h2 className="text-2xl font-bold tracking-tight">{section}</h2>
@@ -239,7 +304,7 @@ export default function CurriculumTable() {
                                         <p className="text-sm text-muted-foreground">{Object.keys(subsections).length} Subsections</p>
                                     </div>
                                 </div>
-                            </button>
+                            </div>
 
                             {/* Section Content */}
                             {isExpanded && (
@@ -255,7 +320,7 @@ export default function CurriculumTable() {
                                         const subMeta = titleParts[1] ? titleParts[1].replace(')', '') : '';
 
                                         return (
-                                            <div key={subsection} id={subsectionId} className="scroll-mt-24 border border-border/60 rounded-lg bg-background overflow-hidden relative">
+                                            <div key={subsection} id={subsectionId} className="scroll-mt-32 border border-border/60 rounded-lg bg-background overflow-hidden relative">
                                                 <div className={`absolute left-0 top-0 bottom-0 w-1 ${isSubExpanded ? 'bg-primary' : 'bg-transparent'} transition-colors duration-200`} />
                                                 <button
                                                     onClick={() => setExpandedSubsections(prev => ({ ...prev, [subsection]: !prev[subsection] }))}

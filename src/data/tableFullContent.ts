@@ -1276,39 +1276,39 @@ The STORY ends where it began — with God walking again with His people, fully 
     },
     {
         section: "Ethos",
-        subsection: "The ETHOS of the Triads",
-        topic: "Ethics - Heart",
+        subsection: "Ethics",
+        topic: "Heart",
         mentee: `“Keep your heart with all vigilance, for from it flow the springs of life.” Proverbs 4:23`,
         mentor: `"out of the abundance of the heart his mouth speaks" Luke 6:45`,
         steward: `“The heart is deceitful above all things, and desperately sick; who can understand it?” Jeremiah 17:9`
     },
     {
         section: "Ethos",
-        subsection: "The ETHOS of the Triads",
-        topic: "Ethics - Mind",
+        subsection: "Ethics",
+        topic: "Mind",
         mentee: `2 Corinthians 10:5 – "take every thought captive to obey Christ"`,
         mentor: `"...think about these things." (Philippians 4:8)`,
         steward: `"Do not be conformed to this world, but be transformed by the renewal of your mind..." Romans 12:2`
     },
     {
         section: "Ethos",
-        subsection: "The ETHOS of the Triads",
-        topic: "Ethics - Words",
+        subsection: "Ethics",
+        topic: "Words",
         mentee: `“Death and life are in the power of the tongue.” Proverbs 18:21`,
         mentor: `"Let no corrupting talk come out of your mouths, but only such as is good for building up, as fits the occasion, that it may give grace to those who hear." Ephesians 4:29`,
         steward: `"Let your speech always be gracious, seasoned with salt." Colossians 4:6`
     },
     {
         section: "Ethos",
-        subsection: "The ETHOS of the Triads",
-        topic: "Ethics - Actions",
+        subsection: "Ethics",
+        topic: "Actions",
         mentee: `"whatever you wish that others would do to you, do also to them" Matthew 7:12`,
         mentor: `"He has told you, O man, what is good; and what does the Lord require of you but to do justice, and to love kindness, and to walk humbly with your God?" Micah 6:8`,
         steward: `"...walk in love, as Christ loved us and gave himself up for us..." Ephesians 5:2`
     },
     {
         section: "Ethos",
-        subsection: "The ETHOS of the Triads",
+        subsection: "Traditions",
         topic: "Traditions",
         mentee: `Biblical: Lord's Supper
 Brotherly: Fellowship`,
@@ -1319,7 +1319,7 @@ Brotherly: Fellowship`
     },
     {
         section: "Ethos",
-        subsection: "The ETHOS of the Triads",
+        subsection: "Habits (The Core HABITS of a Christian MAN)",
         topic: "Honor",
         mentee: `"Love one another with brotherly affection. Outdo one another in showing honor." Romans 12:10
 
@@ -1335,7 +1335,7 @@ Meet in preparation week with mentee to recommend which of the 2 scouts to choos
     },
     {
         section: "Ethos",
-        subsection: "The Core HABITS of a Christian MAN",
+        subsection: "Habits (The Core HABITS of a Christian MAN)",
         topic: "Attend",
         mentee: `"...think about these things." Philippians 4:8
 
@@ -1348,7 +1348,7 @@ Weekly Church Attendance.`
     },
     {
         section: "Ethos",
-        subsection: "The Core HABITS of a Christian MAN",
+        subsection: "Habits (The Core HABITS of a Christian MAN)",
         topic: "Belong",
         mentee: `"Finally, all of you, have unity of mind, sympathy, brotherly love, a tender heart, and a humble mind." 1 Peter 3:8
 
@@ -1362,7 +1362,7 @@ Regular meetings with other stewards to plan second and third session serve days
     },
     {
         section: "Ethos",
-        subsection: "The Core HABITS of a Christian MAN",
+        subsection: "Habits (The Core HABITS of a Christian MAN)",
         topic: "Intercede",
         mentee: `LIFE PAIN / LIFE GAIN mnemonics
 
@@ -1372,7 +1372,7 @@ Daily Morning Intercession Prayer and Daily Practical Acts of Service.`,
     },
     {
         section: "Ethos",
-        subsection: "The Core HABITS of a Christian MAN",
+        subsection: "Habits (The Core HABITS of a Christian MAN)",
         topic: "Train",
         mentee: `"Train yourself for godliness" 1 Timothy 4:7
 
@@ -1382,7 +1382,7 @@ FLESH (Verses for Fame, Lust, Envy, Sloth, and Hunger for Power).`,
     },
     {
         section: "Ethos",
-        subsection: "The Core HABITS of a Christian MAN",
+        subsection: "Habits (The Core HABITS of a Christian MAN)",
         topic: "Serve",
         mentee: `"For even the Son of Man came not to be served but to serve, and to give his life as a ransom for many." Mark 10:45
 
@@ -1392,7 +1392,7 @@ Serve Day Every Weekend.`,
     },
     {
         section: "Ethos",
-        subsection: "The Core HABITS of a Christian MAN",
+        subsection: "Habits (The Core HABITS of a Christian MAN)",
         topic: "Morning",
         mentee: `"O Lord, in the morning you hear my voice" Psalm 5:3
 
@@ -1405,7 +1405,7 @@ Intercede based on ANCHOR Schedule.`
     },
     {
         section: "Ethos",
-        subsection: "The Core HABITS of a Christian MAN",
+        subsection: "Habits (The Core HABITS of a Christian MAN)",
         topic: "Afternoon",
         mentee: `"I have stored up your word in my heart, that I might not sin against you." Psalm 119:11
 
@@ -1415,7 +1415,7 @@ Memorization.`,
     },
     {
         section: "Ethos",
-        subsection: "The Core HABITS of a Christian MAN",
+        subsection: "Habits (The Core HABITS of a Christian MAN)",
         topic: "Night",
         mentee: `"His delight is in the law of the Lord, and on his law he meditates day and night." Psalm 1:2
 
@@ -1425,7 +1425,7 @@ Study Time plus Followup through Message/Video or Fellowship depending on the da
     },
     {
         section: "Ethos",
-        subsection: "The ETHOS of the Triads",
+        subsection: "Organization",
         topic: "Structure",
         mentee: `Roles`,
         mentor: `Triple Triads`,
@@ -1433,11 +1433,19 @@ Study Time plus Followup through Message/Video or Fellowship depending on the da
     },
     {
         section: "Ethos",
-        subsection: "The ETHOS of the Triads",
+        subsection: "Organization",
         topic: "Triad Tribe",
         mentee: `The group of men who have been members of this triad in the past.`,
         mentor: `The group of men who have been members of this triad in the past.`,
         steward: `The group of men who have been members of this triad in the past.`
+    },
+    {
+        section: "Ethos",
+        subsection: "Stewardship",
+        topic: "Stewardship",
+        mentee: `Faithful management of God-given resources.`,
+        mentor: `Faithful management of God-given resources.`,
+        steward: `Faithful management of God-given resources.`
     }
 ];
 
