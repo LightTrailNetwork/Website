@@ -467,15 +467,40 @@ export default function Today() {
 
                               return (
                                 <>
-                                  <p className="text-lg font-medium text-foreground leading-relaxed">
-                                    {parts.map((part, index) => {
-                                      if (part.startsWith('**') && part.endsWith('**')) {
-                                        return <span key={index} className="text-primary font-bold">{part.slice(2, -2)}</span>;
-                                      }
-                                      return part;
-                                    })}
-                                  </p>
-                                  {memoryContent.reference && <p className="text-sm text-muted-foreground">{memoryContent.reference}</p>}
+                                  {memoryContent.reference ? (
+                                    <Link
+                                      to={getBibleLink(memoryContent.reference)}
+                                      className="block group"
+                                    >
+                                      <p className="text-lg font-medium text-foreground leading-relaxed group-hover:text-primary transition-colors">
+                                        {parts.map((part, index) => {
+                                          if (part.startsWith('**') && part.endsWith('**')) {
+                                            return <span key={index} className="text-primary font-bold group-hover:text-primary/80 transition-colors">{part.slice(2, -2)}</span>;
+                                          }
+                                          return part;
+                                        })}
+                                      </p>
+                                    </Link>
+                                  ) : (
+                                    <p className="text-lg font-medium text-foreground leading-relaxed">
+                                      {parts.map((part, index) => {
+                                        if (part.startsWith('**') && part.endsWith('**')) {
+                                          return <span key={index} className="text-primary font-bold">{part.slice(2, -2)}</span>;
+                                        }
+                                        return part;
+                                      })}
+                                    </p>
+                                  )}
+                                  {memoryContent.reference && (
+                                    <div className="mt-1">
+                                      <Link
+                                        to={getBibleLink(memoryContent.reference)}
+                                        className="text-sm text-muted-foreground hover:text-orange-600 hover:underline transition-colors"
+                                      >
+                                        {memoryContent.reference}
+                                      </Link>
+                                    </div>
+                                  )}
 
                                   {traditionInfo && (
                                     <div className="mt-1 flex items-center gap-2 animate-in fade-in slide-in-from-left-2">
