@@ -1,4 +1,5 @@
 import React from "react";
+import { BIBLE_BOOK_ORDER } from "../data/bibleBookConstants";
 
 interface Point {
   x: number;
@@ -10,6 +11,7 @@ interface PyramidSVGProps {
   hoveredLetter: string | null;
   onLetterClick: (letter: string) => void;
   onLetterHover: (letter: string | null) => void;
+  showWords?: boolean;
   stroke?: string;
   innerStroke?: string;
   textColor?: string;
@@ -28,7 +30,56 @@ interface ClickableLetterProps {
   textColor: string;
   fontSize: number;
   scrollToPassage: (passageKey: string) => void;
+  showWords?: boolean;
 }
+
+// Inner letters (A-Z, !) map to NT books (MAT-REV)
+// 27 books total. MAT is index 39 in BIBLE_BOOK_ORDER.
+const INNER_LETTER_MAP: { [key: string]: string } = {
+  "A": "MAT", "B": "MRK", "C": "LUK", "D": "JHN", "E": "ACT",
+  "F": "ROM", "G": "1CO", "H": "2CO", "I": "GAL", "J": "EPH",
+  "K": "PHP", "L": "COL", "M": "1TH", "N": "2TH", "O": "1TI",
+  "P": "2TI", "Q": "TIT", "R": "PHM", "S": "HEB", "T": "JAS",
+  "U": "1PE", "V": "2PE", "W": "1JN", "X": "2JN", "Y": "3JN",
+  "Z": "JUD", "!": "REV"
+};
+
+const OUTER_WORD_MAP: { [key: string]: string } = {
+  // Top Outer
+  "A_Top": "Abide",
+  "I_Left": "Imitate",
+  "M_Right": "Mobilize",
+  // GOD Pyramid
+  "G": "Glorify",
+  "O": "Obey",
+  "D": "Delight",
+  // MAN Pyramid
+  "M_Man": "Made",
+  "A_Man": "Aware",
+  "N": "New",
+  // WAY Pyramid
+  "W": "Witness",
+  "A_Way": "Acts",
+  "Y": "Yield"
+};
+
+// Helper to determine the text to show
+const getDisplayText = (label: string, passageKey: string, showWords: boolean) => {
+  if (!showWords) return label;
+
+  // Check if it is an inner letter (single char, A-Z or !)
+  if (INNER_LETTER_MAP[label] && passageKey.length <= 1) {
+    return INNER_LETTER_MAP[label];
+  }
+
+  // Fallback for special mappings where passageKey matches the word we want
+  // Note: passageKey usually IS the word for outer passages (e.g. "Abide")
+  if (["Abide", "Imitate", "Mobilize", "Glorify", "Obey", "Delight", "Made", "Aware", "New", "Witness", "Acts", "Yield"].includes(passageKey)) {
+    return passageKey;
+  }
+
+  return label;
+};
 
 const ClickableLetter: React.FC<ClickableLetterProps> = ({
   p,
@@ -42,8 +93,28 @@ const ClickableLetter: React.FC<ClickableLetterProps> = ({
   textColor,
   fontSize,
   scrollToPassage,
+  showWords,
 }) => {
   const isHighlighted = hoveredLetter === passageKey || selectedLetter === passageKey;
+  const displayLabel = getDisplayText(label, passageKey, showWords || false);
+
+  // Determine scale factor based on context
+  // Inner letters have passageKey length 1 (e.g. "A") and map to 3-letter codes (confined in tiny triangles)
+  // Outer letters have key length > 1 (e.g. "Abide") and are floating outside
+  const isInner = passageKey.length === 1;
+
+  let scaleFactor = 1;
+  if (showWords) {
+    if (isInner) {
+      // Inner 3-letter codes (MAT) - bump up to 0.65 to fill triangle better
+      scaleFactor = 0.65;
+    } else {
+      // Outer words (Abide) - bump up to 0.75 as they have more space
+      scaleFactor = 0.75;
+    }
+  }
+
+  const effectiveFontSize = fontSize * scaleFactor;
 
   const handleClick = () => {
     onLetterClick(passageKey);
@@ -59,7 +130,7 @@ const ClickableLetter: React.FC<ClickableLetterProps> = ({
       style={{
         fontFamily:
           "ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial",
-        fontSize: isHighlighted ? fontSize * 1.3 : fontSize,
+        fontSize: isHighlighted ? effectiveFontSize * 1.3 : effectiveFontSize,
         fontWeight: isHighlighted ? 900 : 700,
         fill: isHighlighted ? "hsl(var(--destructive))" : textColor,
         cursor: "pointer",
@@ -69,7 +140,7 @@ const ClickableLetter: React.FC<ClickableLetterProps> = ({
       onMouseEnter={() => onHoverStart(passageKey)}
       onMouseLeave={onHoverEnd}
     >
-      {label}
+      {displayLabel}
     </text>
   );
 };
@@ -86,6 +157,7 @@ interface SubPyramidVertexProps {
   textColor: string;
   fontSize: number;
   scrollToPassage: (passageKey: string) => void;
+  showWords?: boolean;
 }
 
 const SubPyramidVertex: React.FC<SubPyramidVertexProps> = ({
@@ -100,8 +172,14 @@ const SubPyramidVertex: React.FC<SubPyramidVertexProps> = ({
   textColor,
   fontSize,
   scrollToPassage,
+  showWords,
 }) => {
   const isHighlighted = hoveredLetter === passageKey || selectedLetter === passageKey;
+  const displayLabel = getDisplayText(label, passageKey, showWords || false);
+
+  // These are intermediate vertices (G, O, D, etc) - words like "Glorify"
+  // They are floating but close to triangles
+  const effectiveFontSize = showWords ? fontSize * 0.6 : fontSize;
 
   const handleClick = () => {
     onLetterClick(passageKey);
@@ -117,7 +195,7 @@ const SubPyramidVertex: React.FC<SubPyramidVertexProps> = ({
       style={{
         fontFamily:
           "ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial",
-        fontSize: isHighlighted ? fontSize * 1.4 : fontSize,
+        fontSize: isHighlighted ? effectiveFontSize * 1.4 : effectiveFontSize,
         fontWeight: isHighlighted ? 900 : 700,
         fill: isHighlighted ? "hsl(var(--destructive))" : textColor,
         cursor: "pointer",
@@ -127,7 +205,7 @@ const SubPyramidVertex: React.FC<SubPyramidVertexProps> = ({
       onMouseEnter={() => onHoverStart(passageKey)}
       onMouseLeave={onHoverEnd}
     >
-      {label}
+      {displayLabel}
     </text>
   );
 };
@@ -172,6 +250,7 @@ export default function PyramidSVG({
   innerStroke = "hsl(var(--muted-foreground))",
   textColor = "hsl(var(--foreground))",
   accent = "hsl(var(--primary))",
+  showWords = false,
 }: PyramidSVGProps) {
   // Helper function to scroll within the passage list container only
   // Helper function to scroll within the passage list container only
@@ -234,7 +313,7 @@ export default function PyramidSVG({
   const svgSize = containerSize;
 
   // Pyramid dimensions matching original
-  const S = svgSize * 0.8;
+  const S = svgSize * 0.7;
   const H = (Math.sqrt(3) / 2) * S;
   const leftPad = (svgSize - S) / 2;
   const startY = svgSize * 0.1;
@@ -482,6 +561,7 @@ export default function PyramidSVG({
             textColor={textColor}
             fontSize={baseFontSize}
             scrollToPassage={scrollToPassage}
+            showWords={showWords}
           />
           <ClickableLetter
             p={{ x: B.x - baseFontSize * 2, y: B.y + baseFontSize * 1 }}
@@ -495,6 +575,7 @@ export default function PyramidSVG({
             textColor={textColor}
             fontSize={baseFontSize}
             scrollToPassage={scrollToPassage}
+            showWords={showWords}
           />
           <ClickableLetter
             p={{ x: C.x + baseFontSize * 2, y: C.y + baseFontSize * 1 }}
@@ -508,6 +589,7 @@ export default function PyramidSVG({
             textColor={textColor}
             fontSize={baseFontSize}
             scrollToPassage={scrollToPassage}
+            showWords={showWords}
           />
 
           {/* GOD, MAN, WAY labels */}
@@ -543,6 +625,7 @@ export default function PyramidSVG({
             textColor={textColor}
             fontSize={subFontSize}
             scrollToPassage={scrollToPassage}
+            showWords={showWords}
           />
           <SubPyramidVertex
             p={{ x: tB.x - subFontSize * 1, y: tB.y + subFontSize * 1 }}
@@ -556,6 +639,7 @@ export default function PyramidSVG({
             textColor={textColor}
             fontSize={subFontSize}
             scrollToPassage={scrollToPassage}
+            showWords={showWords}
           />
           <SubPyramidVertex
             p={{ x: tC.x + subFontSize * 1, y: tC.y + subFontSize * 1 }}
@@ -569,6 +653,7 @@ export default function PyramidSVG({
             textColor={textColor}
             fontSize={subFontSize}
             scrollToPassage={scrollToPassage}
+            showWords={showWords}
           />
 
           {/* MAN pyramid vertex letters - M, A, N (positioned outside triangle) */}
@@ -584,6 +669,7 @@ export default function PyramidSVG({
             textColor={textColor}
             fontSize={subFontSize}
             scrollToPassage={scrollToPassage}
+            showWords={showWords}
           />
           <SubPyramidVertex
             p={{ x: lB.x - subFontSize * 1, y: lB.y + subFontSize * 1 }}
@@ -597,6 +683,7 @@ export default function PyramidSVG({
             textColor={textColor}
             fontSize={subFontSize}
             scrollToPassage={scrollToPassage}
+            showWords={showWords}
           />
           <SubPyramidVertex
             p={{ x: lC.x + subFontSize * 1, y: lC.y + subFontSize * 1 }}
@@ -610,6 +697,7 @@ export default function PyramidSVG({
             textColor={textColor}
             fontSize={subFontSize}
             scrollToPassage={scrollToPassage}
+            showWords={showWords}
           />
 
           {/* WAY pyramid vertex letters - W, A, Y (positioned outside triangle) */}
@@ -625,6 +713,7 @@ export default function PyramidSVG({
             textColor={textColor}
             fontSize={subFontSize}
             scrollToPassage={scrollToPassage}
+            showWords={showWords}
           />
           <SubPyramidVertex
             p={{ x: rB.x - subFontSize * 1, y: rB.y + subFontSize * 1 }}
@@ -638,6 +727,7 @@ export default function PyramidSVG({
             textColor={textColor}
             fontSize={subFontSize}
             scrollToPassage={scrollToPassage}
+            showWords={showWords}
           />
           <SubPyramidVertex
             p={{ x: rC.x + subFontSize * 1, y: rC.y + subFontSize * 1 }}
@@ -651,6 +741,7 @@ export default function PyramidSVG({
             textColor={textColor}
             fontSize={subFontSize}
             scrollToPassage={scrollToPassage}
+            showWords={showWords}
           />
 
           {/* GOD - Tiny pyramids and letters */}
@@ -679,6 +770,7 @@ export default function PyramidSVG({
                 textColor={tinyTextColor}
                 fontSize={tinyFontSize}
                 scrollToPassage={scrollToPassage}
+                showWords={showWords}
               />
               <ClickableLetter
                 p={tiny.letterPositions[1]}
@@ -692,6 +784,7 @@ export default function PyramidSVG({
                 textColor={tinyTextColor}
                 fontSize={tinyFontSize}
                 scrollToPassage={scrollToPassage}
+                showWords={showWords}
               />
               <ClickableLetter
                 p={tiny.letterPositions[2]}
@@ -705,6 +798,7 @@ export default function PyramidSVG({
                 textColor={tinyTextColor}
                 fontSize={tinyFontSize}
                 scrollToPassage={scrollToPassage}
+                showWords={showWords}
               />
             </g>
           ))}
@@ -735,6 +829,7 @@ export default function PyramidSVG({
                 textColor={tinyTextColor}
                 fontSize={tinyFontSize}
                 scrollToPassage={scrollToPassage}
+                showWords={showWords}
               />
               <ClickableLetter
                 p={tiny.letterPositions[1]}
@@ -748,6 +843,7 @@ export default function PyramidSVG({
                 textColor={tinyTextColor}
                 fontSize={tinyFontSize}
                 scrollToPassage={scrollToPassage}
+                showWords={showWords}
               />
               <ClickableLetter
                 p={tiny.letterPositions[2]}
@@ -761,6 +857,7 @@ export default function PyramidSVG({
                 textColor={tinyTextColor}
                 fontSize={tinyFontSize}
                 scrollToPassage={scrollToPassage}
+                showWords={showWords}
               />
             </g>
           ))}
@@ -791,6 +888,7 @@ export default function PyramidSVG({
                 textColor={tinyTextColor}
                 fontSize={tinyFontSize}
                 scrollToPassage={scrollToPassage}
+                showWords={showWords}
               />
               <ClickableLetter
                 p={tiny.letterPositions[1]}
@@ -804,6 +902,7 @@ export default function PyramidSVG({
                 textColor={tinyTextColor}
                 fontSize={tinyFontSize}
                 scrollToPassage={scrollToPassage}
+                showWords={showWords}
               />
               <ClickableLetter
                 p={tiny.letterPositions[2]}
@@ -817,6 +916,7 @@ export default function PyramidSVG({
                 textColor={tinyTextColor}
                 fontSize={tinyFontSize}
                 scrollToPassage={scrollToPassage}
+                showWords={showWords}
               />
             </g>
           ))}

@@ -8,6 +8,7 @@ import passagesData from "../data/pyramidPassages.json";
 
 export default function Tradition() {
   const [hoveredLetter, setHoveredLetter] = useState<string | null>(null);
+  const [showWords, setShowWords] = useState(false);
 
   // Helper to find passage data by key
   const findPassageByKey = (key: string) => {
@@ -63,13 +64,24 @@ export default function Tradition() {
         {/* Left Column - Pyramid */}
         <div className="flex flex-col items-center space-y-6">
           <div className="w-full bg-card border border-border rounded-xl p-6 lg:p-8 shadow-sm">
-            <h2 className="text-xl font-semibold text-foreground text-center mb-6 flex flex-col items-center justify-center gap-1">
-              <div className="flex items-center gap-2">
-                <BookOpen className="w-5 h-5 text-primary" />
-                The Passage Pyramid
-              </div>
-              <p className="text-xs text-muted-foreground italic mt-1">A visual map connecting the Creed and Passages</p>
-            </h2>
+            <div className="flex items-center justify-between mb-6 px-2">
+              <h2 className="text-xl font-semibold text-foreground flex flex-col gap-1">
+                <div className="flex items-center gap-2">
+                  <BookOpen className="w-5 h-5 text-primary" />
+                  The Passage Pyramid
+                </div>
+                <p className="text-xs text-muted-foreground italic mt-1">A visual map connecting the Creed and Passages</p>
+              </h2>
+              <button
+                onClick={() => setShowWords(!showWords)}
+                className="text-xs font-medium px-3 py-1.5 rounded-full bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-colors border border-border flex items-center gap-2"
+              >
+                <span>{showWords ? "Showing Words" : "Showing Key"}</span>
+                <div className={`w-8 h-4 rounded-full p-0.5 transition-colors ${showWords ? "bg-primary" : "bg-muted-foreground/30"}`}>
+                  <div className={`w-3 h-3 rounded-full bg-white shadow-sm transition-transform ${showWords ? "translate-x-4" : "translate-x-0"}`} />
+                </div>
+              </button>
+            </div>
             <div className="bg-gradient-to-br from-primary/5 to-secondary/5 rounded-xl p-4 relative overflow-hidden group">
               <TransformWrapper
                 initialScale={1}
@@ -109,6 +121,7 @@ export default function Tradition() {
                         hoveredLetter={hoveredLetter}
                         onLetterClick={handleLetterClick}
                         onLetterHover={handleLetterHover}
+                        showWords={showWords}
                       />
                     </TransformComponent>
                   </>
