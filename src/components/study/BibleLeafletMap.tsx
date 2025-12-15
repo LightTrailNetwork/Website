@@ -39,7 +39,7 @@ const defaultIcon = new L.Icon({
 });
 
 
-interface MapPoint {
+export interface MapPoint {
     id: string;
     lat: number;
     lng: number;
@@ -72,6 +72,7 @@ const LOCATIONS: MapPoint[] = [
 interface BibleLeafletMapProps {
     onSelectLocation: (locationId: string, shouldScroll?: boolean) => void;
     activeLocationId?: string | null;
+    locations?: MapPoint[];
 }
 
 function useIsMobile() {
@@ -116,7 +117,7 @@ function MapMarker({ location, isActive, onSelect }: { location: MapPoint, isAct
     );
 }
 
-export default function BibleLeafletMap({ onSelectLocation, activeLocationId }: BibleLeafletMapProps) {
+export default function BibleLeafletMap({ onSelectLocation, activeLocationId, locations = LOCATIONS }: BibleLeafletMapProps) {
     return (
         <div className="flex flex-col gap-2">
             <div className="w-full h-[600px] rounded-xl overflow-hidden border border-border z-0">
@@ -132,7 +133,7 @@ export default function BibleLeafletMap({ onSelectLocation, activeLocationId }: 
                         url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
                     />
 
-                    {LOCATIONS.map(loc => (
+                    {locations.map(loc => (
                         <MapMarker
                             key={loc.id}
                             location={loc}

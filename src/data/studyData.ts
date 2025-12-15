@@ -1560,6 +1560,353 @@ export const OUTLINES: BookOutline[] = [
     }
 ];
 
+
+export interface ArchaeologicalFind {
+    id: string;
+    title: string;
+    description: string;
+    dateDiscovered: string;
+    artifactDate: string;
+    location: string;
+    coordinates: { lat: number; lng: number };
+    bibleReferences: string[];
+    significance: string;
+    imageUrl?: string;
+}
+
+export const ARCHAEOLOGY_DATA: ArchaeologicalFind[] = [
+    {
+        id: 'silver-scrolls',
+        title: 'Ketef Hinnom Silver Scrolls',
+        description: 'Two tiny silver scrolls found in a burial cave in Jerusalem containing the Priestly Blessing from Numbers 6.',
+        dateDiscovered: '1979',
+        artifactDate: 'c. 600 BC',
+        location: 'Jerusalem (Ketef Hinnom)',
+        coordinates: { lat: 31.7690, lng: 35.2256 },
+        bibleReferences: ['Numbers 6:24-26'],
+        significance: 'The oldest biblical text ever found, pre-dating the Dead Sea Scrolls by 400 years. Confirms the text of the Torah was in use before the Babylonian Exile.'
+    },
+    {
+        id: 'dead-sea-scrolls',
+        title: 'Dead Sea Scrolls',
+        description: 'Thousands of fragments from 981 different texts discovered in 12 caves near the Dead Sea.',
+        dateDiscovered: '1946-1956',
+        artifactDate: 'c. 300 BC - 100 AD',
+        location: 'Qumran',
+        coordinates: { lat: 31.7417, lng: 35.4592 },
+        bibleReferences: ['Isaiah 40:8', 'Jeremiah 32:44'],
+        significance: 'Provided manuscripts 1,000 years older than previous copies, demonstrating the incredible accuracy of the transmission of the Hebrew Bible.'
+    },
+    {
+        id: 'tel-dan-stele',
+        title: 'Tel Dan Stele',
+        description: 'A broken victory stele erected by an Aramean king (likely Hazael) boasting of defeating the "House of David".',
+        dateDiscovered: '1993',
+        artifactDate: 'c. 840 BC',
+        location: 'Tel Dan',
+        coordinates: { lat: 33.2486, lng: 35.6525 },
+        bibleReferences: ['2 Kings 8:28-29'],
+        significance: 'The first extra-biblical reference to King David and his dynasty, refuting claims that David was a myth.'
+    },
+    {
+        id: 'merneptah-stele',
+        title: 'Merneptah Stele',
+        description: 'An inscription by Pharaoh Merneptah listing his victories, including a campaign in Canaan where "Israel is laid waste".',
+        dateDiscovered: '1896',
+        artifactDate: 'c. 1208 BC',
+        location: 'Thebes, Egypt',
+        coordinates: { lat: 25.7205, lng: 32.6103 },
+        bibleReferences: ['Exodus 1:8-10', 'Judges 1'],
+        significance: 'The earliest mention of "Israel" outside the Bible, proving Israel was established as a people group in Canaan by 1200 BC.'
+    },
+    {
+        id: 'pilate-stone',
+        title: 'Pilate Stone',
+        description: 'A limestone block dedicated to Tiberius Caesar by "Pontius Pilate, Prefect of Judea".',
+        dateDiscovered: '1961',
+        artifactDate: 'c. 26-36 AD',
+        location: 'Caesarea Maritima',
+        coordinates: { lat: 32.5000, lng: 34.8917 },
+        bibleReferences: ['Matthew 27:2', 'Luke 3:1'],
+        significance: 'Confirmed the existence and office of Pontius Pilate, who some critics previously doubted existed.'
+    },
+    {
+        id: 'caiaphas-ossuary',
+        title: 'Caiaphas Ossuary',
+        description: 'An ornate burial box (ossuary) inscribed with "Joseph son of Caiaphas".',
+        dateDiscovered: '1990',
+        artifactDate: 'c. 1st Century AD',
+        location: 'Jerusalem',
+        coordinates: { lat: 31.7511, lng: 35.2222 },
+        bibleReferences: ['Matthew 26:3', 'John 11:49'],
+        significance: 'Provides physical evidence of the High Priest who presided over Jesus\' trial.'
+    },
+    {
+        id: 'hezekiahs-tunnel',
+        title: 'Hezekiah\'s Tunnel',
+        description: 'A water tunnel carved through solid rock to bring water from the Gihon Spring to the Pool of Siloam.',
+        dateDiscovered: '1838',
+        artifactDate: 'c. 701 BC',
+        location: 'City of David, Jerusalem',
+        coordinates: { lat: 31.7725, lng: 35.2356 },
+        bibleReferences: ['2 Kings 20:20', '2 Chronicles 32:30'],
+        significance: 'Matches the biblical account of Hezekiah\'s preparation for the Assyrian siege perfectly.'
+    },
+    {
+        id: 'sennacherib-prism',
+        title: 'Sennacherib\'s Prism',
+        description: 'A hexagonal clay prism describing King Sennacherib\'s siege of Jerusalem.',
+        dateDiscovered: '1830',
+        artifactDate: 'c. 691 BC',
+        location: 'Nineveh',
+        coordinates: { lat: 36.3585, lng: 43.1519 },
+        bibleReferences: ['2 Kings 18:13-19:37', 'Isaiah 36-37'],
+        significance: 'Confirms the siege of Jerusalem and that Hezekiah was "shut up like a bird in a cage" but notably does NOT claim the city was conquered, matching the Bible\'s account of divine deliverance.'
+    },
+    {
+        id: 'cyrus-cylinder',
+        title: 'Cyrus Cylinder',
+        description: 'A clay cylinder decree by Cyrus the Great allowing captive peoples to return to their lands and rebuild temples.',
+        dateDiscovered: '1879',
+        artifactDate: 'c. 539 BC',
+        location: 'Babylon',
+        coordinates: { lat: 32.5422, lng: 44.4211 },
+        bibleReferences: ['Ezra 1:1-4', '2 Chronicles 36:23'],
+        significance: 'Confirms the biblical policy of Cyrus regarding the return of exiles, a policy once thought to be fiction.'
+    },
+    {
+        id: 'pool-of-siloam',
+        title: 'Pool of Siloam',
+        description: 'The actual stepped pool from the Second Temple period where Jesus healed the blind man.',
+        dateDiscovered: '2004',
+        artifactDate: 'c. 1st Century AD',
+        location: 'Jerusalem',
+        coordinates: { lat: 31.7709, lng: 35.2350 },
+        bibleReferences: ['John 9:7'],
+        significance: 'Until 2004, critics questioned John\'s accuracy. The discovery of the pool exactly where the Bible places it validates the Gospel of John.'
+    },
+    {
+        id: 'peters-house',
+        title: 'House of Peter',
+        description: 'A 1st-century dwelling in Capernaum with Christian graffiti and later church structures built over it.',
+        dateDiscovered: '1968',
+        artifactDate: 'c. 1st Century AD',
+        location: 'Capernaum',
+        coordinates: { lat: 32.8811, lng: 35.5751 },
+        bibleReferences: ['Mark 1:29', 'Luke 4:38'],
+        significance: 'Strong evidence for the home of Peter, which served as a base for Jesus\' ministry.'
+    },
+    {
+        id: 'jericho-walls',
+        title: 'Walls of Jericho',
+        description: 'Excavations showing mudbrick walls that collapsed outward, forming a ramp, and a burnt layer.',
+        dateDiscovered: '1930s-1950s',
+        artifactDate: 'c. 1400 BC',
+        location: 'Jericho',
+        coordinates: { lat: 31.8703, lng: 35.4429 },
+        bibleReferences: ['Joshua 6:20'],
+        significance: 'The fallen walls forming a ramp matches Joshua 6:20 ("the wall fell down flat... the people went up"). The burn layer matches the city being burned.'
+    },
+    {
+        id: 'hittite-capital',
+        title: 'Hittite Capital (Hattusa)',
+        description: 'The massive capital city of the Hittite Empire.',
+        dateDiscovered: '1906',
+        artifactDate: 'c. 1600-1200 BC',
+        location: 'Boghazkoy, Turkey',
+        coordinates: { lat: 40.0194, lng: 34.6153 },
+        bibleReferences: ['Genesis 23:10', '2 Kings 7:6'],
+        significance: 'For centuries, critics claimed the Hittites were a biblical invention. This discovery proved the existence of this major empire mentioned often in Scripture.'
+    },
+    {
+        id: 'black-obelisk',
+        title: 'Black Obelisk of Shalmaneser III',
+        description: 'Depicts Jehu, King of Israel, bowing before the Assyrian king.',
+        dateDiscovered: '1846',
+        artifactDate: 'c. 841 BC',
+        location: 'Nimrud',
+        coordinates: { lat: 36.0988, lng: 43.3283 },
+        bibleReferences: ['2 Kings 9-10'],
+        significance: 'The only contemporary image of an Israelite king ever discovered.'
+    },
+    {
+        id: 'temple-warning',
+        title: 'Temple Warning Inscription',
+        description: 'Stone inscription from the Temple mount warning Gentiles not to enter the inner courts on pain of death.',
+        dateDiscovered: '1871',
+        artifactDate: 'c. 1st Century AD',
+        location: 'Jerusalem',
+        coordinates: { lat: 31.7781, lng: 35.2360 },
+        bibleReferences: ['Acts 21:28', 'Ephesians 2:14'],
+        significance: 'Illustrates the "dividing wall of hostility" mentioned in Ephesians and the charge against Paul in Acts.'
+    },
+    {
+        id: 'mesha-stele',
+        title: 'Mesha Stele (Moabite Stone)',
+        description: 'A black basalt stone where King Mesha of Moab describes his rebellion against Israel, mentioning "Omri king of Israel" and the "vessels of YHWH".',
+        dateDiscovered: '1868',
+        artifactDate: 'c. 840 BC',
+        location: 'Dibon (Modern Dhiban)',
+        coordinates: { lat: 31.5009, lng: 35.7766 },
+        bibleReferences: ['2 Kings 3:4-27'],
+        significance: 'Confirms the existence of King Omri, the revolt of Moab, and contains the earliest extra-biblical reference to the name of God (YHWH).'
+    },
+    {
+        id: 'kurkh-monolith',
+        title: 'Kurkh Monoliths',
+        description: 'Assyrian monoliths describing the Battle of Qarqar, listing "Ahab the Israelite" as a major opponent providing 2,000 chariots.',
+        dateDiscovered: '1861',
+        artifactDate: 'c. 853 BC',
+        location: 'Kurkh, Turkey',
+        coordinates: { lat: 37.8425, lng: 40.6738 },
+        bibleReferences: ['1 Kings 20-22'],
+        significance: 'Establishes King Ahab as a major regional power, contradicting the minimalist view that Israel was a small, insignificant tribe.'
+    },
+    {
+        id: 'jehoiachin-tablets',
+        title: 'Jehoiachin\'s Ration Tablets',
+        description: 'Babylonian cuneiform tablets listing oil rations for "Jehoiachin, king of the land of Judah" and his sons.',
+        dateDiscovered: '1899-1917',
+        artifactDate: 'c. 592 BC',
+        location: 'Babylon',
+        coordinates: { lat: 32.5422, lng: 44.4211 },
+        bibleReferences: ['2 Kings 25:27-30', 'Jeremiah 52:31-34'],
+        significance: 'Directly confirms the biblical account that King Jehoiachin was treated kindly and given a daily allowance by the king of Babylon.'
+    },
+    {
+        id: 'lachish-reliefs',
+        title: 'Lachish Reliefs',
+        description: 'Detailed stone carvings from Sennacherib\'s palace in Nineveh depicting the siege and conquest of the Judean city of Lachish.',
+        dateDiscovered: '1840s',
+        artifactDate: 'c. 700 BC',
+        location: 'Nineveh',
+        coordinates: { lat: 36.3585, lng: 43.1519 },
+        bibleReferences: ['2 Kings 18:13-17', '2 Chronicles 32:9'],
+        significance: 'Provides a "war correspondent\'s" visual record of the biblical siege, matching details like the battering rams and the captivity of the people.'
+    },
+    {
+        id: 'seal-of-baruch',
+        title: 'Seal of Baruch',
+        description: 'A clay bulla (seal impression) reading "Belonging to Berekhyahu son of Neriyahu the Scribe".',
+        dateDiscovered: '1975',
+        artifactDate: 'c. 600 BC',
+        location: 'Jerusalem',
+        coordinates: { lat: 31.7770, lng: 35.2340 },
+        bibleReferences: ['Jeremiah 36:4'],
+        significance: 'Physical signature of Jeremiah\'s scribe, Baruch, proving he was a real historical figure holding the office described in the Bible.'
+    },
+    {
+        id: 'seal-of-hezekiah',
+        title: 'Seal of King Hezekiah',
+        description: 'A clay bulla stamped with "Belonging to Hezekiah [son of] Ahaz king of Judah" featuring a winged sun disk.',
+        dateDiscovered: '2015',
+        artifactDate: 'c. 700 BC',
+        location: 'Jerusalem (Ophel)',
+        coordinates: { lat: 31.7750, lng: 35.2360 },
+        bibleReferences: ['2 Kings 18-20', 'Isaiah 36-39'],
+        significance: 'The personal seal impression of one of Judah\'s greatest kings, found in a controlled excavation near the Temple Mount.'
+    },
+    {
+        id: 'broad-wall',
+        title: 'The Broad Wall',
+        description: 'A massive 7-meter thick defensive wall built in Jerusalem to protect the western hill.',
+        dateDiscovered: '1970s',
+        artifactDate: 'c. 701 BC',
+        location: 'Jerusalem (Jewish Quarter)',
+        coordinates: { lat: 31.7761, lng: 35.2312 },
+        bibleReferences: ['Isaiah 22:10', 'Nehemiah 3:8'],
+        significance: 'Archaeological proof of Hezekiah\'s fortification of Jerusalem against the Assyrians, mentioned specifically by Isaiah.'
+    },
+    {
+        id: 'amarna-letters',
+        title: 'Amarna Letters',
+        description: 'Clay tablets from Canaanite vassal kings to the Egyptian Pharaoh, asking for help against the invading "Habiru".',
+        dateDiscovered: '1887',
+        artifactDate: 'c. 1350 BC',
+        location: 'Amarna, Egypt',
+        coordinates: { lat: 27.6464, lng: 30.9036 },
+        bibleReferences: ['Joshua 10-12', 'Judges 1'],
+        significance: 'Describes the chaotic conditions in Canaan consistent with the Israelite conquest/incursion from the perspective of the Canaanites.'
+    },
+    {
+        id: 'mt-ebal-altar',
+        title: 'Altar on Mt. Ebal',
+        description: 'A massive stone structure found on Mt. Ebal containing kosher animal bones and an earlier circular altar underneath.',
+        dateDiscovered: '1980s',
+        artifactDate: 'c. 1250 BC / 1400 BC',
+        location: 'Mt. Ebal',
+        coordinates: { lat: 32.2285, lng: 35.2755 },
+        bibleReferences: ['Joshua 8:30-35', 'Deuteronomy 27:4-8'],
+        significance: 'Matches the biblical description of Joshua\'s altar. The presence of a "curse tablet" (defixio) found recently further supports early literacy and worship here.'
+    },
+    {
+        id: 'gallio-inscription',
+        title: 'Gallio Inscription',
+        description: 'Fragments of a letter from Emperor Claudius giving the date of Gallio\'s proconsulship in Achaia.',
+        dateDiscovered: '1905',
+        artifactDate: 'c. 52 AD',
+        location: 'Delphi, Greece',
+        coordinates: { lat: 38.4824, lng: 22.5010 },
+        bibleReferences: ['Acts 18:12-17'],
+        significance: 'The Linchpin of Pauline Chronology. Because we know exactly when Gallio ruled, we can date Paul\'s time in Corinth and his epistles.'
+    },
+    {
+        id: 'erastus-inscription',
+        title: 'Erastus Inscription',
+        description: 'A pavement stone in Corinth inscribed "Erastus in return for his aedileship laid [the pavement] at his own expense".',
+        dateDiscovered: '1929',
+        artifactDate: 'c. 1st Century AD',
+        location: 'Corinth',
+        coordinates: { lat: 37.9056, lng: 22.8790 },
+        bibleReferences: ['Romans 16:23', '2 Timothy 4:20'],
+        significance: 'Identifies the high-ranking city official "Erastus" mentioned by Paul, showing that early Christians were not just from the lower classes.'
+    },
+    {
+        id: 'pool-of-bethesda',
+        title: 'Pool of Bethesda',
+        description: 'A large double pool with five covered colonnades (porticoes) discovered deep underground.',
+        dateDiscovered: '19th Century',
+        artifactDate: 'c. 1st Century',
+        location: 'Jerusalem (St. Anne)',
+        coordinates: { lat: 31.7816, lng: 35.2356 },
+        bibleReferences: ['John 5:2'],
+        significance: 'Confirmed the existence of the specific "five porticoes" mentioned by John, a detail once dismissed by critics as allegorical.'
+    },
+    {
+        id: 'synagogue-magdala',
+        title: 'Magdala Synagogue',
+        description: 'A 1st-century synagogue found in the hometown of Mary Magdalene, complete with a unique "Magdala Stone" depicting the Temple.',
+        dateDiscovered: '2009',
+        artifactDate: 'c. 1st Century AD',
+        location: 'Magdala',
+        coordinates: { lat: 32.8573, lng: 35.5238 },
+        bibleReferences: ['Matthew 4:23', 'Luke 8:2'],
+        significance: 'One of the oldest synagogues in Galilee, where Jesus almost certainly taught. The stone shows that Galileans were deeply connected to the Temple.'
+    },
+    {
+        id: 'nazareth-decree',
+        title: 'Nazareth Decree',
+        description: 'A marble tablet bearing an imperial edict from Caesar ordering capital punishment for anyone who moves a body from a tomb.',
+        dateDiscovered: '1878',
+        artifactDate: 'c. 41-54 AD',
+        location: 'Nazareth (Origins)',
+        coordinates: { lat: 32.7019, lng: 35.2971 },
+        bibleReferences: ['Matthew 28:11-15'],
+        significance: 'Suggests that the Roman authorities were reacting to the rumors of Jesus\' resurrection and the "stolen body" theory circulating in the area.'
+    },
+    {
+        id: 'scythopolis',
+        title: 'Beit She\'an / Scythopolis',
+        description: 'The capital of the Decapolis. A massive, well-preserved Roman city displaying the Hellenistic culture Jesus and disciples encountered.',
+        dateDiscovered: 'Excavated 20th Century',
+        artifactDate: 'c. 1st Century AD',
+        location: 'Beit She\'an',
+        coordinates: { lat: 32.5015, lng: 35.5020 },
+        bibleReferences: ['Mark 7:31', 'Matthew 4:25'],
+        significance: 'Provides the visual context for the "Decapolis" region where Jesus ministered. The contrast between this pagan metropolis and humble Galilean villages is striking.'
+    }
+];
+
 export const ERAS: BiblicalEra[] = [
     {
         id: 'creation',

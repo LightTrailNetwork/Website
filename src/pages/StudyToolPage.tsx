@@ -11,6 +11,7 @@ import HarmonyView from '../components/study/HarmonyView';
 import PatternsView from '../components/study/PatternsView';
 import OutlinesView from '../components/study/OutlinesView';
 import ErasView from '../components/study/ErasView';
+import ArchaeologyView from '../components/study/ArchaeologyView';
 import GenericStudyView from '../components/study/GenericStudyView';
 
 export default function StudyToolPage() {
@@ -42,6 +43,8 @@ export default function StudyToolPage() {
                 return <OutlinesView />;
             case 'eras':
                 return <ErasView />;
+            case 'archaeology':
+                return <ArchaeologyView />;
             default:
                 return (
                     <div className="text-center py-20">

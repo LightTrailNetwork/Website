@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-    BookOpen, Users, MapPin, Lightbulb,
+    BookOpen, Users, MapPin, Lightbulb, Pickaxe,
     ArrowRightLeft, GitMerge, Combine, Repeat,
     Hourglass, ListTree, History, Library, ArrowRight, ShieldQuestion, Scale
 } from 'lucide-react';
@@ -64,6 +64,7 @@ export default function BibleStudy() {
                 { id: 'chronology', title: 'Chronological Timeline', description: 'Events in the order they occurred.', icon: History, path: '/bible/study/timeline', status: 'ready' },
                 { id: 'structure', title: 'Book Outlines', description: 'Literary structure and chiasms of each book.', icon: ListTree, path: '/bible/study/outlines', status: 'ready' },
                 { id: 'eras', title: 'Biblical Eras', description: 'The grand epochs of redemptive history.', icon: Hourglass, path: '/bible/study/eras', status: 'ready' },
+                { id: 'archaeology', title: 'Archaeological Evidence', description: 'Physical proof confirming the biblical record.', icon: Pickaxe, path: '/bible/study/archaeology', status: 'ready' },
             ]
         }
     ];
