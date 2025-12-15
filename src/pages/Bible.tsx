@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { BookOpen, Brain, ChevronRight, Search, Book, X, List, Clock, ChevronLeft } from 'lucide-react';
-import { Link, Routes, Route, useNavigate } from 'react-router-dom';
+import { Link, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import BibleReader from '../components/BibleReader';
 import BibleBookSummary from '../components/BibleBookSummary';
 import MemorizationHub from '../components/MemorizationHub';
@@ -20,8 +20,12 @@ import { BIBLE_BOOKS } from '../data/bibleBookConstants';
 
 function BibleHome() {
     const navigate = useNavigate();
+    const location = useLocation();
     const [books, setBooks] = useState<BibleBook[]>([]);
-    const [activeTab, setActiveTab] = useState<'chapters' | 'mnemonics'>('chapters');
+
+    // Derive active tab from URL hash
+    const activeTab = location.hash === '#acrostics' ? 'mnemonics' : 'chapters';
+
     const [bookSearchQuery, setBookSearchQuery] = useState('');
     const [bookFilter, setBookFilter] = useState<'ALL' | 'OT' | 'NT' | 'ALPHA' | 'CHRONO'>('ALL');
 
@@ -116,7 +120,7 @@ function BibleHome() {
                 <div className="flex justify-center">
                     <div className="inline-flex items-center p-1 rounded-xl bg-secondary/10 border border-border">
                         <button
-                            onClick={() => setActiveTab('chapters')}
+                            onClick={() => navigate('/bible/read')}
                             className={`px-6 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${activeTab === 'chapters'
                                 ? 'bg-background shadow-sm text-foreground ring-1 ring-border'
                                 : 'text-muted-foreground hover:text-foreground'
@@ -126,7 +130,7 @@ function BibleHome() {
                             Book List
                         </button>
                         <button
-                            onClick={() => setActiveTab('mnemonics')}
+                            onClick={() => navigate('#acrostics')}
                             className={`px-6 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${activeTab === 'mnemonics'
                                 ? 'bg-background shadow-sm text-foreground ring-1 ring-border'
                                 : 'text-muted-foreground hover:text-foreground'
