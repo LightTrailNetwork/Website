@@ -64,8 +64,8 @@ export default function Tradition() {
         {/* Left Column - Pyramid */}
         <div className="flex flex-col items-center space-y-6">
           <div className="w-full bg-card border border-border rounded-xl p-6 lg:p-8 shadow-sm">
-            <div className="flex items-center justify-between mb-6 px-2">
-              <h2 className="text-xl font-semibold text-foreground flex flex-col gap-1">
+            <div className="flex flex-col items-center gap-4 mb-6 px-2 sm:flex-row sm:justify-between">
+              <h2 className="text-xl font-semibold text-foreground flex flex-col gap-1 items-center sm:items-start text-center sm:text-left">
                 <div className="flex items-center gap-2">
                   <BookOpen className="w-5 h-5 text-primary" />
                   The Passage Pyramid
@@ -74,10 +74,10 @@ export default function Tradition() {
               </h2>
               <button
                 onClick={() => setShowWords(!showWords)}
-                className="text-xs font-medium px-3 py-1.5 rounded-full bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-colors border border-border flex items-center gap-2"
+                className="text-xs font-medium px-3 py-1.5 rounded-full bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-colors border border-border flex items-center gap-2 whitespace-nowrap flex-shrink-0"
               >
                 <span>{showWords ? "Showing Words" : "Showing Key"}</span>
-                <div className={`w-8 h-4 rounded-full p-0.5 transition-colors ${showWords ? "bg-primary" : "bg-muted-foreground/30"}`}>
+                <div className={`w-8 h-4 rounded-full p-0.5 transition-colors shrink-0 ${showWords ? "bg-primary" : "bg-muted-foreground/30"}`}>
                   <div className={`w-3 h-3 rounded-full bg-white shadow-sm transition-transform ${showWords ? "translate-x-4" : "translate-x-0"}`} />
                 </div>
               </button>
