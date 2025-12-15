@@ -2643,6 +2643,278 @@ export const JEWISH_FEASTS: JewishFeast[] = [
     }
 ];
 
+
+export interface MessianicProphecy {
+    id: string;
+    title: string;
+    topic: 'Birth' | 'Ministry' | 'Passion' | 'Resurrection' | 'Kingship';
+    prophecy: {
+        verse: string;
+        text: string;
+        source: string; // e.g. "Isaiah"
+    };
+    fulfillment: {
+        verse: string;
+        text: string;
+    };
+    probability?: string;
+}
+
+export const MESSIANIC_PROPHECIES: MessianicProphecy[] = [
+    // --- Birth ---
+    {
+        id: 'virgin-birth',
+        title: 'Born of a Virgin',
+        topic: 'Birth',
+        prophecy: {
+            verse: 'Isaiah 7:14',
+            text: 'Therefore the Lord himself will give you a sign. Behold, the virgin shall conceive and bear a son, and shall call his name Immanuel.',
+            source: 'Isaiah'
+        },
+        fulfillment: {
+            verse: 'Matthew 1:22-23',
+            text: 'All this took place to fulfill what the Lord had spoken by the prophet: "Behold, the virgin shall conceive..."'
+        }
+    },
+    {
+        id: 'bethlehem',
+        title: 'Born in Bethlehem',
+        topic: 'Birth',
+        prophecy: {
+            verse: 'Micah 5:2',
+            text: 'But you, O Bethlehem Ephrathah... from you shall come forth for me one who is to be ruler in Israel, whose coming forth is from of old, from ancient days.',
+            source: 'Micah'
+        },
+        fulfillment: {
+            verse: 'Matthew 2:1',
+            text: 'Now after Jesus was born in Bethlehem of Judea in the days of Herod the king...'
+        },
+        probability: 'Micah pinpointed the exact village out of thousands in Judah.'
+    },
+    {
+        id: 'tribe-judah',
+        title: 'From the Tribe of Judah',
+        topic: 'Birth',
+        prophecy: {
+            verse: 'Genesis 49:10',
+            text: 'The scepter shall not depart from Judah, nor the ruler\'s staff from between his feet, until tribute comes to him.',
+            source: 'Jacob'
+        },
+        fulfillment: {
+            verse: 'Hebrews 7:14',
+            text: 'For it is evident that our Lord was descended from Judah...'
+        }
+    },
+
+    // --- Ministry ---
+    {
+        id: 'preceded-messenger',
+        title: 'Preceded by a Messenger',
+        topic: 'Ministry',
+        prophecy: {
+            verse: 'Isaiah 40:3',
+            text: 'A voice cries: "In the wilderness prepare the way of the LORD; make straight in the desert a highway for our God."',
+            source: 'Isaiah'
+        },
+        fulfillment: {
+            verse: 'Matthew 3:1-3',
+            text: 'In those days John the Baptist came preaching in the wilderness of Judea... For this is he who was spoken of by the prophet Isaiah.'
+        }
+    },
+    {
+        id: 'ministry-galilee',
+        title: 'Ministry in Galilee',
+        topic: 'Ministry',
+        prophecy: {
+            verse: 'Isaiah 9:1-2',
+            text: 'In the former time he brought into contempt the land of Zebulun... but in the latter time he has made glorious the way of the sea... Galilee of the nations.',
+            source: 'Isaiah'
+        },
+        fulfillment: {
+            verse: 'Matthew 4:12-16',
+            text: 'He withdrew into Galilee... so that what was spoken by the prophet Isaiah might be fulfilled.'
+        }
+    },
+    {
+        id: 'parables',
+        title: 'Teaching in Parables',
+        topic: 'Ministry',
+        prophecy: {
+            verse: 'Psalm 78:2',
+            text: 'I will open my mouth in a parable; I will utter dark sayings from of old.',
+            source: 'Asaph'
+        },
+        fulfillment: {
+            verse: 'Matthew 13:34-35',
+            text: 'All these things Jesus said to the crowds in parables... to fulfill what was spoken by the prophet.'
+        }
+    },
+
+    // --- Passion (Death) ---
+    {
+        id: 'triumphal-entry',
+        title: 'The King on a Donkey',
+        topic: 'Passion',
+        prophecy: {
+            verse: 'Zechariah 9:9',
+            text: 'Rejoice greatly, O daughter of Zion!... Behold, your king is coming to you; righteous and having salvation is he, humble and mounted on a donkey.',
+            source: 'Zechariah'
+        },
+        fulfillment: {
+            verse: 'Matthew 21:4-5',
+            text: 'This took place to fulfill what was spoken by the prophet...'
+        }
+    },
+    {
+        id: 'betrayal-silver',
+        title: 'Betrayed for 30 Pieces of Silver',
+        topic: 'Passion',
+        prophecy: {
+            verse: 'Zechariah 11:12',
+            text: 'Then I said to them, "If it seems good to you, give me my wages..." So they weighed out as my wages thirty pieces of silver.',
+            source: 'Zechariah'
+        },
+        fulfillment: {
+            verse: 'Matthew 26:15',
+            text: 'They paid him thirty pieces of silver.'
+        }
+    },
+    {
+        id: 'pierced-hands',
+        title: 'Pierced Hands and Feet',
+        topic: 'Passion',
+        prophecy: {
+            verse: 'Psalm 22:16',
+            text: 'For dogs encompass me; a company of evildoers encircles me; they have pierced my hands and feet.',
+            source: 'David'
+        },
+        fulfillment: {
+            verse: 'John 20:25',
+            text: '"Unless I see in his hands the mark of the nails..." (Implied crucifixion)'
+        }
+    },
+    {
+        id: 'cast-lots',
+        title: 'Lots Cast for Clothing',
+        topic: 'Passion',
+        prophecy: {
+            verse: 'Psalm 22:18',
+            text: 'They divide my garments among them, and for my clothing they cast lots.',
+            source: 'David'
+        },
+        fulfillment: {
+            verse: 'John 19:24',
+            text: 'So they said to one another, "Let us not tear it, but cast lots for it to see whose it shall be."'
+        }
+    },
+    {
+        id: 'not-bone-broken',
+        title: 'No Bone Broken',
+        topic: 'Passion',
+        prophecy: {
+            verse: 'Psalm 34:20',
+            text: 'He keeps all his bones; not one of them is broken.',
+            source: 'David'
+        },
+        fulfillment: {
+            verse: 'John 19:33-36',
+            text: ' But when they came to Jesus and saw that he was already dead, they did not break his legs.'
+        }
+    },
+    {
+        id: 'burial-rich',
+        title: 'Buried with the Rich',
+        topic: 'Passion',
+        prophecy: {
+            verse: 'Isaiah 53:9',
+            text: 'And they made his grave with the wicked and with a rich man in his death, although he had done no violence.',
+            source: 'Isaiah'
+        },
+        fulfillment: {
+            verse: 'Matthew 27:57-60',
+            text: 'There came a rich man from Arimathea, named Joseph... he took the body... and laid it in his own new tomb.'
+        }
+    },
+
+    // --- Resurrection ---
+    {
+        id: 'resurrection',
+        title: 'Resurrection from the Dead',
+        topic: 'Resurrection',
+        prophecy: {
+            verse: 'Psalm 16:10',
+            text: 'For you will not abandon my soul to Sheol, or let your holy one see corruption.',
+            source: 'David'
+        },
+        fulfillment: {
+            verse: 'Acts 2:31',
+            text: 'He foresaw and spoke about the resurrection of the Christ, that he was not abandoned to Hades, nor did his flesh see corruption.'
+        }
+    },
+    {
+        id: 'ascension',
+        title: 'Ascension to the Right Hand',
+        topic: 'Resurrection',
+        prophecy: {
+            verse: 'Psalm 110:1',
+            text: 'The LORD says to my Lord: "Sit at my right hand, until I make your enemies your footstool."',
+            source: 'David'
+        },
+        fulfillment: {
+            verse: 'Acts 2:33',
+            text: 'Being therefore exalted at the right hand of God...'
+        }
+    }
+];
+
+export interface Miracle {
+    id: string;
+    title: string;
+    category: 'Nature' | 'Healing' | 'Resurrection' | 'Exorcism' | 'Provision';
+    location: string;
+    scripture: string;
+    description: string;
+}
+
+export const MIRACLES: Miracle[] = [
+    // Nature
+    { id: 'water-wine', title: 'Water into Wine', category: 'Nature', location: 'Cana', scripture: 'John 2:1-11', description: 'Jesus transforms water into the finest wine at a wedding, manifesting His glory.' },
+    { id: 'calm-storm', title: 'Calming the Storm', category: 'Nature', location: 'Sea of Galilee', scripture: 'Matthew 8:23-27', description: 'Jesus rebukes the wind and waves, demonstrating authority over creation.' },
+    { id: 'walk-water', title: 'Walking on Water', category: 'Nature', location: 'Sea of Galilee', scripture: 'Matthew 14:22-33', description: 'Jesus defies physics to meet His disciples, and Peter joins Him briefly.' },
+    { id: 'fig-tree', title: 'Withered Fig Tree', category: 'Nature', location: 'Mount of Olives', scripture: 'Matthew 21:18-22', description: 'A prophetic sign of judgment upon fruitless religion.' },
+
+    // Provision
+    { id: 'feed-5000', title: 'Feeding the 5,000', category: 'Provision', location: 'Bethsaida', scripture: 'John 6:1-14', description: 'Multiplying five loaves and two fish to feed a multitude.' },
+    { id: 'feed-4000', title: 'Feeding the 4,000', category: 'Provision', location: 'Decapolis', scripture: 'Mark 8:1-9', description: 'Another miraculous multiplication for a mostly Gentile crowd.' },
+    { id: 'large-catch', title: 'The Great Catch of Fish', category: 'Provision', location: 'Gennesaret', scripture: 'Luke 5:1-11', description: 'An overwhelming catch that leads Peter to leave everything and follow Jesus.' },
+    { id: 'coin-mouth', title: 'Coin in the Fish\'s Mouth', category: 'Provision', location: 'Capernaum', scripture: 'Matthew 17:24-27', description: 'Supernatural provision to pay the temple tax without offense.' },
+
+    // Healing
+    { id: 'official-son', title: 'Official\'s Son', category: 'Healing', location: 'Cana/Capernaum', scripture: 'John 4:46-54', description: 'A long-distance healing spoken from Cana, effective instantly in Capernaum.' },
+    { id: 'peter-mother', title: 'Peter\'s Mother-in-Law', category: 'Healing', location: 'Capernaum', scripture: 'Matthew 8:14-15', description: 'Instant healing from a high fever, enabling her to serve immediately.' },
+    { id: 'leper', title: 'Cleansing a Leper', category: 'Healing', location: 'Galilee', scripture: 'Mark 1:40-45', description: 'Jesus touches the untouchable and restores him to community.' },
+    { id: 'paralytic', title: 'The Paralytic through the Roof', category: 'Healing', location: 'Capernaum', scripture: 'Mark 2:1-12', description: 'Forgiving sins and healing the body to prove His authority.' },
+    { id: 'withered-hand', title: 'Man with Withered Hand', category: 'Healing', location: 'Capernaum', scripture: 'Matthew 12:9-13', description: 'Healing on the Sabbath, challenging the legalism of the Pharisees.' },
+    { id: 'centurion', title: 'Centurion\'s Servant', category: 'Healing', location: 'Capernaum', scripture: 'Luke 7:1-10', description: 'Healing granted in response to great faith from a Gentile.' },
+    { id: 'blood-issue', title: 'Woman with Issue of Blood', category: 'Healing', location: 'Capernaum', scripture: 'Mark 5:25-34', description: 'Faith expressed through a touch of His garment heals a 12-year affliction.' },
+    { id: 'deaf-mute', title: 'Deaf and Mute Man', category: 'Healing', location: 'Decapolis', scripture: 'Mark 7:31-37', description: '"Ephphatha!" (Be opened) restores hearing and plain speech.' },
+    { id: 'blind-bethsaida', title: 'Blind Man at Bethsaida', category: 'Healing', location: 'Bethsaida', scripture: 'Mark 8:22-26', description: 'A two-stage healing ("I see men like trees walking").' },
+    { id: 'man-born-blind', title: 'Man Born Blind', category: 'Healing', location: 'Jerusalem', scripture: 'John 9:1-41', description: 'Healing that provokes a national debate on spiritual blindness.' },
+    { id: 'ten-lepers', title: 'Ten Lepers', category: 'Healing', location: 'Samaria/Galilee border', scripture: 'Luke 17:11-19', description: 'Ten are cleansed, but only one (a Samaritan) returns to give thanks.' },
+    { id: 'malchus', title: 'Ear of Malchus', category: 'Healing', location: 'Gethsemane', scripture: 'Luke 22:50-51', description: 'Healing an enemy injured by a disciple during the arrest.' },
+
+    // Exorcism
+    { id: 'synagogue-demon', title: 'Demon in Synagogue', category: 'Exorcism', location: 'Capernaum', scripture: 'Mark 1:21-28', description: 'Authority over unclean spirits recognized even in the place of worship.' },
+    { id: 'legion', title: 'Legion (Gerasene Demoniac)', category: 'Exorcism', location: 'Gadarenes', scripture: 'Mark 5:1-20', description: 'Casting a legion of demons into a herd of pigs, restoring a wild man.' },
+    { id: 'syrophoenician', title: 'Syrophoenician\'s Daughter', category: 'Exorcism', location: 'Tyre/Sidon', scripture: 'Mark 7:24-30', description: 'Deliverance granted after a test of faith ("Even the dogs eat the crumbs").' },
+    { id: 'boy-epileptic', title: 'Boy with Unclean Spirit', category: 'Exorcism', location: 'Near Mt. Tabor', scripture: 'Mark 9:14-29', description: 'Deliverance that follows the Transfiguration ("This kind cannot be driven out by anything but prayer").' },
+
+    // Resurrection
+    { id: 'widow-son', title: 'Widow\'s Son at Nain', category: 'Resurrection', location: 'Nain', scripture: 'Luke 7:11-17', description: 'Compassion leads Jesus to interrupt a funeral procession and raise the dead.' },
+    { id: 'jairus-daughter', title: 'Jairus\' Daughter', category: 'Resurrection', location: 'Capernaum', scripture: 'Mark 5:21-43', description: 'Raising a 12-year-old girl ("Talitha cumi").' },
+    { id: 'lazarus', title: 'Raising of Lazarus', category: 'Resurrection', location: 'Bethany', scripture: 'John 11:1-44', description: 'Calling Lazarus from the tomb after four days, prefiguring His own resurrection.' }
+];
+
 export const ERAS: BiblicalEra[] = [
     {
         id: 'creation',

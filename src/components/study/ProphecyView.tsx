@@ -1,91 +1,105 @@
-import { ArrowRight, BookOpen, Quote } from 'lucide-react';
-import { PROPHECIES } from '../../data/studyData';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
+import { GitMerge, ArrowRight, Quote, BookOpen, Scale } from 'lucide-react';
+import { MESSIANIC_PROPHECIES, type MessianicProphecy } from '../../data/studyData';
 import VerseLink from './VerseLink';
 
 export default function ProphecyView() {
+    // Group by topic
+    const grouped = MESSIANIC_PROPHECIES.reduce((acc, p) => {
+        if (!acc[p.topic]) acc[p.topic] = [];
+        acc[p.topic]?.push(p);
+        return acc;
+    }, {} as Record<string, MessianicProphecy[]>);
+
+    const topics = ['Birth', 'Ministry', 'Passion', 'Resurrection'] as const;
+
     return (
-        <div className="space-y-8 animate-in fade-in duration-500">
+        <div className="space-y-12 animate-in fade-in duration-500 pb-20">
             {/* Header */}
-            <div className="bg-gradient-to-r from-amber-500/10 to-orange-500/10 rounded-2xl p-8 border border-amber-500/20">
-                <h2 className="text-3xl font-bold text-amber-700 dark:text-amber-500 mb-4">Prophecy & Fulfillment</h2>
-                <p className="text-lg text-muted-foreground leading-relaxed max-w-3xl">
-                    "For no matter how many promises God has made, they are 'Yes' in Christ." - <VerseLink reference="2 Corinthians 1:20" />
-                    <br /><br />
-                    Explore the divine thread of promise and realization that runs through the Scriptures, connecting the Old Testament to the New.
-                </p>
+            <div className="bg-gradient-to-r from-purple-500/10 to-indigo-500/10 rounded-2xl p-8 border border-purple-500/20">
+                <div className="flex items-start justify-between">
+                    <div>
+                        <h2 className="text-3xl font-bold text-purple-700 dark:text-purple-400 mb-4 flex items-center gap-3">
+                            <GitMerge className="w-8 h-8" />
+                            Messianic Prophecies
+                        </h2>
+                        <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl">
+                            Witness the mathematical impossibility of one man fulfilling these ancient promises. The thread of redemption woven through history.
+                        </p>
+                    </div>
+                </div>
             </div>
 
-            {/* List */}
-            <div className="grid gap-6">
-                {PROPHECIES.map((item) => (
-                    <div key={item.id} className="group relative bg-card border border-border hover:border-amber-500/50 rounded-xl overflow-hidden transition-all duration-300 hover:shadow-lg">
-                        {/* Connecting Line (Desktop) */}
-                        <div className="hidden md:block absolute left-1/2 top-4 bottom-4 w-px bg-gradient-to-b from-amber-500/20 via-amber-500/50 to-amber-500/20 -translate-x-1/2" />
-
-                        {/* Connecting Icon (Desktop) */}
-                        <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-background border border-amber-500/30 rounded-full items-center justify-center text-amber-500 shadow-sm z-10">
-                            <ArrowRight className="w-4 h-4" />
+            {/* Content */}
+            <div className="space-y-16">
+                {topics.map(topic => (
+                    <div key={topic} className="space-y-6">
+                        <div className="flex items-center gap-3 border-b border-border pb-2">
+                            <div className="bg-purple-100 dark:bg-purple-900/30 p-2 rounded-lg">
+                                <BookOpen className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                            </div>
+                            <h3 className="text-2xl font-bold text-foreground">{topic}</h3>
                         </div>
 
-                        <div className="grid md:grid-cols-2 gap-8 p-6 relative z-0">
-                            {/* Old Testament Promise */}
-                            <div className="space-y-4">
-                                <div className="flex items-center gap-2 mb-2">
-                                    <span className="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400">
-                                        The Promise
-                                    </span>
-                                    <VerseLink
-                                        book={item.otReference.book}
-                                        chapter={item.otReference.chapter}
-                                        verse={item.otReference.verse}
-                                        className="text-xs font-mono text-muted-foreground"
-                                    />
-                                </div>
-                                <div className="relative pl-6 border-l-2 border-amber-500/20">
-                                    <Quote className="absolute -left-2 top-0 w-4 h-4 text-amber-500/40 bg-card" />
-                                    <p className="text-lg font-serif text-foreground/90 italic leading-relaxed">
-                                        "{item.otReference.text}"
-                                    </p>
-                                </div>
-                            </div>
+                        <div className="grid gap-6">
+                            {grouped[topic]?.map(item => (
+                                <div key={item.id} className="bg-card rounded-xl border border-border shadow-sm overflow-hidden group hover:border-purple-500/30 transition-all duration-300">
+                                    <div className="grid md:grid-cols-2 gap-0 divide-y md:divide-y-0 md:divide-x divide-border">
 
-                            {/* Mobile Connector */}
-                            <div className="md:hidden flex justify-center py-2">
-                                <ArrowRight className="w-6 h-6 text-amber-500/50 rotate-90" />
-                            </div>
+                                        {/* Prophecy (OT) */}
+                                        <div className="p-6 relative bg-secondary/10">
+                                            <div className="absolute top-4 left-4 text-xs font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-2">
+                                                <Quote className="w-3 h-3" />
+                                                The Promise (OT)
+                                            </div>
+                                            <div className="mt-6 space-y-4">
+                                                <blockquote className="text-lg font-serif italic text-foreground/90 leading-relaxed border-l-4 border-purple-500/30 pl-4 py-1">
+                                                    "{item.prophecy.text}"
+                                                </blockquote>
+                                                <div className="flex justify-between items-center pt-2">
+                                                    <span className="text-sm font-semibold text-purple-600 dark:text-purple-400">
+                                                        — {item.prophecy.source}
+                                                    </span>
+                                                    <VerseLink
+                                                        reference={item.prophecy.verse}
+                                                        className="text-xs bg-background border border-border px-2 py-1 rounded shadow-sm hover:shadow transition-shadow"
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
 
-                            {/* New Testament Fulfillment */}
-                            <div className="space-y-4">
-                                <div className="flex items-center gap-2 mb-2 md:justify-end">
-                                    <span className="md:order-2 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400">
-                                        The Fulfillment
-                                    </span>
-                                    <VerseLink
-                                        book={item.ntFulfillment.book}
-                                        chapter={item.ntFulfillment.chapter}
-                                        verse={item.ntFulfillment.verse}
-                                        className="md:order-1 text-xs font-mono text-muted-foreground"
-                                    />
-                                </div>
-                                <div className="relative pl-6 md:pl-0 md:pr-6 md:border-l-0 md:border-r-2 md:border-emerald-500/20 md:text-right">
-                                    <Quote className="absolute -left-2 md:left-auto md:-right-2 top-0 w-4 h-4 text-emerald-500/40 bg-card" />
-                                    <p className="text-lg font-serif text-foreground/90 italic leading-relaxed">
-                                        "{item.ntFulfillment.text}"
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
+                                        {/* Fulfillment (NT) */}
+                                        <div className="p-6 relative bg-card">
+                                            <div className="absolute top-4 left-4 text-xs font-bold text-emerald-600 dark:text-emerald-500 uppercase tracking-wider flex items-center gap-2">
+                                                <ArrowRight className="w-3 h-3" />
+                                                Fulfillment (NT)
+                                            </div>
+                                            <div className="mt-6 space-y-4">
+                                                <blockquote className="text-lg font-medium text-foreground/90 leading-relaxed border-l-4 border-emerald-500/30 pl-4 py-1">
+                                                    "{item.fulfillment.text}"
+                                                </blockquote>
+                                                <div className="flex justify-end pt-2">
+                                                    <VerseLink
+                                                        reference={item.fulfillment.verse}
+                                                        className="text-xs bg-secondary border border-border px-2 py-1 rounded shadow-sm hover:shadow transition-shadow"
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
 
-                        {/* Footer Context */}
-                        <div className="bg-secondary/5 border-t border-border p-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                            <div>
-                                <h3 className="font-bold text-foreground">{item.title}</h3>
-                                <p className="text-sm text-muted-foreground">{item.description}</p>
-                            </div>
-                            <span className="text-xs px-2 py-1 bg-background rounded-full border border-border text-muted-foreground whitespace-nowrap">
-                                Category: {item.category}
-                            </span>
+                                    </div>
+
+                                    {/* Probability / Note */}
+                                    {item.probability && (
+                                        <div className="bg-purple-50 dark:bg-purple-900/10 px-6 py-3 border-t border-purple-100 dark:border-purple-900/30 flex items-start gap-2">
+                                            <Scale className="w-4 h-4 text-purple-500 mt-1 shrink-0" />
+                                            <p className="text-sm text-purple-800 dark:text-purple-300">
+                                                <span className="font-semibold">Note:</span> {item.probability}
+                                            </p>
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
                         </div>
                     </div>
                 ))}
