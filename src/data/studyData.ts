@@ -3430,6 +3430,144 @@ export const PARABLES: Parable[] = [
     }
 ];
 
+export interface Translation {
+    id: string;
+    name: string;
+    acronym: string;
+    year: number;
+    type: 'Formal Equivalence' | 'Optimal Equivalence' | 'Dynamic Equivalence' | 'Paraphrase';
+    textBase: 'Critical Text' | 'Textus Receptus' | 'Majority Text';
+    readingLevel: string;
+    description: string;
+    strengths: string;
+    weaknesses: string;
+    verseSample: string; // John 3:16 or similar
+}
+
+export const TRANSLATIONS: Translation[] = [
+    {
+        id: 'kjv',
+        name: 'King James Version',
+        acronym: 'KJV',
+        year: 1611,
+        type: 'Formal Equivalence',
+        textBase: 'Textus Receptus',
+        readingLevel: '12th Grade',
+        description: 'The standard English Bible for 400 years. Known for its majesty, poetic cadence, and influence on the English language.',
+        strengths: 'Literary beauty, memorability, widespread usage, historical importance.',
+        weaknesses: 'Archaic language (thee/thou), based on younger/fewer manuscripts (TR).',
+        verseSample: 'For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.'
+    },
+    {
+        id: 'nasb',
+        name: 'New American Standard Bible',
+        acronym: 'NASB',
+        year: 1995, // 2020 exists but 1995 is the main standard reference
+        type: 'Formal Equivalence',
+        textBase: 'Critical Text',
+        readingLevel: '11th Grade',
+        description: 'Widely considered the most accurate word-for-word translation in modern English. Often used for deep study.',
+        strengths: 'Extreme fidelity to Greek/Hebrew grammar and word order.',
+        weaknesses: 'Can be wooden or disjointed in English style.',
+        verseSample: 'For God so loved the world, that He gave His only begotten Son, that whoever believes in Him shall not perish, but have eternal life.'
+    },
+    {
+        id: 'esv',
+        name: 'English Standard Version',
+        acronym: 'ESV',
+        year: 2001,
+        type: 'Formal Equivalence',
+        textBase: 'Critical Text',
+        readingLevel: '8th Grade',
+        description: 'An "essentially literal" translation that seeks to capture the precise wording of the original text and the personal style of each Bible writer.',
+        strengths: 'Balances accuracy with readability, widely used in Reformed/Evangelical circles.',
+        weaknesses: 'Can be slightly awkward in phrasing to maintain literalness.',
+        verseSample: 'For God so loved the world, that he gave his only Son, that whoever believes in him should not perish but have eternal life.'
+    },
+    {
+        id: 'nkjv',
+        name: 'New King James Version',
+        acronym: 'NKJV',
+        year: 1982,
+        type: 'Formal Equivalence',
+        textBase: 'Textus Receptus',
+        readingLevel: '7th Grade',
+        description: 'Updates the vocabulary and grammar of the KJV while preserving the classic style and the Textus Receptus text base.',
+        strengths: 'Easier to read than KJV but keeps the familiar flow. Excellent footnotes showing NU (Critical) and M (Majority) variations.',
+        weaknesses: 'Retains some awkward sentence structures from KJV.',
+        verseSample: 'For God so loved the world that He gave His only begotten Son, that whoever believes in Him should not perish but have everlasting life.'
+    },
+    {
+        id: 'csb',
+        name: 'Christian Standard Bible',
+        acronym: 'CSB',
+        year: 2017,
+        type: 'Optimal Equivalence',
+        textBase: 'Critical Text',
+        readingLevel: '6th Grade',
+        description: 'Strikes a balance between word-for-word accuracy and thought-for-thought readability (Optimal Equivalence).',
+        strengths: 'Very readable without sacrificing too much detail. Good for preaching and reading.',
+        weaknesses: 'Newer history, less "traditional" ring.',
+        verseSample: 'For God loved the world in this way: He gave his one and only Son, so that everyone who believes in him will not perish but have eternal life.'
+    },
+    {
+        id: 'niv',
+        name: 'New International Version',
+        acronym: 'NIV',
+        year: 2011, // originally 1978
+        type: 'Dynamic Equivalence',
+        textBase: 'Critical Text',
+        readingLevel: '7th Grade',
+        description: 'The world\'s best-selling modern English Bible. Focuses on translating the *thought* of the original authors into clear English.',
+        strengths: 'Excellent flow, very accessible, broad denominational support.',
+        weaknesses: 'Interpretive choices are more baked into the text (e.g. "flesh" -> "sinful nature").',
+        verseSample: 'For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life.'
+    },
+    {
+        id: 'nlt',
+        name: 'New Living Translation',
+        acronym: 'NLT',
+        year: 1996,
+        type: 'Dynamic Equivalence',
+        textBase: 'Critical Text',
+        readingLevel: '6th Grade',
+        description: 'Originally a paraphrase (Living Bible), now a true dynamic translation. extremely readable and communicative.',
+        strengths: 'Makes complex passages feel conversational and easy to grasp.',
+        weaknesses: 'Sacrifices some detail and metaphor for clarity.',
+        verseSample: 'For this is how God loved the world: He gave his one and only Son, so that everyone who believes in him will not perish but have eternal life.'
+    },
+    {
+        id: 'msg',
+        name: 'The Message',
+        acronym: 'MSG',
+        year: 2002,
+        type: 'Paraphrase',
+        textBase: 'Critical Text',
+        readingLevel: '6th Grade',
+        description: 'A contemporary paraphrase by Eugene Peterson designed to sound like the language we use today.',
+        strengths: 'Fresh perspective, shocking clarity in familiar passages.',
+        weaknesses: 'Not suitable for doctrinal study; heavily interpretive.',
+        verseSample: 'This is how much God loved the world: He gave his Son, his one and only Son. And this is why: so that no one need be destroyed; by believing in him, anyone can have a whole and lasting life.'
+    }
+];
+
+export const TEXT_FAMILIES = [
+    {
+        id: 'byzantine',
+        title: 'Majority Text (Byzantine)',
+        description: 'Based on the vast majority of existing manuscripts (over 5,000), mostly dated from the 9th-15th centuries. Associated with the Byzantine Empire.',
+        characteristics: ['Fuller readings (harmonization)', 'Smoother grammar', 'Traditional endings included'],
+        representedBy: ['Textus Receptus (KJV/NKJV)', 'Robinson-Pierpont', 'Eastern Orthodox Text']
+    },
+    {
+        id: 'alexandrian',
+        title: 'Critical Text (Alexandrian)',
+        description: 'Based on the oldest surviving manuscripts (e.g. Codex Sinaiticus, Vaticanus), dating from the 2nd-4th centuries. Favored by modern scholars because they are closer in time to the originals.',
+        characteristics: ['Shorter readings', 'Differences in phraseology', 'Rejects some traditional passages (e.g. Mark 16:9-20 marked as added)'],
+        representedBy: ['Nestle-Aland', 'UBS Greek NT', 'Most modern Bibles (NASB, ESV, NIV, CSB)']
+    }
+];
+
 export const ERAS: BiblicalEra[] = [
     {
         id: 'creation',

@@ -16,6 +16,7 @@ import FeastsView from '../components/study/FeastsView';
 import MiraclesView from '../components/study/MiraclesView';
 import ParablesView from '../components/study/ParablesView';
 import ApostlesView from '../components/study/ApostlesView';
+import TranslationsView from '../components/study/TranslationsView';
 import GenericStudyView from '../components/study/GenericStudyView';
 import DivineNamesView from '../components/study/DivineNamesView';
 
@@ -58,6 +59,8 @@ export default function StudyToolPage() {
                 return <MiraclesView />;
             case 'parables':
                 return <ParablesView />;
+            case 'translations':
+                return <TranslationsView />;
             case 'apostles':
                 return <ApostlesView />;
             case 'people':
