@@ -34,6 +34,7 @@ export default function BibleStudy() {
             subtitle: 'Time & Place',
             color: 'emerald',
             tools: [
+                { id: 'history', title: 'Church History', description: 'Creeds, Councils, Denominations & Timeline.', icon: History, path: '/bible/study/history', status: 'ready' },
                 { id: 'timeline', title: 'Chronological Timeline', description: 'Events in the order they occurred.', icon: History, path: '/bible/study/timeline', status: 'ready' },
                 { id: 'eras', title: 'Biblical Eras', description: 'The grand epochs of redemptive history.', icon: Hourglass, path: '/bible/study/eras', status: 'ready' },
                 { id: 'archaeology', title: 'Archaeological Evidence', description: 'Physical proof confirming the biblical record.', icon: Pickaxe, path: '/bible/study/archaeology', status: 'ready' },
