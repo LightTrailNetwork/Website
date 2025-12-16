@@ -10,9 +10,10 @@ interface WorshipCardProps {
     onToggle: (taskId: string | string[]) => void;
     readContent?: string;
     isRestWeek?: boolean;
+    isShowOptional?: boolean;
 }
 
-export default function WorshipCard({ completedTasks, onToggle, readContent, isRestWeek }: WorshipCardProps) {
+export default function WorshipCard({ completedTasks, onToggle, readContent, isRestWeek, isShowOptional }: WorshipCardProps) {
     const readLink = readContent ? getBibleLink(readContent) : null;
 
     // Timer State
@@ -254,6 +255,9 @@ export default function WorshipCard({ completedTasks, onToggle, readContent, isR
                                             {isRestWeek && (
                                                 <span className="shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 uppercase tracking-wide">Review</span>
                                             )}
+                                            {isShowOptional && (
+                                                <span className="shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-500/10 text-slate-600 uppercase tracking-wide">Optional</span>
+                                            )}
                                             {readLink ? (
                                                 <Link
                                                     to={readLink}
@@ -271,11 +275,18 @@ export default function WorshipCard({ completedTasks, onToggle, readContent, isR
                                         </button>
                                     </div>
                                 ) : (
-                                    <p className="text-sm text-muted-foreground mt-0.5 leading-snug">
-                                        {showTimerUI
-                                            ? (timeLeft === 0 ? "Completed" : (isTimerActive ? "Counting down..." : "Paused"))
-                                            : item.desc}
-                                    </p>
+                                    <div className="mt-0.5">
+                                        <p className="text-sm text-muted-foreground leading-snug">
+                                            {showTimerUI
+                                                ? (timeLeft === 0 ? "Completed" : (isTimerActive ? "Counting down..." : "Paused"))
+                                                : item.desc}
+                                        </p>
+                                        {showTimerUI && (
+                                            <p className="text-[10px] text-muted-foreground/60 italic mt-1">
+                                                Note: On mobile devices, ensure the silent switch is OFF to hear chime.
+                                            </p>
+                                        )}
+                                    </div>
                                 )}
                             </div>
                         </div>

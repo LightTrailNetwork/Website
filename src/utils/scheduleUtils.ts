@@ -196,3 +196,43 @@ export function getDailyContent(role: string, quarterInfo: QuarterInfo): DailyCo
 
     return content || null;
 }
+export function getPreviousVerses(currentWeekNum: number, currentDayName: string): string[] {
+    const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+    const verses: string[] = [];
+
+    // Helper to check a specific week/day
+    const checkDay = (w: number, dName: string) => {
+        const schedule = quarterlySchedule.find(s => s.weekNum === w);
+        if (!schedule) return;
+        if (schedule.session === 'Preparation') return; // Skip prep weeks
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const content = (schedule.days as any)[dName] as DailyContent;
+        if (content && content.memorize && content.memorize !== 'Review') {
+            verses.push(content.memorize);
+        }
+    };
+
+    // 1. Check current week backwards
+    let dayIdx = days.indexOf(currentDayName);
+    // Start from the day BEFORE current day
+    for (let i = dayIdx - 1; i >= 0; i--) {
+        if (verses.length >= 3) break;
+        checkDay(currentWeekNum, days[i]);
+    }
+
+    // 2. Check previous weeks if needed
+    let w = currentWeekNum - 1;
+    while (verses.length < 3 && w >= 0) {
+        // Go through days Friday -> Monday
+        for (let i = days.length - 1; i >= 0; i--) {
+            if (verses.length >= 3) break;
+            checkDay(w, days[i]);
+        }
+        w--;
+    }
+
+    // Return reversed so they appear in chronological order (Oldest -> Newest)
+    // The user requirement says "fully one after the other in the same way/format they would have seen then"
+    return verses.reverse();
+}

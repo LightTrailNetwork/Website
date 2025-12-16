@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Loader2, ChevronDown, Sun, BookOpen, Moon, CheckCircle2, Circle, ChevronLeft, ChevronRight, Calendar as CalendarIcon, RotateCcw, Globe, Heart } from 'lucide-react';
 import { useProfile } from '../hooks/useProfile';
-import { getQuarterInfo, getDailyContent } from '../utils/scheduleUtils';
+import { getQuarterInfo, getDailyContent, getPreviousVerses } from '../utils/scheduleUtils';
 import { scoutSchedule, preScoutSchedule } from '../data/tableData';
 import { getBibleLink } from '../utils/linkUtils';
 import { getStudyContent } from '../utils/contentUtils';
@@ -421,12 +421,27 @@ export default function Today() {
               />
               {openSection === 'morning' && (
                 <div className="pl-2 border-l-2 border-border/50 ml-6 space-y-6 animate-accordion-down mb-8">
-                  <WorshipCard
-                    completedTasks={completedTasks}
-                    onToggle={toggleTask}
-                    readContent={dailyRead}
-                    isRestWeek={showReviewBadge}
-                  />
+                  {(() => {
+                    // Morning Read Logic Updates
+                    let finalReadContent = dailyRead;
+                    let isOptional = false;
+
+                    // Check for Rest Week Tuesday/Thursday
+                    if (sessionType === 'Rest' && (dayIndex === 2 || dayIndex === 4)) {
+                      finalReadContent = "Devotional";
+                      isOptional = true;
+                    }
+
+                    return (
+                      <WorshipCard
+                        completedTasks={completedTasks}
+                        onToggle={toggleTask}
+                        readContent={finalReadContent}
+                        isRestWeek={showReviewBadge}
+                        isShowOptional={isOptional}
+                      />
+                    );
+                  })()}
                   <div className="pt-2">
                     <AnchorCard
                       completedTasks={completedTasks}
@@ -450,46 +465,121 @@ export default function Today() {
                   <div className="bg-card border border-border rounded-xl overflow-hidden shadow-sm">
                     <div className="p-6">
                       <div className="flex items-start justify-between gap-4">
-                        <div className="space-y-1">
-                          {showReviewBadge && (
-                            <span className="inline-block mb-1 text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 uppercase tracking-wide">Review</span>
-                          )}
-                          {memoryLink ? (
-                            <Link to={memoryLink} className="text-lg font-medium text-foreground hover:text-orange-600 transition-colors block leading-relaxed">
-                              {memoryContent.verse}
-                            </Link>
-                          ) : (
-                            (() => {
-                              // Try to find tradition info using the reference first, then the verse (which might be the reference if split failed)
-                              const lookupKey = memoryContent.reference || memoryContent.verse;
-                              const traditionInfo = getTraditionInfo(lookupKey);
-                              const parts = traditionInfo ? traditionInfo.rawText.split(/(\*\*.*?\*\*)/g) : [memoryContent.verse];
+                        <div className="space-y-4 w-full">
+                          {(() => {
+                            // Check for Review Days (Tues/Thurs) regardless of session type
+                            // Logic: Tues(2) or Thurs(4), and user has role Mentee (standard)
+                            const isReviewDay = (dayIndex === 2 || dayIndex === 4) && userRole === Role.MENTEE;
 
+                            // If Review Day, fetch last 3 verses
+                            // Note: getPreviousVerses handles skipping Prep weeks and getting valid content
+                            const previousVerses = isReviewDay ? getPreviousVerses(weekNum, dayOfWeek) : [];
+
+                            if (previousVerses.length > 0) {
                               return (
-                                <>
+                                <div className="space-y-6">
+                                  <div className="flex items-center gap-2 mb-2">
+                                    <span className="inline-block text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 uppercase tracking-wide">Review Last 3</span>
+                                  </div>
+                                  {previousVerses.map((verseRaw, idx) => {
+                                    // Parse each verse similarly to main memory logic
+                                    let vText = verseRaw;
+                                    let vRef = '';
+                                    if (verseRaw.includes(' - ')) {
+                                      const lastDash = verseRaw.lastIndexOf(' - ');
+                                      vText = verseRaw.substring(0, lastDash);
+                                      vRef = verseRaw.substring(lastDash + 3);
+                                    }
+
+                                    // Use helper logic to render emphasized (we can just inline it or reuse if extracted, but for now inline is safe)
+                                    const lookupV = vRef || vText;
+                                    const tInfo = getTraditionInfo(lookupV);
+                                    const vParts = tInfo ? tInfo.rawText.split(/(\*\*.*?\*\*)/g) : [vText];
+
+                                    return (
+                                      <div key={idx} className="pb-4 border-b border-border/50 last:border-0 last:pb-0">
+                                        {vRef ? (
+                                          <Link to={getBibleLink(vRef)} className="block group">
+                                            <p className="text-lg font-medium text-foreground leading-relaxed group-hover:text-primary transition-colors">
+                                              {vParts.map((p, i) => {
+                                                if (p.startsWith('**') && p.endsWith('**')) return <span key={i} className="text-primary font-bold group-hover:text-primary/80 transition-colors">{p.slice(2, -2)}</span>;
+                                                return p;
+                                              })}
+                                            </p>
+                                          </Link>
+                                        ) : (
+                                          <p className="text-lg font-medium text-foreground leading-relaxed">
+                                            {vParts.map((p, i) => {
+                                              if (p.startsWith('**') && p.endsWith('**')) return <span key={i} className="text-primary font-bold">{p.slice(2, -2)}</span>;
+                                              return p;
+                                            })}
+                                          </p>
+                                        )}
+
+                                        {vRef && (
+                                          <div className="mt-1">
+                                            <Link to={getBibleLink(vRef)} className="text-sm text-muted-foreground hover:text-orange-600 hover:underline transition-colors">
+                                              {vRef}
+                                            </Link>
+                                          </div>
+                                        )}
+
+                                        {tInfo && (
+                                          <div className="mt-1 flex items-center gap-2">
+                                            <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-primary/10 border border-primary/20">
+                                              <span className="text-xs font-bold text-primary">{tInfo.letter}</span>
+                                              <span className="text-[10px] text-primary/50">•</span>
+                                              <span className="text-xs font-medium text-primary">{tInfo.emphasisWord}</span>
+                                            </div>
+                                          </div>
+                                        )}
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              );
+                            }
+
+                            // FALLBACK / STANDARD VIEW (For non-review days or if no prev verses found)
+                            return (
+                              <>
+                                <div className="space-y-1">
+                                  {showReviewBadge && (
+                                    <span className="inline-block mb-1 text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 uppercase tracking-wide">Review</span>
+                                  )}
                                   {memoryContent.reference ? (
                                     <Link
                                       to={getBibleLink(memoryContent.reference)}
                                       className="block group"
                                     >
                                       <p className="text-lg font-medium text-foreground leading-relaxed group-hover:text-primary transition-colors">
-                                        {parts.map((part, index) => {
-                                          if (part.startsWith('**') && part.endsWith('**')) {
-                                            return <span key={index} className="text-primary font-bold group-hover:text-primary/80 transition-colors">{part.slice(2, -2)}</span>;
-                                          }
-                                          return part;
-                                        })}
+                                        {(() => {
+                                          const lookupKey = memoryContent.reference || memoryContent.verse;
+                                          const traditionInfo = getTraditionInfo(lookupKey);
+                                          const parts = traditionInfo ? traditionInfo.rawText.split(/(\*\*.*?\*\*)/g) : [memoryContent.verse];
+                                          return parts.map((part, index) => {
+                                            if (part.startsWith('**') && part.endsWith('**')) {
+                                              return <span key={index} className="text-primary font-bold group-hover:text-primary/80 transition-colors">{part.slice(2, -2)}</span>;
+                                            }
+                                            return part;
+                                          });
+                                        })()}
                                       </p>
                                     </Link>
                                   ) : (
-                                    <p className="text-lg font-medium text-foreground leading-relaxed">
-                                      {parts.map((part, index) => {
-                                        if (part.startsWith('**') && part.endsWith('**')) {
-                                          return <span key={index} className="text-primary font-bold">{part.slice(2, -2)}</span>;
-                                        }
-                                        return part;
-                                      })}
-                                    </p>
+                                    <div className="text-lg font-medium text-foreground leading-relaxed">
+                                      {(() => {
+                                        const lookupKey = memoryContent.reference || memoryContent.verse;
+                                        const traditionInfo = getTraditionInfo(lookupKey);
+                                        const parts = traditionInfo ? traditionInfo.rawText.split(/(\*\*.*?\*\*)/g) : [memoryContent.verse];
+                                        return parts.map((part, index) => {
+                                          if (part.startsWith('**') && part.endsWith('**')) {
+                                            return <span key={index} className="text-primary font-bold">{part.slice(2, -2)}</span>;
+                                          }
+                                          return part;
+                                        });
+                                      })()}
+                                    </div>
                                   )}
                                   {memoryContent.reference && (
                                     <div className="mt-1">
@@ -502,23 +592,27 @@ export default function Today() {
                                     </div>
                                   )}
 
-                                  {traditionInfo && (
-                                    <div className="mt-1 flex items-center gap-2 animate-in fade-in slide-in-from-left-2">
-                                      <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-primary/10 border border-primary/20">
-                                        <span className="text-xs font-bold text-primary">{traditionInfo.letter}</span>
-                                        <span className="text-[10px] text-primary/50">•</span>
-                                        <span className="text-xs font-medium text-primary">{traditionInfo.emphasisWord}</span>
+                                  {(() => {
+                                    const lookupKey = memoryContent.reference || memoryContent.verse;
+                                    const traditionInfo = getTraditionInfo(lookupKey);
+                                    return traditionInfo && (
+                                      <div className="mt-1 flex items-center gap-2 animate-in fade-in slide-in-from-left-2">
+                                        <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-primary/10 border border-primary/20">
+                                          <span className="text-xs font-bold text-primary">{traditionInfo.letter}</span>
+                                          <span className="text-[10px] text-primary/50">•</span>
+                                          <span className="text-xs font-medium text-primary">{traditionInfo.emphasisWord}</span>
+                                        </div>
+                                        {/* Only show translation if it's NOT in the reference line and NOT in the raw text */}
+                                        {traditionInfo.translation && !memoryContent.reference && !traditionInfo.rawText.includes(traditionInfo.translation) && (
+                                          <span className="text-xs text-muted-foreground font-mono">({traditionInfo.translation})</span>
+                                        )}
                                       </div>
-                                      {/* Only show translation if it's NOT in the reference line and NOT in the raw text */}
-                                      {traditionInfo.translation && !memoryContent.reference && !traditionInfo.rawText.includes(traditionInfo.translation) && (
-                                        <span className="text-xs text-muted-foreground font-mono">({traditionInfo.translation})</span>
-                                      )}
-                                    </div>
-                                  )}
-                                </>
-                              );
-                            })()
-                          )}
+                                    );
+                                  })()}
+                                </div>
+                              </>
+                            );
+                          })()}
                         </div>
                         <button onClick={() => toggleTask('memorize')}>
                           {completedTasks.includes('memorize') ? <CheckCircle2 className="w-6 h-6 text-orange-500 animate-scale-in" /> : <Circle className="w-6 h-6 text-muted-foreground/30 hover:text-orange-500/50" />}
