@@ -7,6 +7,19 @@
   <title>Light Trail Network</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 </head>
+<script>
+  (function() {
+    try {
+      var savedTheme = localStorage.getItem('theme');
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    } catch (e) {}
+  })();
+</script>
 
 <body>
   <div id="root"></div>

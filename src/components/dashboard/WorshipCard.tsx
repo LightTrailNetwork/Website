@@ -251,23 +251,27 @@ export default function WorshipCard({ completedTasks, onToggle, readContent, isR
 
                                 {item.isLink && readContent ? (
                                     <div className="flex items-center justify-between mt-1">
-                                        <div className="flex items-center gap-2 min-w-0 flex-1 mr-2">
-                                            {isRestWeek && (
-                                                <span className="shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 uppercase tracking-wide">Review</span>
-                                            )}
-                                            {isShowOptional && (
-                                                <span className="shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-500/10 text-slate-600 uppercase tracking-wide">Optional</span>
+                                        <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5 min-w-0 flex-1 mr-2">
+                                            {(isRestWeek || isShowOptional) && (
+                                                <div className="flex items-center gap-2">
+                                                    {isRestWeek && (
+                                                        <span className="shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 uppercase tracking-wide">Review</span>
+                                                    )}
+                                                    {isShowOptional && (
+                                                        <span className="shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-500/10 text-slate-600 uppercase tracking-wide">Optional</span>
+                                                    )}
+                                                </div>
                                             )}
                                             {readLink ? (
                                                 <Link
                                                     to={readLink}
-                                                    className="text-lg font-semibold text-primary hover:underline truncate block"
+                                                    className="text-lg font-semibold text-primary hover:underline block break-words whitespace-normal leading-tight"
                                                     onClick={(e) => e.stopPropagation()}
                                                 >
                                                     {readContent}
                                                 </Link>
                                             ) : (
-                                                <span className="text-lg font-semibold text-foreground/80 truncate block">{readContent}</span>
+                                                <span className="text-lg font-semibold text-foreground/80 block break-words whitespace-normal leading-tight">{readContent}</span>
                                             )}
                                         </div>
                                         <button onClick={(e) => { e.stopPropagation(); onToggle(item.id); }}>
