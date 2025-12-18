@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import {
     BookOpen, Users, MapPin, Lightbulb, Pickaxe,
     ArrowRightLeft, GitMerge, Combine, Repeat,
-    Hourglass, ListTree, History, Library, ArrowRight, ShieldQuestion, Scale, Crown, Tent, Zap, Wheat, Calendar
+    Hourglass, ListTree, History, Library, ArrowRight, ShieldQuestion, Scale, Crown, Tent, Zap, Wheat, Calendar, Megaphone
 } from 'lucide-react';
 import VerseLink from '../components/study/VerseLink';
 
@@ -88,6 +88,15 @@ export default function BibleStudy() {
                 { id: 'miracles', title: 'The Miracles of Jesus', description: 'The 37 recorded miracles of Christ.', icon: Zap, path: '/bible/study/miracles', status: 'ready' },
                 { id: 'parables', title: 'The Parables of Jesus', description: 'Visual gallery of the 30+ parables.', icon: Wheat, path: '/bible/study/parables', status: 'ready' },
             ]
+        },
+        {
+            id: 'ministry',
+            title: 'Ministry & Mission',
+            subtitle: 'Share & Serve',
+            color: 'orange',
+            tools: [
+                { id: 'evangelism', title: 'Evangelism Guide', description: 'Methods, testimony builder & quick reference.', icon: Megaphone, path: '/bible/study/evangelism', status: 'ready' },
+            ]
         }
     ];
 
@@ -98,6 +107,7 @@ export default function BibleStudy() {
             case 'emerald': return 'from-emerald-500/10 to-teal-500/10 hover:from-emerald-500/20 hover:to-teal-500/20 border-emerald-200/50 dark:border-emerald-800/50';
             case 'violet': return 'from-violet-500/10 to-purple-500/10 hover:from-violet-500/20 hover:to-purple-500/20 border-violet-200/50 dark:border-violet-800/50';
             case 'rose': return 'from-rose-500/10 to-pink-500/10 hover:from-rose-500/20 hover:to-pink-500/20 border-rose-200/50 dark:border-rose-800/50';
+            case 'orange': return 'from-orange-500/10 to-red-500/10 hover:from-orange-500/20 hover:to-red-500/20 border-orange-200/50 dark:border-orange-800/50';
             default: return 'from-gray-500/10 to-slate-500/10';
         }
     };
@@ -109,6 +119,7 @@ export default function BibleStudy() {
             case 'emerald': return 'text-emerald-600 dark:text-emerald-400';
             case 'violet': return 'text-violet-600 dark:text-violet-400';
             case 'rose': return 'text-rose-600 dark:text-rose-400';
+            case 'orange': return 'text-orange-600 dark:text-orange-400';
             default: return 'text-primary';
         }
     };
