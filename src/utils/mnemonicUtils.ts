@@ -9,6 +9,9 @@ interface MnemonicData {
     testaments?: {
         [key: string]: {
             mnemonic: string;
+            bookGroupMnemonicHints?: {
+                [key: string]: string;
+            };
         };
     };
     books: {
@@ -183,4 +186,19 @@ export function getTestamentSectionMnemonics(testament: 'OT' | 'NT', sectionLeng
     }
 
     return result;
+}
+
+export function getTestamentSectionHints(testament: 'OT' | 'NT', sections: { start: number, end: number }[]): string[] {
+    const testamentData = data.testaments?.[testament];
+    if (!testamentData || !testamentData.bookGroupMnemonicHints) {
+        return sections.map(() => "");
+    }
+
+    const hintsMap = testamentData.bookGroupMnemonicHints;
+
+    return sections.map(section => {
+        // Construct key like "1-5"
+        const key = `${section.start}-${section.end}`;
+        return hintsMap[key] || "";
+    });
 }

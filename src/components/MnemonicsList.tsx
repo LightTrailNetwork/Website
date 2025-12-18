@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronDown, ChevronRight, ChevronsDown, ChevronsUp, BookOpen } from 'lucide-react';
 import type { BibleBook } from '../data/bibleApi';
-import { getTestamentMnemonic, getBookMnemonic, getChapterMnemonic, getChapterVerses, getTestamentSectionMnemonics } from '../utils/mnemonicUtils';
+import { getTestamentMnemonic, getBookMnemonic, getChapterMnemonic, getChapterVerses, getTestamentSectionMnemonics, getTestamentSectionHints } from '../utils/mnemonicUtils';
 import { formatPassageText } from '../utils/bibleUtils';
 import { getChapter } from '../data/bibleApi';
 import { useScrollDirection } from '../hooks/useScrollDirection';
@@ -15,7 +15,7 @@ interface MnemonicsListProps {
 }
 
 const OT_SECTIONS = [
-    { start: 1, end: 5, label: "Law" },
+    { start: 1, end: 5, label: "Torah" },
     { start: 6, end: 17, label: "History" },
     { start: 18, end: 22, label: "Poetry & Wisdom" },
     { start: 23, end: 27, label: "Major Prophets" },
@@ -30,11 +30,13 @@ const NT_SECTIONS = [
 
 const otLengths = OT_SECTIONS.map(s => s.end - s.start + 1);
 const otNames = getTestamentSectionMnemonics('OT', otLengths);
-const OT_GROUPS = OT_SECTIONS.map((s, i) => ({ ...s, name: otNames[i] || "" }));
+const otHints = getTestamentSectionHints('OT', OT_SECTIONS);
+const OT_GROUPS = OT_SECTIONS.map((s, i) => ({ ...s, name: otNames[i] || "", hint: otHints[i] }));
 
 const ntLengths = NT_SECTIONS.map(s => s.end - s.start + 1);
 const ntNames = getTestamentSectionMnemonics('NT', ntLengths);
-const NT_GROUPS = NT_SECTIONS.map((s, i) => ({ ...s, name: ntNames[i] || "" }));
+const ntHints = getTestamentSectionHints('NT', NT_SECTIONS);
+const NT_GROUPS = NT_SECTIONS.map((s, i) => ({ ...s, name: ntNames[i] || "", hint: ntHints[i] }));
 
 export default function MnemonicsList({ books, onNavigate, onChapterSelect, activeBookId, adjustStickyForHeader = true }: MnemonicsListProps) {
     const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({});
@@ -325,9 +327,12 @@ export default function MnemonicsList({ books, onNavigate, onChapterSelect, acti
                                     <div className="p-1 rounded-md bg-secondary/20 text-primary">
                                         {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                                     </div>
-                                    <h4 className="text-sm font-bold text-primary uppercase tracking-wider">{group.name}</h4>
+                                    <div className="flex flex-col items-start gap-0.5">
+                                        <h4 className="text-sm font-bold text-primary uppercase tracking-wider text-left">{group.name}</h4>
+                                        {group.hint && <span className="text-[10px] text-muted-foreground/80 italic font-medium text-left">{group.hint}</span>}
+                                    </div>
                                     <div className="h-[1px] flex-1 bg-border/50" />
-                                    <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest">{group.label}</span>
+                                    <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest text-right">{group.label}</span>
                                 </button>
 
                                 {!isCollapsed && (
@@ -373,9 +378,12 @@ export default function MnemonicsList({ books, onNavigate, onChapterSelect, acti
                                     <div className="p-1 rounded-md bg-secondary/20 text-primary">
                                         {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                                     </div>
-                                    <h4 className="text-sm font-bold text-primary uppercase tracking-wider">{group.name}</h4>
+                                    <div className="flex flex-col items-start gap-0.5">
+                                        <h4 className="text-sm font-bold text-primary uppercase tracking-wider text-left">{group.name}</h4>
+                                        {group.hint && <span className="text-[10px] text-muted-foreground/80 italic font-medium text-left">{group.hint}</span>}
+                                    </div>
                                     <div className="h-[1px] flex-1 bg-border/50" />
-                                    <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest">{group.label}</span>
+                                    <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest text-right">{group.label}</span>
                                 </button>
 
                                 {!isCollapsed && (

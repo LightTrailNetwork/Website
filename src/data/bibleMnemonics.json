@@ -5,10 +5,22 @@
     },
     "testaments": {
         "OT": {
-            "mnemonic": "IN THE HISTORY BOOKS, TRULY WE SEE WHAT IS TO COME."
+            "mnemonic": "IN THE HISTORY BOOKS, TRULY WE SEE WHAT IS TO COME.",
+            "bookGroupMnemonicHints": {
+                "1-5": "first two words of Genesis",
+                "6-17": "tell Israel's history",
+                "18-22": "express TRUE wisdom and worship",
+                "23-27": "WE SEE visions of the future",
+                "28-39": "foretell WHAT IS TO COME"
+            }
         },
         "NT": {
-            "mnemonic": "JESUS GAVE US NEW LIFE ETERNALLY."
+            "mnemonic": "JESUS GAVE US NEW LIFE ETERNALLY.",
+            "bookGroupMnemonicHints": {
+                "40-44": "central figure of the Gospels",
+                "45-57": "theme of Paul's letters",
+                "58-66": "theme of letters from others"
+            }
         }
     },
     "books": {
