@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import {
     BookOpen, Users, MapPin, Lightbulb, Pickaxe,
     ArrowRightLeft, GitMerge, Combine, Repeat,
-    Hourglass, ListTree, History, Library, ArrowRight, ShieldQuestion, Scale, Crown, Tent, Zap, Wheat, Calendar, Megaphone
+    Hourglass, ListTree, History, Library, ArrowRight, ShieldQuestion, Scale, Crown, Tent, Zap, Wheat, Calendar, Megaphone, Microscope
 } from 'lucide-react';
 import VerseLink from '../components/study/VerseLink';
 
@@ -103,9 +103,10 @@ export default function BibleStudy() {
             id: 'apologetics',
             title: 'Apologetics',
             subtitle: 'Defend & Explain',
-            color: 'rose', // Reusing rose or picking another distinctive color
+            color: 'rose',
             tools: [
-                { id: 'defense', title: 'Defense of the Faith', description: 'Comprehensive guide to answering objections from other worldviews.', icon: ShieldQuestion, path: '/bible/study/apologetics', status: 'ready' },
+                { id: 'religions', title: 'World Religions', description: 'Countering objections from Islam, Judaism, Mormonism & more.', icon: ShieldQuestion, path: '/bible/study/apologetics', status: 'ready' },
+                { id: 'science', title: 'Science & Reason', description: 'Harmonizing Scripture with Cosmology, Biology & Physics.', icon: Microscope, path: '/bible/study/science', status: 'ready' },
             ]
         }
     ];
