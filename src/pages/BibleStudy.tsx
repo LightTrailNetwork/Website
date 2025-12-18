@@ -97,6 +97,16 @@ export default function BibleStudy() {
             tools: [
                 { id: 'evangelism', title: 'Evangelism Guide', description: 'Methods, testimony builder & quick reference.', icon: Megaphone, path: '/bible/study/evangelism', status: 'ready' },
             ]
+
+        },
+        {
+            id: 'apologetics',
+            title: 'Apologetics',
+            subtitle: 'Defend & Explain',
+            color: 'rose', // Reusing rose or picking another distinctive color
+            tools: [
+                { id: 'defense', title: 'Defense of the Faith', description: 'Comprehensive guide to answering objections from other worldviews.', icon: ShieldQuestion, path: '/bible/study/apologetics', status: 'ready' },
+            ]
         }
     ];
 

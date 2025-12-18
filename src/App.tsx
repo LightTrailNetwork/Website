@@ -21,6 +21,7 @@ import BibleDiscrepanciesStudy from './pages/study/BibleDiscrepanciesStudy';
 import StudyToolPage from './pages/StudyToolPage';
 import ChurchHistoryStudy from './pages/study/ChurchHistoryStudy';
 import EvangelismStudy from './pages/study/EvangelismStudy';
+import ApologeticsStudy from './pages/study/ApologeticsStudy';
 import { initDB, getProfile, createProfile } from './data/db';
 import { Role } from './data/types';
 import { SettingsProvider } from './context/SettingsContext';
@@ -207,6 +208,7 @@ function AppContent() {
           <Route path="/bible/study/history" element={<ChurchHistoryStudy />} />
           <Route path="/bible/study/continuity" element={<BibleDiscrepanciesStudy />} />
           <Route path="/bible/study/evangelism" element={<EvangelismStudy />} />
+          <Route path="/bible/study/apologetics" element={<ApologeticsStudy />} />
           <Route path="/bible/study/:toolId" element={<StudyToolPage />} />
           <Route path="/bible/*" element={<Bible />} />
           <Route path="/settings" element={<Settings />} />
