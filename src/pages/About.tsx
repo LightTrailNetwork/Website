@@ -2,6 +2,7 @@ import {
   Info, Users, Sun, Moon, Sunrise, ArrowRight, ShieldCheck,
   Anchor, Flag, Heart, Calendar, Network
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export default function About() {
   return (
@@ -149,12 +150,15 @@ export default function About() {
           <h2 className="text-2xl font-bold">Rhythms & Schedule</h2>
         </div>
 
-        <div className="prose prose-neutral dark:prose-invert max-w-none text-muted-foreground">
+        <div className="prose prose-neutral dark:prose-invert max-w-none text-muted-foreground space-y-4">
           <p>
             Our schedule is globally synchronized to make getting started simple. Every triad follows the same calendar, with quarters beginning specifically in <strong>January, April, July, and October</strong>.
           </p>
           <p>
             This means men around the world are united in the same rhythm: reading the same New Testament chapter on Monday, Wednesday, and Friday mornings, and memorizing the same verse in the afternoons. This shared focus eliminates the need to create your own schedule and ensures you always have relevant topics to discuss with your mentor or mentee.
+          </p>
+          <p>
+            These verses and chapters originate from the Passage Pyramid, which is anchored in <Link to="/tradition" className="text-primary hover:underline">The Tradition</Link>. The Scout memorizes this shared creed and its 13 outer verses, while the 27 inner verses form the reading and memorization pacing for the Mentee and Mentor quarters.
           </p>
         </div>
 
