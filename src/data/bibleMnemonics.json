@@ -92039,6 +92039,7 @@
         },
         "2CO": {
             "mnemonic": "VICTORY IN LOSS",
+            "mnemonicHint": "a common theme in 2 Corinthians",
             "chapters": {
                 "1": {
                     "mnemonic": "COMFORT IN TROUBLE AND PAINS",
@@ -93363,6 +93364,7 @@
         },
         "EPH": {
             "mnemonic": "UNITED",
+            "mnemonicHint": "to **unite** all things in Christ (Eph. 1:10)",
             "chapters": {
                 "1": {
                     "mnemonic": "HEAD OF THE CHURCH IS CHRIST",
@@ -93863,6 +93865,7 @@
         },
         "PHP": {
             "mnemonic": "SAME",
+            "mnemonicHint": "the **same** mind, having the **same** love (Phil. 2:2)",
             "chapters": {
                 "1": {
                     "mnemonic": "I PRAY THAT YOUR LOVE MAY ABOUND MORE",
@@ -94200,6 +94203,7 @@
         },
         "COL": {
             "mnemonic": "NAME",
+            "mnemonicHint": "do everything in the **name** of the Lord Jesus (Col. 3:17)",
             "chapters": {
                 "1": {
                     "mnemonic": "SUPREMACY OF CHRIST IS THE GOSPELS",
@@ -94510,6 +94514,7 @@
         },
         "1TH": {
             "mnemonic": "EAGER",
+            "mnemonicHint": "...for Christ's return",
             "chapters": {
                 "1": {
                     "mnemonic": "SAVED TO GOD",
@@ -95343,6 +95348,7 @@
         },
         "2TI": {
             "mnemonic": "INTO",
+            "mnemonicHint": "fan **into** flame the gift of God",
             "chapters": {
                 "1": {
                     "mnemonic": "REKINDLE A GIFT OF GOD",
