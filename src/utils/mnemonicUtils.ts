@@ -145,3 +145,42 @@ export function getChapterVerses(bookId: string, chapter: number): Record<string
 
     return chapterData.verses;
 }
+
+export function getTestamentSectionMnemonics(testament: 'OT' | 'NT', sectionLengths: number[]): string[] {
+    const mnemonic = getTestamentMnemonic(testament);
+    if (!mnemonic) return sectionLengths.map(() => "");
+
+    // Remove punctuation (keep spaces) and split into words
+    // We want to remove things like '.' ',' but keep letters.
+    // Also handle possible multiple spaces.
+    const cleanMnemonic = mnemonic.replace(/[.,;!?]/g, "");
+    const words = cleanMnemonic.split(/\s+/).filter(w => w.length > 0);
+
+    const result: string[] = [];
+    let wordIndex = 0;
+
+    for (const length of sectionLengths) {
+        let currentSectionWords: string[] = [];
+        let currentCount = 0;
+
+        while (currentCount < length && wordIndex < words.length) {
+            const word = words[wordIndex];
+            if (!word) {
+                wordIndex++;
+                continue;
+            }
+            // Count letters in word
+            const letterCount = word.replace(/[^a-zA-Z0-9]/g, "").length;
+
+            currentSectionWords.push(word);
+            currentCount += letterCount;
+            wordIndex++;
+        }
+
+        // If we exceeded length, it means the mnemonic doens't align perfectly with words, 
+        // but per user logic it should. We'll just return what we have.
+        result.push(currentSectionWords.join(" "));
+    }
+
+    return result;
+}

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronDown, ChevronRight, ChevronsDown, ChevronsUp, BookOpen } from 'lucide-react';
 import type { BibleBook } from '../data/bibleApi';
-import { getTestamentMnemonic, getBookMnemonic, getChapterMnemonic, getChapterVerses } from '../utils/mnemonicUtils';
+import { getTestamentMnemonic, getBookMnemonic, getChapterMnemonic, getChapterVerses, getTestamentSectionMnemonics } from '../utils/mnemonicUtils';
 import { formatPassageText } from '../utils/bibleUtils';
 import { getChapter } from '../data/bibleApi';
 import { useScrollDirection } from '../hooks/useScrollDirection';
@@ -14,19 +14,27 @@ interface MnemonicsListProps {
     adjustStickyForHeader?: boolean;
 }
 
-const OT_GROUPS = [
-    { name: "FIRST", start: 1, end: 5, label: "The Law" },
-    { name: "IS THE STORY OF", start: 6, end: 17, label: "History" },
-    { name: "TRUTH", start: 18, end: 22, label: "Poetry & Wisdom" },
-    { name: "ABOUT", start: 23, end: 27, label: "Major Prophets" },
-    { name: "EVERYONE'S SIN", start: 28, end: 39, label: "Minor Prophets" }
+const OT_SECTIONS = [
+    { start: 1, end: 5, label: "Law" },
+    { start: 6, end: 17, label: "History" },
+    { start: 18, end: 22, label: "Poetry & Wisdom" },
+    { start: 23, end: 27, label: "Major Prophets" },
+    { start: 28, end: 39, label: "Minor Prophets" }
 ];
 
-const NT_GROUPS = [
-    { name: "JESUS", start: 40, end: 44, label: "Gospels & Acts" },
-    { name: "SENT HIS SPIRIT", start: 45, end: 57, label: "Paul's Epistles" },
-    { name: "TO ALL OF US", start: 58, end: 66, label: "General Epistles & Revelation" }
+const NT_SECTIONS = [
+    { start: 40, end: 44, label: "Gospels & Acts" },
+    { start: 45, end: 57, label: "Paul's Epistles" },
+    { start: 58, end: 66, label: "General Epistles & Revelation" }
 ];
+
+const otLengths = OT_SECTIONS.map(s => s.end - s.start + 1);
+const otNames = getTestamentSectionMnemonics('OT', otLengths);
+const OT_GROUPS = OT_SECTIONS.map((s, i) => ({ ...s, name: otNames[i] || "" }));
+
+const ntLengths = NT_SECTIONS.map(s => s.end - s.start + 1);
+const ntNames = getTestamentSectionMnemonics('NT', ntLengths);
+const NT_GROUPS = NT_SECTIONS.map((s, i) => ({ ...s, name: ntNames[i] || "" }));
 
 export default function MnemonicsList({ books, onNavigate, onChapterSelect, activeBookId, adjustStickyForHeader = true }: MnemonicsListProps) {
     const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({});
