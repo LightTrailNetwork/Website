@@ -78,6 +78,19 @@ export default function About() {
             </p>
           </div>
         </div>
+
+        <div className="bg-muted/30 p-6 rounded-xl border border-border/50 flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+          <div className="p-2 bg-secondary rounded-lg shrink-0">
+            <Users className="w-5 h-5 text-muted-foreground" />
+          </div>
+          <div>
+            <h4 className="font-semibold text-foreground">The Pre-Scout</h4>
+            <p className="text-sm text-muted-foreground">
+              Assists with Serve Day project planning alongside the Scout and Steward.
+              They are also asked to memorize basic components of the faith, preparing to enter the trail.
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Starting a Triad */}
