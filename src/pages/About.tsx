@@ -149,6 +149,15 @@ export default function About() {
           <h2 className="text-2xl font-bold">Rhythms & Schedule</h2>
         </div>
 
+        <div className="prose prose-neutral dark:prose-invert max-w-none text-muted-foreground">
+          <p>
+            Our schedule is globally synchronized to make getting started simple. Every triad follows the same calendar, with quarters beginning specifically in <strong>January, April, July, and October</strong>.
+          </p>
+          <p>
+            This means men around the world are united in the same rhythm: reading the same New Testament chapter on Monday, Wednesday, and Friday mornings, and memorizing the same verse in the afternoons. This shared focus eliminates the need to create your own schedule and ensures you always have relevant topics to discuss with your mentor or mentee.
+          </p>
+        </div>
+
         <div className="grid md:grid-cols-2 gap-8">
           <div className="space-y-4">
             <h3 className="font-semibold text-lg flex items-center gap-2">
