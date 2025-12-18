@@ -1,5 +1,6 @@
 import React from "react";
 import { OT_PASSAGES } from '../data/otPassages';
+import bibleMnemonics from '../data/bibleMnemonics.json';
 
 interface Point {
     x: number;
@@ -15,6 +16,7 @@ interface OTPyramidSVGProps {
     innerStroke?: string;
     textColor?: string;
     accent?: string;
+    showAcrostic?: boolean;
 }
 
 interface ClickableLetterProps {
@@ -115,7 +117,28 @@ export default function OTPyramidSVG({
     innerStroke = "hsl(var(--muted-foreground))",
     textColor = "hsl(var(--foreground))",
     accent = "hsl(var(--primary))",
+    showAcrostic = false,
 }: OTPyramidSVGProps) {
+
+    // Calculate Acrostic Map
+    const acrosticMap = React.useMemo(() => {
+        const mnemonic = bibleMnemonics.testaments.OT.mnemonic;
+        const cleaned = mnemonic.replace(/[^a-zA-Z]/g, "").toUpperCase();
+        const map: Record<string, string> = {};
+        OT_PASSAGES.forEach((p, i) => {
+            if (i < cleaned.length) {
+                map[p.book] = cleaned[i]!;
+            }
+        });
+        return map;
+    }, []);
+
+    const getLabel = (book: string, defaultLabel: string) => {
+        if (showAcrostic && acrosticMap[book]) {
+            return acrosticMap[book];
+        }
+        return defaultLabel;
+    };
 
     const scrollToPassage = (bookKey: string) => {
         const element = document.getElementById(`passage-${bookKey}`);
@@ -285,14 +308,14 @@ export default function OTPyramidSVG({
     const [rA, rB, rC] = triUp(rightCenter.x, rightCenter.y, subSide);
 
     // Mappings
-    const topTinyLetters = ["Pro", "Ecc", "Sng", "Lev", "Num", "Deu", "Lam", "Ezk", "Dan"];
     const topTinyBooks = ["Proverbs", "Ecclesiastes", "Song of Solomon", "Leviticus", "Numbers", "Deuteronomy", "Lamentations", "Ezekiel", "Daniel"];
+    const topTinyLetters = ["Pro", "Ecc", "Sng", "Lev", "Num", "Deu", "Lam", "Ezk", "Dan"].map((l, i) => getLabel(topTinyBooks[i] || "", l));
 
-    const leftTinyLetters = ["1Sa", "2Sa", "1Ki", "2Ki", "1Ch", "2Ch", "Ezr", "Neh", "Est"];
     const leftTinyBooks = ["1 Samuel", "2 Samuel", "1 Kings", "2 Kings", "1 Chronicles", "2 Chronicles", "Ezra", "Nehemiah", "Esther"];
+    const leftTinyLetters = ["1Sa", "2Sa", "1Ki", "2Ki", "1Ch", "2Ch", "Ezr", "Neh", "Est"].map((l, i) => getLabel(leftTinyBooks[i] || "", l));
 
-    const rightTinyLetters = ["Oba", "Jon", "Mic", "Nah", "Hab", "Zep", "Hag", "Zec", "Mal"];
     const rightTinyBooks = ["Obadiah", "Jonah", "Micah", "Nahum", "Habakkuk", "Zephaniah", "Haggai", "Zechariah", "Malachi"];
+    const rightTinyLetters = ["Oba", "Jon", "Mic", "Nah", "Hab", "Zep", "Hag", "Zec", "Mal"].map((l, i) => getLabel(rightTinyBooks[i] || "", l));
 
     const godTinyPyramids = createTinyPyramidsInParent(tA, tB, tC, topTinyLetters, topTinyBooks);
     const manTinyPyramids = createTinyPyramidsInParent(lA, lB, lC, leftTinyLetters, leftTinyBooks);
@@ -327,11 +350,11 @@ export default function OTPyramidSVG({
 
                     {/* OUTER VERTICES */}
                     {/* Top (B in Tradition, A here): Job */}
-                    <ClickableLetter p={{ x: A.x, y: A.y - baseFontSize * 2 }} label="Job" bookKey="Job" selectedBook={selectedBook} hoveredBook={hoveredBook} onBookClick={onBookClick} onHoverStart={onHoverStart} onHoverEnd={onHoverEnd} textColor={getBookCategoryColor("Job")} fontSize={baseFontSize} scrollToPassage={scrollToPassage} />
+                    <ClickableLetter p={{ x: A.x, y: A.y - baseFontSize * 2 }} label={getLabel("Job", "Job")} bookKey="Job" selectedBook={selectedBook} hoveredBook={hoveredBook} onBookClick={onBookClick} onHoverStart={onHoverStart} onHoverEnd={onHoverEnd} textColor={getBookCategoryColor("Job")} fontSize={baseFontSize} scrollToPassage={scrollToPassage} />
                     {/* Left (B): Genesis */}
-                    <ClickableLetter p={{ x: B.x - baseFontSize * 2, y: B.y + baseFontSize }} label="Gen" bookKey="Genesis" selectedBook={selectedBook} hoveredBook={hoveredBook} onBookClick={onBookClick} onHoverStart={onHoverStart} onHoverEnd={onHoverEnd} textColor={getBookCategoryColor("Genesis")} fontSize={baseFontSize} scrollToPassage={scrollToPassage} />
+                    <ClickableLetter p={{ x: B.x - baseFontSize * 2, y: B.y + baseFontSize }} label={getLabel("Genesis", "Gen")} bookKey="Genesis" selectedBook={selectedBook} hoveredBook={hoveredBook} onBookClick={onBookClick} onHoverStart={onHoverStart} onHoverEnd={onHoverEnd} textColor={getBookCategoryColor("Genesis")} fontSize={baseFontSize} scrollToPassage={scrollToPassage} />
                     {/* Right (C): Isaiah */}
-                    <ClickableLetter p={{ x: C.x + baseFontSize * 2, y: C.y + baseFontSize }} label="Isa" bookKey="Isaiah" selectedBook={selectedBook} hoveredBook={hoveredBook} onBookClick={onBookClick} onHoverStart={onHoverStart} onHoverEnd={onHoverEnd} textColor={getBookCategoryColor("Isaiah")} fontSize={baseFontSize} scrollToPassage={scrollToPassage} />
+                    <ClickableLetter p={{ x: C.x + baseFontSize * 2, y: C.y + baseFontSize }} label={getLabel("Isaiah", "Isa")} bookKey="Isaiah" selectedBook={selectedBook} hoveredBook={hoveredBook} onBookClick={onBookClick} onHoverStart={onHoverStart} onHoverEnd={onHoverEnd} textColor={getBookCategoryColor("Isaiah")} fontSize={baseFontSize} scrollToPassage={scrollToPassage} />
 
                     {/* LABELS */}
                     {/* LABELS - Shifted up to avoid overlap */}
@@ -341,27 +364,27 @@ export default function OTPyramidSVG({
 
                     {/* TOP Sub-Pyramid Vertices */}
                     {/* Top: Psalms */}
-                    <ClickableLetter p={{ x: tA.x, y: tA.y - subFontSize }} label="Psa" bookKey="Psalms" selectedBook={selectedBook} hoveredBook={hoveredBook} onBookClick={onBookClick} onHoverStart={onHoverStart} onHoverEnd={onHoverEnd} textColor={getBookCategoryColor("Psalms")} fontSize={subFontSize} scrollToPassage={scrollToPassage} />
+                    <ClickableLetter p={{ x: tA.x, y: tA.y - subFontSize }} label={getLabel("Psalms", "Psa")} bookKey="Psalms" selectedBook={selectedBook} hoveredBook={hoveredBook} onBookClick={onBookClick} onHoverStart={onHoverStart} onHoverEnd={onHoverEnd} textColor={getBookCategoryColor("Psalms")} fontSize={subFontSize} scrollToPassage={scrollToPassage} />
                     {/* Left: Exodus */}
-                    <ClickableLetter p={{ x: tB.x - subFontSize, y: tB.y + subFontSize }} label="Exo" bookKey="Exodus" selectedBook={selectedBook} hoveredBook={hoveredBook} onBookClick={onBookClick} onHoverStart={onHoverStart} onHoverEnd={onHoverEnd} textColor={getBookCategoryColor("Exodus")} fontSize={subFontSize} scrollToPassage={scrollToPassage} />
+                    <ClickableLetter p={{ x: tB.x - subFontSize, y: tB.y + subFontSize }} label={getLabel("Exodus", "Exo")} bookKey="Exodus" selectedBook={selectedBook} hoveredBook={hoveredBook} onBookClick={onBookClick} onHoverStart={onHoverStart} onHoverEnd={onHoverEnd} textColor={getBookCategoryColor("Exodus")} fontSize={subFontSize} scrollToPassage={scrollToPassage} />
                     {/* Right: Jeremiah */}
-                    <ClickableLetter p={{ x: tC.x + subFontSize, y: tC.y + subFontSize }} label="Jer" bookKey="Jeremiah" selectedBook={selectedBook} hoveredBook={hoveredBook} onBookClick={onBookClick} onHoverStart={onHoverStart} onHoverEnd={onHoverEnd} textColor={getBookCategoryColor("Jeremiah")} fontSize={subFontSize} scrollToPassage={scrollToPassage} />
+                    <ClickableLetter p={{ x: tC.x + subFontSize, y: tC.y + subFontSize }} label={getLabel("Jeremiah", "Jer")} bookKey="Jeremiah" selectedBook={selectedBook} hoveredBook={hoveredBook} onBookClick={onBookClick} onHoverStart={onHoverStart} onHoverEnd={onHoverEnd} textColor={getBookCategoryColor("Jeremiah")} fontSize={subFontSize} scrollToPassage={scrollToPassage} />
 
                     {/* LEFT Sub-Pyramid Vertices */}
                     {/* Top: Joshua */}
-                    <ClickableLetter p={{ x: lA.x, y: lA.y - subFontSize }} label="Jos" bookKey="Joshua" selectedBook={selectedBook} hoveredBook={hoveredBook} onBookClick={onBookClick} onHoverStart={onHoverStart} onHoverEnd={onHoverEnd} textColor={getBookCategoryColor("Joshua")} fontSize={subFontSize} scrollToPassage={scrollToPassage} />
+                    <ClickableLetter p={{ x: lA.x, y: lA.y - subFontSize }} label={getLabel("Joshua", "Jos")} bookKey="Joshua" selectedBook={selectedBook} hoveredBook={hoveredBook} onBookClick={onBookClick} onHoverStart={onHoverStart} onHoverEnd={onHoverEnd} textColor={getBookCategoryColor("Joshua")} fontSize={subFontSize} scrollToPassage={scrollToPassage} />
                     {/* Left: Judges */}
-                    <ClickableLetter p={{ x: lB.x - subFontSize, y: lB.y + subFontSize }} label="Jdg" bookKey="Judges" selectedBook={selectedBook} hoveredBook={hoveredBook} onBookClick={onBookClick} onHoverStart={onHoverStart} onHoverEnd={onHoverEnd} textColor={getBookCategoryColor("Judges")} fontSize={subFontSize} scrollToPassage={scrollToPassage} />
+                    <ClickableLetter p={{ x: lB.x - subFontSize, y: lB.y + subFontSize }} label={getLabel("Judges", "Jdg")} bookKey="Judges" selectedBook={selectedBook} hoveredBook={hoveredBook} onBookClick={onBookClick} onHoverStart={onHoverStart} onHoverEnd={onHoverEnd} textColor={getBookCategoryColor("Judges")} fontSize={subFontSize} scrollToPassage={scrollToPassage} />
                     {/* Right: Ruth */}
-                    <ClickableLetter p={{ x: lC.x + subFontSize, y: lC.y + subFontSize }} label="Rut" bookKey="Ruth" selectedBook={selectedBook} hoveredBook={hoveredBook} onBookClick={onBookClick} onHoverStart={onHoverStart} onHoverEnd={onHoverEnd} textColor={getBookCategoryColor("Ruth")} fontSize={subFontSize} scrollToPassage={scrollToPassage} />
+                    <ClickableLetter p={{ x: lC.x + subFontSize, y: lC.y + subFontSize }} label={getLabel("Ruth", "Rut")} bookKey="Ruth" selectedBook={selectedBook} hoveredBook={hoveredBook} onBookClick={onBookClick} onHoverStart={onHoverStart} onHoverEnd={onHoverEnd} textColor={getBookCategoryColor("Ruth")} fontSize={subFontSize} scrollToPassage={scrollToPassage} />
 
                     {/* RIGHT Sub-Pyramid Vertices */}
                     {/* Top: Hosea */}
-                    <ClickableLetter p={{ x: rA.x, y: rA.y - subFontSize }} label="Hos" bookKey="Hosea" selectedBook={selectedBook} hoveredBook={hoveredBook} onBookClick={onBookClick} onHoverStart={onHoverStart} onHoverEnd={onHoverEnd} textColor={getBookCategoryColor("Hosea")} fontSize={subFontSize} scrollToPassage={scrollToPassage} />
+                    <ClickableLetter p={{ x: rA.x, y: rA.y - subFontSize }} label={getLabel("Hosea", "Hos")} bookKey="Hosea" selectedBook={selectedBook} hoveredBook={hoveredBook} onBookClick={onBookClick} onHoverStart={onHoverStart} onHoverEnd={onHoverEnd} textColor={getBookCategoryColor("Hosea")} fontSize={subFontSize} scrollToPassage={scrollToPassage} />
                     {/* Left: Joel */}
-                    <ClickableLetter p={{ x: rB.x - subFontSize, y: rB.y + subFontSize }} label="Joe" bookKey="Joel" selectedBook={selectedBook} hoveredBook={hoveredBook} onBookClick={onBookClick} onHoverStart={onHoverStart} onHoverEnd={onHoverEnd} textColor={getBookCategoryColor("Joel")} fontSize={subFontSize} scrollToPassage={scrollToPassage} />
+                    <ClickableLetter p={{ x: rB.x - subFontSize, y: rB.y + subFontSize }} label={getLabel("Joel", "Joe")} bookKey="Joel" selectedBook={selectedBook} hoveredBook={hoveredBook} onBookClick={onBookClick} onHoverStart={onHoverStart} onHoverEnd={onHoverEnd} textColor={getBookCategoryColor("Joel")} fontSize={subFontSize} scrollToPassage={scrollToPassage} />
                     {/* Right: Amos */}
-                    <ClickableLetter p={{ x: rC.x + subFontSize, y: rC.y + subFontSize }} label="Amo" bookKey="Amos" selectedBook={selectedBook} hoveredBook={hoveredBook} onBookClick={onBookClick} onHoverStart={onHoverStart} onHoverEnd={onHoverEnd} textColor={getBookCategoryColor("Amos")} fontSize={subFontSize} scrollToPassage={scrollToPassage} />
+                    <ClickableLetter p={{ x: rC.x + subFontSize, y: rC.y + subFontSize }} label={getLabel("Amos", "Amo")} bookKey="Amos" selectedBook={selectedBook} hoveredBook={hoveredBook} onBookClick={onBookClick} onHoverStart={onHoverStart} onHoverEnd={onHoverEnd} textColor={getBookCategoryColor("Amos")} fontSize={subFontSize} scrollToPassage={scrollToPassage} />
 
                     {/* TINY PYRAMIDS */}
                     {godTinyPyramids.map((tiny, idx) => (
