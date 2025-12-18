@@ -89258,7 +89258,7 @@
             }
         },
         "ROM": {
-            "mnemonic": "SINNERS JUSTIFIED",
+            "mnemonic": "GOD'S GRACIOUS GIFT",
             "chapters": {
                 "1": {
                     "mnemonic": "SINFUL HUMANITY EXCHANGE GOD IDOL BAD",
@@ -90642,7 +90642,7 @@
             }
         },
         "1CO": {
-            "mnemonic": "EVERYTHING IN LOVE",
+            "mnemonic": "ABOVE ALL ELSE, LOVE",
             "chapters": {
                 "1": {
                     "mnemonic": "APPEAL FOR UNITY IN THE NAME OF CHRIST",
@@ -92038,7 +92038,7 @@
             }
         },
         "2CO": {
-            "mnemonic": "NOTHING TO GAIN",
+            "mnemonic": "VICTORY IN LOSS",
             "chapters": {
                 "1": {
                     "mnemonic": "COMFORT IN TROUBLE AND PAINS",
@@ -92879,7 +92879,8 @@
             }
         },
         "GAL": {
-            "mnemonic": "THE LAW",
+            "mnemonic": "ESCAPE",
+            "mnemonicHint": "...slavery to the law",
             "chapters": {
                 "1": {
                     "mnemonic": "NO OTHER GOSPEL CALLED GRACE",
@@ -93361,7 +93362,7 @@
             }
         },
         "EPH": {
-            "mnemonic": "HELMET",
+            "mnemonic": "UNITED",
             "chapters": {
                 "1": {
                     "mnemonic": "HEAD OF THE CHURCH IS CHRIST",
@@ -93861,7 +93862,7 @@
             }
         },
         "PHP": {
-            "mnemonic": "I CAN",
+            "mnemonic": "SAME",
             "chapters": {
                 "1": {
                     "mnemonic": "I PRAY THAT YOUR LOVE MAY ABOUND MORE",
@@ -94198,7 +94199,7 @@
             }
         },
         "COL": {
-            "mnemonic": "SELF",
+            "mnemonic": "NAME",
             "chapters": {
                 "1": {
                     "mnemonic": "SUPREMACY OF CHRIST IS THE GOSPELS",
@@ -94508,7 +94509,7 @@
             }
         },
         "1TH": {
-            "mnemonic": "STAND",
+            "mnemonic": "EAGER",
             "chapters": {
                 "1": {
                     "mnemonic": "SAVED TO GOD",
@@ -94805,7 +94806,8 @@
             }
         },
         "2TH": {
-            "mnemonic": "PAY",
+            "mnemonic": "WIN",
+            "mnemonicHint": "by enduring to the end",
             "chapters": {
                 "1": {
                     "mnemonic": "PERSEVERANCE",
@@ -94966,7 +94968,7 @@
             }
         },
         "1TI": {
-            "mnemonic": "IN LOVE",
+            "mnemonic": "LEADER",
             "chapters": {
                 "1": {
                     "mnemonic": "I AM THE WORST OF SINNERS",
@@ -95340,7 +95342,7 @@
             }
         },
         "2TI": {
-            "mnemonic": "RACE",
+            "mnemonic": "INTO",
             "chapters": {
                 "1": {
                     "mnemonic": "REKINDLE A GIFT OF GOD",
@@ -95614,7 +95616,8 @@
             }
         },
         "TIT": {
-            "mnemonic": "IGW",
+            "mnemonic": "FIT",
+            "mnemonicHint": "for good works",
             "chapters": {
                 "1": {
                     "mnemonic": "INSTRUCT THE ELDER",
@@ -95769,14 +95772,13 @@
                         }
                     }
                 }
-            },
-            "mnemonicHint": "(**I**nstructions for **G**ood **W**orks)"
+            }
         },
         "PHM": {
             "mnemonic": "",
             "chapters": {
                 "1": {
-                    "mnemonic": "TAKE BACK ONESIMUS AS BROTHER",
+                    "mnemonic": "EMBRACE ONESIMUS AS A BROTHER",
                     "verses": {
                         "1": {
                             "mnemonic": ""
@@ -95858,7 +95860,7 @@
             }
         },
         "HEB": {
-            "mnemonic": "THE HIGH PRIEST",
+            "mnemonic": "ETERNAL PRIEST",
             "chapters": {
                 "1": {
                     "mnemonic": "THE SON RADIANCE",
@@ -96837,7 +96839,7 @@
             }
         },
         "JAS": {
-            "mnemonic": "OUGHT",
+            "mnemonic": "TRIAL",
             "chapters": {
                 "1": {
                     "mnemonic": "OUR TRIALS CREATE PERSEVERANCE",
@@ -97191,7 +97193,7 @@
             }
         },
         "1PE": {
-            "mnemonic": "A CALL",
+            "mnemonic": "EXILE",
             "chapters": {
                 "1": {
                     "mnemonic": "PRAISE FOR LIVING HOPE HOLY HI",
@@ -97536,7 +97538,7 @@
             }
         },
         "2PE": {
-            "mnemonic": "LOT",
+            "mnemonic": "RID",
             "chapters": {
                 "1": {
                     "mnemonic": "LIVE GODLY AND ADD VIRTUE",
@@ -97739,7 +97741,8 @@
             }
         },
         "1JN": {
-            "mnemonic": "LOVED",
+            "mnemonic": "NOW WE",
+            "mnemonicHint": "...are children of God (1 John 3:2)",
             "chapters": {
                 "1": {
                     "mnemonic": "LIGHT IS GOD",
@@ -98087,7 +98090,7 @@
             "mnemonic": "",
             "chapters": {
                 "1": {
-                    "mnemonic": "OVERJOYED BY IT",
+                    "mnemonic": "ACKNOWLEDGING",
                     "verses": {
                         "1": {
                             "mnemonic": ""
@@ -98136,7 +98139,7 @@
             "mnemonic": "",
             "chapters": {
                 "1": {
-                    "mnemonic": "FAITHFUL WORKER",
+                    "mnemonic": "LOVE IN THE TRUTH",
                     "verses": {
                         "1": {
                             "mnemonic": ""
@@ -98191,7 +98194,7 @@
             "mnemonic": "",
             "chapters": {
                 "1": {
-                    "mnemonic": "UNGODLY ARE TO BE JUDGED BY GOD",
+                    "mnemonic": "LOOK OUT FOR THE UNGODLY FAKES",
                     "verses": {
                         "1": {
                             "mnemonic": ""
@@ -98273,7 +98276,7 @@
             }
         },
         "REV": {
-            "mnemonic": "SECOND COMING IN JUDGMENT",
+            "mnemonic": "YES, JESUS WILL RETURN SOON",
             "chapters": {
                 "1": {
                     "mnemonic": "SEE HIM COMING IN CLOUDS",
