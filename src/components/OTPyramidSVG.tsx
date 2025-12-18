@@ -320,11 +320,11 @@ export default function OTPyramidSVG({
     const godTinyPyramids = createTinyPyramidsInParent(tA, tB, tC, topTinyLetters, topTinyBooks);
     const manTinyPyramids = createTinyPyramidsInParent(lA, lB, lC, leftTinyLetters, leftTinyBooks);
     const wayTinyPyramids = createTinyPyramidsInParent(rA, rB, rC, rightTinyLetters, rightTinyBooks);
-
-    const baseFontSize = svgSize * 0.039; // Increased to match Tradition
-    const subFontSizeWord = svgSize * 0.02;
-    const subFontSize = svgSize * 0.024; // Increased (0.02 * 1.2)
-    const tinyFontSize = svgSize * 0.018; // Increased to match Tradition
+    // Conditional Font Sizes
+    const baseFontSize = showAcrostic ? svgSize * 0.039 : svgSize * 0.030;
+    const subFontSizeWord = svgSize * 0.02; // Unchanged/Unused?
+    const subFontSize = showAcrostic ? svgSize * 0.024 : svgSize * 0.020;
+    const tinyFontSize = showAcrostic ? svgSize * 0.018 : svgSize * 0.013;
 
     const tinyTextColor = "hsl(var(--muted-foreground))";
 
