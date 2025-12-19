@@ -18,6 +18,9 @@ interface MnemonicData {
         [key: string]: {
             mnemonic: string;
             mnemonicHint?: string;
+            chapterGroupMnemonicHints?: {
+                [key: string]: string;
+            };
             chapters: {
                 [key: string]: {
                     mnemonic: string;
@@ -201,4 +204,24 @@ export function getTestamentSectionHints(testament: 'OT' | 'NT', sections: { sta
         const key = `${section.start}-${section.end}`;
         return hintsMap[key] || "";
     });
+}
+
+export function getChapterGroupHint(bookId: string, chapter: number): string | null {
+    const bookData = data.books[bookId.toUpperCase()];
+    if (!bookData || !bookData.chapterGroupMnemonicHints) return null;
+
+    const hints = bookData.chapterGroupMnemonicHints;
+
+    // Iterate over keys (e.g., "1-11", "12-25")
+    for (const key of Object.keys(hints)) {
+        const [startStr] = key.split("-");
+        const start = parseInt(startStr, 10);
+
+        // If the current chapter matches the start of the group, return the hint
+        if (start === chapter) {
+            return hints[key];
+        }
+    }
+
+    return null;
 }

@@ -25,7 +25,13 @@
     },
     "books": {
         "GEN": {
-            "mnemonic": "ISRAEL'S FAMILY LINE OF ADAM, NOAH, ABRAHAM, ISAAC, JACOB, JOSEPH",
+            "mnemonic": "INITIAL FALL, CALLING ABRAHAM, ISAAC TO JACOB, JOSEPH IN EGYPT",
+            "chapterGroupMnemonicHints": {
+                "1-11": "Initial fall",
+                "12-25": "Calling Abraham",
+                "26-37": "Isaac to Jacob",
+                "38-50": "Joseph in Egypt"
+            },
             "chapters": {
                 "1": {
                     "mnemonic": "FIRST GOD MADE HEAVENS AND EARTH GOOD",

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronDown, ChevronRight, ChevronsDown, ChevronsUp, BookOpen } from 'lucide-react';
 import type { BibleBook } from '../data/bibleApi';
-import { getTestamentMnemonic, getBookMnemonic, getChapterMnemonic, getChapterVerses, getTestamentSectionMnemonics, getTestamentSectionHints } from '../utils/mnemonicUtils';
+import { getTestamentMnemonic, getBookMnemonic, getChapterMnemonic, getChapterVerses, getTestamentSectionMnemonics, getTestamentSectionHints, getChapterGroupHint } from '../utils/mnemonicUtils';
 import { formatPassageText } from '../utils/bibleUtils';
 import { getChapter } from '../data/bibleApi';
 import { useScrollDirection } from '../hooks/useScrollDirection';
@@ -441,48 +441,56 @@ function ChapterList({ book, onNavigate }: { book: BibleBook, onNavigate: (bookI
                 const mnemonic = getChapterMnemonic(book.id, chap);
                 const isExpanded = expandedChapters[chap];
 
-                return (
-                    <div
-                        key={chap}
-                        className="group flex items-start gap-2 hover:bg-background/80 rounded-md p-2 transition-colors cursor-pointer"
-                        onClick={() => toggleChapter(chap)}
-                    >
-                        <div className="mt-0.5 text-muted-foreground">
-                            {isExpanded ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
-                        </div>
+                const groupHint = getChapterGroupHint(book.id, chap);
 
-                        <div className="flex-1">
-                            <div className="flex items-baseline gap-2">
-                                <button
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        onNavigate(book.id, chap);
-                                    }}
-                                    className="font-bold text-xs bg-secondary/20 px-1.5 rounded hover:bg-primary/10 hover:text-primary transition-colors h-fit"
-                                    title="Read Chapter"
-                                >
-                                    {chap}
-                                </button>
-                                <span className="text-sm text-foreground/80">
-                                    {mnemonic ? (
-                                        <span>
-                                            <span className="text-primary font-bold">{mnemonic.charAt(0)}</span>
-                                            {mnemonic.slice(1)}
-                                        </span>
-                                    ) : <span className="text-muted-foreground/50 italic">No mnemonic</span>}
-                                </span>
+                return (
+                    <React.Fragment key={chap}>
+                        {groupHint && (
+                            <div className={`text-xs font-bold text-muted-foreground/50 uppercase tracking-widest pl-2 mb-1 ${chap > 1 ? 'mt-3' : 'mt-1'}`}>
+                                {groupHint}
+                            </div>
+                        )}
+                        <div
+                            className="group flex items-start gap-2 hover:bg-background/80 rounded-md p-2 transition-colors cursor-pointer"
+                            onClick={() => toggleChapter(chap)}
+                        >
+                            <div className="mt-0.5 text-muted-foreground">
+                                {isExpanded ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
                             </div>
 
-                            {isExpanded && (
-                                <div
-                                    className="mt-2 pl-2 cursor-auto"
-                                    onClick={(e) => e.stopPropagation()} // Prevent closing chapter when interacting with verses
-                                >
-                                    <VerseList bookId={book.id} chapter={chap} onNavigate={onNavigate} />
+                            <div className="flex-1">
+                                <div className="flex items-baseline gap-2">
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            onNavigate(book.id, chap);
+                                        }}
+                                        className="font-bold text-xs bg-secondary/20 px-1.5 rounded hover:bg-primary/10 hover:text-primary transition-colors h-fit"
+                                        title="Read Chapter"
+                                    >
+                                        {chap}
+                                    </button>
+                                    <span className="text-sm text-foreground/80">
+                                        {mnemonic ? (
+                                            <span>
+                                                <span className="text-primary font-bold">{mnemonic.charAt(0)}</span>
+                                                {mnemonic.slice(1)}
+                                            </span>
+                                        ) : <span className="text-muted-foreground/50 italic">No mnemonic</span>}
+                                    </span>
                                 </div>
-                            )}
+
+                                {isExpanded && (
+                                    <div
+                                        className="mt-2 pl-2 cursor-auto"
+                                        onClick={(e) => e.stopPropagation()} // Prevent closing chapter when interacting with verses
+                                    >
+                                        <VerseList bookId={book.id} chapter={chap} onNavigate={onNavigate} />
+                                    </div>
+                                )}
+                            </div>
                         </div>
-                    </div>
+                    </React.Fragment>
                 );
             })}
         </div>
