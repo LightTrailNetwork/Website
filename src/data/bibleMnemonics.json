@@ -17,7 +17,7 @@
         "NT": {
             "mnemonic": "JESUS GAVE US NEW LIFE ETERNALLY.",
             "bookGroupMnemonicHints": {
-                "40-44": "central figure of the Gospels",
+                "40-44": "the Gospels & Acts tell His story",
                 "45-57": "theme of Paul's letters",
                 "58-66": "theme of letters from others"
             }
@@ -4885,7 +4885,12 @@
             }
         },
         "EXO": {
-            "mnemonic": "NATION OF ISRAEL RESCUED FROM EGYPTIAN SLAVERY",
+            "mnemonic": "NATION EXITS BONDAGE, GET LAW, CREATE TABERNACLE",
+            "chapterGroupMnemonicHints": {
+                "1-18": "Nation Exits Bondage",
+                "19-24": "Get Law",
+                "25-40": "Create Tabernacle"
+            },
             "chapters": {
                 "1": {
                     "mnemonic": "INCREASED ISRAEL IN EGYPT!",
@@ -11446,7 +11451,7 @@
             }
         },
         "NUM": {
-            "mnemonic": "STORY FROM MOUNT SINAI TO THE PROMISED LAND",
+            "mnemonic": "HISTORY OF ISRAEL'S FORTY WILDERNESS YEARS",
             "chapters": {
                 "1": {
                     "mnemonic": "SEE THE NUMBER OF THE PEOPLE OF ISRAEL AS THEY ARE COUNTED BY CLANS",
@@ -15495,7 +15500,7 @@
             }
         },
         "DEU": {
-            "mnemonic": "THE SECOND READING OF GOD'S LAWS VIA MOSES",
+            "mnemonic": "EXTENDED SERMON BEFORE ENTERING CANAAN",
             "chapters": {
                 "1": {
                     "mnemonic": "THE HISTORY OF ISRAEL IN THE WILDERNESS IS RECALLED ALL",
@@ -18547,7 +18552,7 @@
             }
         },
         "JOS": {
-            "mnemonic": "ISRAEL ENTERS PROMISED LAND",
+            "mnemonic": "HOW ISRAEL CONQUERED CANAAN",
             "chapters": {
                 "1": {
                     "mnemonic": "INTO LAND YOU GO TO WIN",
@@ -20646,7 +20651,7 @@
             }
         },
         "JDG": {
-            "mnemonic": "SIN CYCLE THROUGH JUDGES",
+            "mnemonic": "ISRAEL'S DOWNWARD SPIRAL",
             "chapters": {
                 "1": {
                     "mnemonic": "SOME TRIBES FAILED TO DRIVE OUT NATIONS ALL",
@@ -22610,7 +22615,7 @@
             }
         },
         "RUT": {
-            "mnemonic": "TRUE",
+            "mnemonic": "STAY",
             "chapters": {
                 "1": {
                     "mnemonic": "TO MOAB AND BACK IN TEAR SAD",
@@ -22890,7 +22895,7 @@
             }
         },
         "1SA": {
-            "mnemonic": "HOW GOD CHOSE ISRAEL'S FIRST TWO KINGS",
+            "mnemonic": "TWO KINGS, SAUL AND DAVID, CHOSEN BY GOD",
             "chapters": {
                 "1": {
                     "mnemonic": "HANNAH PRAYS FOR A SON SAMUEL VOWS",
@@ -25480,7 +25485,7 @@
             }
         },
         "2SA": {
-            "mnemonic": "ETERNAL RULE OF DAVID BEGINS",
+            "mnemonic": "ONE KINGDOM UNDER KING DAVID",
             "chapters": {
                 "1": {
                     "mnemonic": "EULOGY FOR SAUL AND JONATHAN SAD",
@@ -27690,7 +27695,7 @@
             }
         },
         "1KI": {
-            "mnemonic": "SOLOMON BUILDS THE TEMPLE",
+            "mnemonic": "REIGN OF SOLOMON THEN RIFT",
             "chapters": {
                 "1": {
                     "mnemonic": "SOLOMON ANOINTED KING WHILE ADONIJAH FEASTS UNKNOWINGLY EATS",
@@ -30253,7 +30258,7 @@
             }
         },
         "2KI": {
-            "mnemonic": "TAKEN INTO EXILE BY ATTACKERS",
+            "mnemonic": "YEARS OF SIN UNTIL BOTH EXILED",
             "chapters": {
                 "1": {
                     "mnemonic": "TWO FIFTIES BURNED HI",
@@ -32540,7 +32545,7 @@
             }
         },
         "1CH": {
-            "mnemonic": "OVERVIEW OF ISRAEL AND DAVID'S RULE",
+            "mnemonic": "BLOODLINES, KING DAVID, TEMPLE PREP",
             "chapters": {
                 "1": {
                     "mnemonic": "ORIGIN LIST FROM ADAM TO ABRAHAM AND SONS OF ISRAEL LISTED ALL MEN",
@@ -35516,7 +35521,7 @@
             }
         },
         "2CH": {
-            "mnemonic": "RULE OF SOLOMON FROM THE TEMPLE TO THE EXILE",
+            "mnemonic": "OVERVIEW OF SOLOMON AND HIS SINFUL LINEAGE",
             "chapters": {
                 "1": {
                     "mnemonic": "REIGN OF SOLOMON ASK",
@@ -38167,7 +38172,7 @@
             }
         },
         "EZR": {
-            "mnemonic": "YEARS LATER",
+            "mnemonic": "OBSERVANCE",
             "chapters": {
                 "1": {
                     "mnemonic": "YEAR OF CYRUS",
@@ -39062,7 +39067,7 @@
             }
         },
         "NEH": {
-            "mnemonic": "ORGANIZES WORK",
+            "mnemonic": "KINGDOM'S WALLS",
             "chapters": {
                 "1": {
                     "mnemonic": "OF JERUSALEM",
@@ -40350,7 +40355,7 @@
             }
         },
         "EST": {
-            "mnemonic": "FINDS FAVOR",
+            "mnemonic": "SAVING JEWS",
             "chapters": {
                 "1": {
                     "mnemonic": "FEAST OF XERXES AND QUEEN S",
@@ -55374,7 +55379,7 @@
             }
         },
         "ECC": {
-            "mnemonic": "TRUTHFULNESS",
+            "mnemonic": "LIFE'S MEANING",
             "chapters": {
                 "1": {
                     "mnemonic": "THE SUN ALSO RISES SEE",
@@ -56105,7 +56110,7 @@
             }
         },
         "SNG": {
-            "mnemonic": "HOLY LOVE",
+            "mnemonic": "YEARNING",
             "chapters": {
                 "1": {
                     "mnemonic": "HOW BEAUTIFUL LOVE S",
