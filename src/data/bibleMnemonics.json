@@ -5,13 +5,13 @@
     },
     "testaments": {
         "OT": {
-            "mnemonic": "IN THE HISTORY BOOKS, TRULY WE SEE WHAT IS TO COME.",
+            "mnemonic": "IN THE HISTORY BOOKS, TRULY WE SEE A PERFECT PLAN.",
             "bookGroupMnemonicHints": {
                 "1-5": "first two words of Genesis",
                 "6-17": "tell Israel's history",
                 "18-22": "express TRUE wisdom and worship",
                 "23-27": "WE SEE visions of the future",
-                "28-39": "foretell WHAT IS TO COME"
+                "28-39": "promise a coming savior"
             }
         },
         "NT": {
@@ -4885,9 +4885,9 @@
             }
         },
         "EXO": {
-            "mnemonic": "NATION EXITS BONDAGE, GET LAW, CREATE TABERNACLE",
+            "mnemonic": "NATION FLEES SLAVERY, GET LAW, CREATE TABERNACLE",
             "chapterGroupMnemonicHints": {
-                "1-18": "Nation Exits Bondage",
+                "1-18": "Nation flees slavery",
                 "19-24": "Get Law",
                 "25-40": "Create Tabernacle"
             },
@@ -15500,7 +15500,7 @@
             }
         },
         "DEU": {
-            "mnemonic": "EXTENDED SERMON BEFORE ENTERING CANAAN",
+            "mnemonic": "ENTRUSTS THE LAW TO ISRAEL BEFORE CANAAN",
             "chapters": {
                 "1": {
                     "mnemonic": "THE HISTORY OF ISRAEL IN THE WILDERNESS IS RECALLED ALL",
@@ -30258,7 +30258,7 @@
             }
         },
         "2KI": {
-            "mnemonic": "YEARS OF SIN UNTIL BOTH EXILED",
+            "mnemonic": "YEARS OF SIN UNTIL BOTH OUSTED",
             "chapters": {
                 "1": {
                     "mnemonic": "TWO FIFTIES BURNED HI",
@@ -32545,7 +32545,12 @@
             }
         },
         "1CH": {
-            "mnemonic": "BLOODLINES, KING DAVID, TEMPLE PREP",
+            "mnemonic": "BLOODLINE, DAVID'S REIGN, PRE-TEMPLE",
+            "chapterGroupMnemonicHints": {
+                "1-9": "Bloodline",
+                "10-20": "David's Reign",
+                "21-29": "Pre-Temple"
+            },
             "chapters": {
                 "1": {
                     "mnemonic": "ORIGIN LIST FROM ADAM TO ABRAHAM AND SONS OF ISRAEL LISTED ALL MEN",
@@ -35521,7 +35526,7 @@
             }
         },
         "2CH": {
-            "mnemonic": "OVERVIEW OF SOLOMON AND HIS SINFUL LINEAGE",
+            "mnemonic": "OUR TEMPLE, SOLOMON'S ROYAL LINE UNTIL TAKEN",
             "chapters": {
                 "1": {
                     "mnemonic": "REIGN OF SOLOMON ASK",
@@ -38172,7 +38177,7 @@
             }
         },
         "EZR": {
-            "mnemonic": "OBSERVANCE",
+            "mnemonic": "OUR REBIRTH",
             "chapters": {
                 "1": {
                     "mnemonic": "YEAR OF CYRUS",
@@ -52474,7 +52479,7 @@
             }
         },
         "PRO": {
-            "mnemonic": "UNDERSTANDING GODLY WISDOM FOR LIFE",
+            "mnemonic": "UNDERSTANDING WISDOM FOR DAILY LIFE",
             "chapters": {
                 "1": {
                     "mnemonic": "USE FEAR LORD BEGINNING KNOWLEDGE HIMS",
@@ -56506,7 +56511,7 @@
             }
         },
         "ISA": {
-            "mnemonic": "ANNOUNCES GODS JUDGMENT AND SALVATION THROUGH THE SUFFERING SERVANT MESSIAH",
+            "mnemonic": "WARNING JUDAH OF JUDGMENT BUT PROMISING A SUFFERING SERVANT AND A NEW CREATION",
             "chapters": {
                 "1": {
                     "mnemonic": "AH SINFUL ZION REDEEMED BY JUDGE ME HI",
@@ -60717,7 +60722,7 @@
             }
         },
         "JER": {
-            "mnemonic": "BOLDLY WARNS OF BABYLON CAPTIVITY BUT FORETELLS NEW COVENANT",
+            "mnemonic": "ENTRY TO BABYLON PROPHESIED AND A NEW COVENANT OF FORGIVENESS ",
             "chapters": {
                 "1": {
                     "mnemonic": "BE NOT AFRAID OF FACE HI",
@@ -65074,7 +65079,7 @@
             }
         },
         "LAM": {
-            "mnemonic": "O LORD",
+            "mnemonic": "SHAME",
             "chapters": {
                 "1": {
                     "mnemonic": "O HOW SITS CITY SOLITARY HI",
@@ -65566,7 +65571,7 @@
             }
         },
         "EZK": {
-            "mnemonic": "USES VISIONS OF JUDGMENT, RESTORATION, AND ANOTHER TEMPLE",
+            "mnemonic": "END OF JUDAH PROPHESIED AND THEN A NEW TEMPLE IN JERUSALEM",
             "chapters": {
                 "1": {
                     "mnemonic": "",
@@ -69630,7 +69635,7 @@
             }
         },
         "DAN": {
-            "mnemonic": "TRIBULATIONS",
+            "mnemonic": "EMPIRE VISION",
             "chapters": {
                 "1": {
                     "mnemonic": "THE PULSE FAIRER FATTER S",
@@ -70766,7 +70771,7 @@
             }
         },
         "HOS": {
-            "mnemonic": "EXAMPLE OF GRACE",
+            "mnemonic": "ADULTEROUS WIFE",
             "chapters": {
                 "1": {
                     "mnemonic": "EPHRAIM SONS",
@@ -71432,7 +71437,8 @@
             }
         },
         "JOL": {
-            "mnemonic": "VOW",
+            "mnemonic": "PAY",
+            "mnemonicHint": "God will **pay** you back what the locusts ate (Joel 2:25)",
             "chapters": {
                 "1": {
                     "mnemonic": "VINE DRIED UP FIG TREE SO",
@@ -71671,7 +71677,7 @@
             }
         },
         "AMO": {
-            "mnemonic": "EQUAL CARE",
+            "mnemonic": "EQUITY NOW",
             "chapters": {
                 "1": {
                     "mnemonic": "EDOM FIRE PALACES",
@@ -72162,7 +72168,7 @@
             "mnemonic": "",
             "chapters": {
                 "1": {
-                    "mnemonic": "RETRIBUTION PROPHESIED",
+                    "mnemonic": "REPAYING PROUD EDOMITES",
                     "verses": {
                         "1": {
                             "mnemonic": ""
@@ -72232,7 +72238,7 @@
             }
         },
         "JON": {
-            "mnemonic": "YE GO",
+            "mnemonic": "FISH",
             "chapters": {
                 "1": {
                     "mnemonic": "YONAH FLEE TARSHISH",
@@ -72398,11 +72404,11 @@
                         }
                     }
                 }
-            },
-            "mnemonicHint": "(Like 'Go ye' in NT Great Commission KJV)"
+            }
         },
         "MIC": {
-            "mnemonic": "OBEY GOD",
+            "mnemonic": "ETHICAL",
+            "mnemonicHint": "act justly, love mercy, walk humbly with your God (Micah 6:8)",
             "chapters": {
                 "1": {
                     "mnemonic": "O SAMARIA WOUND NOW",
@@ -72757,7 +72763,7 @@
             }
         },
         "NAM": {
-            "mnemonic": "WOE",
+            "mnemonic": "CRY",
             "chapters": {
                 "1": {
                     "mnemonic": "WITH FLOOD END NOW",
@@ -72918,7 +72924,7 @@
             }
         },
         "HAB": {
-            "mnemonic": "EAR",
+            "mnemonic": "THY",
             "chapters": {
                 "1": {
                     "mnemonic": "EXECUTE JUDGMENT GO",
@@ -73106,7 +73112,7 @@
             }
         },
         "ZEP": {
-            "mnemonic": "SIN",
+            "mnemonic": "PAN",
             "chapters": {
                 "1": {
                     "mnemonic": "SEARCH JERUSALEM MEN",
@@ -73285,7 +73291,8 @@
             }
         },
         "HAG": {
-            "mnemonic": "SO",
+            "mnemonic": "LO",
+            "mnemonicHint": "(... says the LORD)",
             "chapters": {
                 "1": {
                     "mnemonic": "START REBUILDING",
@@ -73411,11 +73418,10 @@
                         }
                     }
                 }
-            },
-            "mnemonicHint": "(... says the LORD)"
+            }
         },
         "ZEC": {
-            "mnemonic": "INCOMING CHRIST",
+            "mnemonic": "A COMING MESSIAH",
             "chapters": {
                 "1": {
                     "mnemonic": "I SAW BY NIGHT RED HORSE SO",
@@ -74123,7 +74129,7 @@
             }
         },
         "MAL": {
-            "mnemonic": "NEXT",
+            "mnemonic": "NAME",
             "chapters": {
                 "1": {
                     "mnemonic": "NO PLEASURE MENS",
@@ -97222,7 +97228,7 @@
             }
         },
         "1PE": {
-            "mnemonic": "EXILE",
+            "mnemonic": "ELECT",
             "chapters": {
                 "1": {
                     "mnemonic": "PRAISE FOR LIVING HOPE HOLY HI",
@@ -98223,7 +98229,7 @@
             "mnemonic": "",
             "chapters": {
                 "1": {
-                    "mnemonic": "LOOK OUT FOR THE UNGODLY FAKES",
+                    "mnemonic": "LOOK OUT FOR ALL UNGODLY FAKES",
                     "verses": {
                         "1": {
                             "mnemonic": ""
