@@ -226,7 +226,7 @@ export default function Today() {
             <span>{displayDate.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}</span>
             <input
               type="date"
-              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10 dark:[color-scheme:dark]"
               value={displayDate.toISOString().split('T')[0]}
               onChange={(e) => {
                 if (e.target.value) {

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Anchor, Heart, UserPlus, FileWarning, Handshake, Church, Globe2, CheckCircle2, Circle } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface AnchorCardProps {
     completedTasks: string[];
@@ -7,10 +8,19 @@ interface AnchorCardProps {
     dayOfWeek: string;
 }
 
-const SCHEDULE = {
+interface ScheduleItem {
+    letter: string;
+    topic: string;
+    desc: string;
+    icon: any;
+    link?: string;
+    linkText?: string;
+}
+
+const SCHEDULE: Record<string, ScheduleItem> = {
     Monday: { letter: 'A.', topic: 'Adore Wife', desc: 'Pray for your spouse', icon: Heart },
     Tuesday: { letter: 'N.', topic: 'Nurture Kids', desc: 'Pray for your children', icon: UserPlus },
-    Wednesday: { letter: 'C.', topic: 'Confess Sins', desc: 'Heart check & repentance', icon: FileWarning },
+    Wednesday: { letter: 'C.', topic: 'Confess Sins', desc: 'Heart check & repentance', icon: FileWarning, link: '/bible/Read/Psalm/51', linkText: 'Psalm 51' },
     Thursday: { letter: 'H.', topic: 'Help Brothers', desc: 'Family & small group', icon: Handshake },
     Friday: { letter: 'O.', topic: 'Our Church', desc: 'Pastors & community', icon: Church },
     Saturday: { letter: 'R.', topic: 'Reach World', desc: 'Missions & lost souls', icon: Globe2 },
@@ -28,12 +38,16 @@ export default function AnchorCard({ completedTasks, onToggle, dayOfWeek }: Anch
 
     // Active day is either the preview day or the actual current day
     // Fallback to Monday if dayOfWeek is Sunday or invalid
+    // Active day is either the preview day or the actual current day
+    // Fallback to Monday if dayOfWeek is Sunday or invalid
     const activeDayKey = previewDay || (SCHEDULE[dayOfWeek as keyof typeof SCHEDULE] ? dayOfWeek : 'Monday');
-    const displayItem = SCHEDULE[activeDayKey as keyof typeof SCHEDULE];
+    const displayItem = SCHEDULE[activeDayKey as keyof typeof SCHEDULE] || SCHEDULE['Monday'];
 
     // Is this the ACTUAL today?
     const isToday = activeDayKey === dayOfWeek;
     const isCompleted = completedTasks.includes('anchor_prayer');
+
+    if (!displayItem) return null; // Safety fallback
 
     return (
         <div className="bg-card border border-border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all h-full flex flex-col group relative">
@@ -63,7 +77,17 @@ export default function AnchorCard({ completedTasks, onToggle, dayOfWeek }: Anch
                         <h4 className={`font-bold text-lg transition-colors ${isToday ? 'text-foreground' : 'text-muted-foreground'}`}>
                             {displayItem.topic}
                         </h4>
-                        <p className="text-muted-foreground text-sm">{displayItem.desc}</p>
+                        <p className="text-muted-foreground text-sm">
+                            {displayItem.desc}
+                            {displayItem.link && displayItem.linkText && (
+                                <>
+                                    {' • '}
+                                    <Link to={displayItem.link} className="text-indigo-500 hover:text-indigo-600 hover:underline font-medium transition-colors">
+                                        {displayItem.linkText}
+                                    </Link>
+                                </>
+                            )}
+                        </p>
                     </div>
                 </div>
 
