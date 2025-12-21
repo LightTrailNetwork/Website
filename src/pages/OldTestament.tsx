@@ -5,16 +5,13 @@ import OTPyramidSVG from "../components/OTPyramidSVG";
 import VerseLink from "../components/study/VerseLink";
 import { OT_PASSAGES, type OTPassage } from "../data/otPassages";
 import { getChapter, isTranslationOfflineReady } from "../data/bibleApi";
-
 import { formatPassageText } from "../utils/bibleUtils";
-import bibleMnemonics from '../data/bibleMnemonics.json';
 
 export default function OldTestament() {
     const [hoveredBook, setHoveredBook] = useState<string | null>(null);
     const [selectedBook, setSelectedBook] = useState("Genesis");
     const [verseTexts, setVerseTexts] = useState<Record<string, string>>({});
     const [isLoadingTexts, setIsLoadingTexts] = useState(true);
-    const [showAcrostic, setShowAcrostic] = useState(false);
 
     const handleBookClick = (book: string) => {
         setSelectedBook(book);
@@ -98,28 +95,12 @@ export default function OldTestament() {
                 {/* Left Column - Pyramid */}
                 <div className="flex flex-col items-center space-y-6">
                     <div className="w-full bg-card border border-border rounded-xl p-6 lg:p-8 shadow-sm">
-                        <div className="flex flex-col items-center gap-4 mb-6 px-2 sm:flex-row sm:justify-between">
-                            <h2 className="text-xl font-semibold text-foreground flex flex-col gap-1 items-center sm:items-start text-center sm:text-left">
-                                <div className="flex items-center gap-2">
-                                    <BookOpen className="w-5 h-5 text-primary" />
-                                    The Books of the Old Testament
-                                </div>
-                                {showAcrostic && (
-                                    <p className="text-xs text-muted-foreground italic mt-1 max-w-md">
-                                        "{bibleMnemonics.testaments.OT.mnemonic}"
-                                    </p>
-                                )}
-                            </h2>
-                            <button
-                                onClick={() => setShowAcrostic(!showAcrostic)}
-                                className="text-xs font-medium px-3 py-1.5 rounded-full bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-colors border border-border flex items-center gap-2 whitespace-nowrap flex-shrink-0"
-                            >
-                                <span>{showAcrostic ? "Showing Acrostic" : "Showing Books"}</span>
-                                <div className={`w-8 h-4 rounded-full p-0.5 transition-colors shrink-0 ${showAcrostic ? "bg-primary" : "bg-muted-foreground/30"}`}>
-                                    <div className={`w-3 h-3 rounded-full bg-white shadow-sm transition-transform ${showAcrostic ? "translate-x-4" : "translate-x-0"}`} />
-                                </div>
-                            </button>
-                        </div>
+                        <h2 className="text-xl font-semibold text-foreground text-center mb-6 flex flex-col items-center justify-center gap-1">
+                            <div className="flex items-center gap-2">
+                                <BookOpen className="w-5 h-5 text-primary" />
+                                The Books of the Old Testament
+                            </div>
+                        </h2>
                         <div className="bg-gradient-to-br from-primary/5 to-secondary/5 rounded-xl p-4 relative overflow-hidden group">
                             <TransformWrapper
                                 initialScale={1}
@@ -162,7 +143,6 @@ export default function OldTestament() {
                                                 hoveredBook={hoveredBook}
                                                 onBookClick={handleBookClick}
                                                 onBookHover={handleBookHover}
-                                                showAcrostic={showAcrostic}
                                             />
                                         </TransformComponent>
                                     </>
