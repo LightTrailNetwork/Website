@@ -313,7 +313,7 @@ export default function PyramidSVG({
   const svgSize = containerSize;
 
   // Pyramid dimensions matching original
-  const S = svgSize * 0.7;
+  const S = svgSize * 0.63;
   const H = (Math.sqrt(3) / 2) * S;
   const leftPad = (svgSize - S) / 2;
   const startY = svgSize * 0.1;
