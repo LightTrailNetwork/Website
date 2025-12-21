@@ -20,6 +20,25 @@ export interface MnemonicSystem {
 
 export const MNEMONIC_SYSTEMS: MnemonicSystem[] = [
     {
+        id: "ten-commandments",
+        title: "The 10 Commandments",
+        subtitle: "Exodus 20",
+        description: "God's moral law for His people.",
+        mnemonicPhrase: "FINiSH MAd SLiCk",
+        items: [
+            { letter: "F", title: "Put God First" },
+            { letter: "I", title: "No Idols" },
+            { letter: "N", title: "Respect God's Name" },
+            { letter: "S", title: "Keep Sabbath Holy" },
+            { letter: "H", title: "Honor Father and Mother" },
+            { letter: "M", title: "No Murder" },
+            { letter: "Ad", title: "No Adultery" },
+            { letter: "S", title: "No Stealing" },
+            { letter: "L", title: "No Lying" },
+            { letter: "C", title: "No Coveting" }
+        ]
+    },
+    {
         id: "armor-of-god",
         title: "The 7 Armors of God",
         subtitle: "Ephesians 6",
@@ -109,25 +128,7 @@ export const MNEMONIC_SYSTEMS: MnemonicSystem[] = [
             { letter: "A", title: "Anything else in all Creation" }
         ]
     },
-    {
-        id: "ten-commandments",
-        title: "The 10 Commandments",
-        subtitle: "Exodus 20",
-        description: "God's moral law for His people.",
-        mnemonicPhrase: "FINiSH MAd SLiCk",
-        items: [
-            { title: "Put God First" },
-            { title: "No Idols" },
-            { title: "Respect God's Name" },
-            { title: "Keep Sabbath Holy" },
-            { title: "Honor Father and Mother" },
-            { title: "No Murder" },
-            { title: "No Adultery" },
-            { title: "No Stealing" },
-            { title: "No Lying" },
-            { title: "No Coveting" }
-        ]
-    },
+
     {
         id: "prophecies-jesus",
         title: "10 Prophecies Fulfilled",
