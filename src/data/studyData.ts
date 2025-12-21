@@ -2647,7 +2647,7 @@ export const JEWISH_FEASTS: JewishFeast[] = [
 export interface MessianicProphecy {
     id: string;
     title: string;
-    topic: 'Birth' | 'Ministry' | 'Passion' | 'Resurrection' | 'Kingship';
+    topic: 'Birth' | 'Nature' | 'Ministry' | 'Passion' | 'Resurrection' | 'Kingship' | 'Priesthood' | 'Return' | 'Covenant';
     prophecy: {
         verse: string;
         text: string;
@@ -2661,7 +2661,93 @@ export interface MessianicProphecy {
 }
 
 export const MESSIANIC_PROPHECIES: MessianicProphecy[] = [
-    // --- Birth ---
+    // --- EARLIEST PROPHECIES (Ancestry & Nature) ---
+    {
+        id: 'seed-woman',
+        title: 'The Seed of the Woman',
+        topic: 'Birth',
+        prophecy: {
+            verse: 'Genesis 3:15',
+            text: 'And I will put enmity between you and the woman, and between your offspring and hers; he will crush your head, and you will strike his heel.',
+            source: 'God'
+        },
+        fulfillment: {
+            verse: 'Galatians 4:4',
+            text: 'But when the set time had fully come, God sent his Son, born of a woman, born under the law.'
+        }
+    },
+    {
+        id: 'seed-abraham',
+        title: 'Seed of Abraham',
+        topic: 'Birth',
+        prophecy: {
+            verse: 'Genesis 22:18',
+            text: 'And in your offspring shall all the nations of the earth be blessed, because you have obeyed my voice.',
+            source: 'God'
+        },
+        fulfillment: {
+            verse: 'Matthew 1:1',
+            text: 'The book of the genealogy of Jesus Christ, the son of David, the son of Abraham.'
+        }
+    },
+    {
+        id: 'tribe-judah',
+        title: 'From the Tribe of Judah',
+        topic: 'Birth',
+        prophecy: {
+            verse: 'Genesis 49:10',
+            text: 'The scepter shall not depart from Judah, nor the ruler\'s staff from between his feet, until tribute comes to him.',
+            source: 'Jacob'
+        },
+        fulfillment: {
+            verse: 'Luke 3:33',
+            text: '...the son of Amminadab, the son of Admin, the son of Arni, the son of Hezron, the son of Perez, the son of Judah...'
+        }
+    },
+    {
+        id: 'star-jacob',
+        title: 'Star out of Jacob',
+        topic: 'Kingship',
+        prophecy: {
+            verse: 'Numbers 24:17',
+            text: 'I see him, but not now; I behold him, but not near: a star shall come out of Jacob, and a scepter shall rise out of Israel.',
+            source: 'Balaam'
+        },
+        fulfillment: {
+            verse: 'Matthew 2:2',
+            text: 'Where is he who has been born king of the Jews? For we saw his star when it rose.'
+        }
+    },
+    {
+        id: 'prophet-moses',
+        title: 'A Prophet Like Moses',
+        topic: 'Ministry',
+        prophecy: {
+            verse: 'Deuteronomy 18:15',
+            text: 'The LORD your God will raise up for you a prophet like me from among you, from your brothers—it is to him you shall listen.',
+            source: 'Moses'
+        },
+        fulfillment: {
+            verse: 'Acts 3:22',
+            text: 'Moses said, "The Lord God will raise up for you a prophet like me from your brothers. You shall listen to him in whatever he tells you."'
+        }
+    },
+    {
+        id: 'son-of-god',
+        title: 'The Begotten Son',
+        topic: 'Nature',
+        prophecy: {
+            verse: 'Psalm 2:7',
+            text: 'I will tell of the decree: The LORD said to me, "You are my Son; today I have begotten you."',
+            source: 'David'
+        },
+        fulfillment: {
+            verse: 'Matthew 3:17',
+            text: 'And behold, a voice from heaven said, "This is my beloved Son, with whom I am well pleased."'
+        }
+    },
+
+    // --- BIRTH & CHILDHOOD ---
     {
         id: 'virgin-birth',
         title: 'Born of a Virgin',
@@ -2674,6 +2760,62 @@ export const MESSIANIC_PROPHECIES: MessianicProphecy[] = [
         fulfillment: {
             verse: 'Matthew 1:22-23',
             text: 'All this took place to fulfill what the Lord had spoken by the prophet: "Behold, the virgin shall conceive..."'
+        }
+    },
+    {
+        id: 'immanuel',
+        title: 'God With Us (Immanuel)',
+        topic: 'Nature',
+        prophecy: {
+            verse: 'Isaiah 7:14',
+            text: '...and shall call his name Immanuel.',
+            source: 'Isaiah'
+        },
+        fulfillment: {
+            verse: 'Matthew 1:23',
+            text: '...and they shall call his name Immanuel" (which means, God with us).'
+        }
+    },
+    {
+        id: 'mighty-god',
+        title: 'The Mighty God',
+        topic: 'Nature',
+        prophecy: {
+            verse: 'Isaiah 9:6',
+            text: 'For to us a child is born... and his name shall be called Wonderful Counselor, Mighty God, Everlasting Father, Prince of Peace.',
+            source: 'Isaiah'
+        },
+        fulfillment: {
+            verse: 'John 20:28',
+            text: 'Thomas answered him, "My Lord and my God!"'
+        }
+    },
+    {
+        id: 'heir-david',
+        title: 'Heir to the Throne of David',
+        topic: 'Kingship',
+        prophecy: {
+            verse: 'Isaiah 9:7',
+            text: 'Of the increase of his government and of peace there will be no end, on the throne of David and over his kingdom.',
+            source: 'Isaiah'
+        },
+        fulfillment: {
+            verse: 'Luke 1:32-33',
+            text: 'The Lord God will give to him the throne of his father David, and he will reign over the house of Jacob forever.'
+        }
+    },
+    {
+        id: 'root-jesse',
+        title: 'The Root of Jesse',
+        topic: 'Birth',
+        prophecy: {
+            verse: 'Isaiah 11:1',
+            text: 'There shall come forth a shoot from the stump of Jesse, and a branch from his roots shall bear fruit.',
+            source: 'Isaiah'
+        },
+        fulfillment: {
+            verse: 'Romans 15:12',
+            text: 'And again Isaiah says, "The root of Jesse will come, even he who arises to rule the Gentiles..."'
         }
     },
     {
@@ -2692,21 +2834,35 @@ export const MESSIANIC_PROPHECIES: MessianicProphecy[] = [
         probability: 'Micah pinpointed the exact village out of thousands in Judah.'
     },
     {
-        id: 'tribe-judah',
-        title: 'From the Tribe of Judah',
+        id: 'slaughter-innocents',
+        title: 'Slaughter of the Innocents',
         topic: 'Birth',
         prophecy: {
-            verse: 'Genesis 49:10',
-            text: 'The scepter shall not depart from Judah, nor the ruler\'s staff from between his feet, until tribute comes to him.',
-            source: 'Jacob'
+            verse: 'Jeremiah 31:15',
+            text: 'A voice is heard in Ramah, lamentation and bitter weeping. Rachel is weeping for her children...',
+            source: 'Jeremiah'
         },
         fulfillment: {
-            verse: 'Hebrews 7:14',
-            text: 'For it is evident that our Lord was descended from Judah...'
+            verse: 'Matthew 2:16',
+            text: 'Herod... sent and killed all the male children in Bethlehem and in all that region who were two years old or under.'
+        }
+    },
+    {
+        id: 'out-of-egypt',
+        title: 'Called Out of Egypt',
+        topic: 'Birth',
+        prophecy: {
+            verse: 'Hosea 11:1',
+            text: 'When Israel was a child, I loved him, and out of Egypt I called my son.',
+            source: 'Hosea'
+        },
+        fulfillment: {
+            verse: 'Matthew 2:14-15',
+            text: 'And he rose and took the child and his mother by night and departed to Egypt... This was to fulfill what the Lord had spoken...'
         }
     },
 
-    // --- Ministry ---
+    // --- MINISTRY ---
     {
         id: 'preceded-messenger',
         title: 'Preceded by a Messenger',
@@ -2719,6 +2875,20 @@ export const MESSIANIC_PROPHECIES: MessianicProphecy[] = [
         fulfillment: {
             verse: 'Matthew 3:1-3',
             text: 'In those days John the Baptist came preaching in the wilderness of Judea... For this is he who was spoken of by the prophet Isaiah.'
+        }
+    },
+    {
+        id: 'messenger-malachi',
+        title: 'The Messenger of the Covenant',
+        topic: 'Ministry',
+        prophecy: {
+            verse: 'Malachi 3:1',
+            text: 'Behold, I send my messenger, and he will prepare the way before me. And the Lord whom you seek will suddenly come to his temple.',
+            source: 'Malachi'
+        },
+        fulfillment: {
+            verse: 'Luke 7:27',
+            text: 'This is he of whom it is written, "Behold, I send my messenger before your face, who will prepare your way before you."'
         }
     },
     {
@@ -2736,6 +2906,34 @@ export const MESSIANIC_PROPHECIES: MessianicProphecy[] = [
         }
     },
     {
+        id: 'spirit-anointed',
+        title: 'Anointed by the Spirit',
+        topic: 'Ministry',
+        prophecy: {
+            verse: 'Isaiah 61:1',
+            text: 'The Spirit of the Lord GOD is upon me, because the LORD has anointed me to bring good news to the poor.',
+            source: 'Isaiah'
+        },
+        fulfillment: {
+            verse: 'Luke 4:18-21',
+            text: 'The Spirit of the Lord is upon me... Today this Scripture has been fulfilled in your hearing.'
+        }
+    },
+    {
+        id: 'heal-brokenhearted',
+        title: 'Healer of the Brokenhearted',
+        topic: 'Ministry',
+        prophecy: {
+            verse: 'Isaiah 61:1',
+            text: 'He has sent me to bind up the brokenhearted, to proclaim liberty to the captives.',
+            source: 'Isaiah'
+        },
+        fulfillment: {
+            verse: 'Matthew 11:5',
+            text: 'The blind receive their sight and the lame walk, lepers are cleansed and the deaf hear.'
+        }
+    },
+    {
         id: 'parables',
         title: 'Teaching in Parables',
         topic: 'Ministry',
@@ -2749,8 +2947,50 @@ export const MESSIANIC_PROPHECIES: MessianicProphecy[] = [
             text: 'All these things Jesus said to the crowds in parables... to fulfill what was spoken by the prophet.'
         }
     },
+    {
+        id: 'zeal-house',
+        title: 'Zeal for God\'s House',
+        topic: 'Ministry',
+        prophecy: {
+            verse: 'Psalm 69:9',
+            text: 'For zeal for your house has consumed me, and the reproaches of those who reproach you have fallen on me.',
+            source: 'David'
+        },
+        fulfillment: {
+            verse: 'John 2:17',
+            text: 'His disciples remembered that it was written, "Zeal for your house will consume me."'
+        }
+    },
+    {
+        id: 'blind-eyes',
+        title: 'Opening Blind Eyes',
+        topic: 'Ministry',
+        prophecy: {
+            verse: 'Isaiah 35:5-6',
+            text: 'Then the eyes of the blind shall be opened, and the ears of the deaf unstopped; then shall the lame man leap like a deer.',
+            source: 'Isaiah'
+        },
+        fulfillment: {
+            verse: 'Matthew 11:4-5',
+            text: 'Jesus answered... "the blind receive their sight and the lame walk..."'
+        }
+    },
+    {
+        id: 'servant-gentiles',
+        title: 'Light to the Gentiles',
+        topic: 'Ministry',
+        prophecy: {
+            verse: 'Isaiah 42:6',
+            text: 'I will give you as a covenant for the people, a light for the nations, to open the eyes that are blind.',
+            source: 'Isaiah'
+        },
+        fulfillment: {
+            verse: 'Luke 2:32',
+            text: 'A light for revelation to the Gentiles, and for glory to your people Israel.'
+        }
+    },
 
-    // --- Passion (Death) ---
+    // --- PASSION (BETRAYAL & TRIAL) ---
     {
         id: 'triumphal-entry',
         title: 'The King on a Donkey',
@@ -2766,8 +3006,22 @@ export const MESSIANIC_PROPHECIES: MessianicProphecy[] = [
         }
     },
     {
+        id: 'betrayal-friend',
+        title: 'Betrayed by a Friend',
+        topic: 'Passion',
+        prophecy: {
+            verse: 'Psalm 41:9',
+            text: 'Even my close friend in whom I trusted, who ate my bread, has lifted his heel against me.',
+            source: 'David'
+        },
+        fulfillment: {
+            verse: 'John 13:18',
+            text: 'But the Scripture will be fulfilled, "He who ate my bread has lifted his heel against me."'
+        }
+    },
+    {
         id: 'betrayal-silver',
-        title: 'Betrayed for 30 Pieces of Silver',
+        title: 'Sold for 30 Pieces of Silver',
         topic: 'Passion',
         prophecy: {
             verse: 'Zechariah 11:12',
@@ -2776,9 +3030,95 @@ export const MESSIANIC_PROPHECIES: MessianicProphecy[] = [
         },
         fulfillment: {
             verse: 'Matthew 26:15',
-            text: 'They paid him thirty pieces of silver.'
+            text: 'And they paid him thirty pieces of silver.'
         }
     },
+    {
+        id: 'potters-field',
+        title: 'Money Thrown to Potter',
+        topic: 'Passion',
+        prophecy: {
+            verse: 'Zechariah 11:13',
+            text: 'Then the LORD said to me, "Throw it to the potter"—the lordly price at which I was priced by them.',
+            source: 'Zechariah'
+        },
+        fulfillment: {
+            verse: 'Matthew 27:7',
+            text: 'So they took counsel and bought with them the potter\'s field as a burial place for strangers.'
+        }
+    },
+    {
+        id: 'strike-shepherd',
+        title: 'Strike the Shepherd',
+        topic: 'Passion',
+        prophecy: {
+            verse: 'Zechariah 13:7',
+            text: 'Strike the shepherd, and the sheep will be scattered.',
+            source: 'Zechariah'
+        },
+        fulfillment: {
+            verse: 'Matthew 26:31',
+            text: 'For it is written, "I will strike the shepherd, and the sheep of the flock will be scattered."'
+        }
+    },
+    {
+        id: 'false-witnesses',
+        title: 'Accused by False Witnesses',
+        topic: 'Passion',
+        prophecy: {
+            verse: 'Psalm 35:11',
+            text: 'Malicious witnesses rise up; they ask me of things that I do not know.',
+            source: 'David'
+        },
+        fulfillment: {
+            verse: 'Mark 14:57',
+            text: 'And some stood up and bore false witness against him.'
+        }
+    },
+    {
+        id: 'silent-accusers',
+        title: 'Silent Before Accusers',
+        topic: 'Passion',
+        prophecy: {
+            verse: 'Isaiah 53:7',
+            text: 'He was oppressed, and he was afflicted, yet he opened not his mouth; like a lamb that is led to the slaughter.',
+            source: 'Isaiah'
+        },
+        fulfillment: {
+            verse: 'Matthew 27:12',
+            text: 'But when he was accused by the chief priests and elders, he gave no answer.'
+        }
+    },
+    {
+        id: 'hated-without-cause',
+        title: 'Hated Without Cause',
+        topic: 'Passion',
+        prophecy: {
+            verse: 'Psalm 69:4',
+            text: 'More in number than the hairs of my head are those who hate me without cause.',
+            source: 'David'
+        },
+        fulfillment: {
+            verse: 'John 15:25',
+            text: 'But the word that is written in their Law must be fulfilled: "They hated me without a cause."'
+        }
+    },
+    {
+        id: 'spat-upon',
+        title: 'Spat Upon and Struck',
+        topic: 'Passion',
+        prophecy: {
+            verse: 'Isaiah 50:6',
+            text: 'I gave my back to those who strike, and my cheeks to those who pull out the beard; I hid not my face from disgrace and spitting.',
+            source: 'Isaiah'
+        },
+        fulfillment: {
+            verse: 'Matthew 26:67',
+            text: 'Then they spit in his face and struck him. And some slapped him.'
+        }
+    },
+
+    // --- CRUCIFIXION & DEATH ---
     {
         id: 'pierced-hands',
         title: 'Pierced Hands and Feet',
@@ -2789,8 +3129,22 @@ export const MESSIANIC_PROPHECIES: MessianicProphecy[] = [
             source: 'David'
         },
         fulfillment: {
-            verse: 'John 20:25',
-            text: '"Unless I see in his hands the mark of the nails..." (Implied crucifixion)'
+            verse: 'John 20:27',
+            text: 'Then he said to Thomas, "Put your finger here, and see my hands..."'
+        }
+    },
+    {
+        id: 'mocked-people',
+        title: 'Mocked by the People',
+        topic: 'Passion',
+        prophecy: {
+            verse: 'Psalm 22:7-8',
+            text: 'All who see me mock me; they make mouths at me; they wag their heads; "He trusts in the LORD; let him deliver him!"',
+            source: 'David'
+        },
+        fulfillment: {
+            verse: 'Matthew 27:39',
+            text: 'And those who passed by derided him, wagging their heads.'
         }
     },
     {
@@ -2808,6 +3162,76 @@ export const MESSIANIC_PROPHECIES: MessianicProphecy[] = [
         }
     },
     {
+        id: 'numbered-transgressors',
+        title: 'Numbered with Transgressors',
+        topic: 'Passion',
+        prophecy: {
+            verse: 'Isaiah 53:12',
+            text: 'Because he poured out his soul to death and was numbered with the transgressors.',
+            source: 'Isaiah'
+        },
+        fulfillment: {
+            verse: 'Mark 15:27',
+            text: 'And with him they crucified two robbers, one on his right and one on his left.'
+        }
+    },
+    {
+        id: 'forsaken-god',
+        title: 'Forsaken by God',
+        topic: 'Passion',
+        prophecy: {
+            verse: 'Psalm 22:1',
+            text: 'My God, my God, why have you forsaken me?',
+            source: 'David'
+        },
+        fulfillment: {
+            verse: 'Matthew 27:46',
+            text: 'And about the ninth hour Jesus cried out... "My God, my God, why have you forsaken me?"'
+        }
+    },
+    {
+        id: 'thirsty',
+        title: 'Thirst on the Cross',
+        topic: 'Passion',
+        prophecy: {
+            verse: 'Psalm 22:15',
+            text: 'My strength is dried up like a potsherd, and my tongue sticks to my jaws; you lay me in the dust of death.',
+            source: 'David'
+        },
+        fulfillment: {
+            verse: 'John 19:28',
+            text: 'Jesus, knowing that all was now finished... said, "I thirst."'
+        }
+    },
+    {
+        id: 'vinegar-drink',
+        title: 'Given Vinegar to Drink',
+        topic: 'Passion',
+        prophecy: {
+            verse: 'Psalm 69:21',
+            text: 'They gave me poison for food, and for my thirst they gave me sour wine to drink.',
+            source: 'David'
+        },
+        fulfillment: {
+            verse: 'Matthew 27:34',
+            text: 'They offered him wine to drink, mixed with gall.'
+        }
+    },
+    {
+        id: 'pierced-side',
+        title: 'Pierced Side',
+        topic: 'Passion',
+        prophecy: {
+            verse: 'Zechariah 12:10',
+            text: 'And I will pour out... a spirit of grace... so that, when they look on me, on him whom they have pierced, they shall mourn.',
+            source: 'Zechariah'
+        },
+        fulfillment: {
+            verse: 'John 19:34',
+            text: 'But one of the soldiers pierced his side with a spear, and at once there came out blood and water.'
+        }
+    },
+    {
         id: 'not-bone-broken',
         title: 'No Bone Broken',
         topic: 'Passion',
@@ -2817,8 +3241,22 @@ export const MESSIANIC_PROPHECIES: MessianicProphecy[] = [
             source: 'David'
         },
         fulfillment: {
-            verse: 'John 19:33-36',
-            text: ' But when they came to Jesus and saw that he was already dead, they did not break his legs.'
+            verse: 'John 19:33',
+            text: 'But when they came to Jesus and saw that he was already dead, they did not break his legs.'
+        }
+    },
+    {
+        id: 'darkness-noon',
+        title: 'Darkness at Noon',
+        topic: 'Passion',
+        prophecy: {
+            verse: 'Amos 8:9',
+            text: 'And on that day, declares the Lord GOD, I will make the sun go down at noon and darken the earth in broad daylight.',
+            source: 'Amos'
+        },
+        fulfillment: {
+            verse: 'Matthew 27:45',
+            text: 'Now from the sixth hour there was darkness over all the land until the ninth hour.'
         }
     },
     {
@@ -2836,7 +3274,7 @@ export const MESSIANIC_PROPHECIES: MessianicProphecy[] = [
         }
     },
 
-    // --- Resurrection ---
+    // --- RESURRECTION & GLORY ---
     {
         id: 'resurrection',
         title: 'Resurrection from the Dead',
@@ -2853,16 +3291,229 @@ export const MESSIANIC_PROPHECIES: MessianicProphecy[] = [
     },
     {
         id: 'ascension',
-        title: 'Ascension to the Right Hand',
+        title: 'Ascension to Glory',
         topic: 'Resurrection',
+        prophecy: {
+            verse: 'Psalm 68:18',
+            text: 'You ascended on high, leading a host of captives in your train and receiving gifts among men.',
+            source: 'David'
+        },
+        fulfillment: {
+            verse: 'Ephesians 4:8',
+            text: 'Therefore it says, "When he ascended on high he led a host of captives..."'
+        }
+    },
+    {
+        id: 'right-hand',
+        title: 'Seated at Right Hand',
+        topic: 'Kingship',
         prophecy: {
             verse: 'Psalm 110:1',
             text: 'The LORD says to my Lord: "Sit at my right hand, until I make your enemies your footstool."',
             source: 'David'
         },
         fulfillment: {
-            verse: 'Acts 2:33',
-            text: 'Being therefore exalted at the right hand of God...'
+            verse: 'Hebrews 1:3',
+            text: 'After making purification for sins, he sat down at the right hand of the Majesty on high.'
+        }
+    },
+    {
+        id: 'priest-melchizedek',
+        title: 'Priest Forever',
+        topic: 'Priesthood',
+        prophecy: {
+            verse: 'Psalm 110:4',
+            text: 'The LORD has sworn and will not change his mind, "You are a priest forever after the order of Melchizedek."',
+            source: 'David'
+        },
+        fulfillment: {
+            verse: 'Hebrews 5:6',
+            text: 'as he says also in another place, "You are a priest forever, after the order of Melchizedek."'
+        }
+    },
+    {
+        id: 'stone-builders',
+        title: 'The Rejected Cornerstone',
+        topic: 'Resurrection',
+        prophecy: {
+            verse: 'Psalm 118:22',
+            text: 'The stone that the builders rejected has become the cornerstone.',
+            source: 'Psalmist'
+        },
+        fulfillment: {
+            verse: 'Matthew 21:42',
+            text: 'Jesus said to them, "Have you never read in the Scriptures: \'The stone that the builders rejected has become the cornerstone\'?"'
+        }
+    },
+    {
+        id: 'time-messiah',
+        title: 'The Timing of Messiah',
+        topic: 'Ministry',
+        prophecy: {
+            verse: 'Daniel 9:25',
+            text: 'Know therefore and understand that from the going out of the word to restore and build Jerusalem to the coming of an anointed one...',
+            source: 'Daniel'
+        },
+        fulfillment: {
+            verse: 'Galatians 4:4',
+            text: 'But when the set time had fully come, God sent his Son...'
+        },
+        probability: 'Daniel predicted the exact timeline (483 years) to the Messiah\'s cutting off.'
+    },
+    {
+        id: 'son-of-man',
+        title: 'The Son of Man',
+        topic: 'Return',
+        prophecy: {
+            verse: 'Daniel 7:13-14',
+            text: 'I saw in the night visions, and behold, with the clouds of heaven there came one like a son of man...',
+            source: 'Daniel'
+        },
+        fulfillment: {
+            verse: 'Matthew 26:64',
+            text: 'Jesus said... "you will see the Son of Man seated at the right hand of Power and coming on the clouds of heaven."'
+        }
+    },
+    {
+        id: 'look-pierced',
+        title: 'Look on Him Pierced',
+        topic: 'Return',
+        prophecy: {
+            verse: 'Zechariah 12:10',
+            text: 'When they look on me, on him whom they have pierced, they shall mourn for him, as one mourns for an only child.',
+            source: 'Zechariah'
+        },
+        fulfillment: {
+            verse: 'Revelation 1:7',
+            text: 'Behold, he is coming with the clouds, and every eye will see him, even those who pierced him.'
+        }
+    },
+
+    // --- NEW ADDITIONS (Round 2) ---
+    {
+        id: 'new-covenant',
+        title: 'The New Covenant',
+        topic: 'Covenant',
+        prophecy: {
+            verse: 'Jeremiah 31:31',
+            text: 'Behold, the days are coming, declares the LORD, when I will make a new covenant with the house of Israel and the house of Judah.',
+            source: 'Jeremiah'
+        },
+        fulfillment: {
+            verse: 'Hebrews 8:8',
+            text: 'For he finds fault with them when he says: "Behold, the days are coming, declares the Lord, when I will establish a new covenant..."'
+        }
+    },
+    {
+        id: 'redeemer-lives',
+        title: 'My Redeemer Lives',
+        topic: 'Resurrection',
+        prophecy: {
+            verse: 'Job 19:25',
+            text: 'For I know that my Redeemer lives, and at the last he will stand upon the earth.',
+            source: 'Job'
+        },
+        fulfillment: {
+            verse: 'John 11:25',
+            text: 'Jesus said to her, "I am the resurrection and the life. Whoever believes in me, though he die, yet shall he live."'
+        }
+    },
+    {
+        id: 'delight-will',
+        title: 'I Delight to Do Your Will',
+        topic: 'Ministry',
+        prophecy: {
+            verse: 'Psalm 40:7-8',
+            text: 'Then I said, "Behold, I have come; in the scroll of the book it is written of me: I delight to do your will, O my God."',
+            source: 'David'
+        },
+        fulfillment: {
+            verse: 'Hebrews 10:7',
+            text: 'Then I said, "Behold, I have come to do your will, O God, as it is written of me in the scroll of the book."'
+        }
+    },
+    {
+        id: 'lower-angels',
+        title: 'Made Lower than Angels',
+        topic: 'Nature',
+        prophecy: {
+            verse: 'Psalm 8:5',
+            text: 'Yet you have made him a little lower than the heavenly beings and crowned him with glory and honor.',
+            source: 'David'
+        },
+        fulfillment: {
+            verse: 'Hebrews 2:9',
+            text: 'But we see him who for a little while was made lower than the angels, namely Jesus, crowned with glory and honor.'
+        }
+    },
+    {
+        id: 'root-jesse-banner',
+        title: 'Signal to the Peoples',
+        topic: 'Kingship',
+        prophecy: {
+            verse: 'Isaiah 11:10',
+            text: 'In that day the root of Jesse, who shall stand as a signal for the peoples—of him shall the nations inquire, and his resting place shall be glorious.',
+            source: 'Isaiah'
+        },
+        fulfillment: {
+            verse: 'Romans 15:12',
+            text: 'And again Isaiah says, "The root of Jesse will come, even he who arises to rule the Gentiles; in him will the Gentiles hope."'
+        }
+    },
+    {
+        id: 'visage-marred',
+        title: 'His Appearance Marred',
+        topic: 'Passion',
+        prophecy: {
+            verse: 'Isaiah 52:14',
+            text: 'As many were astonished at you—his appearance was so marred, beyond human semblance, and his form beyond that of the children of mankind.',
+            source: 'Isaiah'
+        },
+        fulfillment: {
+            verse: 'Matthew 27:26-30',
+            text: 'Then he released for them Barabbas, and having scourged Jesus, delivered him to be crucified... And they spit on him and took the reed and struck him on the head.'
+        }
+    },
+    {
+        id: 'eternal-kingdom',
+        title: 'Kingdom That Shall Never Be Destroyed',
+        topic: 'Kingship',
+        prophecy: {
+            verse: 'Daniel 2:44',
+            text: 'And in the days of those kings the God of heaven will set up a kingdom that shall never be destroyed... it shall stand forever.',
+            source: 'Daniel'
+        },
+        fulfillment: {
+            verse: 'Luke 1:33',
+            text: 'And he will reign over the house of Jacob forever, and of his kingdom there will be no end.'
+        }
+    },
+    {
+        id: 'the-branch',
+        title: 'My Servant the Branch',
+        topic: 'Kingship',
+        prophecy: {
+            verse: 'Zechariah 3:8',
+            text: 'Hear now, O Joshua the high priest... behold, I will bring my servant the Branch.',
+            source: 'Zechariah'
+        },
+        fulfillment: {
+            verse: 'Luke 1:78',
+            text: 'Because of the tender mercy of our God, whereby the sunrise (or Branch) shall visit us from on high.'
+        }
+    },
+    {
+        id: 'desire-nations',
+        title: 'Desire of All Nations',
+        topic: 'Kingship',
+        prophecy: {
+            verse: 'Haggai 2:7',
+            text: 'And I will shake all nations, so that the treasures (or desire) of all nations shall come in, and I will fill this house with glory.',
+            source: 'Haggai'
+        },
+        fulfillment: {
+            verse: 'Luke 2:30-32',
+            text: 'For my eyes have seen your salvation... a light for revelation to the Gentiles, and for glory to your people Israel.'
         }
     }
 ];
