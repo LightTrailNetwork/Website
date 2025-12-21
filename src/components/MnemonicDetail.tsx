@@ -20,12 +20,124 @@ export default function MnemonicDetail() {
     // Logic for Ten Commandments visualization
     const isTenCommandments = system.id === 'ten-commandments';
 
+    // Logic for Beatitudes visualization
+    const isBeatitudes = system.id === 'beatitudes';
+
+    // Logic for Overseer visualization
+    const isOverseer = system.id === 'overseer-qualifications';
+
     const renderItem = (item: any, idx: number) => {
-        // Armor of God specific rendering for items
+        // Armor of God specific rendering
         const keyword = isArmorOfGod ? armorKeywords[idx] : null;
 
         // Ten Commandments Numbering
         const cmdNum = idx + 1;
+
+        // Beatitudes Custom Rendering
+        if (isBeatitudes) {
+            return (
+                <div key={idx} className="bg-card border border-border rounded-xl p-6 hover:shadow-md transition-all flex flex-col sm:flex-row gap-6 relative overflow-hidden">
+                    {/* Visual Mnemonic Anchor */}
+                    <div className="shrink-0 flex flex-col items-center justify-center sm:w-32 text-center z-10">
+                        <div className="bg-primary/10 rounded-lg px-4 py-3 border border-primary/20 w-full mb-2">
+                            <span className="text-xl font-bold font-mono tracking-wide">
+                                {item.letter === "PoorSH" && <><span className="text-primary">Poor</span><span className="text-muted-foreground">SH</span></>}
+                                {item.letter === "Mour" && <><span className="text-primary">Mour</span><span className="text-muted-foreground text-sm block">Comfort</span></>}
+                                {item.letter === "ME" && <span className="text-primary">ME</span>}
+                                {item.letter === "HeaTHeR" && <><span className="text-primary">Hea</span><span className="text-muted-foreground">T</span><span className="text-primary">HeR</span></>}
+                                {item.letter === "Mercy" && <><span className="text-primary">Mercy</span><span className="text-muted-foreground text-sm block">Mercy</span></>}
+                                {item.letter === "PuGo" && <><span className="text-primary">Pu</span><span className="text-muted-foreground">Go</span></>}
+                                {item.letter === "Make Sons" && <><span className="text-primary">Make</span> <span className="text-muted-foreground">Sons</span></>}
+                                {item.letter === "PRiuS" && <><span className="text-primary">PR</span><span className="text-muted-foreground lowercase">iu</span><span className="text-primary">S</span></>}
+                            </span>
+                        </div>
+                        <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">Memory Key</p>
+                    </div>
+
+                    {/* Content */}
+                    <div className="flex-1 space-y-2 z-10">
+                        <h3 className="text-xl font-bold text-foreground">
+                            {item.title}
+                        </h3>
+                        {item.text && (
+                            <p className="text-lg text-muted-foreground italic font-medium">
+                                "{item.text}"
+                            </p>
+                        )}
+                        {item.letter === "PRiuS" && (
+                            <div className="mt-2 text-xs text-muted-foreground/70 font-mono">
+                                <span className="text-primary font-bold">KOH</span>nstantly = <span className="text-primary font-bold">K</span>ingdom <span className="text-primary font-bold">O</span>f <span className="text-primary font-bold">H</span>eaven
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        }
+
+        // Overseer Custom Rendering
+        if (isOverseer) {
+            let titleNode: React.ReactNode = item.title;
+
+            // Highlighting logic
+            if (item.letter === "ARch") { // Above reproach
+                // Note: user said "ch" is last two letters of Reproach. But "AR" is "Above Reproach". Wait. "ARCH". A-R-ch.
+                // "AR is 'Above Reproach' and the 'ch' is the last two letters of 'Reproach'"
+                titleNode = <><span className="text-primary font-bold underline decoration-primary/30 underline-offset-4">A</span>bove <span className="text-primary font-bold underline decoration-primary/30 underline-offset-4">R</span>eproa<span className="text-muted-foreground font-bold underline decoration-muted-foreground/30 underline-offset-4">ch</span></>;
+            }
+            else if (item.letter === "HOW") { // Husband of one wife
+                titleNode = <><span className="text-primary font-bold underline decoration-primary/30 underline-offset-4">H</span>usband of <span className="text-primary font-bold underline decoration-primary/30 underline-offset-4">O</span>ne <span className="text-primary font-bold underline decoration-primary/30 underline-offset-4">W</span>ife</>;
+            }
+            else if (item.letter === "SOMe") { // Sober-minded
+                titleNode = <><span className="text-primary font-bold underline decoration-primary/30 underline-offset-4">So</span>ber-<span className="text-primary font-bold underline decoration-primary/30 underline-offset-4">M</span>ind<span className="text-muted-foreground font-bold underline decoration-muted-foreground/30 underline-offset-4">e</span>d</>; // "SOMe" -> SO ber M ind e d? SO-M-e?
+            }
+            else if (item.letter === "SECONd") { // Self-controlled
+                // SECONd -> SElf-CONtrolled
+                titleNode = <><span className="text-primary font-bold underline decoration-primary/30 underline-offset-4">Se</span>lf-<span className="text-primary font-bold underline decoration-primary/30 underline-offset-4">Con</span>trolle<span className="text-muted-foreground font-bold underline decoration-muted-foreground/30 underline-offset-4">d</span></>;
+            }
+            else if (item.letter === "R") {
+                titleNode = <><span className="text-primary font-bold underline decoration-primary/30 underline-offset-4">R</span>espectable</>;
+            }
+            else if (item.letter === "H") {
+                titleNode = <><span className="text-primary font-bold underline decoration-primary/30 underline-offset-4">H</span>ospitable</>;
+            }
+            else if (item.letter === "AT") {
+                titleNode = <><span className="text-primary font-bold underline decoration-primary/30 underline-offset-4">A</span>ble to <span className="text-primary font-bold underline decoration-primary/30 underline-offset-4">T</span>each</>;
+            }
+            else if (item.letter === "Drunkard") {
+                titleNode = <>Not a <span className="text-primary font-bold underline decoration-primary/30 underline-offset-4">Drunkard</span></>;
+            }
+            else if (item.letter === "Violent") {
+                titleNode = <>Not <span className="text-primary font-bold underline decoration-primary/30 underline-offset-4">Violent</span></>;
+            }
+            else if (item.letter === "Quarrelsome") {
+                titleNode = <>Not <span className="text-primary font-bold underline decoration-primary/30 underline-offset-4">Quarrelsome</span></>;
+            }
+            else if (item.letter === "money") {
+                titleNode = <>Not a lover of <span className="text-primary font-bold underline decoration-primary/30 underline-offset-4">money</span></>;
+            }
+
+            return (
+                <div key={idx} className="bg-card border border-border rounded-xl p-6 hover:shadow-md transition-all flex flex-col sm:flex-row gap-6 relative overflow-hidden items-center text-center sm:text-left">
+                    <div className="shrink-0 flex items-center justify-center sm:w-32 z-10">
+                        <div className="bg-primary/10 rounded-lg px-4 py-2 border border-primary/20 mb-2 font-mono font-bold text-lg min-w-[80px]">
+                            {item.letter === 'money' ? item.letter :
+                                item.letter.split('').map((char: string, cIdx: number) => {
+                                    // Simple logic to dim lowercase letters if they are filler?
+                                    // For Overseer, uppercase are mainly primary
+                                    return <span key={cIdx} className={char === char.toUpperCase() ? 'text-primary' : 'text-muted-foreground'}>{char}</span>
+                                })
+                            }
+                        </div>
+                    </div>
+
+                    <div className="flex-1">
+                        <h3 className="text-xl font-bold text-foreground">
+                            {titleNode}
+                        </h3>
+                    </div>
+                </div>
+            );
+        }
 
         return (
             <div key={idx} className={`bg-card border border-border rounded-xl p-6 hover:shadow-md transition-all flex gap-4 ${isTenCommandments ? 'items-center group' : 'sm:gap-6'}`}>
@@ -145,7 +257,15 @@ export default function MnemonicDetail() {
                 <div className="bg-card border border-border rounded-xl p-8 shadow-sm space-y-6">
                     <div>
                         <h1 className="text-3xl sm:text-4xl font-bold mb-2">{system.title}</h1>
-                        <p className="text-xl text-primary font-medium">{system.subtitle}</p>
+                        <p className="text-xl text-primary font-medium">
+                            {isBeatitudes || isOverseer ? (
+                                <VerseLink reference={system.subtitle} className="hover:underline decoration-primary underline-offset-4">
+                                    {system.subtitle}
+                                </VerseLink>
+                            ) : (
+                                system.subtitle
+                            )}
+                        </p>
                     </div>
 
                     <p className="text-lg text-muted-foreground leading-relaxed">
@@ -196,6 +316,48 @@ export default function MnemonicDetail() {
                                             <span className="text-primary">C</span>
                                             <span className="text-muted-foreground/50 font-normal lowercase text-4xl mt-1">k</span>
                                         </div>
+                                    </div>
+                                </div>
+                            ) : isBeatitudes ? (
+                                <div className="text-lg sm:text-2xl font-medium leading-relaxed max-w-2xl mx-auto space-y-4 font-mono text-left bg-card p-6 rounded-xl border border-border/50 shadow-sm">
+                                    <div className="space-y-2">
+                                        <p>
+                                            <span className="text-primary font-bold">PoorSH</span> (is) <br />
+                                            <span className="text-primary font-bold">Mour Comfort</span>(able), <br />
+                                            (for) <span className="text-primary font-bold">ME</span>.
+                                        </p>
+                                        <p>
+                                            <span className="text-primary font-bold">HeaTHeR</span> (is) <span className="text-primary font-bold">Satisfied</span> <br />
+                                            <span className="text-primary font-bold gap-2">Mercy Mercy</span>, <br />
+                                            (with) <span className="text-primary font-bold">PuGo</span> <span className="text-xs text-muted-foreground italic align-middle ml-1">[like the car]</span>.
+                                        </p>
+                                        <p>
+                                            (We) <span className="text-primary font-bold">Make</span> (our) <span className="text-primary font-bold">Sons</span> <br />
+                                            (drive the) <span className="text-primary font-bold">PRiuS KOH</span>nstantly.
+                                        </p>
+                                    </div>
+
+                                    <div className="pt-4 border-t border-border/50 text-base text-muted-foreground italic">
+                                        "Porsche is more comfortable for me. Heather is satisfied, mercy mercy, with Peugeot. We make our sons drive the Prius constantly."
+                                    </div>
+                                </div>
+                            ) : isOverseer ? (
+                                <div className="text-lg sm:text-2xl font-medium leading-relaxed max-w-2xl mx-auto space-y-4 font-mono text-left bg-card p-6 rounded-xl border border-border/50 shadow-sm">
+                                    <div className="space-y-2">
+                                        <p>
+                                            <span className="text-primary font-bold">ARch</span>(ee), <span className="text-primary font-bold">HOW</span> (does) <br />
+                                            <span className="text-primary font-bold">SOMe SECONd</span> <br />
+                                            <span className="text-primary font-bold">RHAT</span> <span className="text-xs text-muted-foreground italic align-middle ml-1">[pronounced "rate"]</span>
+                                        </p>
+                                        <p>
+                                            <span className="text-primary font-bold">Drunkard</span> (who is) <br />
+                                            <span className="text-primary font-bold">Violent</span> (and) <br />
+                                            <span className="text-primary font-bold">Quarrelsome</span> <br />
+                                            (have any) <span className="text-primary font-bold">money</span>?
+                                        </p>
+                                    </div>
+                                    <div className="pt-4 border-t border-border/50 text-base text-muted-foreground italic">
+                                        "Archie, how does some second rate drunkard who is violent and quarrelsome have any money?"
                                     </div>
                                 </div>
                             ) : (

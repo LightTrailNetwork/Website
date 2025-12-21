@@ -39,6 +39,44 @@ export const MNEMONIC_SYSTEMS: MnemonicSystem[] = [
         ]
     },
     {
+        id: "romans-road",
+        title: "The Romans Road",
+        subtitle: "Romans",
+        description: "The path of salvation through the book of Romans.",
+        mnemonicPhrase: "R.O.M.A.N.S. R.O.A.D.",
+        items: [
+            { letter: "R", title: "Rebellion of all", reference: "Romans 3:23", text: "For all have sinned and fall short of the glory of God.", meaning: "Every human being is guilty before God." },
+            { letter: "O", title: "Outcome of sin", reference: "Romans 6:23a", text: "For the wages of sin is death…", meaning: "Sin earns separation and death." },
+            { letter: "M", title: "Mercy of God", reference: "Romans 5:8", text: "But God shows his love for us in that while we were still sinners, Christ died for us.", meaning: "God’s love intervenes despite our rebellion." },
+            { letter: "A", title: "Acceptance by faith", reference: "Romans 10:9–10", text: "If you confess with your mouth that Jesus is Lord and believe in your heart that God raised him from the dead, you will be saved.", meaning: "Faith and confession open the door to salvation." },
+            { letter: "N", title: "New life given", reference: "Romans 6:23b", text: "…but the free gift of God is eternal life in Christ Jesus our Lord.", meaning: "The gift replaces the wage—life for death." },
+            { letter: "S", title: "Sacrificial living", reference: "Romans 12:1–2", text: "I appeal to you therefore, brothers, by the mercies of God, to present your bodies as a living sacrifice...", meaning: "Saved people live transformed lives of worship and obedience." },
+            { letter: "R", title: "Respond by calling", reference: "Romans 10:13", text: "Everyone who calls on the name of the Lord will be saved.", meaning: "Anyone can call and be rescued." },
+            { letter: "O", title: "Outcome is peace", reference: "Romans 5:1", text: "Therefore, since we have been justified by faith, we have peace with God through our Lord Jesus Christ.", meaning: "Justification leads to reconciliation." },
+            { letter: "A", title: "Assurance in grace", reference: "Romans 8:1", text: "There is therefore now no condemnation for those who are in Christ Jesus.", meaning: "No more guilt; complete security." },
+            { letter: "D", title: "Destination: glory", reference: "Romans 8:38–39", text: "For I am sure that neither death nor life... will be able to separate us from the love of God...", meaning: "Eternal love and union with God forever." }
+        ]
+    },
+    {
+        id: "separation-romans",
+        title: "10 Things That Cannot Separate",
+        subtitle: "Romans 8:38-39",
+        description: "Nothing can separate us from the love of God.",
+        mnemonicPhrase: "D.L. ARTT PHD, Anything Else?",
+        items: [
+            { letter: "D", title: "Death" },
+            { letter: "L", title: "Life" },
+            { letter: "A", title: "Angels" },
+            { letter: "R", title: "Rulers" },
+            { letter: "T", title: "Things present" },
+            { letter: "T", title: "Things to come" },
+            { letter: "P", title: "Powers" },
+            { letter: "H", title: "Height" },
+            { letter: "D", title: "Depth" },
+            { letter: "A", title: "Anything else in all Creation" }
+        ]
+    },
+    {
         id: "armor-of-god",
         title: "The 7 Armors of God",
         subtitle: "Ephesians 6",
@@ -52,6 +90,23 @@ export const MNEMONIC_SYSTEMS: MnemonicSystem[] = [
             { title: "Helmet of Salvation", reference: "Ephesians 6:17a", text: "Take the helmet of salvation.", letter: "H" },
             { title: "Sword of the Spirit", reference: "Ephesians 6:17b", text: "And the sword of the Spirit, which is the word of God.", letter: "S" },
             { title: "Prayer in the Spirit", reference: "Ephesians 6:18", text: "And pray in the Spirit on all occasions with all kinds of prayers and requests.", letter: "P" }
+        ]
+    },
+    {
+        id: "beatitudes",
+        title: "The Beatitudes",
+        subtitle: "Matthew 5:3-10",
+        description: "The beautiful attitudes of the Kingdom citizen.",
+        mnemonicPhrase: "PoorSH, Mour Comfort, ME. HeaTHeR Satisfied, Mercy Mercy, PuGo. Make Sons, PRiuS KOHnstantly.",
+        items: [
+            { letter: "PoorSH", title: "Poor in spirit", text: "Theirs is the kingdom of heaven.", meaning: "Humble dependence on God." },
+            { letter: "Mour", title: "Those who mourn", text: "They shall be comforted.", meaning: "Grieving over sin and suffering." },
+            { letter: "ME", title: "The meek", text: "They shall inherit the earth.", meaning: "Strength under control; gentleness." },
+            { letter: "HeaTHeR", title: "Hunger and thirst for righteousness", text: "They shall be satisfied.", meaning: "Deep longing for God's will." },
+            { letter: "Mercy", title: "The merciful", text: "They shall receive mercy.", meaning: "Showing compassion to others." },
+            { letter: "PuGo", title: "Pure in heart", text: "They shall see God.", meaning: "Undivided devotion to God." },
+            { letter: "Make Sons", title: "The peacemakers", text: "They shall be called sons of God.", meaning: "Reconciling people to God and each other." },
+            { letter: "PRiuS", title: "The persecuted", text: "Theirs is the kingdom of heaven.", meaning: "Suffering for doing right." }
         ]
     },
     {
@@ -90,45 +145,6 @@ export const MNEMONIC_SYSTEMS: MnemonicSystem[] = [
             { letter: "L", title: "Love", text: "and brotherly affection with love." }
         ]
     },
-    {
-        id: "romans-road",
-        title: "The Romans Road",
-        subtitle: "Romans",
-        description: "The path of salvation through the book of Romans.",
-        mnemonicPhrase: "R.O.M.A.N.S. R.O.A.D.",
-        items: [
-            { letter: "R", title: "Rebellion of all", reference: "Romans 3:23", text: "For all have sinned and fall short of the glory of God.", meaning: "Every human being is guilty before God." },
-            { letter: "O", title: "Outcome of sin", reference: "Romans 6:23a", text: "For the wages of sin is death…", meaning: "Sin earns separation and death." },
-            { letter: "M", title: "Mercy of God", reference: "Romans 5:8", text: "But God shows his love for us in that while we were still sinners, Christ died for us.", meaning: "God’s love intervenes despite our rebellion." },
-            { letter: "A", title: "Acceptance by faith", reference: "Romans 10:9–10", text: "If you confess with your mouth that Jesus is Lord and believe in your heart that God raised him from the dead, you will be saved.", meaning: "Faith and confession open the door to salvation." },
-            { letter: "N", title: "New life given", reference: "Romans 6:23b", text: "…but the free gift of God is eternal life in Christ Jesus our Lord.", meaning: "The gift replaces the wage—life for death." },
-            { letter: "S", title: "Sacrificial living", reference: "Romans 12:1–2", text: "I appeal to you therefore, brothers, by the mercies of God, to present your bodies as a living sacrifice...", meaning: "Saved people live transformed lives of worship and obedience." },
-            { letter: "R", title: "Respond by calling", reference: "Romans 10:13", text: "Everyone who calls on the name of the Lord will be saved.", meaning: "Anyone can call and be rescued." },
-            { letter: "O", title: "Outcome is peace", reference: "Romans 5:1", text: "Therefore, since we have been justified by faith, we have peace with God through our Lord Jesus Christ.", meaning: "Justification leads to reconciliation." },
-            { letter: "A", title: "Assurance in grace", reference: "Romans 8:1", text: "There is therefore now no condemnation for those who are in Christ Jesus.", meaning: "No more guilt; complete security." },
-            { letter: "D", title: "Destination: glory", reference: "Romans 8:38–39", text: "For I am sure that neither death nor life... will be able to separate us from the love of God...", meaning: "Eternal love and union with God forever." }
-        ]
-    },
-    {
-        id: "separation-romans",
-        title: "10 Things That Cannot Separate",
-        subtitle: "Romans 8:38-39",
-        description: "Nothing can separate us from the love of God.",
-        mnemonicPhrase: "D.L. ARTT PHD, Anything Else?",
-        items: [
-            { letter: "D", title: "Death" },
-            { letter: "L", title: "Life" },
-            { letter: "A", title: "Angels" },
-            { letter: "R", title: "Rulers" },
-            { letter: "T", title: "Things present" },
-            { letter: "T", title: "Things to come" },
-            { letter: "P", title: "Powers" },
-            { letter: "H", title: "Height" },
-            { letter: "D", title: "Depth" },
-            { letter: "A", title: "Anything else in all Creation" }
-        ]
-    },
-
     {
         id: "prophecies-jesus",
         title: "10 Prophecies Fulfilled",
@@ -374,23 +390,6 @@ export const MNEMONIC_SYSTEMS: MnemonicSystem[] = [
         ]
     },
     {
-        id: "beatitudes",
-        title: "The Beatitudes",
-        subtitle: "Matthew 5:3-10",
-        description: "Blessings for the kingdom.",
-        mnemonicPhrase: "PoorSH (is) Mour Comfort(able)...",
-        items: [
-            { title: "Poor in spirit" },
-            { title: "Mourn" },
-            { title: "Meek" },
-            { title: "Hunger/Thirst for Righteousness" },
-            { title: "Merciful" },
-            { title: "Pure in heart" },
-            { title: "Peacemakers" },
-            { title: "Persecuted" }
-        ]
-    },
-    {
         id: "treasure",
         title: "TREASURE (Wealth & Work)",
         subtitle: "Bible Stewardship",
@@ -412,19 +411,19 @@ export const MNEMONIC_SYSTEMS: MnemonicSystem[] = [
         title: "Overseer Qualifications",
         subtitle: "1 Timothy 3:1-7",
         description: "Qualifications for church leadership.",
-        mnemonicPhrase: "ARch(ee), HOW (does) SOMe SECONd RHAT Drunkard...",
+        mnemonicPhrase: "ARch(ee), HOW (does) SOMe SECONd RHAT (pronounced \"rate\") Drunkard (who is) Violent (and) Quarrelsome (have any) money?",
         items: [
-            { title: "Above reproach" },
-            { title: "Husband of one wife" },
-            { title: "Sober-minded" },
-            { title: "Self-controlled" },
-            { title: "Respectable" },
-            { title: "Hospitable" },
-            { title: "Able to teach" },
-            { title: "Not a drunkard" },
-            { title: "Not violent" },
-            { title: "Not quarrelsome" },
-            { title: "Not a lover of money" }
+            { letter: "ARch", title: "Above reproach" },
+            { letter: "HOW", title: "Husband of one wife" },
+            { letter: "SOMe", title: "Sober-minded" },
+            { letter: "SECONd", title: "Self-controlled" },
+            { letter: "R", title: "Respectable" },
+            { letter: "H", title: "Hospitable" },
+            { letter: "AT", title: "Able to teach" },
+            { letter: "Drunkard", title: "Not a drunkard" },
+            { letter: "Violent", title: "Not violent" },
+            { letter: "Quarrelsome", title: "Not quarrelsome" },
+            { letter: "money", title: "Not a lover of money" }
         ]
     },
     {
