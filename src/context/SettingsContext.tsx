@@ -54,7 +54,8 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
     });
 
     const [showMnemonics, setShowMnemonics] = useState(() => {
-        return localStorage.getItem('bible_show_mnemonics') === 'true';
+        const saved = localStorage.getItem('bible_show_mnemonics');
+        return saved === null ? true : saved === 'true';
     });
 
     const [showVerseMnemonics, setShowVerseMnemonics] = useState(() => {

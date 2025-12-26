@@ -391,7 +391,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
 
                             {/* Mnemonics */}
                             <div className="space-y-3">
-                                <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider ml-1">Mnemonics</h4>
+                                <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider ml-1">Acrostics</h4>
                                 <div className="flex items-center justify-between p-4 bg-secondary/5 rounded-lg border border-border gap-4">
                                     <div className="flex flex-col gap-1">
                                         <span className="font-medium">Book & Chapter</span>
