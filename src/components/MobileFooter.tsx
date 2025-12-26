@@ -25,29 +25,29 @@ export default function MobileFooter() {
 
     return (
         <>
-            <div className={`fixed bottom-0 left-0 right-0 h-12 bg-background/80 backdrop-blur-md border-t border-border flex items-center justify-between px-4 z-50 sm:hidden transition-transform duration-300 ${isHidden ? 'translate-y-full' : 'translate-y-0'}`}>
+            <div className={`fixed bottom-0 left-0 right-0 h-16 flex items-center justify-between px-6 z-50 sm:hidden transition-transform duration-300 pointer-events-none ${isHidden ? 'translate-y-full' : 'translate-y-0'}`}>
                 <div className="flex items-center gap-4 relative">
                     <button
                         onClick={() => setShowHistory(!showHistory)}
-                        className={`p-2 rounded-full transition-colors ${showHistory ? 'bg-primary/10 text-primary' : 'hover:bg-accent/10 text-muted-foreground'}`}
+                        className={`p-3 rounded-full transition-all duration-200 pointer-events-auto backdrop-blur-md shadow-sm border ${showHistory ? 'bg-primary text-primary-foreground border-primary' : 'bg-background/60 text-muted-foreground border-border/50 hover:bg-background/80'}`}
                         title="History"
                     >
-                        <History className="w-6 h-6" />
+                        <History className="w-5 h-5" />
                     </button>
                 </div>
 
                 {isReadingPage && (
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-3">
                         <button
                             onClick={() => setShowMsb(!showMsb)}
-                            className={`p-2 rounded-full transition-colors ${showMsb ? 'bg-primary/10 text-primary' : 'hover:bg-accent/10 text-muted-foreground'}`}
+                            className={`p-3 rounded-full transition-all duration-200 pointer-events-auto backdrop-blur-md shadow-sm border ${showMsb ? 'bg-primary text-primary-foreground border-primary' : 'bg-background/60 text-muted-foreground border-border/50 hover:bg-background/80'}`}
                             title="Compare MSB"
                         >
                             <Columns className="w-5 h-5" />
                         </button>
                         <button
                             onClick={() => setShowCommentary(!showCommentary)}
-                            className={`p-2 rounded-full transition-colors ${showCommentary ? 'bg-primary/10 text-primary' : 'hover:bg-accent/10 text-muted-foreground'}`}
+                            className={`p-3 rounded-full transition-all duration-200 pointer-events-auto backdrop-blur-md shadow-sm border ${showCommentary ? 'bg-primary text-primary-foreground border-primary' : 'bg-background/60 text-muted-foreground border-border/50 hover:bg-background/80'}`}
                             title="Commentary"
                         >
                             <MessageSquare className="w-5 h-5" />
