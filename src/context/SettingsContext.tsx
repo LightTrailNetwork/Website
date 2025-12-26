@@ -28,6 +28,8 @@ interface SettingsContextType {
     setShowFootnotes: (enabled: boolean) => void;
     theme: 'light' | 'dark';
     setTheme: (theme: 'light' | 'dark') => void;
+    justifiedText: boolean;
+    setJustifiedText: (enabled: boolean) => void;
     fontSize: 'small' | 'normal' | 'large' | 'xl';
     setFontSize: (size: 'small' | 'normal' | 'large' | 'xl') => void;
     isOffline: boolean;
@@ -74,6 +76,10 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
         if (savedTheme === 'light' || savedTheme === 'dark') return savedTheme;
         // Default to dark mode for new users
         return 'dark';
+    });
+
+    const [justifiedText, setJustifiedText] = useState(() => {
+        return localStorage.getItem('bible_justified_text') === 'true';
     });
 
     const [fontSize, setFontSize] = useState<'small' | 'normal' | 'large' | 'xl'>(() => {
@@ -212,6 +218,10 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
     }, [theme]);
 
     useEffect(() => {
+        localStorage.setItem('bible_justified_text', String(justifiedText));
+    }, [justifiedText]);
+
+    useEffect(() => {
         localStorage.setItem('fontSize', fontSize);
         const sizes = {
             small: '14px',
@@ -258,6 +268,8 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
             setShowFootnotes,
             theme,
             setTheme,
+            justifiedText,
+            setJustifiedText,
             fontSize,
             setFontSize,
             isOffline,

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { X, Link as LinkIcon, Settings, Info, ChevronRight, ChevronLeft, Globe, Search, Filter, BookOpen, Palette, Moon, Sun, User, Save, Download, Upload, Trash2, AlertTriangle, Loader2, QrCode, Scan, Camera, Check, RefreshCw, Shield, Server, Mail, Code2, GitBranch, Database, Wifi, CheckCircle2, XCircle, Type, CheckCircle } from 'lucide-react';
+import { X, Link as LinkIcon, Settings, Info, ChevronRight, ChevronLeft, Globe, Search, Filter, BookOpen, Palette, Moon, Sun, User, Save, Download, Upload, Trash2, AlertTriangle, Loader2, QrCode, Scan, Camera, Check, RefreshCw, Shield, Server, Mail, Code2, GitBranch, Database, Wifi, CheckCircle2, XCircle, Type, CheckCircle, AlignJustify } from 'lucide-react';
 import { useSettings } from '../context/SettingsContext';
 import { useProfile } from '../hooks/useProfile';
 import { useTodayData } from '../hooks/useTodayData';
@@ -35,6 +35,8 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
         setShowFootnotes,
         theme,
         setTheme,
+        justifiedText,
+        setJustifiedText,
         fontSize,
         setFontSize,
         downloadStatus,
@@ -346,7 +348,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                                 </div>
                                 <div className="flex-1">
                                     <h3 className="font-medium text-foreground">Role & Data</h3>
-                                    <p className="text-xs text-muted-foreground">Manage preferences & Data</p>
+                                    <p className="text-xs text-muted-foreground">Manage your data</p>
                                 </div>
                                 <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
                             </button>
@@ -361,7 +363,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                                 </div>
                                 <div className="flex-1">
                                     <h3 className="font-medium text-foreground">Privacy & Tech</h3>
-                                    <p className="text-xs text-muted-foreground">Data & specs</p>
+                                    <p className="text-xs text-muted-foreground">App specs</p>
                                 </div>
                                 <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
                             </button>
@@ -508,6 +510,22 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                                         </button>
                                     ))}
                                 </div>
+                            </div>
+
+                            <div className="flex items-center justify-between p-4 bg-secondary/5 rounded-lg border border-border gap-4">
+                                <div className="flex flex-col gap-1">
+                                    <span className="font-medium flex items-center gap-2">
+                                        <AlignJustify className="w-4 h-4 text-primary" />
+                                        Justified Text
+                                    </span>
+                                    <span className="text-xs text-muted-foreground">Align text to both left and right edges.</span>
+                                </div>
+                                <button
+                                    onClick={() => setJustifiedText(!justifiedText)}
+                                    className={`w-12 h-7 rounded-full transition-colors relative flex-shrink-0 ${justifiedText ? 'bg-primary' : 'bg-gray-300 dark:bg-gray-600'}`}
+                                >
+                                    <div className={`w-5 h-5 bg-white rounded-full absolute top-1 transition-transform shadow-sm ${justifiedText ? 'left-6' : 'left-1'}`} />
+                                </button>
                             </div>
                         </div>
                     )}

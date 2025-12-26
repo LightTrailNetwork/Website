@@ -53,7 +53,8 @@ export default function BibleReader() {
         showVerseMnemonics,
         showCrossReferences,
         showFootnotes,
-        isOffline
+        isOffline,
+        justifiedText
     } = useSettings();
 
     // Cross Reference State
@@ -1571,7 +1572,7 @@ export default function BibleReader() {
                     </div>
 
                     {/* Chapter Content */}
-                    <div className={`prose prose-lg dark:prose-invert max-w-none px-2 sm:px-4 ${loading ? 'opacity-50' : ''}`}>
+                    <div className={`prose prose-lg dark:prose-invert max-w-none px-1 sm:px-4 ${loading ? 'opacity-50' : ''} ${justifiedText ? 'text-justify' : ''}`}>
                         {renderContent(mergedContent, msbChapter?.chapter.content)}
                     </div>
                 </div>
