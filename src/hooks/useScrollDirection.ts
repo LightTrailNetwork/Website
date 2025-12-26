@@ -10,7 +10,7 @@ export function useScrollDirection() {
         const updateScrollDirection = () => {
             const scrollY = window.scrollY;
             const direction = scrollY > lastScrollY ? 'down' : 'up';
-            if (direction !== scrollDirection && (scrollY - lastScrollY > 10 || scrollY - lastScrollY < -10)) {
+            if (direction !== scrollDirection && (Math.abs(scrollY - lastScrollY) > 0)) {
                 setScrollDirection(direction);
             }
             setIsAtTop(scrollY < 10);
