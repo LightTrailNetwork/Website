@@ -289,39 +289,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                 <div className="overflow-y-auto custom-scrollbar flex-1">
                     {currentView === 'main' && (
                         <div className="p-2 space-y-2">
-                            {/* Bible Reading Settings (Conditional) */}
-                            {isBiblePage && (
-                                <button
-                                    onClick={() => setCurrentView('reader')}
-                                    className="w-full flex items-center p-4 hover:bg-accent/5 rounded-lg transition-colors group text-left bg-primary/5 border border-primary/10 mb-2"
-                                >
-                                    <div className="p-2 bg-primary/10 rounded-lg mr-4 group-hover:bg-primary/20 transition-colors">
-                                        <BookOpen className="w-5 h-5 text-primary" />
-                                    </div>
-                                    <div className="flex-1">
-                                        <h3 className="font-medium text-foreground">Reader Settings</h3>
-                                        <p className="text-xs text-muted-foreground">Customize your reading experience</p>
-                                    </div>
-                                    <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
-                                </button>
-                            )}
-
-                            {/* Translation (Conditional - kept near top if relevant, but user asked for Appearance first) */}
-                            <button
-                                onClick={() => setCurrentView('translation')}
-                                className="w-full flex items-center p-4 hover:bg-accent/5 rounded-lg transition-colors group text-left"
-                            >
-                                <div className="p-2 bg-primary/10 rounded-lg mr-4 group-hover:bg-primary/20 transition-colors">
-                                    <Globe className="w-5 h-5 text-primary" />
-                                </div>
-                                <div className="flex-1">
-                                    <h3 className="font-medium text-foreground">Bible Translation</h3>
-                                    <p className="text-xs text-muted-foreground">Current: {translations.find(t => t.id === selectedTranslation)?.shortName || selectedTranslation}</p>
-                                </div>
-                                <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
-                            </button>
-
-                            {/* Appearance (Moved to Top Priority) */}
+                            {/* Appearance */}
                             <button
                                 onClick={() => setCurrentView('appearance')}
                                 className="w-full flex items-center p-4 hover:bg-accent/5 rounded-lg transition-colors group text-left"
@@ -336,7 +304,37 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                                 <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
                             </button>
 
-                            {/* Link & QR Section Removed per User Request */}
+                            {/* Translation */}
+                            <button
+                                onClick={() => setCurrentView('translation')}
+                                className="w-full flex items-center p-4 hover:bg-accent/5 rounded-lg transition-colors group text-left"
+                            >
+                                <div className="p-2 bg-primary/10 rounded-lg mr-4 group-hover:bg-primary/20 transition-colors">
+                                    <Globe className="w-5 h-5 text-primary" />
+                                </div>
+                                <div className="flex-1">
+                                    <h3 className="font-medium text-foreground">Bible Translation</h3>
+                                    <p className="text-xs text-muted-foreground">Current: {translations.find(t => t.id === selectedTranslation)?.shortName || selectedTranslation}</p>
+                                </div>
+                                <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
+                            </button>
+
+                            {/* Bible Reading Settings (Conditional) */}
+                            {isBiblePage && (
+                                <button
+                                    onClick={() => setCurrentView('reader')}
+                                    className="w-full flex items-center p-4 hover:bg-accent/5 rounded-lg transition-colors group text-left bg-primary/5 border border-primary/10"
+                                >
+                                    <div className="p-2 bg-primary/10 rounded-lg mr-4 group-hover:bg-primary/20 transition-colors">
+                                        <BookOpen className="w-5 h-5 text-primary" />
+                                    </div>
+                                    <div className="flex-1">
+                                        <h3 className="font-medium text-foreground">Reader Settings</h3>
+                                        <p className="text-xs text-muted-foreground">Customize your reading experience</p>
+                                    </div>
+                                    <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
+                                </button>
+                            )}
 
                             {/* Role & Settings */}
                             <button
