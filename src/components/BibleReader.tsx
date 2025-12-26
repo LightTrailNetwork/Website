@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { useParams, useNavigate, useLocation, useNavigationType, Link } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, ChevronDown, ChevronUp, BookOpen, Loader2, AlertCircle, MessageSquare, Grid, Globe, X, Search, Filter, Eye, Link as LinkIcon, Columns, ArrowLeft, ArrowRight, History, WifiOff } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ChevronDown, ChevronUp, BookOpen, Loader2, AlertCircle, MessageSquare, Grid, Globe, X, Search, Filter, Eye, Link as LinkIcon, Columns, ArrowLeft, ArrowRight, History, WifiOff, Info } from 'lucide-react';
 import { getChapter, getBooks, getTranslations, getCommentaries, getCommentaryChapter, getProfiles, getProfile, getDatasetChapter } from '../data/bibleApi';
 import type { BibleChapter, ChapterContent, BibleBook, BibleTranslation, Commentary, CommentaryChapter, Profile, ProfileContent, ChapterFootnote, DatasetBookChapter } from '../data/bibleApi';
 
@@ -145,6 +145,9 @@ export default function BibleReader() {
 
     // Mnemonic Interaction State
     const [activeVerse, setActiveVerse] = useState<number | null>(null);
+
+    // State for book mnemonic hint
+    const [showBookMnemonicHint, setShowBookMnemonicHint] = useState(false);
 
     // History State
     const [history, setHistory] = useState<{ label: string; path: string }[]>(() => {
@@ -848,7 +851,7 @@ export default function BibleReader() {
                     }
 
                     if (item.type === 'verse') {
-                        // Filter logic
+
 
                         const msbVerse = msbContent?.find(v => v.type === 'verse' && v.number === item.number) as { type: 'verse', number: number, content: (string | { text: string, wordsOfJesus?: boolean })[] } | undefined;
 
@@ -1377,34 +1380,60 @@ export default function BibleReader() {
 
                     {/* Navigation Header */}
                     <div id="bible-nav-header" className={`sticky z-10 bg-background/80 backdrop-blur-md border-b border-border mb-0 sm:mb-6 shadow-sm flex flex-col transition-all duration-300 sm:rounded-b-xl -mx-4 sm:mx-0 px-0 sm:px-0 ${showMnemonics ? 'py-0 sm:py-0' : ''} ${scrollDirection === 'down' && !isAtTop ? 'top-0' : 'top-16'}`}>
-                        {/* Book Mnemonic */}
                         {showMnemonics && resolvedBookId && chapter && (
                             (() => {
                                 const bMnemonic = getBookMnemonic(resolvedBookId, parseInt(chapter));
                                 if (!bMnemonic) return null;
                                 return (
-                                    <div
-                                        className="w-full bg-background/95 backdrop-blur border-b border-border/50 px-8 py-1 flex overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']"
-                                        onTouchStart={(e) => e.stopPropagation()}
-                                        onTouchMove={(e) => e.stopPropagation()}
-                                        onTouchEnd={(e) => e.stopPropagation()}
-                                    >
-                                        <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground/70 font-medium text-center whitespace-nowrap min-w-max px-4 mx-auto">
-                                            {bMnemonic.text.split('').map((char, i) => (
-                                                <span key={i} className={i === bMnemonic.highlightIndex ? "text-primary font-bold scale-110 inline-block" : ""}>
-                                                    {char}
-                                                </span>
-                                            ))}
-                                            {bMnemonic.hint && (
-                                                <span className="ml-2 normal-case tracking-normal italic text-muted-foreground/50">
+                                    <div className="w-full bg-background/95 backdrop-blur border-b border-border/50 flex flex-col items-center justify-center relative min-h-[40px]">
+                                        <div
+                                            className="w-full overflow-x-auto no-scrollbar"
+                                            onTouchStart={(e) => e.stopPropagation()}
+                                            onTouchMove={(e) => e.stopPropagation()}
+                                            onTouchEnd={(e) => e.stopPropagation()}
+                                        >
+                                            <div className="flex items-center justify-center min-w-full w-fit relative px-8 py-2">
+                                                {/* Centered Acrostic Title */}
+                                                <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground/70 font-medium text-center whitespace-nowrap">
+                                                    {bMnemonic.text.split('').map((char, i) => (
+                                                        <span key={i} className={i === bMnemonic.highlightIndex ? "text-primary font-bold scale-110 inline-block" : ""}>
+                                                            {char}
+                                                        </span>
+                                                    ))}
+                                                </div>
+
+                                                {/* Info Icon - Absolutely positioned right relative to the content width (or screen width if content is small) */}
+                                                {bMnemonic.hint && (
+                                                    <button
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            setShowBookMnemonicHint(!showBookMnemonicHint);
+                                                        }}
+                                                        className={`absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-full transition-colors ${showBookMnemonicHint ? 'bg-primary/10 text-primary' : 'hover:bg-accent/10 text-muted-foreground/50 hover:text-primary'} z-10`}
+                                                    >
+                                                        <Info className="w-4 h-4" />
+                                                    </button>
+                                                )}
+                                            </div>
+                                        </div>
+
+                                        {/* Collapsible Hint */}
+                                        {bMnemonic.hint && showBookMnemonicHint && (
+                                            <div
+                                                className="w-full max-w-md mx-auto mb-2 animate-in slide-in-from-top-1 fade-in duration-200 px-4"
+                                                onTouchStart={(e) => e.stopPropagation()}
+                                                onTouchMove={(e) => e.stopPropagation()}
+                                                onTouchEnd={(e) => e.stopPropagation()}
+                                            >
+                                                <p className="text-xs text-center text-muted-foreground font-medium italic leading-relaxed px-4 py-2 bg-secondary/10 rounded-lg border border-border/50">
                                                     {bMnemonic.hint.split('**').map((part, i) => (
-                                                        <span key={i} className={i % 2 === 1 ? "font-bold text-muted-foreground/70" : ""}>
+                                                        <span key={i} className={i % 2 === 1 ? "font-bold text-primary/80" : ""}>
                                                             {part}
                                                         </span>
                                                     ))}
-                                                </span>
-                                            )}
-                                        </div>
+                                                </p>
+                                            </div>
+                                        )}
                                     </div>
                                 );
                             })()

@@ -95,4 +95,16 @@
   ::-webkit-scrollbar-corner {
     @apply bg-transparent;
   }
+
+  /* Utility to hide scrollbar but keep functionality */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
 }
