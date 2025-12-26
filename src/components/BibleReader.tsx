@@ -53,6 +53,7 @@ export default function BibleReader() {
         showVerseMnemonics,
         showCrossReferences,
         showFootnotes,
+        verseByVerse,
         isOffline,
         justifiedText
     } = useSettings();
@@ -871,7 +872,7 @@ export default function BibleReader() {
                             <span
                                 key={index}
                                 id={`verse-${item.number}`}
-                                className={`relative group ${isHighlighted ? "bg-yellow-100 dark:bg-yellow-500/20 transition-colors duration-1000 rounded px-1 -mx-1 box-decoration-clone" : ""}`}
+                                className={`relative group ${isHighlighted ? "bg-yellow-100 dark:bg-yellow-500/20 transition-colors duration-1000 rounded px-1 -mx-1 box-decoration-clone" : ""} ${verseByVerse ? 'block mb-2' : ''}`}
                                 onMouseEnter={() => setActiveVerse(item.number)}
                                 onMouseLeave={() => setActiveVerse(null)}
                                 onClick={() => setActiveVerse(item.number)}
@@ -988,7 +989,7 @@ export default function BibleReader() {
                                         {item.content.map((c, i) => {
                                             // Check if we need to insert a space before this item
                                             const prev = i > 0 ? item.content[i - 1] : null;
-                                            const needsSpace = prev && shouldInsertSpace(prev, c);
+                                            const needsSpace = prev && shouldInsertSpace(prev, c) && !verseByVerse;
 
                                             const contentElement = (() => {
                                                 if (typeof c === 'string') {

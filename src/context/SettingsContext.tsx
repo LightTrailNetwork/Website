@@ -26,6 +26,8 @@ interface SettingsContextType {
     setShowCrossReferences: (enabled: boolean) => void;
     showFootnotes: boolean;
     setShowFootnotes: (enabled: boolean) => void;
+    verseByVerse: boolean;
+    setVerseByVerse: (enabled: boolean) => void;
     theme: 'light' | 'dark';
     setTheme: (theme: 'light' | 'dark') => void;
     justifiedText: boolean;
@@ -70,6 +72,10 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
     const [showFootnotes, setShowFootnotes] = useState(() => {
         const saved = localStorage.getItem('bible_show_footnotes');
         return saved === null ? true : saved === 'true';
+    });
+
+    const [verseByVerse, setVerseByVerse] = useState(() => {
+        return localStorage.getItem('bible_verse_by_verse') === 'true';
     });
 
     const [theme, setTheme] = useState<'light' | 'dark'>(() => {
@@ -211,6 +217,10 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
     }, [showFootnotes]);
 
     useEffect(() => {
+        localStorage.setItem('bible_verse_by_verse', String(verseByVerse));
+    }, [verseByVerse]);
+
+    useEffect(() => {
         localStorage.setItem('theme', theme);
         if (theme === 'dark') {
             document.documentElement.classList.add('dark');
@@ -268,6 +278,8 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
             setShowCrossReferences,
             showFootnotes,
             setShowFootnotes,
+            verseByVerse,
+            setVerseByVerse,
             theme,
             setTheme,
             justifiedText,

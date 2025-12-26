@@ -98312,6 +98312,7 @@
         },
         "REV": {
             "mnemonic": "YES, JESUS WILL RETURN SOON",
+            "mnemonicHint": "Rev 22:20",
             "chapters": {
                 "1": {
                     "mnemonic": "",
