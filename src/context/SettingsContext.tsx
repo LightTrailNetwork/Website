@@ -80,7 +80,8 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
     });
 
     const [justifiedText, setJustifiedText] = useState(() => {
-        return localStorage.getItem('bible_justified_text') === 'true';
+        const saved = localStorage.getItem('bible_justified_text');
+        return saved === null ? true : saved === 'true';
     });
 
     const [fontSize, setFontSize] = useState<'small' | 'normal' | 'large' | 'xl'>(() => {
