@@ -8,6 +8,7 @@ import type { BibleChapter, ChapterContent, BibleBook, BibleTranslation, Comment
 import QuickNav from './QuickNav';
 import { diffVerses, type DiffToken } from '../utils/diffUtils';
 import { formatPassageText, shouldInsertSpace, formatChapterContent } from '../utils/bibleUtils';
+import { useEdgeTapNavigation } from '../hooks/useEdgeTapNavigation';
 import { useScrollDirection } from '../hooks/useScrollDirection';
 import { useSettings } from '../context/SettingsContext';
 import { getBookMnemonic, getChapterMnemonic, getVerseMnemonic, getMnemonicHighlightIndex } from '../utils/mnemonicUtils';
@@ -1188,6 +1189,21 @@ export default function BibleReader() {
         });
     };
 
+    // --- Edge Tap Navigation ---
+    const edgeTapHandlers = useEdgeTapNavigation(
+        // On Prev
+        () => {
+            if (canGoPrev) handlePrev();
+            else if (!isFirstBook) handlePrevBook();
+        },
+        // On Next
+        () => {
+            if (canGoNext) handleNext();
+            else if (!isLastBook) handleNextBook();
+        },
+        { edgeThresholdPercent: 0.15 } // 15% Edge Zone
+    );
+
     if (loading && !bsbChapter) {
         return (
             <div className="flex flex-col items-center justify-center min-h-[50vh] space-y-4">
@@ -1368,6 +1384,7 @@ export default function BibleReader() {
     return (
         <div
             className="flex flex-col sm:gap-0 relative max-w-7xl mx-auto px-0 sm:px-4 touch-pan-y"
+            {...edgeTapHandlers}
         >
             <div className="flex gap-6 relative">
                 {/* Pull Indicators (Reveal Behind) */}
