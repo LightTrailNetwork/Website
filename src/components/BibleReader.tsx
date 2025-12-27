@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { useParams, useNavigate, useLocation, useNavigationType, Link } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, ChevronDown, ChevronUp, BookOpen, Loader2, AlertCircle, MessageSquare, Grid, Globe, X, Search, Filter, Eye, Link as LinkIcon, Columns, ArrowLeft, ArrowRight, History, WifiOff, Info } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ChevronDown, ChevronUp, ChevronsLeft, ChevronsRight, BookOpen, Loader2, AlertCircle, MessageSquare, Grid, Globe, X, Search, Filter, Eye, Link as LinkIcon, Columns, ArrowLeft, ArrowRight, History, WifiOff, Info } from 'lucide-react';
 import { getChapter, getBooks, getTranslations, getCommentaries, getCommentaryChapter, getProfiles, getProfile, getDatasetChapter } from '../data/bibleApi';
 import type { BibleChapter, ChapterContent, BibleBook, BibleTranslation, Commentary, CommentaryChapter, Profile, ProfileContent, ChapterFootnote, DatasetBookChapter } from '../data/bibleApi';
 
@@ -497,12 +497,30 @@ export default function BibleReader() {
             // Previous chapter in same book
             navigate(`/bible/read/${bsbChapter.book.name.replace(/\s+/g, '')}/${currentChapterNum - 1}`);
         } else if (books.length > 0) {
-            // Previous book
+            // Previous book (last chapter)
             const currentBookIndex = books.findIndex(b => b.id === bsbChapter.book.id);
             if (currentBookIndex > 0) {
                 const prevBook = books[currentBookIndex - 1]!;
                 navigate(`/bible/read/${prevBook.name.replace(/\s+/g, '')}/${prevBook.numberOfChapters}`);
             }
+        }
+    };
+
+    const handleNextBook = () => {
+        if (!bsbChapter || books.length === 0) return;
+        const currentBookIndex = books.findIndex(b => b.id === bsbChapter.book.id);
+        if (currentBookIndex !== -1 && currentBookIndex < books.length - 1) {
+            const nextBook = books[currentBookIndex + 1]!;
+            navigate(`/bible/read/${nextBook.name.replace(/\s+/g, '')}/1`);
+        }
+    };
+
+    const handlePrevBook = () => {
+        if (!bsbChapter || books.length === 0) return;
+        const currentBookIndex = books.findIndex(b => b.id === bsbChapter.book.id);
+        if (currentBookIndex > 0) {
+            const prevBook = books[currentBookIndex - 1]!;
+            navigate(`/bible/read/${prevBook.name.replace(/\s+/g, '')}/1`);
         }
     };
 
@@ -1473,43 +1491,61 @@ export default function BibleReader() {
                             )}
 
                             {/* Standard Navigation View */}
-                            <div className={`flex items-center justify-between w-full sm:w-auto sm:justify-start sm:gap-2 relative ${isSearchExpanded ? 'hidden sm:flex' : 'flex'}`}>
-                                <button
-                                    onClick={handlePrev}
-                                    disabled={!canGoPrev}
-                                    className="p-1.5 sm:p-2 hover:bg-accent/10 rounded-full disabled:opacity-30 transition-colors shrink-0"
-                                >
-                                    <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
-                                </button>
+                            <div className={`flex items-center justify-between w-full sm:w-auto sm:justify-start gap-1 sm:gap-2 relative ${isSearchExpanded ? 'hidden sm:flex' : 'flex'}`}>
 
+                                {/* Left Controls: Prev Book + Prev Chapter */}
+                                <div className="flex items-center">
+                                    <button
+                                        onClick={handlePrevBook}
+                                        disabled={isFirstBook}
+                                        className="p-1.5 sm:p-2 hover:bg-accent/10 rounded-full disabled:opacity-20 transition-colors shrink-0 text-muted-foreground hover:text-foreground"
+                                        title="Previous Book"
+                                    >
+                                        <ChevronsLeft className="w-5 h-5 sm:w-6 sm:h-6" />
+                                    </button>
+                                    <button
+                                        onClick={handlePrev}
+                                        disabled={!canGoPrev}
+                                        className="p-1.5 sm:p-2 hover:bg-accent/10 rounded-full disabled:opacity-20 transition-colors shrink-0 text-muted-foreground hover:text-foreground"
+                                        title="Previous Chapter"
+                                    >
+                                        <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
+                                    </button>
+                                </div>
+
+                                {/* Center: Book Title (Quick Nav) */}
                                 <button
                                     onClick={() => setShowQuickNav(true)}
-                                    className="flex-1 sm:flex-none flex items-center justify-center sm:justify-start gap-2 px-2 py-1.5 hover:bg-accent/10 rounded-lg transition-colors text-center sm:text-left min-w-[120px] sm:min-w-[140px]"
+                                    className="flex-1 sm:flex-none flex items-center justify-center sm:justify-start gap-2 px-2 py-1.5 hover:bg-accent/10 rounded-lg transition-colors text-center sm:text-left min-w-[100px] sm:min-w-[140px]"
                                 >
                                     <div className="hidden sm:block"><Grid className="w-5 h-5 text-primary" /></div>
                                     <div>
-                                        <h2 className="text-base sm:text-lg font-bold leading-none truncate">{bsbChapter.book.name} {bsbChapter.chapter.number}</h2>
+                                        <h2 className="text-sm sm:text-lg font-bold leading-none mx-auto">{bsbChapter.book.name} {bsbChapter.chapter.number}</h2>
                                         <p className="text-[10px] text-muted-foreground uppercase tracking-wider">
                                             {translations.find(t => t.id === selectedTranslation)?.shortName || selectedTranslation}
                                         </p>
                                     </div>
                                 </button>
 
-                                <div className="flex items-center gap-1 sm:hidden absolute right-12 top-1/2 -translate-y-1/2 z-20">
+                                {/* Right Controls: Search + Next Chapter + Next Book */}
+                                <div className="flex items-center">
                                     <button
-                                        onClick={() => setIsSearchExpanded(true)}
-                                        className="p-1.5 hover:bg-accent/10 rounded-full transition-colors shrink-0"
+                                        onClick={handleNext}
+                                        disabled={!canGoNext}
+                                        className="p-1.5 sm:p-2 hover:bg-accent/10 rounded-full disabled:opacity-20 transition-colors shrink-0 text-muted-foreground hover:text-foreground"
+                                        title="Next Chapter"
                                     >
-                                        <Search className="w-5 h-5 text-muted-foreground" />
+                                        <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
+                                    </button>
+                                    <button
+                                        onClick={handleNextBook}
+                                        disabled={isLastBook}
+                                        className="p-1.5 sm:p-2 hover:bg-accent/10 rounded-full disabled:opacity-20 transition-colors shrink-0 text-muted-foreground hover:text-foreground"
+                                        title="Next Book"
+                                    >
+                                        <ChevronsRight className="w-5 h-5 sm:w-6 sm:h-6" />
                                     </button>
                                 </div>
-                                <button
-                                    onClick={handleNext}
-                                    disabled={!canGoNext}
-                                    className="p-2 hover:bg-accent/10 rounded-full disabled:opacity-30 transition-colors"
-                                >
-                                    <ChevronRight className="w-6 h-6" />
-                                </button>
                             </div>
 
                             {/* Desktop Universal Search Bar */}
