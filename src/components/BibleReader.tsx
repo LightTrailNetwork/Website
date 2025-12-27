@@ -1520,11 +1520,20 @@ export default function BibleReader() {
                                 >
                                     <div className="hidden sm:block"><Grid className="w-5 h-5 text-primary" /></div>
                                     <div>
-                                        <h2 className="text-sm sm:text-lg font-bold leading-none mx-auto">{bsbChapter.book.name} {bsbChapter.chapter.number}</h2>
+                                        <h2 className="text-base sm:text-lg font-bold leading-none mx-auto">{bsbChapter.book.name} {bsbChapter.chapter.number}</h2>
                                         <p className="text-[10px] text-muted-foreground uppercase tracking-wider">
                                             {translations.find(t => t.id === selectedTranslation)?.shortName || selectedTranslation}
                                         </p>
                                     </div>
+                                </button>
+
+                                {/* Mobile Search Icon (Subtle & Absolute) */}
+                                <button
+                                    onClick={() => setIsSearchExpanded(true)}
+                                    className="absolute right-[4rem] top-1/2 -translate-y-1/2 p-1.5 hover:bg-accent/10 rounded-full transition-colors shrink-0 sm:hidden text-muted-foreground/40 hover:text-primary z-10"
+                                    title="Search"
+                                >
+                                    <Search className="w-5 h-5" />
                                 </button>
 
                                 {/* Right Controls: Search + Next Chapter + Next Book */}

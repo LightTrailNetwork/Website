@@ -118,7 +118,7 @@ export function GatherAroundView() {
                 { char: "A", text: "Anointed (Matthew)", link: "/bible/read/Matthew" },
                 { char: "R", text: "Rapid (Mark)", link: "/bible/read/Mark" },
                 { char: "O", text: "Orderly (Luke)", link: "/bible/read/Luke" },
-                { char: "U", text: "Upper Room (John 13–17 — love, Spirit, vine)", link: "/bible/read/John" },
+                { char: "U", text: "Upper Room (John 13-17 — love, Spirit, vine)", link: "/bible/read/John" },
                 { char: "N", text: "New Birth (John 3 — Niccodemus)", link: "/bible/read/John" },
                 { char: "D", text: "Doubt Dispelled (John 20 — Thomas believes)", link: "/bible/read/John" }
             ]
@@ -146,7 +146,7 @@ export function GatherAroundView() {
                 { char: "L", text: "Legitimate Faith (James)", link: "/bible/read/James" },
                 { char: "I", text: "Identity (1 Peter)", link: "/bible/read/1Peter" },
                 { char: "G", text: "Growth (2 Peter)", link: "/bible/read/2Peter" },
-                { char: "H", text: "Heartfelt Love (1–3 John)", link: "/bible/read/1John" },
+                { char: "H", text: "Heartfelt Love (1-3 John)", link: "/bible/read/1John" },
                 { char: "T", text: "Take Your Stand (Jude)", link: "/bible/read/Jude" }
             ]
         },
@@ -156,11 +156,11 @@ export function GatherAroundView() {
             color: "text-orange-500",
             bg: "bg-orange-500/10",
             items: [
-                { char: "L", text: "Law (Genesis–Deuteronomy)", link: "/bible/read/Genesis" },
-                { char: "A", text: "Ancient History (Joshua–Esther)", link: "/bible/read/Joshua" },
-                { char: "M", text: "Meditations on Wisdom (Job–Song of Solomon)", link: "/bible/read/Job" },
-                { char: "P", text: "Prophets — Major (Isaiah–Daniel)", link: "/bible/read/Isaiah" },
-                { char: "S", text: "Small Prophets — Minor (Hosea–Malachi)", link: "/bible/read/Hosea" }
+                { char: "L", text: "Law (Genesis-Deuteronomy)", link: "/bible/read/Genesis" },
+                { char: "A", text: "Ancient History (Joshua-Esther)", link: "/bible/read/Joshua" },
+                { char: "M", text: "Meditations on Wisdom (Job-Song of Solomon)", link: "/bible/read/Job" },
+                { char: "P", text: "Prophets — Major (Isaiah-Daniel)", link: "/bible/read/Isaiah" },
+                { char: "S", text: "Short Prophets — Minor (Hosea-Malachi)", link: "/bible/read/Hosea" }
             ]
         },
         {
@@ -171,7 +171,7 @@ export function GatherAroundView() {
             items: [
                 { char: "G", text: "Genesis", link: "/bible/read/Genesis" },
                 { char: "O", text: "Out of Egypt (Exodus)", link: "/bible/read/Exodus" },
-                { char: "D", text: "Dwelling with God in the Desert (Leviticus–Numbers)", link: "/bible/read/Leviticus" },
+                { char: "D", text: "Dwelling with God in the Desert (Leviticus-Numbers)", link: "/bible/read/Leviticus" },
                 { char: "S", text: "Second Telling (Deuteronomy)", link: "/bible/read/Deuteronomy" }
             ]
         },
@@ -183,10 +183,10 @@ export function GatherAroundView() {
             items: [
                 { char: "K", text: "Kingdom Conquered (Joshua)", link: "/bible/read/Joshua" },
                 { char: "I", text: "In Judges They Fell (Judges & Ruth)", link: "/bible/read/Judges" },
-                { char: "N", text: "National Kings Rise (1–2 Samuel)", link: "/bible/read/1Samuel" },
-                { char: "G", text: "Great Kingdom Splits (1–2 Kings)", link: "/bible/read/1Kings" },
-                { char: "D", text: "David’s Line & Temple Records (1–2 Chronicles)", link: "/bible/read/1Chronicles" },
-                { char: "O", text: "Outcry & Return (Ezra–Nehemiah)", link: "/bible/read/Ezra" },
+                { char: "N", text: "National Kings Rise (1-2 Samuel)", link: "/bible/read/1Samuel" },
+                { char: "G", text: "Great Kingdom Splits (1-2 Kings)", link: "/bible/read/1Kings" },
+                { char: "D", text: "David’s Line & Temple Records (1-2 Chronicles)", link: "/bible/read/1Chronicles" },
+                { char: "O", text: "Outcry & Return (Ezra-Nehemiah)", link: "/bible/read/Ezra" },
                 { char: "M", text: "Maid Becomes Queen (Esther)", link: "/bible/read/Esther" }
             ]
         },
@@ -209,7 +209,7 @@ export function GatherAroundView() {
             bg: "bg-blue-600/10",
             items: [
                 { char: "S", text: "Salvation Promised (Isaiah)", link: "/bible/read/Isaiah" },
-                { char: "O", text: "Outcry & Tears (Jeremiah–Lamentations)", link: "/bible/read/Jeremiah" },
+                { char: "O", text: "Outcry & Tears (Jeremiah-Lamentations)", link: "/bible/read/Jeremiah" },
                 { char: "O", text: "Our Hearts Renewed (Ezekiel)", link: "/bible/read/Ezekiel" },
                 { char: "N", text: "Nations Bow (Daniel)", link: "/bible/read/Daniel" }
 
@@ -222,10 +222,10 @@ export function GatherAroundView() {
             bg: "bg-rose-500/10",
             items: [
                 { char: "R", text: "Relentless Love (Hosea)", link: "/bible/read/Hosea" },
-                { char: "E", text: "Evil Exposed (Joel–Amos)", link: "/bible/read/Joel" },
-                { char: "T", text: "Turn or Be Judged (Obadiah–Jonah–Micah)", link: "/bible/read/Obadiah" },
-                { char: "U", text: "Unfaithful Nations Judged (Nahum–Habakkuk)", link: "/bible/read/Nahum" },
-                { char: "R", text: "Return & Rebuild (Zephaniah–Haggai–Zechariah)", link: "/bible/read/Zephaniah" },
+                { char: "E", text: "Evil Exposed (Joel-Amos)", link: "/bible/read/Joel" },
+                { char: "T", text: "Turn or Be Judged (Obadiah-Jonah-Micah)", link: "/bible/read/Obadiah" },
+                { char: "U", text: "Unfaithful Nations Judged (Nahum-Habakkuk)", link: "/bible/read/Nahum" },
+                { char: "R", text: "Return & Rebuild (Zephaniah-Haggai-Zechariah)", link: "/bible/read/Zephaniah" },
                 { char: "N", text: "Name Remembered (Malachi)", link: "/bible/read/Malachi" }
             ]
         }
