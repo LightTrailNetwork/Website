@@ -1386,14 +1386,14 @@ export default function BibleReader() {
                                 const bMnemonic = getBookMnemonic(resolvedBookId, parseInt(chapter));
                                 if (!bMnemonic) return null;
                                 return (
-                                    <div className="w-full bg-background/95 backdrop-blur border-b border-border/50 flex flex-col items-center justify-center relative min-h-[40px]">
+                                    <div className="w-full bg-background/95 backdrop-blur border-b border-border/50 flex flex-col items-center justify-center relative min-h-[32px]">
                                         <div
                                             className="w-full overflow-x-auto no-scrollbar"
                                             onTouchStart={(e) => e.stopPropagation()}
                                             onTouchMove={(e) => e.stopPropagation()}
                                             onTouchEnd={(e) => e.stopPropagation()}
                                         >
-                                            <div className="flex items-center justify-center min-w-full w-fit relative px-8 py-2">
+                                            <div className="flex items-center justify-center min-w-full w-fit relative px-8 py-1">
                                                 {/* Centered Acrostic Title */}
                                                 <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground/70 font-medium text-center whitespace-nowrap">
                                                     {bMnemonic.text.split('').map((char, i) => (
