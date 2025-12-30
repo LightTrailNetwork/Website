@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMap, Polyline } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
@@ -73,6 +73,7 @@ interface BibleLeafletMapProps {
     onSelectLocation: (locationId: string, shouldScroll?: boolean) => void;
     activeLocationId?: string | null;
     locations?: MapPoint[];
+    polylines?: [number, number][][]; // Array of paths, each path is array of [lat, lng]
 }
 
 function useIsMobile() {
@@ -94,7 +95,7 @@ function MapMarker({ location, isActive, onSelect }: { location: MapPoint, isAct
     useEffect(() => {
         if (isActive && markerRef.current) {
             markerRef.current.openPopup();
-            map.flyTo([location.lat, location.lng], 10, { duration: 1.5 });
+            map.flyTo([location.lat, location.lng], map.getZoom(), { duration: 1.5 });
         }
     }, [isActive, location, map]);
 
@@ -117,12 +118,12 @@ function MapMarker({ location, isActive, onSelect }: { location: MapPoint, isAct
     );
 }
 
-export default function BibleLeafletMap({ onSelectLocation, activeLocationId, locations = LOCATIONS }: BibleLeafletMapProps) {
+export default function BibleLeafletMap({ onSelectLocation, activeLocationId, locations = LOCATIONS, polylines }: BibleLeafletMapProps) {
     return (
         <div className="flex flex-col gap-2">
             <div className="w-full h-[600px] rounded-xl overflow-hidden border border-border z-0">
                 <MapContainer
-                    center={[31.7683, 35.2137]}
+                    center={[30.0, 33.0]} // Centered roughly on Sinai Peninsula for Exodus context
                     zoom={7}
                     scrollWheelZoom={true}
                     className="w-full h-full"
@@ -132,6 +133,14 @@ export default function BibleLeafletMap({ onSelectLocation, activeLocationId, lo
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
                         url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
                     />
+
+                    {polylines && polylines.map((path, idx) => (
+                        <Polyline
+                            key={idx}
+                            positions={path}
+                            pathOptions={{ color: '#d97706', weight: 4, opacity: 0.7, dashArray: '10, 10' }} // Amber/Orange color
+                        />
+                    ))}
 
                     {locations.map(loc => (
                         <MapMarker

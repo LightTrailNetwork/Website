@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import {
     BookOpen, Users, MapPin, Lightbulb, Pickaxe,
     ArrowRightLeft, GitMerge, Combine, Repeat,
-    Hourglass, ListTree, History, Library, ArrowRight, ShieldQuestion, Scale, Crown, Tent, Zap, Wheat, Calendar, Megaphone, Microscope
+    Hourglass, ListTree, History, Library, ArrowRight, ShieldQuestion, Scale, Crown, Tent, Zap, Wheat, Calendar, Megaphone, Microscope, Mountain
 } from 'lucide-react';
 import VerseLink from '../components/study/VerseLink';
 
@@ -37,6 +37,7 @@ export default function BibleStudy() {
                 { id: 'history', title: 'Church History', description: 'Creeds, Councils, Denominations & Timeline.', icon: History, path: '/bible/study/history', status: 'ready' },
                 { id: 'timeline', title: 'Chronological Timeline', description: 'Events in the order they occurred.', icon: History, path: '/bible/study/timeline', status: 'ready' },
                 { id: 'eras', title: 'Biblical Eras', description: 'The grand epochs of redemptive history.', icon: Hourglass, path: '/bible/study/eras', status: 'ready' },
+                { id: 'exodus', title: 'Evidence for the Exodus', description: 'Route, Red Sea & Mt. Sinai evidence.', icon: Mountain, path: '/bible/study/exodus', status: 'ready' },
                 { id: 'archaeology', title: 'Archaeological Evidence', description: 'Physical proof confirming the biblical record.', icon: Pickaxe, path: '/bible/study/archaeology', status: 'ready' },
                 { id: 'translations', title: 'Bible Translations', description: 'History & comparison of versions.', icon: ArrowRightLeft, path: '/bible/study/translations', status: 'ready' },
                 { id: 'places', title: 'Places & Maps', description: 'Geographic context for the unfolding narrative.', icon: MapPin, path: '/bible/study/places', status: 'ready' },
