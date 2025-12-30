@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MapPin, Mountain, Tent, Calendar, ScrollText, Navigation, Waves } from 'lucide-react';
+import { MapPin, Mountain, Tent, Calendar, ScrollText, Navigation, Waves, Trophy } from 'lucide-react';
 import { EXODUS_LOCATIONS, EXODUS_ROUTE } from '../../data/exodusData';
 import VerseLink from '../../components/study/VerseLink';
 import BibleLeafletMap from '../../components/study/BibleLeafletMap';
@@ -7,11 +7,14 @@ import BibleLeafletMap from '../../components/study/BibleLeafletMap';
 export default function ExodusStudy() {
     const [activeId, setActiveId] = useState<string | null>(null);
 
-    const mapLocations = EXODUS_LOCATIONS.map(item => ({
+    // Sort contents by order
+    const sortedLocations = [...EXODUS_LOCATIONS].sort((a, b) => a.order - b.order);
+
+    const mapLocations = sortedLocations.map(item => ({
         id: item.id,
         lat: item.coordinates.lat,
         lng: item.coordinates.lng,
-        label: item.title
+        label: `${item.order}. ${item.title}`
     }));
 
     const mapRef = React.useRef<HTMLDivElement>(null);
@@ -77,14 +80,14 @@ export default function ExodusStudy() {
                             Route Information
                         </h4>
                         <p>
-                            The path shown traces the route from Goshen (Egypt) through the Sinai peninsula, crossing the Red Sea at Nuweiba Beach, and into modern-day Saudi Arabia to Mt. Sinai (Jebel al-Lawz).
+                            The path shown traces the route from Goshen (Egypt) through the Sinai peninsula, crossing the Red Sea at Nuweiba Beach, into modern-day Saudi Arabia to Mt. Sinai (Jebel al-Lawz), making the loop back south to Ezion-Geber after Kadesh Barnea, and finally north to the Jordan River crossing at Jericho.
                         </p>
                     </div>
                 </div>
 
                 {/* List Section */}
                 <div className="w-full lg:w-1/2 space-y-6">
-                    {EXODUS_LOCATIONS.map(item => (
+                    {sortedLocations.map(item => (
                         <div
                             key={item.id}
                             id={`exodus-${item.id}`}
@@ -101,6 +104,9 @@ export default function ExodusStudy() {
                                 <div className="flex justify-between items-start gap-4">
                                     <div className="space-y-1">
                                         <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-amber-600 mb-1">
+                                            <span className="bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 px-1.5 py-0.5 rounded text-[10px] mr-1 border border-amber-200 dark:border-amber-800">
+                                                #{item.order}
+                                            </span>
                                             {item.type}
                                         </div>
                                         <h3 className="text-xl font-bold text-foreground group-hover:text-amber-700 dark:group-hover:text-amber-500 transition-colors">
