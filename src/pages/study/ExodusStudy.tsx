@@ -112,6 +112,22 @@ export default function ExodusStudy() {
                         ))}
                     </div>
                 )}
+
+                {item.links && item.links.length > 0 && (
+                    <div className="pt-3 mt-1 border-t border-border/30 flex flex-col gap-1">
+                        {item.links.map((link, idx) => (
+                            <a
+                                key={idx}
+                                href={link.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-[10px] text-muted-foreground hover:text-amber-600 dark:hover:text-amber-400 hover:underline flex items-center gap-1 transition-colors w-fit"
+                            >
+                                <span className="opacity-50">↗</span> {link.label}
+                            </a>
+                        ))}
+                    </div>
+                )}
             </div>
         </div>
     );
