@@ -1,20 +1,22 @@
 import React, { useState } from 'react';
-import { MapPin, Mountain, Tent, Calendar, ScrollText, Navigation, Waves, Trophy } from 'lucide-react';
-import { EXODUS_LOCATIONS, EXODUS_ROUTE } from '../../data/exodusData';
+import { MapPin, Mountain, Tent, Calendar, ScrollText, Navigation, Waves, Trophy, BookOpen } from 'lucide-react';
+import { EXODUS_LOCATIONS, EXODUS_ROUTE, type ExodusLocation } from '../../data/exodusData';
 import VerseLink from '../../components/study/VerseLink';
 import BibleLeafletMap from '../../components/study/BibleLeafletMap';
 
 export default function ExodusStudy() {
     const [activeId, setActiveId] = useState<string | null>(null);
 
-    // Sort contents by order
-    const sortedLocations = [...EXODUS_LOCATIONS].sort((a, b) => a.order - b.order);
+    // Grouping Data
+    const contextItems = EXODUS_LOCATIONS.filter(item => item.category === 'context');
+    const journeyItems = EXODUS_LOCATIONS.filter(item => item.category === 'journey').sort((a, b) => (a.order || 0) - (b.order || 0));
 
-    const mapLocations = sortedLocations.map(item => ({
+    // Map Locations (Context items get special label or no number)
+    const mapLocations = EXODUS_LOCATIONS.map(item => ({
         id: item.id,
         lat: item.coordinates.lat,
         lng: item.coordinates.lng,
-        label: `${item.order}. ${item.title}`
+        label: item.category === 'journey' ? `${item.order}. ${item.title}` : item.title
     }));
 
     const mapRef = React.useRef<HTMLDivElement>(null);
@@ -31,7 +33,6 @@ export default function ExodusStudy() {
 
     const handleItemClick = (id: string) => {
         setActiveId(id);
-        // On mobile, scroll back up to map
         if (window.innerWidth < 1024 && mapRef.current) {
             mapRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
@@ -46,6 +47,85 @@ export default function ExodusStudy() {
         }
     };
 
+    // Helper to render a card
+    const LocationCard = ({ item, minimal = false }: { item: ExodusLocation, minimal?: boolean }) => (
+        <div
+            id={`exodus-${item.id}`}
+            className={`
+                group bg-card border rounded-xl overflow-hidden transition-all duration-300 scroll-mt-32 relative
+                ${activeId === item.id
+                    ? 'border-amber-500 ring-1 ring-amber-500 shadow-lg shadow-amber-500/10 scale-[1.02] z-10'
+                    : 'border-border shadow-sm hover:shadow-md hover:border-amber-500/30'
+                }
+            `}
+            onClick={() => handleItemClick(item.id)}
+        >
+            <div className="p-5 space-y-3">
+                <div className="flex justify-between items-start gap-4">
+                    <div className="space-y-1">
+                        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-amber-600 mb-1">
+                            {item.order && (
+                                <span className="bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 px-1.5 py-0.5 rounded text-[10px] mr-1 border border-amber-200 dark:border-amber-800">
+                                    #{item.order}
+                                </span>
+                            )}
+                            {item.type}
+                        </div>
+                        <h3 className="text-lg font-bold text-foreground group-hover:text-amber-700 dark:group-hover:text-amber-500 transition-colors">
+                            {item.title}
+                        </h3>
+                    </div>
+                    <div className={`p-2 rounded-lg ${activeId === item.id ? 'bg-amber-500 text-white' : 'bg-secondary text-muted-foreground'} transition-colors`}>
+                        {getIcon(item.type)}
+                    </div>
+                </div>
+
+                {item.narrative && (
+                    <div className="text-sm font-serif italic text-foreground/80 border-l-2 border-amber-500/20 pl-3 py-1 bg-amber-500/5 rounded-r my-2">
+                        "{item.narrative}"
+                    </div>
+                )}
+
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                    {item.description}
+                </p>
+
+                {!minimal && (
+                    <div className="pt-3 border-t border-border/50">
+                        <h4 className="text-xs font-bold text-amber-700 dark:text-amber-500 mb-1 flex items-center gap-2">
+                            Evidence & Significance
+                        </h4>
+                        <p className="text-xs text-muted-foreground">
+                            {item.significance}
+                        </p>
+                    </div>
+                )}
+
+                {item.bibleReferences.length > 0 && (
+                    <div className="flex gap-2 flex-wrap pt-1">
+                        {item.bibleReferences.map((ref, idx) => (
+                            <VerseLink
+                                key={idx}
+                                reference={ref}
+                                className="px-2 py-0.5 bg-amber-500/10 text-amber-700 dark:text-amber-400 text-[10px] rounded-md font-medium hover:bg-amber-500/20 transition-colors border border-amber-500/20"
+                            />
+                        ))}
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+
+    // Section Header
+    const SectionHeader = ({ title, icon: Icon }: { title: string, icon: any }) => (
+        <div className="flex items-center gap-3 pt-6 pb-2 border-b border-border/50">
+            <div className="p-2 bg-amber-500/10 rounded-full text-amber-600">
+                <Icon className="w-5 h-5" />
+            </div>
+            <h3 className="text-xl font-bold text-foreground">{title}</h3>
+        </div>
+    );
+
     return (
         <div className="space-y-8 animate-in fade-in duration-500 pb-20">
             {/* Header */}
@@ -57,7 +137,7 @@ export default function ExodusStudy() {
                             Evidence for the Exodus
                         </h2>
                         <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl">
-                            Tracing the path of the Israelites from Egypt to the Promised Land, uncovering physical evidence that matches the biblical account.
+                            A narrative journey tracing the path of the Israelites from Egypt to the Promised Land, uncovering physical evidence that matches the biblical account.
                         </p>
                     </div>
                 </div>
@@ -77,74 +157,70 @@ export default function ExodusStudy() {
                     <div className="mt-4 p-4 bg-secondary/30 rounded-lg text-sm text-muted-foreground border border-border/50">
                         <h4 className="font-semibold text-foreground mb-1 flex items-center gap-2">
                             <Navigation className="w-4 h-4 text-amber-500" />
-                            Route Information
+                            Interactive Map
                         </h4>
                         <p>
-                            The path shown traces the route from Goshen (Egypt) through the Sinai peninsula, crossing the Red Sea at Nuweiba Beach, into modern-day Saudi Arabia to Mt. Sinai (Jebel al-Lawz), making the loop back south to Ezion-Geber after Kadesh Barnea, and finally north to the Jordan River crossing at Jericho.
+                            Follow the numbered path from Egypt (1) to the Jordan River (13). Click any number to read the story.
                         </p>
                     </div>
                 </div>
 
-                {/* List Section */}
-                <div className="w-full lg:w-1/2 space-y-6">
-                    {sortedLocations.map(item => (
-                        <div
-                            key={item.id}
-                            id={`exodus-${item.id}`}
-                            className={`
-                                group bg-card border rounded-xl overflow-hidden transition-all duration-300 scroll-mt-32
-                                ${activeId === item.id
-                                    ? 'border-amber-500 ring-1 ring-amber-500 shadow-lg shadow-amber-500/10 scale-[1.02]'
-                                    : 'border-border shadow-sm hover:shadow-md hover:border-amber-500/30'
-                                }
-                            `}
-                            onClick={() => handleItemClick(item.id)}
-                        >
-                            <div className="p-6 space-y-4">
-                                <div className="flex justify-between items-start gap-4">
-                                    <div className="space-y-1">
-                                        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-amber-600 mb-1">
-                                            <span className="bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 px-1.5 py-0.5 rounded text-[10px] mr-1 border border-amber-200 dark:border-amber-800">
-                                                #{item.order}
-                                            </span>
-                                            {item.type}
-                                        </div>
-                                        <h3 className="text-xl font-bold text-foreground group-hover:text-amber-700 dark:group-hover:text-amber-500 transition-colors">
-                                            {item.title}
-                                        </h3>
-                                    </div>
-                                    <div className={`p-2 rounded-lg ${activeId === item.id ? 'bg-amber-500 text-white' : 'bg-secondary text-muted-foreground'} transition-colors`}>
-                                        {getIcon(item.type)}
-                                    </div>
-                                </div>
+                {/* Narrative List Section */}
+                <div className="w-full lg:w-1/2 space-y-8">
 
-                                <p className="text-foreground/80 leading-relaxed">
-                                    {item.description}
-                                </p>
-
-                                <div className="pt-4 border-t border-border/50">
-                                    <h4 className="text-sm font-bold text-amber-700 dark:text-amber-500 mb-2 flex items-center gap-2">
-                                        Significance
-                                    </h4>
-                                    <p className="text-sm text-foreground/90 italic border-l-2 border-amber-500/30 pl-3 py-1">
-                                        {item.significance}
-                                    </p>
-                                </div>
-
-                                {item.bibleReferences.length > 0 && (
-                                    <div className="flex gap-2 flex-wrap pt-2">
-                                        {item.bibleReferences.map((ref, idx) => (
-                                            <VerseLink
-                                                key={idx}
-                                                reference={ref}
-                                                className="px-2 py-1 bg-amber-500/10 text-amber-700 dark:text-amber-400 text-xs rounded-md font-medium hover:bg-amber-500/20 transition-colors border border-amber-500/20"
-                                            />
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
+                    {/* PROLOGUE */}
+                    <div className="space-y-4">
+                        <SectionHeader title="Prologue: The Legacy of Joseph" icon={BookOpen} />
+                        <p className="text-muted-foreground italic text-sm px-4">
+                            Before the Exodus, the Hebrews dwelt in Goshen. Archeology at Avaris (Tell el-Dab'a) reveals evidences of Joseph's rule and a large Semitic population.
+                        </p>
+                        <div className="grid gap-4">
+                            {contextItems.map(item => (
+                                <LocationCard key={item.id} item={item} minimal={true} />
+                            ))}
                         </div>
-                    ))}
+                    </div>
+
+                    {/* ACT I: ESCAPE */}
+                    <div className="space-y-4">
+                        <SectionHeader title="Act I: The Escape" icon={Waves} />
+                        <div className="grid gap-4">
+                            {journeyItems.filter(i => i.order && i.order <= 2).map(item => (
+                                <LocationCard key={item.id} item={item} />
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* ACT II: THE MOUNTAIN */}
+                    <div className="space-y-4">
+                        <SectionHeader title="Act II: The Mountain of God" icon={Mountain} />
+                        <div className="grid gap-4">
+                            {journeyItems.filter(i => i.order && i.order >= 3 && i.order <= 9).map(item => (
+                                <LocationCard key={item.id} item={item} />
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* ACT III: The Wilderness */}
+                    <div className="space-y-4">
+                        <SectionHeader title="Act III: The Wilderness & The Detour" icon={Tent} />
+                        <div className="grid gap-4">
+                            {journeyItems.filter(i => i.order && i.order >= 10 && i.order <= 11).map(item => (
+                                <LocationCard key={item.id} item={item} />
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* ACT IV: THE PROMISE */}
+                    <div className="space-y-4">
+                        <SectionHeader title="Act IV: The Promise" icon={Trophy} />
+                        <div className="grid gap-4">
+                            {journeyItems.filter(i => i.order && i.order >= 12).map(item => (
+                                <LocationCard key={item.id} item={item} />
+                            ))}
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>

@@ -53,8 +53,6 @@ export default function StudyToolPage() {
                 return <ArchaeologyView />;
             case 'feasts':
                 return <FeastsView />;
-            case 'prophecy':
-                return <ProphecyView />;
             case 'miracles':
                 return <MiraclesView />;
             case 'parables':
@@ -63,8 +61,6 @@ export default function StudyToolPage() {
                 return <TranslationsView />;
             case 'apostles':
                 return <ApostlesView />;
-            case 'people':
-                return <PeopleView />;
             case 'names':
                 return <DivineNamesView />;
             default:
