@@ -18,7 +18,7 @@ export default function VerseLink({ book, chapter, verse, reference, children, c
     // specific parser
     if (reference) {
         // 1. Try "Book Chapter:Verse"
-        const fullMatch = reference.match(/^((?:\d\s)?[a-zA-Z\s]+)\s(\d+)(?:[:\.](\d+(?:-\d+)?)?|[-–]\d+)?/);
+        const fullMatch = reference.match(/^((?:\d\s)?[a-zA-Z\s]+)\s(\d+)(?:[:\.](\d+(?:[-–]\d+)?)?|[-–]\d+)?/);
 
         if (fullMatch && fullMatch[1] && isNaN(Number(fullMatch[1]))) {
             targetBook = fullMatch[1].trim();
@@ -39,7 +39,7 @@ export default function VerseLink({ book, chapter, verse, reference, children, c
         } else {
             // 3. Try "Book" only
             const simpleBookMatch = reference.match(/^((?:\d\s)?[a-zA-Z\s]+)$/);
-            if (simpleBookMatch) {
+            if (simpleBookMatch && simpleBookMatch[1]) {
                 targetBook = simpleBookMatch[1].trim();
                 targetChapter = '1';
             }

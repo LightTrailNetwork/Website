@@ -41,6 +41,7 @@ export default function BibleStudy() {
                 { id: 'archaeology', title: 'Archaeological Evidence', description: 'Physical proof confirming the biblical record.', icon: Pickaxe, path: '/bible/study/archaeology', status: 'ready' },
                 { id: 'translations', title: 'Bible Translations', description: 'History & comparison of versions.', icon: ArrowRightLeft, path: '/bible/study/translations', status: 'ready' },
                 { id: 'places', title: 'Places & Maps', description: 'Geographic context for the unfolding narrative.', icon: MapPin, path: '/bible/study/places', status: 'ready' },
+                { id: 'recounting', title: 'Recounting History', description: 'All the places where the story of the Bible is recounted.', icon: History, path: '/bible/study/recounting-history', status: 'ready' },
             ]
         },
         {

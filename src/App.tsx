@@ -24,6 +24,7 @@ import EvangelismStudy from './pages/study/EvangelismStudy';
 import ApologeticsStudy from './pages/study/ApologeticsStudy';
 import ScienceStudy from './pages/study/ScienceStudy';
 import ExodusStudy from './pages/study/ExodusStudy';
+import RecountingHistoryStudy from './pages/study/RecountingHistoryStudy';
 import { initDB, getProfile, createProfile } from './data/db';
 import { Role } from './data/types';
 import { SettingsProvider } from './context/SettingsContext';
@@ -213,6 +214,7 @@ function AppContent() {
           <Route path="/bible/study/apologetics" element={<ApologeticsStudy />} />
           <Route path="/bible/study/science" element={<ScienceStudy />} />
           <Route path="/bible/study/exodus" element={<ExodusStudy />} />
+          <Route path="/bible/study/recounting-history" element={<RecountingHistoryStudy />} />
           <Route path="/bible/study/:toolId" element={<StudyToolPage />} />
           <Route path="/bible/*" element={<Bible />} />
           <Route path="/settings" element={<Settings />} />
