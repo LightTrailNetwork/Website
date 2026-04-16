@@ -50,11 +50,11 @@ export const MNEMONIC_SYSTEMS: MnemonicSystem[] = [
             { letter: "M", title: "Mercy of God", reference: "Romans 5:8", text: "But God shows his love for us in that while we were still sinners, Christ died for us.", meaning: "God's love intervenes despite our rebellion." },
             { letter: "A", title: "Acceptance by faith", reference: "Romans 10:9-10", text: "If you confess with your mouth that Jesus is Lord and believe in your heart that God raised him from the dead, you will be saved.", meaning: "Faith and confession open the door to salvation." },
             { letter: "N", title: "New life given", reference: "Romans 6:23b", text: "…but the free gift of God is eternal life in Christ Jesus our Lord.", meaning: "The gift replaces the wage—life for death." },
-            { letter: "S", title: "Stewardship", reference: "Romans 12:6", text: "Having gifts that differ according to the grace given to us, let us use them...", meaning: "Saved people serve others with their gifts." },
+            { letter: "S", title: "Slave of God", reference: "Romans 6:22", text: "…you have been set free from sin and have become slaves of God…", meaning: "Saved people serve God alone." },
             { letter: "R", title: "Respond by calling", reference: "Romans 10:13", text: "Everyone who calls on the name of the Lord will be saved.", meaning: "Anyone can call and be rescued." },
             { letter: "O", title: "Outcome is peace", reference: "Romans 5:1", text: "Therefore, since we have been justified by faith, we have peace with God through our Lord Jesus Christ.", meaning: "Justification leads to reconciliation." },
             { letter: "A", title: "Assurance in grace", reference: "Romans 8:1", text: "There is therefore now no condemnation for those who are in Christ Jesus.", meaning: "No more guilt; complete security." },
-            { letter: "D", title: "Destination: glory", reference: "Romans 8:38-39", text: "For I am sure that neither death nor life... will be able to separate us from the love of God...", meaning: "Eternal love and union with God forever." }
+            { letter: "D", title: "Destination: glory", reference: "Romans 8:38-39", text: "For I am sure that neither death nor life… will be able to separate us from the love of God…", meaning: "Eternal love and union with God forever." }
         ]
     },
     {
